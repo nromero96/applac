@@ -35,7 +35,7 @@
                                             <td>
                                                 <div class="media">
                                                     <div class="avatar me-2">
-                                                        <img alt="avatar" src="{{asset('assets/img/'.$item->photo.'')}}" class="rounded-circle" />
+                                                        <img alt="avatar" src="{{asset('storage/uploads/profile_images/'.$item->photo.'')}}" class="rounded-circle" />
                                                     </div>
                                                     <div class="media-body align-self-center">
                                                         <h6 class="mb-0 fw-bold">{{$item->name}}</h6>

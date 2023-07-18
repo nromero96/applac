@@ -65,7 +65,7 @@ class UserController extends Controller
 
             $image_resize = Image::make($image->getRealPath());
             $image_resize->resize(300, 300);
-            $image_resize->save(public_path('/assets/img/' . $photouser));
+            $image_resize->save(storage_path('app/public/uploads/profile_images/' . $photouser));
         } else {
             $photouser = 'profile-1.jpeg';
         }
@@ -124,7 +124,7 @@ class UserController extends Controller
             $photouser = rand(11111111, 99999999) . $image->getClientOriginalName();
             $image_resize = Image::make($image->getRealPath());
             $image_resize->resize(500, 500);
-            $image_resize->save(public_path('/assets/img/' . $photouser));
+            $image_resize->save(storage_path('app/public/uploads/profile_images/' . $photouser));
         } else {
             $photouser = $currentImage;
         }
@@ -144,7 +144,7 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-        //cambiar el status a 0
+        //cambiar el status a deleted
         $user = User::findOrFail($id);
         $user->status = 'deleted';
         $user->save();

@@ -40,7 +40,7 @@ Route::get('quotations-onlineregister-personal', [QuotationController::class, 'o
 
 Route::post('upload',[UploadController::class, 'store']);
 
-Route::group(['middleware' => 'auth'] , function() {
+Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
 
     // $this->middleware
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');

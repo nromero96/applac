@@ -54,9 +54,6 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
-
-
-
                                     <div class="col-md-12 mb-3">
                                         <div class="text-end">
                                             <a href="locale/en" class="" ><span class="badge {{ (app()->getLocale() == 'en') ? 'badge-light-primary' : 'badge-light-dark' }}">EN</span></span></a>
@@ -64,7 +61,6 @@
                                         </div>
                                         <h2>{{ __('Log In') }}</h2>
                                         <p>{{ __('Enter your email and password to login') }}</p>
-
                                     </div>
                                     <div class="col-md-12">
                                         <div class="mb-3">
@@ -98,7 +94,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-12">
                                         <div class="mb-4">
                                             <button class="btn btn-secondary w-100">{{ __('Login') }}</button>
@@ -110,6 +106,20 @@
                                             <p class="mb-0">{{ __("Dont't have an account ?") }} <a href="javascript:void(0);" class="text-warning">{{ __("Sign Up") }}</a></p>
                                         </div>
                                     </div>
+
+                                    @if (session('status'))
+                                        <div class="alert alert-danger mt-2" role="alert" id="status-alert">
+                                            {{ session('status') }}
+                                        </div>
+
+                                        <script>
+                                            setTimeout(function() {
+                                                document.getElementById('status-alert').remove();
+                                            }, 5000); // 10000 milisegundos = 10 segundos
+                                        </script>
+                                    @endif
+
+
 
                                 </div>
                             </div>

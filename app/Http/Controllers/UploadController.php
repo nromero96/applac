@@ -9,56 +9,30 @@ class UploadController extends Controller
 {
     public function store(Request $request){
 
-        //save document_one or document_two or document_three
-        if($request->hasFile('document_one')){
-            $file = $request->file('document_one');
-            $originalFilename = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $filename = $originalFilename.uniqid().'.'.$extension;
-            $folder = uniqid().'-'.now()->timestamp;
-            $file->storeAs('public/uploads/tmp/'.$folder, $filename);
+        $documentFields = ['document_one', 'document_two', 'document_three'];
+        $uploadedFolder = '';
 
-            TemporaryFile::create([
-                'folder' => $folder,
-                'filename' => $filename,
-            ]);
+        foreach ($documentFields as $field) {
+            if ($request->hasFile($field)) {
+                $file = $request->file($field);
+                $originalFilename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                $filename = $originalFilename . uniqid() . '.' . $extension;
+                $folder = uniqid() . '-' . now()->timestamp;
+                $file->storeAs('public/uploads/tmp/' . $folder, $filename);
 
-            return $folder;
+                TemporaryFile::create([
+                    'folder' => $folder,
+                    'filename' => $filename,
+                ]);
+
+                $uploadedFolder = $folder;
+                break;
+            }
         }
 
-        if($request->hasFile('document_two')){
-            $file = $request->file('document_two');
-            $originalFilename = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $filename = $originalFilename.uniqid().'.'.$extension;
-            $folder = uniqid().'-'.now()->timestamp;
-            $file->storeAs('public/uploads/tmp/'.$folder, $filename);
-            
-            TemporaryFile::create([
-                'folder' => $folder,
-                'filename' => $filename,
-            ]);
+        return $uploadedFolder;
 
-            return $folder;
-        }
-
-        if($request->hasFile('document_three')){
-            $file = $request->file('document_three');
-            $originalFilename = $file->getClientOriginalName();
-            $extension = $file->getClientOriginalExtension();
-            $filename = $originalFilename.uniqid().'.'.$extension;
-            $folder = uniqid().'-'.now()->timestamp;
-            $file->storeAs('public/uploads/tmp/'.$folder, $filename);
-            
-            TemporaryFile::create([
-                'folder' => $folder,
-                'filename' => $filename,
-            ]);
-            
-            return $folder;
-        }
-
-        return '';
 
 
     }

@@ -78,7 +78,7 @@
 
                         <div class="dropdown-item">
                             <div class="media file-upload">
-                                <img src="{{ asset('assets/img/profile-21.jpeg') }}" class="img-fluid me-2" alt="avatar">
+                                <img src="{{ asset('assets/img/profile-21.jpeg') }}" class="img-fluid me-2">
                                 <div class="media-body">
                                     <div class="data-info">
                                         <h6 class="">Oscar Garner</h6>
@@ -151,7 +151,7 @@
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <div class="avatar-container">
                         <div class="avatar avatar-sm avatar-indicators avatar-online">
-                            <img alt="avatar" src="{{ asset('assets/img').'/'. Auth::user()->photo}}" class="rounded-circle">
+                            <img alt="avatar" src="{{ asset('storage/uploads/profile_images').'/'. Auth::user()->photo}}" class="rounded-circle">
                         </div>
                     </div>
                 </a>

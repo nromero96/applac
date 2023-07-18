@@ -70,7 +70,7 @@
                                 <input type="file" name="photo" class="form-control" id="inputPhoto">
                             </div>
                             <div class="col-md-6">
-                                <img src="{{ asset('assets/img').'/'.$user->photo}}" class="rounded" width="70px" height="70px">
+                                <img src="{{ asset('storage/uploads/profile_images').'/'.$user->photo}}" class="rounded" width="70px" height="70px">
                             </div>
                             <div class="col-md-12 mb-2">
                                 <label for="inputStatus" class="form-label fw-bold">{{__("Status")}}</label><br>
