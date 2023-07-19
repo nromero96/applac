@@ -31,7 +31,7 @@ Route::get('/', function () {
 
 // Route::get('/storage-link', function () {
 //     Artisan::call('storage:link');
-//     return 'Storage link creado correctamente.';
+//     return 'Storage link creado correctamente en cpanel.';
 // });
 
 //Country and State
