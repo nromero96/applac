@@ -29,6 +29,11 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+// Route::get('/storage-link', function () {
+//     Artisan::call('storage:link');
+//     return 'Storage link creado correctamente.';
+// });
+
 //Country and State
 Route::get('getcrossing/{id}', [App\Http\Controllers\CountryStateController::class, 'getcrossing'])->name('getcrossing');
 Route::get('getstates/{id}', [App\Http\Controllers\CountryStateController::class, 'getstates'])->name('getstates');
