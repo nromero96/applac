@@ -29,11 +29,6 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/storage-link', function () {
-     Artisan::call('storage:link');
-     return 'Storage link creado correctamente en cpanel.';
-});
-
 //Country and State
 Route::get('getcrossing/{id}', [App\Http\Controllers\CountryStateController::class, 'getcrossing'])->name('getcrossing');
 Route::get('getstates/{id}', [App\Http\Controllers\CountryStateController::class, 'getstates'])->name('getstates');
@@ -46,6 +41,11 @@ Route::get('quotations-onlineregister-personal', [QuotationController::class, 'o
 Route::post('upload',[UploadController::class, 'store']);
 
 Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
+
+    Route::get('/storage-link', function () {
+        Artisan::call('storage:link');
+        return 'Storage link creado correctamente en cpanel.';
+    });
 
     // $this->middleware
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
