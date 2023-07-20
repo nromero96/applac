@@ -445,15 +445,6 @@
                                             <h5 class="fw-bold">{{ __('Additional Information') }}</h5>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <label class="form-label">{{ __('Documentation') }} <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="(Max. 10mb - Allowed files: jpg, jpeg, png, gif, doc, docx, ppt, pptx, pdf, xls, xlsx)" ></span></label>
-                                            <div class="multiple-file-upload">
-                                                <input type="file" class="filepond file-upload-multiple" multiple data-allow-reorder="true" data-max-file-size="3MB" data-max-files="3">
-                                            </div>
-                                            <span class="text">
-                                                Max. file size: 10 mb
-                                            </span>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
                                             <label class="form-label">{{ __('Shipping date (select range)') }}</label>
                                             <input type="date" name="shipping_date" id="shipping_date" class="form-control">
                                             <div class="form-check form-check-primary form-check-inline mt-1">
@@ -480,6 +471,16 @@
                                                 <option value="EUR - Euro">EUR - Euro</option>
                                             </select>
                                         </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label class="form-label">{{ __('Documentation') }} <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="(Max. 10mb - Allowed files: jpg, jpeg, png, gif, doc, docx, ppt, pptx, pdf, xls, xlsx)" ></span></label>
+                                            <div class="multiple-file-upload">
+                                                <input type="file" class="filepond file-upload-multiple" multiple data-allow-reorder="true" data-max-file-size="3MB" data-max-files="3">
+                                            </div>
+                                            <span class="text">
+                                                Max. file size: 10 mb
+                                            </span>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
