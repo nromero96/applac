@@ -276,8 +276,8 @@
                                         </select>
                                     </div>
                                     <div class="mb-0">
-                                        <label class="form-label" id="origin_labeladdress">{{ __('PICKUP ADDRESS') }}</label>
-                                        <label class="form-label d-none" id="origin_labelairport">{{ __('ORIGIN AIRPORT') }}</label>
+                                        <label class="form-label" id="origin_labeladdress">{{ __('Pick up Address') }}</label>
+                                        <label class="form-label d-none" id="origin_labelairport">{{ __('City') }}</label>
                                         <label class="form-label d-none" id="origin_labelport">{{ __('ORIGIN PORT') }}</label>
                                     </div>
                                     <div class="mb-2 d-none" id="origin_div_airportorport">
@@ -290,10 +290,10 @@
                                             </select>
                                         </div>
                                         <div class="mb-2">
-                                            <input type="text" class="form-control" name="origin_city" id="origin_city" placeholder="{{ __('Enter Origin City') }}">
+                                            <input type="text" class="form-control" name="origin_city" id="origin_city" placeholder="{{ __('City') }}">
                                         </div>
                                         <div class="mb-2">
-                                            <input type="text" class="form-control" name="origin_address" id="origin_address" placeholder="{{ __('Enter Complete Address') }}">
+                                            <input type="text" class="form-control" name="origin_address" id="origin_address" placeholder="{{ __('Enter street address') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -318,8 +318,8 @@
                                         </select>
                                     </div>
                                     <div class="mb-0">
-                                        <label class="form-label" id="destination_labeladdress">{{ __('DELIVERY ADDRESS') }}</label>
-                                        <label class="form-label d-none" id="destination_labelairport">{{ __('DESTINATION AIRPORT') }}</label>
+                                        <label class="form-label" id="destination_labeladdress">{{ __('Delivery Address') }}</label>
+                                        <label class="form-label d-none" id="destination_labelairport">{{ __('City') }}</label>
                                         <label class="form-label d-none" id="destination_labelport">{{ __('DESTINATION PORT') }}</label>
                                     </div>
 
@@ -333,10 +333,10 @@
                                             </select>
                                         </div>
                                         <div class="mb-2">
-                                            <input type="text" class="form-control" name="destination_city" id="destination_city" placeholder="{{ __('Destination City') }}">
+                                            <input type="text" class="form-control" name="destination_city" id="destination_city" placeholder="{{ __('City') }}">
                                         </div>
                                         <div class="mb-2">
-                                            <input type="text" class="form-control" name="destination_address" id="destination_address" placeholder="{{ __('Enter Complete Address') }}">
+                                            <input type="text" class="form-control" name="destination_address" id="destination_address" placeholder="{{ __('Enter street address') }}">
                                         </div>
                                     </div>
                                 </div>
