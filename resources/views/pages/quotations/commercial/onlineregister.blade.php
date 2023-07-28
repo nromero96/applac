@@ -745,6 +745,28 @@
 
             $(document).on('change', 'select[name="service_type"]', handleServiceTypeChange);
 
+            var modalContentDangerous = `
+                    <div class="modal fade dangerous-cargo-modal" tabindex="-1" aria-hidden="true">
+                    <!-- Contenido del modal aquí -->
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Dangerous Cargo Modal</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Este es el contenido del modal.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary save-dange-button">Save</button>
+                            <button type="button" class="btn btn-secondary cencel-dange-button">Cancel</button>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    `;
+
+
             // Agregar fila itemdetail
             function addItemDetail() {
                 var html = '<div class="p-2 mb-2 card itemdetail"><div class="row mb-2">' +
@@ -819,7 +841,8 @@
                 '<input type="text" name="gargo_description[]" class="form-control px-2" placeholder="Cargo Description (Commodity)">' +
                 '</div>' +
                 '<div class="col-md-3">'+
-                    '<div class="form-check my-2"><input class="form-check-input" type="checkbox" name="dangerous_cargo"><label class="form-check-label"> Dangerous Cargo </label><a href="#" class="text-danger">(Know more)</a></div>'+
+                    '<div class="form-check my-2"><input class="form-check-input dangerous-cargo-checkbox" type="checkbox" name="dangerous_cargo"><label class="form-check-label"> Dangerous Cargo </label><a href="#" class="text-danger">(Know more)</a></div>'+
+                    modalContentDangerous+
                 '</div>'+
                 '<div class="col-md-3 text-end">' +
                     '<button class="btn btn-light-info duplicate-item btn-icon me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Duplicate Item"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>'+
@@ -828,6 +851,7 @@
                 '</div></div>';
 
                 $('#listcargodetails').append(html);
+                initializeDangerousCargoModal();
                 initializeTooltips();
             }
 
@@ -907,7 +931,8 @@
                         '<input type="text" name="gargo_description[]" class="form-control px-2" placeholder="">' +
                     '</div>' +
                     '<div class="col-md-2 pt-2">'+
-                        '<div class="form-check my-2"><input class="form-check-input" type="checkbox" name="dangerous_cargo"><label class="form-check-label mb-0"> Dangerous Cargo </label><a href="#" class="text-danger">(Know more)</a></div>'+
+                        '<div class="form-check my-2"><input class="form-check-input dangerous-cargo-checkbox" type="checkbox" name="dangerous_cargo"><label class="form-check-label mb-0"> Dangerous Cargo </label><a href="#" class="text-danger">(Know more)</a></div>'+
+                        modalContentDangerous+
                     '</div>'+
                     '<div class="col-md-4">'+
                         '<div class="row">'+
@@ -930,8 +955,38 @@
                     '</div>' +
                     '</div></div>';
                 $('#listcargodetails').append(html);
+                initializeDangerousCargoModal();
                 initializeTooltips();
             }
+
+
+            function initializeDangerousCargoModal() {
+        // Capturar el evento de clic en el checkbox dentro de cada grupo de checkboxes
+        $('.itemdetail .dangerous-cargo-checkbox').on('click', function () {
+            const $modal = $(this).closest('.itemdetail').find('.dangerous-cargo-modal');
+
+            // Abrir el modal correspondiente
+            $modal.modal('show');
+
+            const $checkbox = $(this);
+
+            // Capturar el evento de clic en el botón "Save" dentro del modal
+            $modal.find('.save-dange-button').on('click', function () {
+                // Marcamos el checkbox cuando se hace clic en "Save"
+                $checkbox.prop('checked', true);
+                $modal.modal('hide'); // Cerrar el modal
+            });
+
+            // Capturar el evento de clic en el botón "Cancel" dentro del modal
+            $modal.find('.cancel-dange-button').on('click', function () {
+                // Si el checkbox no estaba marcado originalmente, lo desmarcamos
+                if (!$checkbox.prop('checked')) {
+                    $checkbox.prop('checked', false);
+                }
+                $modal.modal('hide'); // Cerrar el modal
+            });
+        });
+    }
 
 
             // Agregar item al hacer clic en el botón

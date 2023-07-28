@@ -97,7 +97,7 @@ $(document).ready(function() {
                                                             '</select>'+
                                                             '</div>'+
                                                             '<div class="form-group mt-1 mb-1">'+
-                                                            '<select class="form-control" name="origin_state_id[]" required="">'+
+                                                            '<select class="form-control" name="origin_state_id[]">'+
                                                             '<option value="">State</option>'+
                                                             '</select>'+
                                                             '</div>'+
@@ -113,7 +113,7 @@ $(document).ready(function() {
                                                             '</select>'+
                                                             '</div>'+
                                                             '<div class="form-group mt-1 mb-1">'+
-                                                            '<select class="form-control" name="destination_state_id[]" required="">'+
+                                                            '<select class="form-control" name="destination_state_id[]">'+
                                                             '<option value="">State</option>'+
                                                             '</select>'+
                                                             '</div>'+
@@ -180,7 +180,7 @@ $(document).ready(function() {
                                                                                 '</select>'+
                                                                             '</div>'+
                                                                             '<div class="form-group mt-1 mb-1">'+
-                                                                                '<select class="form-control" name="origin_state_id[]" required="">'+
+                                                                                '<select class="form-control" name="origin_state_id[]">'+
                                                                                     '<option value="">State</option>'+
                                                                                 '</select>'+
                                                                             '</div>'+
@@ -590,9 +590,12 @@ $(document).ready(function() {
       
                   var displaycrossing = 'd-none';
                   var crossingSelect = '';
-                  if (route.crossing != '') {
+
+
+
+                  if ((selectedOrigin === '142' && (selectedDestination === '38' || selectedDestination === '231')) || ((selectedOrigin === '38' || selectedOrigin === '231') && selectedDestination === '142') || (selectedOrigin === '142' && serviceCategoryId == '4')) {
                     $.ajax({
-                      url: baseurl + '/getcrossing/' + selectedOrigin,
+                      url: baseurl + '/getcrossing/' + '142',
                       type: 'GET',
                       async: false,
                       success: function(data) {
@@ -630,7 +633,7 @@ $(document).ready(function() {
                                 </select>
                               </div>
                               <div class="form-group mt-1 mb-1">
-                                <select class="form-control origin_state" name="origin_state_id[]" required="">
+                                <select class="form-control origin_state" name="origin_state_id[]">
                                   ${originStateSelect}
                                 </select>
                               </div>
@@ -646,7 +649,7 @@ $(document).ready(function() {
                                 </select>
                               </div>
                               <div class="form-group mt-1 mb-1">
-                                <select class="form-control destination_state" name="destination_state_id[]" required="">
+                                <select class="form-control destination_state" name="destination_state_id[]">
                                   ${destinationStateSelect}
                                 </select>
                               </div>
@@ -690,7 +693,7 @@ $(document).ready(function() {
                                 </select>
                               </div>
                               <div class="form-group mt-1 mb-1">
-                                <select class="form-control" name="origin_state_id[]" required="">
+                                <select class="form-control" name="origin_state_id[]">
                                   ${originStateSelect}
                                 </select>
                               </div>
