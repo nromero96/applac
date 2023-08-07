@@ -748,18 +748,30 @@
             var modalContentDangerous = `
                     <div class="modal fade dangerous-cargo-modal" tabindex="-1" aria-hidden="true">
                     <!-- Contenido del modal aquí -->
-                    <div class="modal-dialog">
+                    <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Dangerous Cargo Modal</h5>
+                            <h5 class="modal-title">Dangerous Cargo Details</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p>Este es el contenido del modal.</p>
+                            <p>If you are shipping any type of dangerous cargo, you must specify lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris at lacus et erat elementum imperdiet. Donec dignissim metus et elit porttitor, eu porta elit pharetra.</p>
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <label class="form-label">IMO Classification</label>
+                                    <select class="form-select" name="imo_classification[]">
+                                        <option>Select IMO Class</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <label class="form-label">UN Number</label>
+                                    <input type="text" class="form-control" name="un_number[]" placeholder="Enter UN number or description">
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-primary save-dange-button">Save</button>
-                            <button type="button" class="btn btn-secondary cencel-dange-button">Cancel</button>
+                            <button type="button" class="btn btn-secondary cancel-dange-button">Cancel</button>
                         </div>
                         </div>
                     </div>
@@ -961,32 +973,30 @@
 
 
             function initializeDangerousCargoModal() {
-        // Capturar el evento de clic en el checkbox dentro de cada grupo de checkboxes
-        $('.itemdetail .dangerous-cargo-checkbox').on('click', function () {
-            const $modal = $(this).closest('.itemdetail').find('.dangerous-cargo-modal');
+                // Capturar el evento de clic en el checkbox dentro de cada grupo de checkboxes
+                $('.itemdetail .dangerous-cargo-checkbox').on('click', function () {
+                    const $modal = $(this).closest('.itemdetail').find('.dangerous-cargo-modal');
 
-            // Abrir el modal correspondiente
-            $modal.modal('show');
+                    // Abrir el modal correspondiente
+                    $modal.modal('show');
 
-            const $checkbox = $(this);
+                    const $checkbox = $(this);
 
-            // Capturar el evento de clic en el botón "Save" dentro del modal
-            $modal.find('.save-dange-button').on('click', function () {
-                // Marcamos el checkbox cuando se hace clic en "Save"
-                $checkbox.prop('checked', true);
-                $modal.modal('hide'); // Cerrar el modal
-            });
+                    // Capturar el evento de clic en el botón "Save" dentro del modal
+                    $modal.find('.save-dange-button').on('click', function () {
+                        // Marcamos el checkbox cuando se hace clic en "Save"
+                        $checkbox.prop('checked', true);
+                        $modal.modal('hide'); // Cerrar el modal
+                    });
 
-            // Capturar el evento de clic en el botón "Cancel" dentro del modal
-            $modal.find('.cancel-dange-button').on('click', function () {
-                // Si el checkbox no estaba marcado originalmente, lo desmarcamos
-                if (!$checkbox.prop('checked')) {
-                    $checkbox.prop('checked', false);
-                }
-                $modal.modal('hide'); // Cerrar el modal
-            });
-        });
-    }
+                    // Capturar el evento de clic en el botón "Cancel" dentro del modal
+                    $modal.find('.cancel-dange-button').on('click', function () {
+                        // Si el checkbox no estaba marcado originalmente, lo desmarcamos
+                        $checkbox.prop('checked', false);
+                        $modal.modal('hide'); // Cerrar el modal
+                    });
+                });
+            }
 
 
             // Agregar item al hacer clic en el botón
