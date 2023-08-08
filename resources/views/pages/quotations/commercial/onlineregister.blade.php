@@ -43,6 +43,8 @@
     <link href="{{ asset('plugins/css/light/flatpickr/custom-flatpickr.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('plugins/css/dark/flatpickr/custom-flatpickr.css') }}" rel="stylesheet" type="text/css" />
     
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/css/intlTelInput.min.css">
+
     <style>
 
         body{
@@ -245,6 +247,17 @@
                                             <label class="custom-control-label cursor-pointer" for="cargo_type4">FCL</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose FCL (Full Container Load) for a complete 20ft / 40ft standard container, or a specialized one: reefer, flat rack, open top, etc." ></span>
                                         </div>
                                     </div>
+                                    <div class="d-none" id="dv_cargotype_roro">
+                                        <div class="form-check form-check-inline ps-0">
+                                            <input type="radio" id="cargo_type5" name="cargo_type" class="custom-control-input cursor-pointer" value="Commercial (Business-to-Business)">
+                                            <label class="custom-control-label cursor-pointer" for="cargo_type5">Commercial (Business-to-Business)</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Goods, vehicles, machinery, etc. sold to overseas companies for business purposes. Requires commercial documentation and may incur tariffs." ></span>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input type="radio" id="cargo_type6" name="cargo_type" class="custom-control-input cursor-pointer" value="Personal Vehicle">
+                                            <label class="custom-control-label cursor-pointer" for="cargo_type6">Personal Vehicle</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Personal vehicles shipped for non-commercial reasons. Requires specific personal documentation, possible tariff exemptions." ></span>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
 
@@ -254,6 +267,7 @@
                                     <select class="form-select" name="service_type" id="service_type">
                                         <option value="Door-to-Door">{{ __('Door-to-Door') }}</option>
                                         <option value="Door-to-Airport">{{ __('Door-to-Airport') }}</option>
+                                        <option value="Airport-to-Door">{{ __('Airport-to-Door') }}</option>
                                         <option value="Airport-to-Airport">{{ __('Airport-to-Airport') }}</option>
                                     </select>
                                 </div>
@@ -278,22 +292,26 @@
                                     <div class="mb-0">
                                         <label class="form-label" id="origin_labeladdress">{{ __('Pick up Address') }}</label>
                                         <label class="form-label d-none" id="origin_labelairport">{{ __('City') }}</label>
-                                        <label class="form-label d-none" id="origin_labelport">{{ __('ORIGIN PORT') }}</label>
+                                        <label class="form-label d-none" id="origin_labelport">{{ __('Origin Port') }}</label>
+                                        <label class="form-label d-none" id="origin_labelcfs">{{ __('Origin CFS') }}</label>
                                     </div>
                                     <div class="mb-2 d-none" id="origin_div_airportorport">
                                         <input type="text" class="form-control" name="origin_airportorport" id="origin_airportorport" placeholder="{{ __('Enter Airport') }}">
                                     </div>
                                     <div class="" id="origin_div_fulladress">
                                         <div class="mb-2">
+                                            <input type="text" class="form-control" name="origin_address" id="origin_address" placeholder="{{ __('Enter street address') }}">
+                                        </div>
+                                        <div class="mb-2">
+                                            <input type="text" class="form-control" name="origin_city" id="origin_city" placeholder="{{ __('Enter City') }}">
+                                        </div>
+                                        <div class="mb-2">
                                             <select class="form-select" name="origin_state_id" id="origin_state_id">
                                                 <option>{{ __('State...') }}</option>
                                             </select>
                                         </div>
                                         <div class="mb-2">
-                                            <input type="text" class="form-control" name="origin_city" id="origin_city" placeholder="{{ __('City') }}">
-                                        </div>
-                                        <div class="mb-2">
-                                            <input type="text" class="form-control" name="origin_address" id="origin_address" placeholder="{{ __('Enter street address') }}">
+                                            <input type="text" class="form-control" name="origin_zip_code" id="origin_zip_code" placeholder="{{ __('Enter Zip Code') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -320,7 +338,8 @@
                                     <div class="mb-0">
                                         <label class="form-label" id="destination_labeladdress">{{ __('Delivery Address') }}</label>
                                         <label class="form-label d-none" id="destination_labelairport">{{ __('City') }}</label>
-                                        <label class="form-label d-none" id="destination_labelport">{{ __('DESTINATION PORT') }}</label>
+                                        <label class="form-label d-none" id="destination_labelport">{{ __('Destination Port') }}</label>
+                                        <label class="form-label d-none" id="destination_labelcfs">{{ __('Destination CFS') }}</label>
                                     </div>
 
                                     <div class="mb-2 d-none" id="destination_div_airportorport">
@@ -328,15 +347,18 @@
                                     </div>
                                     <div class="" id="destination_div_fulladress">
                                         <div class="mb-2">
-                                            <select class="form-select" name="destination_state_id" id="destination_state_id">
-                                                <option>State...</option>
-                                            </select>
+                                            <input type="text" class="form-control" name="destination_address" id="destination_address" placeholder="{{ __('Enter street address') }}">
                                         </div>
                                         <div class="mb-2">
                                             <input type="text" class="form-control" name="destination_city" id="destination_city" placeholder="{{ __('City') }}">
                                         </div>
                                         <div class="mb-2">
-                                            <input type="text" class="form-control" name="destination_address" id="destination_address" placeholder="{{ __('Enter street address') }}">
+                                            <select class="form-select" name="destination_state_id" id="destination_state_id">
+                                                <option>State...</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-2">
+                                            <input type="text" class="form-control" name="destination_zip_code" id="destination_zip_code" placeholder="{{ __('Enter Zip Code') }}">
                                         </div>
                                     </div>
                                 </div>
@@ -344,13 +366,13 @@
 
                             {{-- Cargo Details --}}
                             <div class="row mt-3">
-                                <div class="col-md-12 mb-3">
+                                <div class="col-md-12 mb-1">
                                     <h5 class="fw-bold">{{ __('Cargo Details') }}</h5>
                                 </div>
 
                                 <div class="col-md-12">
                                     {{-- Title Details --}}
-                                    <div class="row">
+                                    <div class="row align-items-end">
                                         <div class="col-md-4">
                                             <h6 class="fw-bold">{{ __('Package') }}</h6>
                                         </div>
@@ -361,7 +383,7 @@
                                             <h6 class="fw-bold">{{ __('Weight') }}</h6>
                                         </div>
                                         <div class="col-md-1">
-                                            <h6 class="fw-bold">{{ __('Total Volume Weight') }}</h6>
+                                            <h6 class="fw-bold" id="txt_totvolwei">{{ __('Total Volume Weight') }}</h6>
                                         </div>
                                     </div>
                                     {{-- Detail lista --}}
@@ -402,16 +424,16 @@
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <span class="form-label mb-0">Actual Weight (<span class="typeofmeasure"></span>)</span>
+                                                                <span class="form-label mb-0"><span id="txt_actwei">Actual Weight</span> (<span class="typeofmeasure"></span>)</span>
                                                                 <input type="text" name="total_actualweight" class="form-control" placeholder="0">
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <span class="form-label mb-0">Volume Weight (<span class="typeofmeasure"></span>)</span>
+                                                                <span class="form-label mb-0"><span id="txt_volwei">Volume Weight</span> (<span class="typeofmeasure"></span>)</span>
                                                                 <input type="text" name="total_volum_weight" class="form-control" placeholder="0">
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-6">
+                                                    <div class="col-md-6" id="dv_chargwei">
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <span class="form-label mb-0">Chargeable Weight (<span class="typeofmeasure"></span>)</span>
@@ -422,15 +444,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-md-12 mt-1" id="ts-airmessagge">
-                                                        <span>Standard airfreight pricing is based on the Actual Weight or on the Volume Weight of the cargo, whichever is greater.</span>
-                                                        <br>
-                                                        <span class="text-danger">Please note that we are not able to ship any commercial cargo weighing less than 150 kilos (TOTAL WEIGHT)</span>
-                                                    </div>
-                                                    <div class="col-md-12 mt-1 d-none" id="ts-othermessagge">
-                                                        <span>LCL & LTL freight pricing is based on the volume of the cargo in CBM (cubic meters) or on its weight, if the cargo weight per CBM exceeds the maximum allowed.</span>
-                                                        <br>
-                                                        <span class="text-danger">Please note that we are not able to ship cargo whose TOTAL VOLUME WEIGHT is less than 1 cubic meter.</span>
+                                                    
+                                                    <div class="col-md-12 mt-1">
+                                                        <span id="ts_infotext" class="d-block"></span>
+                                                        <span id="ts_notetext" class="text-danger d-block"></span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -540,12 +557,14 @@
 
                                             <div class="row">
                                                 <div class="col-md-6 mb-3">
-                                                    <label for="" class="form-label mb-0">{{ __('Phone') }} <span class="text-danger">*</span></label>
-                                                    <input type="text" name="" id="" class="form-control">
+                                                    <label for="phone" class="form-label mb-0 d-block">{{ __('Phone') }} <span class="text-danger">*</span></label>
+                                                    <input type="tel" id="phone" name="phone" class="form-control">
+                                                    <!-- Agrega el contenedor para mostrar la bandera y el código -->
+                                                    <div id="phone-container" class="mt-2"></div>
                                                 </div>
                                                 <div class="col-md-6 mb-3">
-                                                    <label for="" class="form-label mb-0">{{ __('How do you know about us?') }} <span class="text-danger">*</span></label>
-                                                    <input type="text" name="" id="" class="form-control">
+                                                    <label for="how_know" class="form-label mb-0">{{ __('How do you know about us?') }} <span class="text-danger">*</span></label>
+                                                    <input type="text" id="how_know" name="how_know" class="form-control">
                                                 </div>
                                             </div>
 
@@ -608,6 +627,8 @@
     <script src="{{ asset('plugins/src/flatpickr/flatpickr.js') }}"></script>
     <script src="{{ asset('plugins/src/filepond/custom-filepond.js') }}"></script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.12/js/intlTelInput.min.js"></script>
+
     <script>
         $(document).ready(function() {
 
@@ -624,61 +645,45 @@
                 var $dv_cargotype = $('#dv_cargotype');
                 var $dv_cargotype_ground = $('#dv_cargotype_ground');
                 var $dv_cargotype_container = $('#dv_cargotype_container');
+                var $dv_cargotype_roro = $('#dv_cargotype_roro');
                 var $service_type = $('#service_type');
                 
                 $dv_cargotype.addClass('d-none');
                 $dv_cargotype_ground.addClass('d-none');
                 $dv_cargotype_container.addClass('d-none');
+                $dv_cargotype_roro.addClass('d-none');
                 $dv_cargotype.find('input[type="radio"]').prop('checked', false);
-
-                $ts_airmessagge = $('#ts-airmessagge');
-                $ts_thermessagge = $('#ts-othermessagge');
-                
                 switch (mode_of_transport) {
                     case 'Air':
-                        $service_type.html('<option value="Door-to-Airport">Door-to-Airport</option><option value="Airport-to-Airport">Airport-to-Airport</option><option value="Door-to-Door">Door-to-Door</option>');
-                        
+                        $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Airport">Door-to-Airport</option><option value="Airport-to-Door">Airport-to-Door</option><option value="Airport-to-Airport">Airport-to-Airport</option>');
                         $type_of_measure = $kgs;
 
-                        $ts_airmessagge.removeClass('d-none');
-                        $ts_thermessagge.addClass('d-none');
                         break;
                     case 'Ground':
                         $dv_cargotype.removeClass('d-none');
                         $dv_cargotype_ground.removeClass('d-none');
-                        
                         $service_type.html('<option value="Door-to-Door">Door-to-Door</option>');
-                        
                         $type_of_measure = $m3;
-                        $ts_airmessagge.addClass('d-none');
-                        $ts_thermessagge.removeClass('d-none');
                         break;
                     case 'Container':
                         $dv_cargotype.removeClass('d-none');
                         $dv_cargotype_container.removeClass('d-none');
-                        
-                        $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Port">Door-to-Port</option><option value="Port-to-Port">Port-to-Port</option>');
+                        $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Port">Door-to-Port</option><option value="Port-to-Door">Port-to-Door</option><option value="Port-to-Port">Port-to-Port</option>');
                         $type_of_measure = $m3;
-                        $ts_airmessagge.addClass('d-none');
-                        $ts_thermessagge.removeClass('d-none');
                         break;
                     case 'RoRo':
+                        $dv_cargotype.removeClass('d-none');
+                        $dv_cargotype_roro.removeClass('d-none');
                         $service_type.html('<option value="Port-to-Port">Port-to-Port</option><option value="Door-to-Port">Door-to-Port</option>');
                         $type_of_measure = $m3;
-                        $ts_airmessagge.addClass('d-none');
-                        $ts_thermessagge.removeClass('d-none');
                         break;
                     case 'Breakbulk':
-                        $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Port">Door-to-Port</option><option value="Port-to-Port">Port-to-Port</option>');
+                        $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Port">Door-to-Port</option><option value="Port-to-Door">Port-to-Door</option><option value="Port-to-Port">Port-to-Port</option>');
                         $type_of_measure = $m3;
-                        $ts_airmessagge.addClass('d-none');
-                        $ts_thermessagge.removeClass('d-none');
                         break;
                     default:
-                        $service_type.html('<option value="Door-to-Airport">Door-to-Airport</option><option value="Airport-to-Airport">Airport-to-Airport</option><option value="Door-to-Door">Door-to-Door</option>');
+                        $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Airport">Door-to-Airport</option><option value="Airport-to-Door">Airport-to-Door</option><option value="Airport-to-Airport">Airport-to-Airport</option>');
                         $type_of_measure = $m3;
-                        $ts_airmessagge.addClass('d-none');
-                        $ts_thermessagge.removeClass('d-none');
                         break;
                 }
                 handleServiceTypeChange();
@@ -686,6 +691,9 @@
                 $typeofmeasure.text($type_of_measure);
 
                 $('#listcargodetails').html('');
+
+                updateTextsLabelsAndHiddens();
+
                 addItemDetail();
 
                 initializeTooltips();
@@ -714,6 +722,13 @@
                     $('#destination_airportorport').attr('placeholder', 'Enter Airport');
                     $('#origin_div_fulladress').removeClass('d-none');
                     $('#destination_div_airportorport').removeClass('d-none');
+                } else if (service_type == 'Airport-to-Door') {
+                    $('#destination_labeladdress').removeClass('d-none');
+                    $('#origin_labelairport').removeClass('d-none');
+                    $('#destination_airportorport').attr('placeholder', 'Enter Airport');
+                    $('#origin_airportorport').attr('placeholder', 'Enter Airport');
+                    $('#destination_div_fulladress').removeClass('d-none');
+                    $('#origin_div_airportorport').removeClass('d-none');
                 } else if (service_type == 'Airport-to-Airport') {
                     $('#origin_labelairport').removeClass('d-none');
                     $('#destination_labelairport').removeClass('d-none');
@@ -733,6 +748,13 @@
                     $('#destination_airportorport').attr('placeholder', 'Enter Port');
                     $('#origin_div_fulladress').removeClass('d-none');
                     $('#destination_div_airportorport').removeClass('d-none');
+                }  else if(service_type == 'Port-to-Door') {
+                    $('#origin_labelport').removeClass('d-none');
+                    $('#destination_labeladdress').removeClass('d-none');
+                    $('#origin_airportorport').attr('placeholder', 'Enter Port');
+                    $('#destination_airportorport').attr('placeholder', 'Enter Port');
+                    $('#origin_div_airportorport').removeClass('d-none');
+                    $('#destination_div_fulladress').removeClass('d-none');
                 } else if (service_type == 'Port-to-Port') {
                     $('#origin_labelport').removeClass('d-none');
                     $('#destination_labelport').removeClass('d-none');
@@ -740,13 +762,34 @@
                     $('#destination_airportorport').attr('placeholder', 'Enter Port');
                     $('#origin_div_airportorport').removeClass('d-none');
                     $('#destination_div_airportorport').removeClass('d-none');
+                } else if(service_type == 'Door-to-CFS'){
+                    $('#origin_labeladdress').removeClass('d-none');
+                    $('#destination_labelcfs').removeClass('d-none');
+                    $('#origin_airportorport').attr('placeholder', 'Enter CFS');
+                    $('#destination_airportorport').attr('placeholder', 'Enter CFS');
+                    $('#origin_div_fulladress').removeClass('d-none');
+                    $('#destination_div_airportorport').removeClass('d-none');
+                } else if (service_type == 'CFS-to-CFS'){
+                    $('#origin_labelcfs').removeClass('d-none');
+                    $('#destination_labelcfs').removeClass('d-none');
+                    $('#origin_airportorport').attr('placeholder', 'Enter CFS');
+                    $('#destination_airportorport').attr('placeholder', 'Enter CFS');
+                    $('#origin_div_airportorport').removeClass('d-none');
+                    $('#destination_div_airportorport').removeClass('d-none');
+                } else if(service_type == 'CFS-to-Door'){
+                    $('#destination_labeladdress').removeClass('d-none');
+                    $('#origin_labelcfs').removeClass('d-none');
+                    $('#destination_airportorport').attr('placeholder', 'Enter CFS');
+                    $('#origin_airportorport').attr('placeholder', 'Enter CFS');
+                    $('#destination_div_fulladress').removeClass('d-none');
+                    $('#origin_div_airportorport').removeClass('d-none');
                 }
             }
 
             $(document).on('change', 'select[name="service_type"]', handleServiceTypeChange);
 
             var modalContentDangerous = `
-                    <div class="modal fade dangerous-cargo-modal" tabindex="-1" aria-hidden="true">
+                    <div class="modal fade dangerous-cargo-modal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
                     <!-- Contenido del modal aquí -->
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -756,21 +799,18 @@
                         </div>
                         <div class="modal-body">
                             <p>If you are shipping any type of dangerous cargo, you must specify lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris at lacus et erat elementum imperdiet. Donec dignissim metus et elit porttitor, eu porta elit pharetra.</p>
-                            <div class="row">
-                                <div class="col-md-6 mb-2">
-                                    <label class="form-label">IMO Classification</label>
-                                    <select class="form-select" name="imo_classification[]">
-                                        <option>Select IMO Class</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6 mb-2">
-                                    <label class="form-label">UN Number</label>
-                                    <input type="text" class="form-control" name="un_number[]" placeholder="Enter UN number or description">
-                                </div>
+                            <div class="imolistdetail">
+            
                             </div>
+
+                            <button class="btn btn-light-danger mb-2 me-4 addimodetail">
+                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                <span class="btn-text-inner">Add additional IMO Class and UN Number</span>
+                            </button>
+
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-primary save-dange-button">Save</button>
+                            <button type="button" class="btn btn-primary save-dange-button">Done</button>
                             <button type="button" class="btn btn-secondary cancel-dange-button">Cancel</button>
                         </div>
                         </div>
@@ -781,18 +821,68 @@
 
             // Agregar fila itemdetail
             function addItemDetail() {
+
+                //get modeoftransport value checked
+                var modeoftransport = $('input[name="mode_of_transport"]:checked').val();
+
+                var cargo_type = $('input[name="cargo_type"]:checked').val();
+                if(cargo_type=='LTL'){
+                    var bxct = '';
+                }else{
+                    var bxct = '<option value="Boxes / Cartons">Boxes / Cartons</option>';
+                }
+
+                if(modeoftransport=='RoRo'){
+                    var titlelistpackage = 'Cargo Type';
+                    var listpackage = `
+                        <option value="" selected="selected">Cargo Type *</option>
+                        <option value="Automobile">Automobile</option>
+                        <option value="Trailer / Truck">Trailer / Truck</option>
+                        <option value="Industrial Vehicle">Industrial Vehicle</option>
+                        <option value="High & Heavy Machinery">High & Heavy Machinery</option>
+                        <option value="Motorcycle (crated or palletized) / ATV">Motorcycle (crated or palletized) / ATV</option>
+                        <option value="Motorhome / RV">Motorhome / RV</option>
+                        <option value="Van / Bus">Van / Bus</option>
+                        <option value="Boat / Jet Ski (loaded on trailer)">Boat / Jet Ski (loaded on trailer)</option>
+                        <option value="Aircraft / Helicopter">Aircraft / Helicopter</option>
+                        <option value="Other">Other</option>
+                        `;
+                } else if(modeoftransport=='Breakbulk'){
+                    var titlelistpackage = 'Cargo Type';
+                    var listpackage = `
+                        <option value="" selected="selected">Cargo Type *</option>
+                        <option value="Cases">Cases</option>
+                        <option value="Crates">Crates</option>
+                        <option value="Loose">Loose</option>
+                        <option value="Coils">Coils</option>
+                        <option value="Unpacked">Unpacked</option>
+                        <option value="Reels">Reels</option>
+                        <option value="On Wheels">On Wheels</option>
+                        <option value="On Tracks">On Tracks</option>
+                        <option value="On Cradle">On Cradle</option>
+                        <option value="Pallets / Skids">Pallets / Skids</option>
+                        <option value="Sledge">Sledge</option>
+                    `;
+                } else {
+                    var titlelistpackage = 'Package Type';
+                    var listpackage = `
+                        <option value="">Select... *</option>
+                        <option value="Pallet">Pallet</option>
+                        <option value="Skid">Skid</option>
+                        <option value="Crate">Crate</option>
+                        ${bxct}
+                        <option value="Other">Other</option>
+                        `;
+                }
+
+
                 var html = '<div class="p-2 mb-2 card itemdetail"><div class="row mb-2">' +
                 '<div class="col-md-4">' +
                 '<div class="row">' +
                 '<div class="col-md-9 mb-2">' +
-                '<label class="form-label mb-0">Package type</label>' +
+                '<label class="form-label mb-0">'+titlelistpackage+'</label>' +
                 '<select class="form-select" name="package_type[]">' +
-                '<option>Select...</option>' +
-                '<option value="Pallet">Pallet</option>' +
-                '<option value="Skid">Skid</option>' +
-                '<option value="Crate">Crate</option>' +
-                '<option value="Boxes / Cartons">Boxes / Cartons</option>' +
-                '<option value="Other">Other</option>' +
+                listpackage +
                 '</select>' +
                 '</div>' +
                 '<div class="col-md-3 ps-2 ps-sm-1 mb-2">' +
@@ -853,7 +943,7 @@
                 '<input type="text" name="gargo_description[]" class="form-control px-2" placeholder="Cargo Description (Commodity)">' +
                 '</div>' +
                 '<div class="col-md-3">'+
-                    '<div class="form-check my-2"><input class="form-check-input dangerous-cargo-checkbox" type="checkbox" name="dangerous_cargo"><label class="form-check-label"> Dangerous Cargo </label><a href="#" class="text-danger">(Know more)</a></div>'+
+                    '<div class="form-check my-2"><input class="form-check-input dangerous-cargo-checkbox" type="checkbox" name="dangerous_cargo"><label class="form-check-label"> Dangerous Cargo <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Hazardous shipments: flammable, toxic, corrosive, radioactive, or hazardous to health, safety, and the environment." ></span></label></div>'+
                     modalContentDangerous+
                 '</div>'+
                 '<div class="col-md-3 text-end">' +
@@ -863,6 +953,7 @@
                 '</div></div>';
 
                 $('#listcargodetails').append(html);
+                updateTextsLabelsAndHiddens();
                 initializeDangerousCargoModal();
                 initializeTooltips();
             }
@@ -871,14 +962,71 @@
             $(document).on('change', 'input[name="cargo_type"]', function() {
                 var cargoType = $(this).val();
                 $('#listcargodetails').html('');
-                if(cargoType == undefined || cargoType == 'LTL' || cargoType == 'LCL'){
-                    addItemDetail();
-                    $('#dv_totsummary').removeClass('d-none');
-                }else if(cargoType == 'FTL' || cargoType == 'FCL'){
+                if(cargoType == 'FTL' || cargoType == 'FCL'){
                     addItemDetailNoCalculations(cargoType);
-                    $('#dv_totsummary').addClass('d-none');
+                    updateTextsLabelsAndHiddens();
+                }else{
+                    addItemDetail();
+                    updateTextsLabelsAndHiddens();
                 }
+
             });
+
+            function updateTextsLabelsAndHiddens() {
+                // Obtener los valores seleccionados
+                var modeoftransport = $('input[name="mode_of_transport"]:checked').val();
+                var cargoType = $('input[name="cargo_type"]:checked').val();
+
+                // Elementos seleccionados
+                var $ts_infotext = $('#ts_infotext');
+                var $ts_notetext = $('#ts_notetext');
+                var $dv_totsummary = $('#dv_totsummary');
+                var $txt_totvolwei = $('#txt_totvolwei');
+                var $txt_actwei = $('#txt_actwei');
+                var $txt_volwei = $('#txt_volwei');
+                var $dv_chargwei = $('#dv_chargwei');
+                var $service_type = $('#service_type');
+
+                // Restaurar los elementos a su estado predeterminado
+                $dv_totsummary.removeClass('d-none');
+                $txt_totvolwei.text('Total Volume Weight');
+                $txt_actwei.text('Actual Weight');
+                $txt_volwei.text('Volume Weight');
+                $dv_chargwei.removeClass('d-none');
+                $ts_infotext.text('');
+                $ts_notetext.text('');
+                $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Port">Door-to-Port</option><option value="Port-to-Door">Port-to-Door</option><option value="Port-to-Port">Port-to-Port</option>');
+
+                // Actualizar elementos basados en el modo de transporte
+                if (modeoftransport === 'RoRo' || modeoftransport === 'Breakbulk') {
+                    $txt_totvolwei.text('Total CBM');
+                    $txt_actwei.text('Weight');
+                    $txt_volwei.text('Total CBM');
+                    $ts_infotext.text(modeoftransport + ' freight pricing is determined by the quantity, volume and weight of the unit.');
+                }
+
+                // Actualizar elementos basados en el tipo de carga
+                if (cargoType === 'LTL') {
+                    $txt_totvolwei.text('Total Volume');
+                    $txt_volwei.text('Volume');
+                    $ts_infotext.text('LTL freight pricing is determined by the quantity, volume, and weight of the cargo.');
+                    $ts_notetext.text('');
+                    $dv_chargwei.addClass('d-none');
+                } else if (cargoType === 'LCL') {
+                    $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-CFS">Door-to-CFS</option><option value="CFS-to-Door">CFS-to-Door</option><option value="CFS-to-CFS">CFS-to-CFS</option>');
+                    $txt_totvolwei.text('Total Volume');
+                    $txt_volwei.text('Volume');
+                    $ts_infotext.text('LCL freight pricing is determined by the quantity, volume, and weight of the cargo.');
+                    $ts_notetext.text('Kindly note that we have a minimum requirement of 1 cubic meter.');
+                    $dv_chargwei.addClass('d-none');
+                } else if (cargoType === 'FTL') {
+                    $dv_totsummary.addClass('d-none');
+                } else if (cargoType === 'FCL') {
+                    $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Port">Door-to-Port</option><option value="Port-to-Door">Port-to-Door</option><option value="Port-to-Port">Port-to-Port</option>');
+                    $dv_totsummary.addClass('d-none');
+                }
+            }
+
 
             function addItemDetailNoCalculations(cargoType) {
 
@@ -889,7 +1037,7 @@
                                     '<option value="Flatbed">Flatbed</option>' +
                                     '<option value="Double Drop">Double Drop</option>' +
                                     '<option value="Step Deck">Step Deck</option>' +
-                                    '<option value="RGN/lowboy">RGN/lowboy</option>' +
+                                    '<option value="RGN/Lowboy">RGN/Lowboy</option>' +
                                     '<option value="Other">Other</option>' ;
                     var $qtylabel = '# of Trailers';
                 } else if(cargoType == 'FCL') {
@@ -943,7 +1091,7 @@
                         '<input type="text" name="gargo_description[]" class="form-control px-2" placeholder="">' +
                     '</div>' +
                     '<div class="col-md-2 pt-2">'+
-                        '<div class="form-check my-2"><input class="form-check-input dangerous-cargo-checkbox" type="checkbox" name="dangerous_cargo"><label class="form-check-label mb-0"> Dangerous Cargo </label><a href="#" class="text-danger">(Know more)</a></div>'+
+                        '<div class="form-check my-2 pt-3"><input class="form-check-input dangerous-cargo-checkbox" type="checkbox" name="dangerous_cargo"><label class="form-check-label mb-0"> Dangerous Cargo. <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Hazardous shipments: flammable, toxic, corrosive, radioactive, or hazardous to health, safety, and the environment." ></span></label></div>'+
                         modalContentDangerous+
                     '</div>'+
                     '<div class="col-md-4">'+
@@ -982,6 +1130,15 @@
 
                     const $checkbox = $(this);
 
+                    $modal.find('.addimodetail').off('click').on('click', function () {
+                        addImoUn($modal);
+                    });
+
+                    // Agregar evento click para eliminar una fila
+                    $modal.off('click', '.delete-imo').on('click', '.delete-imo', function () {
+                        deleteImo($modal, $(this));
+                    });
+
                     // Capturar el evento de clic en el botón "Save" dentro del modal
                     $modal.find('.save-dange-button').on('click', function () {
                         // Marcamos el checkbox cuando se hace clic en "Save"
@@ -994,21 +1151,67 @@
                         // Si el checkbox no estaba marcado originalmente, lo desmarcamos
                         $checkbox.prop('checked', false);
                         $modal.modal('hide'); // Cerrar el modal
+                        //delete imolistdetail content html
+                        $modal.find('.imolistdetail').html('');
                     });
+
                 });
             }
+
+            function deleteImo($modal, $deleteButton) {
+                // Obtener la fila que se va a eliminar (el elemento .row)
+                const $rowToDelete = $deleteButton.closest('.row');
+
+                // Eliminar la fila de la lista de imo_detail
+                $rowToDelete.remove();
+            }
+
+            function addImoUn($modal){
+                        var html = `<div class="row">
+                                            <div class="col-md-6 mb-2">
+                                                <label class="form-label">IMO Classification</label>
+                                                <select class="form-select" name="imo_classification[]">
+                                                    <option value="">Select IMO Class</option>
+                                                    <option value="(1.1) Substances and articles which have a mass explosion hazard">(1.1) Substances and articles which have a mass explosion hazard</option>
+                                                    <option value="(1.2) Substances and articles which have a projection hazard but not a mass explosion hazard">(1.2) Substances and articles which have a projection hazard but not a mass explosion hazard</option>
+                                                    <option value="(1.3) Substances and articles which have a fire hazard and either a minor blast hazard or a minor projection hazard">(1.3) Substances and articles which have a fire hazard and either a minor blast hazard or a minor projection hazard</option>
+                                                    <option value="(1.4) Substances and articles which present no significant hazard">(1.4) Substances and articles which present no significant hazard</option>
+                                                    <option value="(1.6) Extremely insensitive articles which do not have a mass explosion hazard">(1.6) Extremely insensitive articles which do not have a mass explosion hazard</option>
+                                                    <option value="(2.1) Flammable gases">(2.1) Flammable gases</option>
+                                                    <option value="(2.2) Non-flammable, non-toxic gases">(2.2) Non-flammable, non-toxic gases</option>
+                                                    <option value="(2.3) Toxic gases">(2.3) Toxic gases</option>
+                                                    <option value="(3) Flammable liquids">(3) Flammable liquids</option>
+                                                    <option value="(4.1) Flammable solids, self-reactive substances and solid desensitized explosives">(4.1) Flammable solids, self-reactive substances and solid desensitized explosives</option>
+                                                    <option value="(4.2) Substances liable to spontaneous combustion">(4.2) Substances liable to spontaneous combustion</option>
+                                                    <option value="(4.3) Substances which, in contact with water, emit flammable gases">(4.3) Substances which, in contact with water, emit flammable gases</option>
+                                                    <option value="(5.1) Oxidizing substances">(5.1) Oxidizing substances</option>
+                                                    <option value="(5.2) Organic peroxides">(5.2) Organic peroxides</option>
+                                                    <option value="(6.1) Toxic substances">(6.1) Toxic substances</option>
+                                                    <option value="(7) Radioactive material">(7) Radioactive material</option>
+                                                    <option value="(8) Corrosive substances">(8) Corrosive substances</option>
+                                                    <option value="(9) Miscellaneous dangerous substances and articles">(9) Miscellaneous dangerous substances and articles</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-5 mb-2">
+                                                <label class="form-label">UN Number</label>
+                                                <input type="text" class="form-control" name="un_number[]" placeholder="Enter UN number or description">
+                                            </div>
+                                            <div class="col-md-1 pt-4 mb-2">
+                                                <button class="btn mt-2 btn-light-danger delete-imo btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove IMO Class and UN Number"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>
+                                            </div>
+                                        </div>`;
+                        $modal.find('.imolistdetail').append(html);
+                    }
 
 
             // Agregar item al hacer clic en el botón
             $(document).on('click', '.additemdetail', function() {
                 let cargoType = $('input[name="cargo_type"]:checked').val();
-
-                if(cargoType == undefined || cargoType == 'LTL' || cargoType == 'LCL'){
-                    addItemDetail();
-                }else if(cargoType == 'FTL' || cargoType == 'FCL'){
+                if(cargoType == 'FTL' || cargoType == 'FCL'){
                     addItemDetailNoCalculations(cargoType);
+                }else{
+                    addItemDetail();
                 }
-
             });
 
             addItemDetail();
@@ -1028,6 +1231,10 @@
                 const clone = itemdetail.clone();
                 itemdetail.after(clone);
                 updateTotals();
+
+                initializeDangerousCargoModal();
+                initializeTooltips();
+            
             });
 
 
@@ -1199,6 +1406,14 @@
         $(document).on('click', '.modal_customer', function(){
             $('#CustomerInformationModal').modal('show');
         });
+
+
+        var phoneInput = document.querySelector("#phone");
+        var phoneInputInstance = window.intlTelInput(phoneInput, {
+            separateDialCode: true,
+        });
+
+        
 
 
     </script>
