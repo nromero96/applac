@@ -167,7 +167,7 @@
                                                     <div class="radio-icon">
                                                         <img src="{{ asset('assets/img/60a35f0d358aaa2332423e.png') }}" alt="Opción 1" />
                                                     </div>
-                                                    <div class="radio-text">AIR</div>
+                                                    <div class="radio-text">Air</div>
                                                     <div class="radio-sub-text">-</div>
                                                 </label>
                                             </div>
