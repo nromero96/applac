@@ -1042,18 +1042,18 @@
                     var $qtylabel = '# of Trailers';
                 } else if(cargoType == 'FCL') {
                     var title_typelist = 'Container Type';
-                    var $typelist = '<optgroup label="DRY STORAGE">' +
+                    var $typelist = '<optgroup label="Dry Container">' +
                                         '<option value="20\' Dry Standard">20\' Dry Standard</option>' +
                                         '<option value="40\' Dry Standard">40\' Dry Standard</option>' +
                                         '<option value="40\' Dry High Cube">40\' Dry High Cube</option>' +
                                         '<option value="45\' Dry High Cube">45\' Dry High Cube</option>' +
                                     '</optgroup>' +
-                                    '<optgroup label="REFRIGERATED STORAGE">' +
+                                    '<optgroup label="Refrigerated Container">' +
                                         '<option value="20\' Reefer Standard">20\' Reefer Standard</option>' +
                                         '<option value="40\' Reefer Standard">40\' Reefer Standard</option>' +
                                         '<option value="40\' Reefer High Cube">40\' Reefer High Cube</option>' +
                                     '</optgroup>' +
-                                    '<optgroup label="SPECIALIZED STORAGE">' +
+                                    '<optgroup label="Specialized Container">' +
                                         '<option value="20\' Flat Rack">20\' Flat Rack</option>' +
                                         '<option value="40\' Flat Rack">40\' Flat Rack</option>' +
                                         '<option value="40\' Flat Rack High Cube">40\' Flat Rack High Cube</option>' +
