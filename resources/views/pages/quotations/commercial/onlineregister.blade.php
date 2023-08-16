@@ -265,6 +265,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label">{{ __('Service Type') }}</label>
                                     <select class="form-select" name="service_type" id="service_type">
+                                        <option value="">{{ __('Select...') }}</option>
                                         <option value="Door-to-Door">{{ __('Door-to-Door') }}</option>
                                         <option value="Door-to-Airport">{{ __('Door-to-Airport') }}</option>
                                         <option value="Airport-to-Door">{{ __('Airport-to-Door') }}</option>
@@ -283,17 +284,14 @@
                                     <div class="mb-3">
                                         <label class="form-label">{{ __('Origin Country') }}</label>
                                         <select class="form-select" name="origin_country_id" id="origin_country_id">
-                                            <option>{{ __('Select...') }}</option>
-                                            @foreach ($countries as $country)
-                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                            @endforeach
+                                            <option value="">{{ __('Select...') }}</option>
                                         </select>
                                     </div>
                                     <div class="mb-0">
                                         <label class="form-label" id="origin_labeladdress">{{ __('Pick up Address') }}</label>
                                         <label class="form-label d-none" id="origin_labelairport">{{ __('City') }}</label>
                                         <label class="form-label d-none" id="origin_labelport">{{ __('Origin Port') }}</label>
-                                        <label class="form-label d-none" id="origin_labelcfs">{{ __('Origin CFS') }}</label>
+                                        <label class="form-label d-none" id="origin_labelcfs">{{ __('Origin CFS/Port') }}</label>
                                     </div>
                                     <div class="mb-2 d-none" id="origin_div_airportorport">
                                         <input type="text" class="form-control" name="origin_airportorport" id="origin_airportorport" placeholder="{{ __('Enter Airport') }}">
@@ -307,7 +305,7 @@
                                         </div>
                                         <div class="mb-2">
                                             <select class="form-select" name="origin_state_id" id="origin_state_id">
-                                                <option>{{ __('State...') }}</option>
+                                                <option value="">{{ __('State...') }}</option>
                                             </select>
                                         </div>
                                         <div class="mb-2">
@@ -329,17 +327,14 @@
                                     <div class="mb-3">
                                         <label class="form-label">{{ __('Destination Country') }}</label>
                                         <select class="form-select" name="destination_country_id" id="destination_country_id">
-                                            <option>{{ __('Select...') }}</option>
-                                            @foreach ($countries as $country)
-                                            <option value="{{ $country->id }}">{{ $country->name }}</option>
-                                            @endforeach
+                                            <option value="">{{ __('Select...') }}</option>
                                         </select>
                                     </div>
                                     <div class="mb-0">
                                         <label class="form-label" id="destination_labeladdress">{{ __('Delivery Address') }}</label>
                                         <label class="form-label d-none" id="destination_labelairport">{{ __('City') }}</label>
                                         <label class="form-label d-none" id="destination_labelport">{{ __('Destination Port') }}</label>
-                                        <label class="form-label d-none" id="destination_labelcfs">{{ __('Destination CFS') }}</label>
+                                        <label class="form-label d-none" id="destination_labelcfs">{{ __('Destination CFS/Port') }}</label>
                                     </div>
 
                                     <div class="mb-2 d-none" id="destination_div_airportorport">
@@ -354,7 +349,7 @@
                                         </div>
                                         <div class="mb-2">
                                             <select class="form-select" name="destination_state_id" id="destination_state_id">
-                                                <option>State...</option>
+                                                <option value="">State...</option>
                                             </select>
                                         </div>
                                         <div class="mb-2">
@@ -424,11 +419,11 @@
                                                     <div class="col-md-4">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <span class="form-label mb-0"><span id="txt_actwei">Actual Weight</span> (<span class="typeofmeasure"></span>)</span>
+                                                                <span class="form-label mb-0" id="txt_actwei">...</span>
                                                                 <input type="text" name="total_actualweight" class="form-control" placeholder="0">
                                                             </div>
                                                             <div class="col-md-6">
-                                                                <span class="form-label mb-0"><span id="txt_volwei">Volume Weight</span> (<span class="typeofmeasure"></span>)</span>
+                                                                <span class="form-label mb-0" id="txt_volwei">...</span>
                                                                 <input type="text" name="total_volum_weight" class="form-control" placeholder="0">
                                                             </div>
                                                         </div>
@@ -436,7 +431,7 @@
                                                     <div class="col-md-6" id="dv_chargwei">
                                                         <div class="row">
                                                             <div class="col-md-6">
-                                                                <span class="form-label mb-0">Chargeable Weight (<span class="typeofmeasure"></span>)</span>
+                                                                <span class="form-label mb-0" id="txt_chargwei">...</span>
                                                                 <input type="text" name="tota_chargeable_weight" class="form-control" placeholder="0">
                                                             </div>
                                                             <div class="col-md-6"></div>
@@ -631,17 +626,13 @@
 
     <script>
         $(document).ready(function() {
-
-            $kgs = 'Kgs';
-            $m3 = 'm³';
-            $type_of_measure = $kgs;
-            $typeofmeasure = $('.typeofmeasure');
-
-            $typeofmeasure.text($type_of_measure);
-
+            list_countries('all', 'all');
             // Cambiar el botón de radio por el nombre "mode_of_transport"
             $(document).on('change', 'input[name="mode_of_transport"]', function() {
                 var mode_of_transport = $(this).val();
+
+                list_countries('all', 'all');
+
                 var $dv_cargotype = $('#dv_cargotype');
                 var $dv_cargotype_ground = $('#dv_cargotype_ground');
                 var $dv_cargotype_container = $('#dv_cargotype_container');
@@ -653,42 +644,37 @@
                 $dv_cargotype_container.addClass('d-none');
                 $dv_cargotype_roro.addClass('d-none');
                 $dv_cargotype.find('input[type="radio"]').prop('checked', false);
+                
+                $service_type.html('<option value="">Select...</option><option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Airport">Door-to-Airport</option><option value="Airport-to-Door">Airport-to-Door</option><option value="Airport-to-Airport">Airport-to-Airport</option>');
+
                 switch (mode_of_transport) {
                     case 'Air':
-                        $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Airport">Door-to-Airport</option><option value="Airport-to-Door">Airport-to-Door</option><option value="Airport-to-Airport">Airport-to-Airport</option>');
-                        $type_of_measure = $kgs;
-
+                        $service_type.html('<option value="">Select...</option><option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Airport">Door-to-Airport</option><option value="Airport-to-Door">Airport-to-Door</option><option value="Airport-to-Airport">Airport-to-Airport</option>');
                         break;
                     case 'Ground':
                         $dv_cargotype.removeClass('d-none');
                         $dv_cargotype_ground.removeClass('d-none');
-                        $service_type.html('<option value="Door-to-Door">Door-to-Door</option>');
-                        $type_of_measure = $m3;
+                        $service_type.html('<option value="">Select...</option><option value="Door-to-Door">Door-to-Door</option>');
+                        list_countries('38,142,231', '38,142,231');
                         break;
                     case 'Container':
                         $dv_cargotype.removeClass('d-none');
                         $dv_cargotype_container.removeClass('d-none');
-                        $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Port">Door-to-Port</option><option value="Port-to-Door">Port-to-Door</option><option value="Port-to-Port">Port-to-Port</option>');
-                        $type_of_measure = $m3;
+                        $service_type.html('<option value="">Select...</option><option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Port">Door-to-Port</option><option value="Port-to-Door">Port-to-Door</option><option value="Port-to-Port">Port-to-Port</option>');
                         break;
                     case 'RoRo':
                         $dv_cargotype.removeClass('d-none');
                         $dv_cargotype_roro.removeClass('d-none');
-                        $service_type.html('<option value="Port-to-Port">Port-to-Port</option><option value="Door-to-Port">Door-to-Port</option>');
-                        $type_of_measure = $m3;
+                        $service_type.html('<option value="">Select...</option><option value="Port-to-Port">Port-to-Port</option><option value="Door-to-Port">Door-to-Port</option>');
                         break;
                     case 'Breakbulk':
-                        $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Port">Door-to-Port</option><option value="Port-to-Door">Port-to-Door</option><option value="Port-to-Port">Port-to-Port</option>');
-                        $type_of_measure = $m3;
+                        $service_type.html('<option value="">Select...</option><option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Port">Door-to-Port</option><option value="Port-to-Door">Port-to-Door</option><option value="Port-to-Port">Port-to-Port</option>');
                         break;
                     default:
-                        $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Airport">Door-to-Airport</option><option value="Airport-to-Door">Airport-to-Door</option><option value="Airport-to-Airport">Airport-to-Airport</option>');
-                        $type_of_measure = $m3;
+                        $service_type.html('<option value="">Select...</option><option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Airport">Door-to-Airport</option><option value="Airport-to-Door">Airport-to-Door</option><option value="Airport-to-Airport">Airport-to-Airport</option>');
                         break;
                 }
                 handleServiceTypeChange();
-
-                $typeofmeasure.text($type_of_measure);
 
                 $('#listcargodetails').html('');
 
@@ -762,25 +748,25 @@
                     $('#destination_airportorport').attr('placeholder', 'Enter Port');
                     $('#origin_div_airportorport').removeClass('d-none');
                     $('#destination_div_airportorport').removeClass('d-none');
-                } else if(service_type == 'Door-to-CFS'){
+                } else if(service_type == 'Door-to-CFS/Port'){
                     $('#origin_labeladdress').removeClass('d-none');
                     $('#destination_labelcfs').removeClass('d-none');
-                    $('#origin_airportorport').attr('placeholder', 'Enter CFS');
-                    $('#destination_airportorport').attr('placeholder', 'Enter CFS');
+                    $('#origin_airportorport').attr('placeholder', 'Enter CFS/Port');
+                    $('#destination_airportorport').attr('placeholder', 'Enter CFS/Port');
                     $('#origin_div_fulladress').removeClass('d-none');
                     $('#destination_div_airportorport').removeClass('d-none');
-                } else if (service_type == 'CFS-to-CFS'){
+                } else if (service_type == 'CFS/Port-to-CFS/Port'){
                     $('#origin_labelcfs').removeClass('d-none');
                     $('#destination_labelcfs').removeClass('d-none');
-                    $('#origin_airportorport').attr('placeholder', 'Enter CFS');
-                    $('#destination_airportorport').attr('placeholder', 'Enter CFS');
+                    $('#origin_airportorport').attr('placeholder', 'Enter CFS/Port');
+                    $('#destination_airportorport').attr('placeholder', 'Enter CFS/Port');
                     $('#origin_div_airportorport').removeClass('d-none');
                     $('#destination_div_airportorport').removeClass('d-none');
-                } else if(service_type == 'CFS-to-Door'){
+                } else if(service_type == 'CFS/Port-to-Door'){
                     $('#destination_labeladdress').removeClass('d-none');
                     $('#origin_labelcfs').removeClass('d-none');
-                    $('#destination_airportorport').attr('placeholder', 'Enter CFS');
-                    $('#origin_airportorport').attr('placeholder', 'Enter CFS');
+                    $('#destination_airportorport').attr('placeholder', 'Enter CFS/Port');
+                    $('#origin_airportorport').attr('placeholder', 'Enter CFS/Port');
                     $('#destination_div_fulladress').removeClass('d-none');
                     $('#origin_div_airportorport').removeClass('d-none');
                 }
@@ -884,6 +870,7 @@
                 '<select class="form-select" name="package_type[]">' +
                 listpackage +
                 '</select>' +
+                '<small class="text-danger msg_pcktype"></small>'+
                 '</div>' +
                 '<div class="col-md-3 ps-2 ps-sm-1 mb-2">' +
                 '<label class="form-label mb-0">Qty</label>' +
@@ -936,7 +923,7 @@
                 '</div>' +
                 '</div>' +
                 '<div class="col-md-1">' +
-                '<span class="form-label">' + $type_of_measure + '</span>' +
+                '<span class="form-label text_item_typemea">...</span>' +
                 '<input type="text" name="item_total_volume_weight_cubic_meter[]" class="form-control px-2" readonly>' +
                 '</div>' +
                 '<div class="col-md-6">' +
@@ -984,37 +971,49 @@
                 var $txt_totvolwei = $('#txt_totvolwei');
                 var $txt_actwei = $('#txt_actwei');
                 var $txt_volwei = $('#txt_volwei');
+                var $txt_chargwei = $('#txt_chargwei');
                 var $dv_chargwei = $('#dv_chargwei');
                 var $service_type = $('#service_type');
+                var $text_item_typemea = $('.text_item_typemea');
 
                 // Restaurar los elementos a su estado predeterminado
                 $dv_totsummary.removeClass('d-none');
                 $txt_totvolwei.text('Total Volume Weight');
-                $txt_actwei.text('Actual Weight');
-                $txt_volwei.text('Volume Weight');
+                $txt_actwei.text('Actual Weight (Kgs)');
+                $txt_volwei.text('Volume Weight (Kgs)');
+                $txt_chargwei.text('Chargeable Weight (Kgs)');
+                $text_item_typemea.text('Kgs');
                 $dv_chargwei.removeClass('d-none');
                 $ts_infotext.text('');
                 $ts_notetext.text('');
-                $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Port">Door-to-Port</option><option value="Port-to-Door">Port-to-Door</option><option value="Port-to-Port">Port-to-Port</option>');
 
                 // Actualizar elementos basados en el modo de transporte
                 if (modeoftransport === 'RoRo' || modeoftransport === 'Breakbulk') {
                     $txt_totvolwei.text('Total CBM');
                     $txt_actwei.text('Weight');
                     $txt_volwei.text('Total CBM');
-                    $ts_infotext.text(modeoftransport + ' freight pricing is determined by the quantity, volume and weight of the unit.');
+                    $txt_chargwei.text('Chargeable Weight (m³)');
+                    $text_item_typemea.text('m³');
+                    $ts_infotext.text('Ro-Ro freight pricing is determined by the quantity, volume and weight of the cargo.');
+                } else if(modeoftransport === 'Ground' || modeoftransport === 'Container'){
+                    $txt_actwei.text('Actual Weight (m³)');
+                    $txt_volwei.text('Volume Weight (m³)');
+                    $txt_chargwei.text('Chargeable Weight (m³)');
+                    $text_item_typemea.text('m³');
                 }
 
                 // Actualizar elementos basados en el tipo de carga
                 if (cargoType === 'LTL') {
                     $txt_totvolwei.text('Total Volume');
+                    $txt_actwei.text('Weight');
                     $txt_volwei.text('Volume');
                     $ts_infotext.text('LTL freight pricing is determined by the quantity, volume, and weight of the cargo.');
                     $ts_notetext.text('');
                     $dv_chargwei.addClass('d-none');
                 } else if (cargoType === 'LCL') {
-                    $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-CFS">Door-to-CFS</option><option value="CFS-to-Door">CFS-to-Door</option><option value="CFS-to-CFS">CFS-to-CFS</option>');
+                    $service_type.html('<option value="">Select...</option><option value="Door-to-Door">Door-to-Door</option><option value="Door-to-CFS/Port">Door-to-CFS/Port</option><option value="CFS/Port-to-Door">CFS/Port-to-Door</option><option value="CFS/Port-to-CFS/Port">CFS/Port-to-CFS/Port</option>');
                     $txt_totvolwei.text('Total Volume');
+                    $txt_actwei.text('Weight');
                     $txt_volwei.text('Volume');
                     $ts_infotext.text('LCL freight pricing is determined by the quantity, volume, and weight of the cargo.');
                     $ts_notetext.text('Kindly note that we have a minimum requirement of 1 cubic meter.');
@@ -1022,8 +1021,14 @@
                 } else if (cargoType === 'FTL') {
                     $dv_totsummary.addClass('d-none');
                 } else if (cargoType === 'FCL') {
-                    $service_type.html('<option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Port">Door-to-Port</option><option value="Port-to-Door">Port-to-Door</option><option value="Port-to-Port">Port-to-Port</option>');
+                    $service_type.html('<option value="">Select...</option><option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Port">Door-to-Port</option><option value="Port-to-Door">Port-to-Door</option><option value="Port-to-Port">Port-to-Port</option>');
                     $dv_totsummary.addClass('d-none');
+                } else if (cargoType === 'Commercial (Business-to-Business)'){
+                    $service_type.html('<option value="">Select...</option><option value="Port-to-Port">Port-to-Port</option><option value="Door-to-Port">Door-to-Port</option>');
+                    list_countries('all', 'all');
+                } else if (cargoType === 'Personal Vehicle'){
+                    $service_type.html('<option value="">Select...</option><option value="Port-to-Port">Port-to-Port</option>');
+                    list_countries('231', '10,30,43,47,52,61,63,90,97,169,172');
                 }
             }
 
@@ -1174,7 +1179,7 @@
                                                     <option value="">Select IMO Class</option>
                                                     <option value="(1.1) Substances and articles which have a mass explosion hazard">(1.1) Substances and articles which have a mass explosion hazard</option>
                                                     <option value="(1.2) Substances and articles which have a projection hazard but not a mass explosion hazard">(1.2) Substances and articles which have a projection hazard but not a mass explosion hazard</option>
-                                                    <option value="(1.3) Substances and articles which have a fire hazard and either a minor blast hazard or a minor projection hazard">(1.3) Substances and articles which have a fire hazard and either a minor blast hazard or a minor projection hazard</option>
+                                                    <option value="(1.3) Substances and articles which have a fire hazard and either a minor blast hazard or a minor projection hazard or both, but not a mass explosion hazard">(1.3) Substances and articles which have a fire hazard and either a minor blast hazard or a minor projection hazard or both, but not a mass explosion hazard</option>
                                                     <option value="(1.4) Substances and articles which present no significant hazard">(1.4) Substances and articles which present no significant hazard</option>
                                                     <option value="(1.6) Extremely insensitive articles which do not have a mass explosion hazard">(1.6) Extremely insensitive articles which do not have a mass explosion hazard</option>
                                                     <option value="(2.1) Flammable gases">(2.1) Flammable gases</option>
@@ -1240,81 +1245,125 @@
 
         });
 
+        function list_countries(listorigin, listdestination) {
+            $.ajax({
+                url: baseurl + '/getcountry/',
+                type: 'GET',
+                success: function(data) {
+                    if (data.length > 0) {
+                        var htmlOrigin = '<option value="">Select...</option>';
+                        var htmlDestination = '<option value="">Select...</option>';
+
+                        var originArray = listorigin.split(',').map(Number);
+                        var destinationArray = listdestination.split(',').map(Number);
+
+                        $.each(data, function(index, value) {
+                            if (listorigin === 'all' || originArray.includes(value.id)) {
+                                htmlOrigin += '<option value="' + value.id + '">' + value.name + '</option>';
+                            }
+                            if (listdestination === 'all' || destinationArray.includes(value.id)) {
+                                htmlDestination += '<option value="' + value.id + '">' + value.name + '</option>';
+                            }
+                        });
+
+                        $('select[name="origin_country_id"]').html(htmlOrigin);
+                        $('select[name="destination_country_id"]').html(htmlDestination);
+                    }
+                }
+            });
+        }
+
+
+        $(document).on('change','.itemdetail select[name="package_type[]"]', function() {
+            // Obtener el valor seleccionado y compararlo con el valor de la opción "Other"
+            const selectedValue = $(this).val();
+            if(selectedValue === 'Boat / Jet Ski (loaded on trailer)'){
+                //add text in class msg_pcktype
+                $(this).closest('.itemdetail').find('.msg_pcktype').text('Only boats/jet skis on trailers accepted');
+            }else if(selectedValue === 'Motorcycle (crated or palletized) / ATV'){
+                //add text in class msg_pcktype
+                $(this).closest('.itemdetail').find('.msg_pcktype').text('Only crated or palletized motorcycles accepted');
+            }else{
+                //remove text in class msg_pcktype
+                $(this).closest('.itemdetail').find('.msg_pcktype').text('');
+            }
+        });
+
 
         $(document).on('keyup change', '.itemdetail input[name="qty[]"], .itemdetail input[name="per_piece[]"], .itemdetail input[name="length[]"], .itemdetail input[name="width[]"], .itemdetail input[name="height[]"], .itemdetail select[name="weight_unit[]"], .itemdetail select[name="dimensions_unit[]"]', function() {
-  const itemdetail = $(this).closest('.itemdetail');
-  const qtyInput = itemdetail.find('input[name="qty[]"]');
-  const perPieceInput = itemdetail.find('input[name="per_piece[]"]');
-  const totalWeightInput = itemdetail.find('input[name="item_total_weight[]"]');
-  const totalVolumeWeightInput = itemdetail.find('input[name="item_total_volume_weight_cubic_meter[]"]');
-  const weightUnitInput = itemdetail.find('select[name="weight_unit[]"]');
-  const dimensionsUnitInput = itemdetail.find('select[name="dimensions_unit[]"]');
-  const lengthInput = itemdetail.find('input[name="length[]"]');
-  const widthInput = itemdetail.find('input[name="width[]"]');
-  const heightInput = itemdetail.find('input[name="height[]"]');
+            const itemdetail = $(this).closest('.itemdetail');
+            const qtyInput = itemdetail.find('input[name="qty[]"]');
+            const perPieceInput = itemdetail.find('input[name="per_piece[]"]');
+            const totalWeightInput = itemdetail.find('input[name="item_total_weight[]"]');
+            const totalVolumeWeightInput = itemdetail.find('input[name="item_total_volume_weight_cubic_meter[]"]');
+            const weightUnitInput = itemdetail.find('select[name="weight_unit[]"]');
+            const dimensionsUnitInput = itemdetail.find('select[name="dimensions_unit[]"]');
+            const lengthInput = itemdetail.find('input[name="length[]"]');
+            const widthInput = itemdetail.find('input[name="width[]"]');
+            const heightInput = itemdetail.find('input[name="height[]"]');
 
-  const qty = +qtyInput.val() || 0;
-  const perPiece = +perPieceInput.val() || 0;
-  const weightUnit = weightUnitInput.val();
-  const dimensionsUnit = dimensionsUnitInput.val();
-  const length = +lengthInput.val() || 0;
-  const width = +widthInput.val() || 0;
-  const height = +heightInput.val() || 0;
+            const qty = +qtyInput.val() || 0;
+            const perPiece = +perPieceInput.val() || 0;
+            const weightUnit = weightUnitInput.val();
+            const dimensionsUnit = dimensionsUnitInput.val();
+            const length = +lengthInput.val() || 0;
+            const width = +widthInput.val() || 0;
+            const height = +heightInput.val() || 0;
 
-  const totalWeight = qty * perPiece;
-  let totalVolumeWeight = 0;
-  let totalCubicMeter = 0;
+            const totalWeight = qty * perPiece;
+            let totalVolumeWeight = 0;
+            let totalCubicMeter = 0;
 
-  const modeOfTransport = $('input[name="mode_of_transport"]:checked').val();
+            const modeOfTransport = $('input[name="mode_of_transport"]:checked').val();
 
-  if (modeOfTransport === 'Air') {
-    switch (dimensionsUnit) {
-      case 'M.':
-        totalVolumeWeight = (length * width * height) / 0.006 * qty;
-        break;
-      case 'Cm.':
-        totalVolumeWeight = (length * width * height) / 6000 * qty;
-        break;
-      case 'Feet':
-        totalVolumeWeight = (length * width * height) / 0.2118 * qty;
-        break;
-      case 'Inch':
-        totalVolumeWeight = (length * width * height) / 366.14 * qty;
-        break;
-    }
+            if (modeOfTransport === 'Air') {
+                switch (dimensionsUnit) {
+                case 'M.':
+                    totalVolumeWeight = (length * width * height) / 0.006 * qty;
+                    break;
+                case 'Cm.':
+                    totalVolumeWeight = (length * width * height) / 6000 * qty;
+                    break;
+                case 'Feet':
+                    totalVolumeWeight = (length * width * height) / 0.2118 * qty;
+                    break;
+                case 'Inch':
+                    totalVolumeWeight = (length * width * height) / 366.14 * qty;
+                    break;
+                }
 
-    if (weightUnit === 'Lbs') {
-      totalVolumeWeight *= 0.45359237;
-    }
+                if (weightUnit === 'Lbs') {
+                totalVolumeWeight *= 0.45359237;
+                }
 
-    totalWeightInput.val(totalWeight.toFixed(2));
-    totalVolumeWeightInput.val(totalVolumeWeight.toFixed(2));
-  } else {
-    switch (dimensionsUnit) {
-      case 'M.':
-        totalCubicMeter = (length * width * height) * qty;
-        break;
-      case 'Cm.':
-        totalCubicMeter = (length * width * height) / 1000000 * qty;
-        break;
-      case 'Feet':
-        totalCubicMeter = (length * width * height) * 0.0283168 * qty;
-        break;
-      case 'Inch':
-        totalCubicMeter = (length * width * height) * 0.0000163871 * qty;
-        break;
-    }
+                totalWeightInput.val(totalWeight.toFixed(2));
+                totalVolumeWeightInput.val(totalVolumeWeight.toFixed(2));
+            } else {
+                switch (dimensionsUnit) {
+                case 'M.':
+                    totalCubicMeter = (length * width * height) * qty;
+                    break;
+                case 'Cm.':
+                    totalCubicMeter = (length * width * height) / 1000000 * qty;
+                    break;
+                case 'Feet':
+                    totalCubicMeter = (length * width * height) * 0.0283168 * qty;
+                    break;
+                case 'Inch':
+                    totalCubicMeter = (length * width * height) * 0.0000163871 * qty;
+                    break;
+                }
 
-    if (weightUnit === 'Lbs') {
-      totalCubicMeter *= 0.45359237;
-    }
+                if (weightUnit === 'Lbs') {
+                totalCubicMeter *= 0.45359237;
+                }
 
-    totalWeightInput.val(totalWeight.toFixed(2));
-    totalVolumeWeightInput.val(totalCubicMeter.toFixed(2));
-  }
+                totalWeightInput.val(totalWeight.toFixed(2));
+                totalVolumeWeightInput.val(totalCubicMeter.toFixed(2));
+            }
 
-  updateTotals();
-});
+            updateTotals();
+        });
 
 
         function updateTotals() {
@@ -1356,7 +1405,6 @@
         //click in origin_country_id select add state select by ajax
         $(document).on('change', 'select[name="origin_country_id"]', function(){
             var country_id = $(this).val();
-            var url = baseurl + '/getstates/' + country_id;
             $.ajax({
                 url: baseurl + '/getstates/' + country_id,
                 type: 'GET',
@@ -1375,7 +1423,6 @@
         //click in destination_country_id select add state select by ajax
         $(document).on('change', 'select[name="destination_country_id"]', function(){
             var country_id = $(this).val();
-            var url = baseurl + '/getstates/' + country_id;
             $.ajax({
                 url: baseurl + '/getstates/' + country_id,
                 type: 'GET',
