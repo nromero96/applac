@@ -30,8 +30,8 @@ if (!function_exists('setTitle')) :
         elseif ($page_name === 'myprofile') :
             echo __('My Profile') . $admin_name;
         elseif ($page_name === 'quotationscommercial'):
-            echo __('Quotations Comercial') . $admin_name;
-        elseif ($page_name === 'quotationspersonal'):
+            echo __('Quotations') . $admin_name;
+        elseif ($page_name === 'quotations'):
             echo __('Quotations Personal') . $admin_name;
         elseif ($page_name === 'suppliers'):
             echo __('Suppliers') . $admin_name;

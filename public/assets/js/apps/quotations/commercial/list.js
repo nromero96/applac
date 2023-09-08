@@ -8,7 +8,7 @@ var invoiceList = $('#invoice-list').DataTable({
             text: 'Add New',
             className: 'btn btn-primary',
             action: function(e, dt, node, config ) {
-                window.open(baseurl+'/quotations-onlineregister-commercial', '_blank');
+                window.open(baseurl+'/quotations-onlineregister', '_blank');
             }
         }
     ],
@@ -25,24 +25,6 @@ var invoiceList = $('#invoice-list').DataTable({
     "pageLength": 10
 });
 
-$("div.toolbar").html('<button class="dt-button dt-delete btn btn-danger" tabindex="0" aria-controls="invoice-list"><span>Delete</span></button>');
 
 multiCheck(invoiceList);
 
-
-$('.dt-delete').on('click', function() {
-      // Read all checked checkboxes
-    $(".select-customers-info:checked").each(function () {
-        if (this.classList.contains('chk-parent')) {
-            return;
-        } else {
-            $(this).parents('tr').remove();
-        }
-    });
-    
-})
-
-
-$('.action-delete').on('click', function() {
-    $(this).parents('tr').remove();
-})

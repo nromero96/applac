@@ -76,7 +76,7 @@
 
             @break
 
-        @case('quotationscommercial')
+        @case('quotations')
             {{-- All quotes --}}
             <link rel="stylesheet" type="text/css" href="{{asset('plugins/src/table/datatable/datatables.css')}}">
 

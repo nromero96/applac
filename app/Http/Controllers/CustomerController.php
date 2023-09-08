@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Models\GuestUser;
+use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 class CustomerController extends Controller
 {
@@ -14,7 +18,34 @@ class CustomerController extends Controller
             'has_scrollspy' => 0,
             'scrollspy_offset' => '',
         ];
-        return view('pages.customers.index')->with($data);
+
+        
+        // Consulta para obtener usuarios y guest_users combinados y ordenados por nombre
+        $combinedUsers = DB::table('users')
+    ->select('name', 'lastname', 'company_name', 'email', 'phone_code', 'phone', 'created_at', 'updated_at', DB::raw("'Customer' as typeuser"), 'photo') // Agregar una columna 'photo' con valor NULL
+    ->whereIn('id', function ($query) {
+        $query->select('model_id')
+            ->from('model_has_roles')
+            ->where('model_type', 'App\Models\User')
+            ->whereIn('role_id', function ($query) {
+                $query->select('id')
+                    ->from('roles')
+                    ->where('name', 'customer');
+            });
+    })
+    ->union(
+        DB::table('guest_users')
+            ->select('name', 'lastname', 'company_name', 'email', 'phone_code', 'phone', 'created_at', 'updated_at', DB::raw("'Guest' as typeuser"), DB::raw("'default.jpg' as photo"))
+    )
+    ->orderBy('name')
+    ->get();
+
+    
+
+
+        return view('pages.customers.index')->with($data)->with('customers', $combinedUsers);
+
+
     }
 
     /**

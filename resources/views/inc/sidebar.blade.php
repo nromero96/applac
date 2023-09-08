@@ -5,12 +5,12 @@
         <div class="navbar-nav theme-brand flex-row  text-center">
             <div class="nav-logo">
                 <div class="nav-item theme-logo">
-                    <a href="/">
+                    <a href="{{ route('dashboard.index') }}">
                         <img src="{{ asset('assets/img/logo.svg') }}" class="navbar-logo" alt="logo">
                     </a>
                 </div>
                 <div class="nav-item theme-text text-center">
-                    <a href="/" class="nav-link">MY LAC</a>
+                    <a href="{{ route('dashboard.index') }}" class="nav-link">MY LAC</a>
                 </div>
             </div>
             <div class="nav-item sidebar-toggle">
@@ -55,10 +55,11 @@
             </li> --}}
 
 
-
+            @can('users.index', 'roles.index')
             <li class="menu menu-heading">
                 <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>{{__("ADMIN INTERFACES")}}</span></div>
             </li>
+            @endcan
 
             @can('users.index')
             <li class="menu {{ ($category_name === 'users') ? 'active' : '' }}">
@@ -87,37 +88,29 @@
                 <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>{{__("USER INTERFACES")}}</span></div>
             </li>
 
+            @can('quotations.index')
             <li class="menu {{ ($category_name === 'quotations') ? 'active' : '' }}">
-                <a href="#datatables" data-bs-toggle="collapse" aria-expanded="{{ ($category_name === 'quotations') ? 'true' : 'false' }}" class="dropdown-toggle">
+                <a href="{{ route('quotations.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-layers"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                        <span>{{ __("Quotations") }}</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        <span> {{ __("Quotations") }} </span>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ ($category_name === 'quotations') ? 'show' : '' }}" id="datatables" data-bs-parent="#menudashboardaccordion">
-                    <li class="{{ ($page_name === 'quotationscommercial') ? 'active' : '' }}">
-                        <a href="{{route('quotations.commercial')}}"> {{ __("Commercials") }} </a>
-                    </li>
-
-                    <li class="{{ ($page_name === 'quotationspersonal') ? 'active' : '' }}">
-                        <a href="{{route('quotations.personal')}}"> {{ __("Personals") }} </a>
-                    </li>
-                </ul>
             </li>
+            @endcan
 
+            @can('suppliers.index')
             <li class="menu {{ ($category_name === 'suppliers') ? 'active' : '' }}">
                 <a href="{{ route('suppliers.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
-                        
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
                         <span> {{ __("Suppliers") }} </span>
                     </div>
                 </a>
             </li>
+            @endcan
 
+            @can('customers.index')
             <li class="menu {{ ($page_name === 'customers') ? 'active' : '' }}">
                 <a href="{{route('customers.index')}}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -126,12 +119,14 @@
                     </div>
                 </a>
             </li>
+            @endcan
 
 
             <li class="menu menu-heading">
                 <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>{{__('APPLICATIONS')}}</span></div>
             </li>
 
+            @can('calendars.index')
             <li class="menu {{ ($page_name === 'calendar') ? 'active' : '' }}">
                 <a href="{{route('calendars.index')}}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -141,7 +136,9 @@
                     </div>
                 </a>
             </li>
+            @endcan
 
+            @can('notes.index')
             <li class="menu {{ ($page_name === 'notes') ? 'active' : '' }}">
                 <a href="{{route('notes.index')}}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -150,6 +147,7 @@
                     </div>
                 </a>
             </li>
+            @endcan
 
         </ul>
     </nav>

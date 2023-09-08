@@ -25,61 +25,73 @@ use App\Http\Controllers\CountryStateController;
 |
 */
 
-Route::get('/', function () {
-    return view('auth.login');
-});
+//home
+Route::get('/', function () { return view('auth.login');});
+
 
 //Country and State
-Route::get('getcrossing/{id}', [App\Http\Controllers\CountryStateController::class, 'getcrossing'])->name('getcrossing');
-Route::get('getstates/{id}', [App\Http\Controllers\CountryStateController::class, 'getstates'])->name('getstates');
-Route::get('getcountry', [App\Http\Controllers\CountryStateController::class, 'getcountry'])->name('getcountry');
-Route::get('getWhitelistData/{serviceCategoryId}', [App\Http\Controllers\SupplierController::class, 'getWhitelistData'])->name('getWhitelistData');
+Route::get('getcrossing/{id}', [CountryStateController::class, 'getcrossing'])->name('getcrossing');
+Route::get('getstates/{id}', [CountryStateController::class, 'getstates'])->name('getstates');
+Route::get('getcountry', [CountryStateController::class, 'getcountry'])->name('getcountry');
 
-Route::get('quotations-onlineregister-commercial', [QuotationController::class, 'onlineregister_commercial'])->name('quotations.onlineregister.commercial');
-Route::get('quotations-onlineregister-personal', [QuotationController::class, 'onlineregister_personal'])->name('quotations.onlineregister.personal');
+//supplier
+Route::get('getWhitelistData/{serviceCategoryId}', [SupplierController::class, 'getWhitelistData'])->name('getWhitelistData');
 
+//quotation
+Route::get('quotations-onlineregister', [QuotationController::class, 'onlineregister'])->name('quotations.onlineregister');
+Route::post('quotationsonlinestore', [QuotationController::class, 'onlinestore'])->name('quotationsonlinestore');
+
+//upload
 Route::post('upload',[UploadController::class, 'store']);
 
+//for users login
 Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
 
-    Route::get('/storage-link', function () {
-        Artisan::call('storage:link');
-        return 'Storage link creado correctamente en cpanel.';
-    });
+    // Route::get('/storage-link', function () {
+    //     Artisan::call('storage:link');
+    //     return 'Storage link creado correctamente en cpanel.';
+    // });
 
-    // $this->middleware
+    // //send test mail simple text use smtp config
+    // Route::get('/enviar-correo', function () {
+    //     $destinatario = 'niltondeveloper96@gmail.com';
+    //     Mail::to($destinatario)->send(new  \App\Mail\PruebaCorreo());
+    //     return "Correo enviado desde la ruta.";
+    // });
+
+    // dashboard
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 
+    //users
+    Route::resource('users', UserController::class)->names('users');
     Route::get('/my-profile', [App\Http\Controllers\UserController::class, 'myprofile'])->name('users.myprofile');
     Route::post('/update-my-profile', [App\Http\Controllers\UserController::class, 'updatemyprofile'])->name('users.updatemyprofile');
 
-    Route::resource('users', UserController::class)->names('users');
+    //roles
     Route::resource('roles', RoleController::class)->names('roles');
-    Route::resource('suppliers', SupplierController::class)->names('suppliers');
 
-    //ruta para agregar servicios mediande ajax a proveedores
+    //quotation
+    Route::resource('quotations', QuotationController::class)->names('quotations');
+
+    //suppliers
+    Route::resource('suppliers', SupplierController::class)->names('suppliers');
     Route::post('addservices-supplier', [SupplierController::class, 'addservices'])->name('suppliers.addservices');
     Route::post('updateservices-supplier', [SupplierController::class, 'updateservices'])->name('suppliers.updateservices');
     Route::get('getservices/{id}', [SupplierController::class, 'getservices'])->name('suppliergetservices');
-    
     Route::get('servicesupplieredit', [SupplierController::class, 'servicesupplieredit'])->name('servicesupplieredit');
     Route::post('servicesupplierdelete', [SupplierController::class, 'servicesupplierdelete'])->name('servicesupplierdelete');
 
+    //customers
     Route::resource('customers', CustomerController::class)->names('customers');
 
-    //Quotations Commercial
-    Route::get('quotations-commercial', [QuotationController::class, 'index_commercial'])->name('quotations.commercial');
-
-    //Quotatios Personal
-    Route::get('quotations-personal', [QuotationController::class, 'index_personal'])->name('quotations.personal');
-    
+    //calendar
     Route::get('calendar', [CalendarController::class, 'index'])->name('calendars.index');
     Route::get('calendar-listevents', [CalendarController::class, 'listevents'])->name('calendars.listevents');
     Route::post('calendar-ajax', [CalendarController::class, 'calendarajax'])->name('calendars.calendarajax');
 
+    //notes
     Route::get('notes', [NoteController::class,'index'])->name('notes.index');
     Route::post('store-notes', [NoteController::class,'store'])->name('notes.store');
-
     Route::get('changefavourite-note', [NoteController::class, 'changeFavourite'])->name('notes.changefavourite');
     Route::get('changetag-note', [NoteController::class, 'changeTag'])->name('notes.changetag');
     Route::get('destroy-note', [NoteController::class, 'destroy'])->name('notes.destroy');
@@ -90,10 +102,6 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-
-
-//Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
-
 
 //Localization Route
 Route::get("locale/{lange}", [LocalizationController::class,'setLang']);

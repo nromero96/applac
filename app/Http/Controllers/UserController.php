@@ -54,7 +54,12 @@ class UserController extends Controller
         $request->validate(
             [
                 'name'              =>      'required|string',
+                'lastname'          =>      'required|string',
+                'company_name'      =>      'nullable|string',
+                'company_website'   =>      'nullable|string',
                 'email'             =>      'required|email|unique:users,email',
+                'phone'             =>      'nullable|string',
+                'source'            =>      'nullable|string',
                 'password'          =>      'required|alpha_num|min:6'
             ]
         );
@@ -67,12 +72,17 @@ class UserController extends Controller
             $image_resize->resize(300, 300);
             $image_resize->save(storage_path('app/public/uploads/profile_images/' . $photouser));
         } else {
-            $photouser = 'profile-1.jpeg';
+            $photouser = 'default.jpg';
         }
 
 
         $users->name = $request->name;
+        $users->lastname = $request->lastname;
+        $users->company_name = $request->company_name;
+        $users->company_website = $request->company_website;
         $users->email = $request->email;
+        $users->phone = $request->phone;
+        $users->source = $request->source;
         $users->password = bcrypt($request->password);
         $users->photo = $photouser;
         $users->status = $request->get('status');
@@ -131,7 +141,12 @@ class UserController extends Controller
 
         User::whereId($id)->update([
             'name' => $request['name'],
+            'lastname' => $request['lastname'],
+            'company_name' => $request['company_name'],
+            'company_website' => $request['company_website'],
             'password' => $pass,
+            'phone' => $request['phone'],
+            'source' => $request['source'],
             'photo' => $photouser,
             'status' => $request['status'],
         ]);
@@ -195,6 +210,11 @@ class UserController extends Controller
 
         User::whereId($id)->update([
             'name' => $request['name'],
+            'lastname' => $request['lastname'],
+            'company_name' => $request['company_name'],
+            'company_website' => $request['company_website'],
+            'phone' => $request['phone'],
+            'source' => $request['source'],
             'password' => $pass,
             'photo' => $photouser,
         ]);

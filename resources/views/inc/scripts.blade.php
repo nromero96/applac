@@ -23,7 +23,7 @@
             {{-- Users --}}
 
             @break
-        @case('quotationscommercial')
+        @case('quotations')
             {{-- All quotes --}}
             <script src="{{asset('plugins/src/table/datatable/datatables.js')}}"></script>
             <script src="{{asset('plugins/src/table/datatable/button-ext/dataTables.buttons.min.js')}}"></script>

@@ -34,14 +34,47 @@
                             @csrf
                             @method('PUT')
                             <div class="col-md-6">
-                                <label for="inputName" class="form-label fw-bold">{{__("Name")}}</label>
+                                <label for="inputName" class="form-label fw-bold">{{__("Name")}} <span class="text-danger">*</span></label>
                                 <input type="text" name="name" class="form-control" id="inputName" value="{{$user->name}}" required>
                                 {!!$errors->first("name", "<span class='text-danger'>:message</span>")!!}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputLastName" class="form-label fw-bold">{{__("Last name")}} <span class="text-danger">*</span></label>
+                                <input type="text" name="lastname" class="form-control" id="inputLastName" value="{{$user->lastname}}" required>
+                                {!!$errors->first("lastname", "<span class='text-danger'>:message</span>")!!}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputCompanyName" class="form-label fw-bold">{{__("Company Name")}}</label>
+                                <input type="text" name="company_name" class="form-control" id="inputCompanyName" value="{{$user->company_name}}">
+                                {!!$errors->first("company_name", "<span class='text-danger'>:message</span>")!!}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputCompanyWebsite" class="form-label fw-bold">{{__("Company Website")}}</label>
+                                <input type="text" name="company_website" class="form-control" id="inputCompanyWebsite" value="{{$user->company_website}}">
+                                {!!$errors->first("company_website", "<span class='text-danger'>:message</span>")!!}
                             </div>
                             <div class="col-md-6">
                                 <label for="inputEmail" class="form-label fw-bold">{{__("Email")}}</label>
                                 <input type="email" name="email" class="form-control" id="inputEmail" value="{{$user->email}}" readonly>
                                 {!!$errors->first("email", "<span class='text-danger'>:message</span>")!!}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputPhone" class="form-label fw-bold">{{__("Phone")}} <span class="text-danger">*</span></label>
+                                <input type="text" name="phone" class="form-control" id="inputPhone" value="{{$user->phone}}" required>
+                                {!!$errors->first("phone", "<span class='text-danger'>:message</span>")!!}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="source" class="form-label fw-bold">{{__("How do you know about us?")}}</label>
+                                <select name="source" id="source" class="form-select">
+                                    <option value="" @php if($user->source == ''){ echo 'selected'; } @endphp >{{ __('Select...') }}</option>
+                                    <option value="I am an existing customer" @php if($user->source == 'I am an existing customer'){ echo 'selected'; } @endphp>{{ __('I am an existing customer') }}</option>
+                                    <option value="Google Search" @php if($user->source == 'Google Search'){ echo 'selected'; } @endphp>{{ __('Google Search') }}</option>
+                                    <option value="Linkedin" @php if($user->source == 'Linkedin'){ echo 'selected'; } @endphp>{{ __('Linkedin') }}</option>
+                                    <option value="Social Media" @php if($user->source == 'Social Media'){ echo 'selected'; } @endphp>{{ __('Social Media') }}</option>
+                                    <option value="Referral" @php if($user->source == 'Referral'){ echo 'selected'; } @endphp>{{ __('Referral') }}</option>
+                                    <option value="Other" @php if($user->source == 'Other'){ echo 'selected'; } @endphp>{{ __('Other') }}</option>
+                                </select>
+                                {!!$errors->first("source", "<span class='text-danger'>:message</span>")!!}
                             </div>
                             <div class="col-md-6">
                                 <label for="inputPassword" class="form-label fw-bold">{{__("Password")}}</label>

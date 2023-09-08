@@ -38,7 +38,7 @@
                                                         <img alt="avatar" src="{{asset('storage/uploads/profile_images/'.$item->photo.'')}}" class="rounded-circle" />
                                                     </div>
                                                     <div class="media-body align-self-center">
-                                                        <h6 class="mb-0 fw-bold">{{$item->name}}</h6>
+                                                        <h6 class="mb-0 fw-bold">{{$item->name}} {{$item->lastname}}</h6>
                                                         <span>{{$item->email}}</span>
                                                     </div>
                                                 </div>
