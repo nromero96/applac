@@ -75,13 +75,13 @@ class RoleSeeder extends Seeder
                             'description' => 'Delete Customer'])->syncRoles([$role1, $role2]);
 
         //Calendar
-        Permission::create(['name' => 'calendar.index',
+        Permission::create(['name' => 'calendars.index',
                             'description' => 'View Calendar'])->syncRoles([$role1, $role2, $role3]);
-        Permission::create(['name' => 'calendar.create',
+        Permission::create(['name' => 'calendars.create',
                             'description' => 'Create Event'])->syncRoles([$role1, $role2, $role3]);
-        Permission::create(['name' => 'calendar.edit',
+        Permission::create(['name' => 'calendars.edit',
                             'description' => 'Edit Event'])->syncRoles([$role1, $role2, $role3]);
-        Permission::create(['name' => 'calendar.destroy',
+        Permission::create(['name' => 'calendars.destroy',
                             'description' => 'Delete Event'])->syncRoles([$role1, $role2, $role3]);
 
         //Notes
