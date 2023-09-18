@@ -52,12 +52,12 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
     //     return 'Storage link creado correctamente en cpanel.';
     // });
 
-    // //send test mail simple text use smtp config
-    // Route::get('/enviar-correo', function () {
-    //     $destinatario = 'niltondeveloper96@gmail.com';
-    //     Mail::to($destinatario)->send(new  \App\Mail\PruebaCorreo());
-    //     return "Correo enviado desde la ruta.";
-    // });
+    //send test mail simple text use smtp config
+    Route::get('/enviar-correo', function () {
+        $destinatario = 'niltondeveloper96@gmail.com';
+        Mail::to($destinatario)->send(new  \App\Mail\PruebaCorreo());
+        return "Correo enviado desde la ruta.";
+    });
 
     // dashboard
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
