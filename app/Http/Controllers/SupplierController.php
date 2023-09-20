@@ -390,47 +390,56 @@ class SupplierController extends Controller implements HasMedia
      
          $temporaryfile_document_three = TemporaryFile::where('folder', $request->document_three)->first();
          if ($temporaryfile_document_three) {
-             Storage::move('public/uploads/tmp/' . $request->document_three . '/' . $temporaryfile_document_three->filename, 'public/uploads/supplier_documents/' . $temporaryfile_document_three->filename);
-             $supplier->document_three = $temporaryfile_document_three->filename;
-             $supplier->save();
+            Storage::move('public/uploads/tmp/' . $request->document_three . '/' . $temporaryfile_document_three->filename, 'public/uploads/supplier_documents/' . $temporaryfile_document_three->filename);
+            $supplier->document_three = $temporaryfile_document_three->filename;
+            $supplier->save();
              rmdir(storage_path('app/public/uploads/tmp/' . $request->document_three));
-             $temporaryfile_document_three->delete();
+            $temporaryfile_document_three->delete();
          }
      
-         $contact_name = $request->input('contact_name');
-         $contact_email = $request->input('contact_email');
-         $contact_position = $request->input('contact_position');
-         $contact_main = $request->input('contact_main');
-         $contact_typeone = $request->input('contact_typeone');
-         $contact_typeone_value = $request->input('contact_typeone_value');
-         $contact_typetwo = $request->input('contact_typetwo');
-         $contact_typetwo_value = $request->input('contact_typetwo_value');
-         $contact_typethree = $request->input('contact_typethree');
-         $contact_typethree_value = $request->input('contact_typethree_value');
-         $contact_typefour = $request->input('contact_typefour');
-         $contact_typefour_value = $request->input('contact_typefour_value');
-         $contact_typefive = $request->input('contact_typefive');
-         $contact_typefive_value = $request->input('contact_typefive_value');
-         
+        $contact_name = $request->input('contact_name');
+        $contact_email = $request->input('contact_email');
+        $contact_position = $request->input('contact_position');
+        $contact_main = $request->input('contact_main');
+        $contact_typeone = $request->input('contact_typeone');
+        $contact_typeone_value = $request->input('contact_typeone_value');
+        $contact_typetwo = $request->input('contact_typetwo');
+        $contact_typetwo_value = $request->input('contact_typetwo_value');
+        $contact_typethree = $request->input('contact_typethree');
+        $contact_typethree_value = $request->input('contact_typethree_value');
+        $contact_typefour = $request->input('contact_typefour');
+        $contact_typefour_value = $request->input('contact_typefour_value');
+        $contact_typefive = $request->input('contact_typefive');
+        $contact_typefive_value = $request->input('contact_typefive_value');
+        
          if ($contact_name != null) {
-             $contact_count = count($contact_name);
-         
+            $contact_count = count($contact_name);
+
              // Obtener los IDs de los contactos existentes del proveedor
-             $existing_contact_ids = Suppliercontact::where('supplier_id', $supplier->id)
-                 ->pluck('id')
-                 ->toArray();
-         
+            $existing_contact_ids = Suppliercontact::where('supplier_id', $supplier->id)
+                ->pluck('id')
+                ->toArray();
+
              // Obtener los IDs de los contactos proporcionados en la solicitud
-             $provided_contact_ids = $request->input('contact_id', []);
-         
-             for ($i = 0; $i < $contact_count; $i++) {
+            $provided_contact_ids = $request->input('contact_id', []);
+
+            // Eliminar los contactos que deben eliminarse
+            $contactsToDelete = array_diff($existing_contact_ids, $provided_contact_ids);
+
+            if (!empty($contactsToDelete)) {
+                Suppliercontact::whereIn('id', $contactsToDelete)->delete();
+            }
+
+             // Actualizar o crear los contactos del proveedor
+
+            for ($i = 0; $i < $contact_count; $i++) {
                  // Verificar si se proporcionó un ID para el contacto actual
-                 $contact_id = isset($provided_contact_ids[$i]) ? $provided_contact_ids[$i] : null;
-         
-                 if (in_array($contact_id, $existing_contact_ids)) {
+                $contact_id = isset($provided_contact_ids[$i]) ? $provided_contact_ids[$i] : null;
+
+                if (in_array($contact_id, $existing_contact_ids)) {
                      // Contacto existente, actualizar los datos
-                     $suppliercontact = Suppliercontact::where('supplier_id', $supplier->id)
-                         ->findOrFail($contact_id);
+                    $suppliercontact = Suppliercontact::where('supplier_id', $supplier->id)
+                        ->findOrFail($contact_id);
                  } else {
                      // Contacto no existente, crear un nuevo registro
                      $suppliercontact = new Suppliercontact();
@@ -461,13 +470,12 @@ class SupplierController extends Controller implements HasMedia
                  $suppliercontact->contact_typefive_value = $contact_typefive_value[$i];
          
                  $suppliercontact->save();
-             }
-         }
-         
+            }
+        }
 
-     
-         // Redirigir a la página de mostrar proveedor con el ID del proveedor
-         return redirect()->route('suppliers.show', $supplier->id)->with('success', 'Supplier updated successfully.');
+        // Devolver una respuesta success 'Supplier updated successfully.'
+        return redirect()->route('suppliers.edit', $supplier->id)->with('success', 'Supplier updated successfully.');
+
      }
      
     
@@ -720,6 +728,38 @@ class SupplierController extends Controller implements HasMedia
     return response()->json(['success' => true]);
 }
 
+
+    public function deleteFile(Request $request, $supplierId, $fileNumber)
+    {
+        // Encuentra el supplier por su ID
+        $supplier = Supplier::find($supplierId);
+
+        if (!$supplier) {
+            return response()->json(['success' => false, 'message' => 'Trabajo no encontrado.']);
+        }
+
+        // Verifica si el archivo existe en función del número proporcionado
+        $fileColumn = 'document_' . $fileNumber;
+
+        if (!$supplier->$fileColumn) {
+            return response()->json(['success' => false, 'message' => 'File not found for this supplier.']);
+        }
+
+        // Obtiene la ruta del archivo desde la base de datos
+        $filePath = 'public/uploads/supplier_documents/' . $supplier->$fileColumn;
+
+        // Verifica si el archivo existe en el sistema de archivos
+        if (Storage::exists($filePath)) {
+            // Elimina el archivo del sistema de archivos
+            Storage::delete($filePath);
+        }
+
+        // Luego, establece el campo del archivo en nulo en la base de datos
+        $supplier->$fileColumn = null;
+        $supplier->save();
+
+        return response()->json(['success' => true, 'message' => 'File deleted successfully.']);
+    }
 
 
 

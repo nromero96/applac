@@ -163,69 +163,113 @@
                     <tr>
                         <td style="background: #b80000;color: white; text-align: center;"><b>#</b></td>
                         <td colspan="2"><b>Package</b></td>
-                        <td colspan="4"><b>Dimensions</b></td>
-                        <td colspan="3"><b>Weight</b></td>
-                        <td colspan="1"><b>
-                            @if($quotation->mode_of_transport == 'Air')
-                            Total Volume Weight
-                            @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container')
-                                @if ($quotation->cargo_type == 'LTL' || $quotation->cargo_type == 'LCL')
-                                Total Volume
-                                @endif
-                            @elseif ($quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
-                            Total CBM
-                            @endif
+                        <td colspan="4"><b>
+                            @unless ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL')
+                                Dimensions
+                            @endunless
                         </b></td>
+                        <td colspan="3"><b>Weight</b></td>
+                        @unless ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL')
+                        <td><b>
+                                @if($quotation->mode_of_transport == 'Air')
+                                Total Volume Weight
+                                @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container')
+                                    @if ($quotation->cargo_type == 'LTL' || $quotation->cargo_type == 'LCL')
+                                    Total Volume
+                                    @endif
+                                @elseif ($quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
+                                Total CBM
+                                @endif
+                        </b></td>
+                        @endunless
                     </tr>
 
                     @php
                         $numerations = 1;
                     @endphp
 
-                    @foreach ($cargoDetails as $cargo_detail)
+                    @if ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL')
 
-                    <tr>
-                        <td rowspan="2" width="33px" style="background: #b80000;color: white; text-align: center;">#{{ $numerations }}</td>
-                        <td><span style="color:#888ea8">Package Type:</span><br>{{ $cargo_detail['package_type'] }}</td>
-                        <td><span style="color:#888ea8">Qty:</span><br>{{ $cargo_detail['qty'] }}</td>
-                        <td><span style="color:#888ea8">Length:</span><br>{{ $cargo_detail['length'] }}</td>
-                        <td><span style="color:#888ea8">Width:</span><br>{{ $cargo_detail['width'] }}</td>
-                        <td><span style="color:#888ea8">Height:</span><br>{{ $cargo_detail['height'] }}</td>
-                        <td><span style="color:#888ea8">Unit:</span><br>{{ $cargo_detail['dimensions_unit'] }}</td>
-                        <td><span style="color:#888ea8">Per piece:</span><br>{{ $cargo_detail['per_piece'] }}</td>
-                        <td><span style="color:#888ea8">Total:</span><br>{{ $cargo_detail['item_total_weight'] }}</td>
-                        <td><span style="color:#888ea8">Unit:</span><br>{{ $cargo_detail['weight_unit'] }}</td>
-                        <td><span style="color:#888ea8">
-                            @if ($quotation->mode_of_transport == 'Air')
-                            Kgs:
-                            @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
-                            m³:
+                        @foreach ($cargoDetails as $cargo_detail)
+
+                        <tr>
+                            <td width="33px" style="background: #b80000;color: white; text-align: center;">#{{ $numerations }}</td>
+                            @if ($quotation->cargo_type == 'FTL')
+                                <td><span style="color:#888ea8">Trailer Type:</span><br>{{ $cargo_detail['package_type'] }}</td>
+                                <td><span style="color:#888ea8"># of Trailers:</span><br>{{ $cargo_detail['qty'] }}</td>
+                            @elseif ($quotation->cargo_type == 'FCL')
+                                <td><span style="color:#888ea8">Container Type:</span><br>{{ $cargo_detail['package_type'] }}</td>
+                                <td><span style="color:#888ea8"># of Containers:</span><br>{{ $cargo_detail['qty'] }}</td>
                             @endif
-                        </span><br>{{ $cargo_detail['item_total_volume_weight_cubic_meter'] }}</td>
-                    </tr>
-                    <tr>
-                        <td colspan="5"><span style="color:#888ea8">Cargo Description:</span> {{ $cargo_detail['cargo_description'] }}</td>
-                        <td colspan="5">
-                            @if ($cargo_detail['dangerous_cargo'] == 'yes')
-                            <span style="color:#888ea8">Dangerous Cargo:</span> {{ $cargo_detail['dangerous_cargo'] }}<br>
-                                @if ($cargo_detail['dc_imoclassification_1'] != '' || $cargo_detail['dc_unnumber_1'] != '') {{ $cargo_detail['dc_imoclassification_1'] .' : '. $cargo_detail['dc_unnumber_1'].', ' }} @endif
-                                @if ($cargo_detail['dc_imoclassification_2'] != '' || $cargo_detail['dc_unnumber_2'] != '') {{ $cargo_detail['dc_imoclassification_2'] .' : '. $cargo_detail['dc_unnumber_2'].', ' }} @endif
-                                @if ($cargo_detail['dc_imoclassification_3'] != '' || $cargo_detail['dc_unnumber_3'] != '') {{ $cargo_detail['dc_imoclassification_3'] .' : '. $cargo_detail['dc_unnumber_3'].', ' }} @endif
-                                @if ($cargo_detail['dc_imoclassification_4'] != '' || $cargo_detail['dc_unnumber_4'] != '') {{ $cargo_detail['dc_imoclassification_4'] .' : '. $cargo_detail['dc_unnumber_4'].', ' }} @endif
-                                @if ($cargo_detail['dc_imoclassification_5'] != '' || $cargo_detail['dc_unnumber_5'] != '') {{ $cargo_detail['dc_imoclassification_5'] .' : '. $cargo_detail['dc_unnumber_5'].', ' }} @endif
-                            @endif
+                            <td colspan="4">
+                                <span style="color:#888ea8">Cargo Description:</span> {{ $cargo_detail['cargo_description'] }}
+                                @if ($cargo_detail['dangerous_cargo'] == 'yes')
+                                <br>
+                                <span style="color:#888ea8">Dangerous Cargo:</span> {{ $cargo_detail['dangerous_cargo'] }}<br>
+                                    @if ($cargo_detail['dc_imoclassification_1'] != '' || $cargo_detail['dc_unnumber_1'] != '') {{ $cargo_detail['dc_imoclassification_1'] .' : '. $cargo_detail['dc_unnumber_1'].', ' }} @endif
+                                    @if ($cargo_detail['dc_imoclassification_2'] != '' || $cargo_detail['dc_unnumber_2'] != '') {{ $cargo_detail['dc_imoclassification_2'] .' : '. $cargo_detail['dc_unnumber_2'].', ' }} @endif
+                                    @if ($cargo_detail['dc_imoclassification_3'] != '' || $cargo_detail['dc_unnumber_3'] != '') {{ $cargo_detail['dc_imoclassification_3'] .' : '. $cargo_detail['dc_unnumber_3'].', ' }} @endif
+                                    @if ($cargo_detail['dc_imoclassification_4'] != '' || $cargo_detail['dc_unnumber_4'] != '') {{ $cargo_detail['dc_imoclassification_4'] .' : '. $cargo_detail['dc_unnumber_4'].', ' }} @endif
+                                    @if ($cargo_detail['dc_imoclassification_5'] != '' || $cargo_detail['dc_unnumber_5'] != '') {{ $cargo_detail['dc_imoclassification_5'] .' : '. $cargo_detail['dc_unnumber_5'].', ' }} @endif
+                                @endif
+                            </td>
+                            <td colspan="2"><span style="color:#888ea8">Total:</span><br>{{ $cargo_detail['item_total_weight'] }}</td>
+                            <td><span style="color:#888ea8">Unit:</span><br>{{ $cargo_detail['weight_unit'] }}</td>
+                        </tr>
+                        @php
+                            $numerations++;
+                        @endphp
 
-                            @if ($cargo_detail['electric_vehicle'] == 'yes')
-                            <span style="color:#888ea8">Electric Vehicle:</span> {{ $cargo_detail['electric_vehicle'] }}
-                            @endif
-                        </td>
-                    </tr>
+                        @endforeach
 
-                    @php
-                        $numerations++;
-                    @endphp
+                    @else
 
-                    @endforeach
+                        @foreach ($cargoDetails as $cargo_detail)
+
+                            <tr>
+                                <td rowspan="2" width="33px" style="background: #b80000;color: white; text-align: center;">#{{ $numerations }}</td>
+                                <td><span style="color:#888ea8">Package Type:</span><br>{{ $cargo_detail['package_type'] }}</td>
+                                <td><span style="color:#888ea8">Qty:</span><br>{{ $cargo_detail['qty'] }}</td>
+                                <td><span style="color:#888ea8">Length:</span><br>{{ $cargo_detail['length'] }}</td>
+                                <td><span style="color:#888ea8">Width:</span><br>{{ $cargo_detail['width'] }}</td>
+                                <td><span style="color:#888ea8">Height:</span><br>{{ $cargo_detail['height'] }}</td>
+                                <td><span style="color:#888ea8">Unit:</span><br>{{ $cargo_detail['dimensions_unit'] }}</td>
+                                <td><span style="color:#888ea8">Per piece:</span><br>{{ $cargo_detail['per_piece'] }}</td>
+                                <td><span style="color:#888ea8">Total:</span><br>{{ $cargo_detail['item_total_weight'] }}</td>
+                                <td><span style="color:#888ea8">Unit:</span><br>{{ $cargo_detail['weight_unit'] }}</td>
+                                <td><span style="color:#888ea8">
+                                    @if ($quotation->mode_of_transport == 'Air')
+                                    Kgs:
+                                    @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
+                                    m³:
+                                    @endif
+                                </span><br>{{ $cargo_detail['item_total_volume_weight_cubic_meter'] }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="5"><span style="color:#888ea8">Cargo Description:</span> {{ $cargo_detail['cargo_description'] }}</td>
+                                <td colspan="5">
+                                    @if ($cargo_detail['dangerous_cargo'] == 'yes')
+                                    <span style="color:#888ea8">Dangerous Cargo:</span> {{ $cargo_detail['dangerous_cargo'] }}<br>
+                                        @if ($cargo_detail['dc_imoclassification_1'] != '' || $cargo_detail['dc_unnumber_1'] != '') {{ $cargo_detail['dc_imoclassification_1'] .' : '. $cargo_detail['dc_unnumber_1'].', ' }} @endif
+                                        @if ($cargo_detail['dc_imoclassification_2'] != '' || $cargo_detail['dc_unnumber_2'] != '') {{ $cargo_detail['dc_imoclassification_2'] .' : '. $cargo_detail['dc_unnumber_2'].', ' }} @endif
+                                        @if ($cargo_detail['dc_imoclassification_3'] != '' || $cargo_detail['dc_unnumber_3'] != '') {{ $cargo_detail['dc_imoclassification_3'] .' : '. $cargo_detail['dc_unnumber_3'].', ' }} @endif
+                                        @if ($cargo_detail['dc_imoclassification_4'] != '' || $cargo_detail['dc_unnumber_4'] != '') {{ $cargo_detail['dc_imoclassification_4'] .' : '. $cargo_detail['dc_unnumber_4'].', ' }} @endif
+                                        @if ($cargo_detail['dc_imoclassification_5'] != '' || $cargo_detail['dc_unnumber_5'] != '') {{ $cargo_detail['dc_imoclassification_5'] .' : '. $cargo_detail['dc_unnumber_5'].', ' }} @endif
+                                    @endif
+
+                                    @if ($cargo_detail['electric_vehicle'] == 'yes')
+                                    <span style="color:#888ea8">Electric Vehicle:</span> {{ $cargo_detail['electric_vehicle'] }}
+                                    @endif
+                                </td>
+                            </tr>
+
+                            @php
+                                $numerations++;
+                            @endphp
+
+                        @endforeach
+
+                    @endif
 
                 </table>
                 <br>

@@ -8,8 +8,17 @@
 
     <div class="middle-content container-xxl p-0">
 
+
         <!-- BREADCRUMB -->
         <div class="page-meta">
+
+            @if(session('success'))
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>{{ session('success') }}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            @endif
+
             <nav class="breadcrumb-style-one" aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{route('suppliers.index')}}">{{__("Suppliers")}}</a></li>
@@ -243,35 +252,65 @@
                                 <label for="company_documents" class="form-label fw-bold">{{ __('Documents') }}</label>
                                 <div class="row">
                                     <div class="col-md-4 text-center">
+                                        <div class="form-control text-center {{ empty($supplier->document_one) ? ' d-none' : '' }}" id="dv_fileshow_one">
+                                            {{ strlen($supplier->document_one) > 25 ? substr($supplier->document_one, 0, 25) . '...' : $supplier->document_one }}
+                                            <div class="text-center mt-2">
+                                                <a href="{{ asset('storage/uploads/supplier_documents/'.$supplier->document_one) }}" class="badge badge-light-primary text-start me-2 bs-tooltip" data-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{{ __('View') }}" target="_blank"> 
+                                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path></svg>
+                                                </a>
+                                                <a href="javascript:void(0);" class="badge badge-light-danger text-start action-delete bs-tooltip" data-supplier-id="{{ $supplier->id }}" data-file-col="one" data-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{{ __('Delete') }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div id="dv_fileinput_one" class="{{ empty($supplier->document_one) ? '' : 'd-none' }}">
                                             <input type="file" 
                                             class="filepond suppliers_document_one"
                                             name="document_one"
                                             data-allow-reorder="true"
                                             data-max-file-size="3MB"/>
-                                            @if ($supplier->document_one != null)
-                                                <a href="{{ asset('storage/uploads/supplier_documents/'.$supplier->document_one) }}" target="_blank">(View current document)</a>    
-                                            @endif
+                                        </div>
                                     </div>
                                     <div class="col-md-4 text-center">
-                                        <input type="file" 
+                                        <div class="form-control text-center {{ empty($supplier->document_two) ? ' d-none' : '' }}" id="dv_fileshow_two">
+                                            {{ strlen($supplier->document_two) > 25 ? substr($supplier->document_two, 0, 25) . '...' : $supplier->document_two }}
+                                            <div class="text-center mt-2">
+                                                <a href="{{ asset('storage/uploads/supplier_documents/'.$supplier->document_two) }}" class="badge badge-light-primary text-start me-2 bs-tooltip" data-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{{ __('View') }}" target="_blank"> 
+                                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path></svg>
+                                                </a>
+                                                <a href="javascript:void(0);" class="badge badge-light-danger text-start action-delete bs-tooltip" data-supplier-id="{{ $supplier->id }}" data-file-col="two" data-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{{ __('Delete') }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div id="dv_fileinput_two" class="{{ empty($supplier->document_two) ? '' : 'd-none' }}">
+                                            <input type="file" 
                                             class="filepond suppliers_document_two"
                                             name="document_two"
                                             data-allow-reorder="true"
                                             data-max-file-size="3MB"/>
-                                            @if ($supplier->document_two != null)
-                                                <a href="{{ asset('storage/uploads/supplier_documents/'.$supplier->document_two) }}" target="_blank">(View current document)</a>
-                                            @endif
+                                        </div>
                                     </div>
                                     <div class="col-md-4 text-center">
-                                        <input type="file" 
+                                        <div class="form-control text-center {{ empty($supplier->document_three) ? ' d-none' : '' }}" id="dv_fileshow_three">
+                                            {{ strlen($supplier->document_three) > 25 ? substr($supplier->document_three, 0, 25) . '...' : $supplier->document_three }}
+                                            <div class="text-center mt-2">
+                                                <a href="{{ asset('storage/uploads/supplier_documents/'.$supplier->document_three) }}" class="badge badge-light-primary text-start me-2 bs-tooltip" data-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{{ __('View') }}" target="_blank"> 
+                                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><path d="M12 9a3 3 0 1 0 0 6 3 3 0 1 0 0-6z"></path></svg>
+                                                </a>
+                                                <a href="javascript:void(0);" class="badge badge-light-danger text-start action-delete bs-tooltip" data-supplier-id="{{ $supplier->id }}" data-file-col="three" data-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{{ __('Delete') }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div id="dv_fileinput_three" class="{{ empty($supplier->document_three) ? '' : 'd-none' }}">
+                                            <input type="file" 
                                             class="filepond suppliers_document_three"
                                             name="document_three"
                                             accept="application/pdf"
                                             data-allow-reorder="true"
                                             data-max-file-size="3MB"/>
-                                            @if ($supplier->document_three != null)
-                                                <a href="{{ asset('storage/uploads/supplier_documents/'.$supplier->document_three) }}" target="_blank">(View current document)</a>
-                                            @endif
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -283,7 +322,8 @@
                             </div>
 
                             <div class="col-12">
-                                <button type="submit" class="btn btn-primary">{{__("Update & Add Service")}}</button>
+                                <button type="submit" class="btn btn-primary">{{__("Update")}}</button>
+                                <a href="{{ route('suppliers.show',$supplier->id) }}" class="btn btn-secondary">{{__("Add Service")}}</a>
                             </div>
                         </form>
                     </div>

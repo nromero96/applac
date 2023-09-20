@@ -1,6 +1,4 @@
 $(document).ready(function() {
-
-
     //if click on the button add_contact add a new contact in listcontas
     $('#add_contact').click(function() {
         
@@ -259,5 +257,46 @@ $(document).ready(function() {
         });
     });
 
+});
 
+
+// Obtener todos los elementos con la clase "action-delete"
+var deleteButtons = document.querySelectorAll('.action-delete');
+
+// Agregar un evento clic a cada botón de eliminación
+deleteButtons.forEach(function (button) {
+    button.addEventListener('click', function () {
+        var supplierId = this.getAttribute('data-supplier-id');
+        var fileNumber = this.getAttribute('data-file-col');
+        var csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('DELETE', '/delete-file-supplier/' + supplierId + '/' + fileNumber, true);
+        xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+
+        xhr.onload = function () {
+
+            if (xhr.status === 200) {
+                var response = JSON.parse(xhr.responseText);
+
+                console.log(response);
+
+                if (response.success) {
+                    // Eliminación exitosa, oculta el elemento de visualización y muestra el elemento de entrada correspondiente
+                    document.getElementById('dv_fileshow_' + fileNumber).classList.add('d-none');
+                    document.getElementById('dv_fileinput_' + fileNumber).classList.remove('d-none');
+                } else {
+                    alert('Error al eliminar el archivo.');
+                }
+            } else {
+                alert('Error al comunicarse con el servidor.');
+            }
+        };
+
+        xhr.onerror = function () {
+            alert('Error de conexión al servidor.');
+        };
+
+        xhr.send();
+    });
 });
