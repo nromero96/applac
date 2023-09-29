@@ -26,10 +26,10 @@ use App\Http\Controllers\CountryStateController;
 */
 
 //send test mail simple text use smtp config
-Route::get('/enviar-correo', function () {
+Route::get('/send-test-mail', function () {
     $destinatario = 'niltondeveloper96@gmail.com';
     Mail::to($destinatario)->send(new  \App\Mail\PruebaCorreo());
-    return "Correo enviado desde la ruta.";
+    return "Mail sent from the route.";
 });
 
 //home

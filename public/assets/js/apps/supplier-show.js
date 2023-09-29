@@ -1158,7 +1158,6 @@ var addAllSuggestionsElm;
 
 function onDropdownShow(e) {
     var dropdownContentElm = e.detail.tagify.DOM.dropdown.content;
-
     if (usrList.suggestedListItems.length > 1) {
         if (selectElm.value !== "4") {
             // Verificar si servicecategoryid no es igual a '4'
@@ -1197,7 +1196,7 @@ function getAddAllSuggestionsElm() {
 function fetchWhitelistData(serviceCategoryId) {
     return fetch(`/getWhitelistData/${serviceCategoryId}`).then(function (
         response
-    ) {
+    ){
         return response.json();
     });
 }
@@ -1218,9 +1217,9 @@ usrList.on("dropdown:select", function (e) {
 selectElm.addEventListener("change", function () {
     var serviceCategoryId = selectElm.value;
     fetchWhitelistData(serviceCategoryId).then(function (data) {
+
         usrList.settings.whitelist = data;
         usrList.dropdown.hide();
-
         // Borrar las etiquetas cuando cambia la categoría de servicio
         usrList.removeAllTags();
 
@@ -1237,7 +1236,6 @@ selectElm.addEventListener("change", function () {
             $("#btnaddlocation").addClass("d-none");
             $("#btnaddroute").removeClass("d-none");
         }
-
         $("#listroutes").html("");
     });
 });
