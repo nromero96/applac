@@ -69,10 +69,23 @@ Route::delete('/delete-file', [UploadController::class, 'deleteFile']);
 //for users login
 Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
 
-    // Route::get('/storage-link', function () {
-    //     Artisan::call('storage:link');
-    //     return 'Storage link creado correctamente en cpanel.';
-    // });
+    //Ejecutar migración
+    Route::get('/ejecutar-migraciones', function () {
+        Artisan::call('migrate');
+        return 'Migraciones ejecutadas con éxito.';
+    });
+
+    //Limpiar cache
+    Route::get('/limpiar-cache', function () {
+        Artisan::call('cache:clear');
+        return 'Cache limpiado con éxito.';
+    });
+
+    //storage link
+    Route::get('/storage-link', function () {
+        Artisan::call('storage:link');
+        return 'Storage link creado correctamente en cpanel.';
+    });
 
     // dashboard
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
