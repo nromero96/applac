@@ -87,6 +87,13 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
         return 'Storage link creado correctamente en cpanel.';
     });
 
+    //composer dump-autoload
+    Route::get('/composer-dump-autoload', function () {
+        Artisan::call('composer dump-autoload');
+        return 'Composer dump-autoload ejecutado correctamente en cpanel.';
+    });
+
+
     // dashboard
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 
