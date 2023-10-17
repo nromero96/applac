@@ -14,6 +14,20 @@ return [
     |
     */
 
+    //sendgrid
+    'sendgrid' => [
+        'api_key' => env('SENDGRID_API_KEY'),
+        'sender_email' => env('SENDGRID_SENDER_EMAIL'),
+        'sender_name' => env('SENDGRID_SENDER_NAME'),
+    ],
+
+    //copy mail
+    'copymail' => [
+        'mail_1' => env('MAILCOPY_MAIL_1'),
+        'mail_2' => env('MAILCOPY_MAIL_2'),
+        'mail_2' => env('MAILCOPY_MAIL_3'),
+    ],
+
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UploadController;
@@ -12,6 +13,9 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\CountryStateController;
+
+use App\Mail\PruebaCorreo;
+
 
 
 /*
@@ -27,10 +31,18 @@ use App\Http\Controllers\CountryStateController;
 
 //send test mail simple text use smtp config
 Route::get('/send-test-mail', function () {
-    $destinatario = 'niltondeveloper96@gmail.com';
-    Mail::to($destinatario)->send(new  \App\Mail\PruebaCorreo());
-    return "Mail sent from the route.";
+
+    // Crea una instancia de la clase PruebaCorreo
+    $correo = new PruebaCorreo();
+
+    // Envia el correo utilizando la clase PruebaCorreo
+    Mail::send($correo);
+
+    return "Mail sent from the route using PruebaCorreo class.";
+
 });
+
+
 
 //home
 Route::get('/', function () { return view('auth.login');});
@@ -50,6 +62,9 @@ Route::post('quotationsonlinestore', [QuotationController::class, 'onlinestore']
 
 //upload
 Route::post('upload',[UploadController::class, 'store']);
+Route::delete('/delete-file', [UploadController::class, 'deleteFile']);
+
+
 
 //for users login
 Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {

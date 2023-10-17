@@ -32,7 +32,9 @@ if (!function_exists('setTitle')) :
         elseif ($page_name === 'quotationscommercial'):
             echo __('Quotations') . $admin_name;
         elseif ($page_name === 'quotations'):
-            echo __('Quotations Personal') . $admin_name;
+            echo __('Quotations') . $admin_name;
+        elseif ($page_name === 'quotations_show'):
+            echo __('Show Quotation') . $admin_name;
         elseif ($page_name === 'suppliers'):
             echo __('Suppliers') . $admin_name;
         elseif ($page_name === 'suppliercreate'):

@@ -140,7 +140,7 @@
 
     <div class="auth-container d-flex">
         <div class="container mx-auto align-self-center">
-            <form method="POST" id="form_quotations">
+            <form method="POST" id="form_quotations" enctype="multipart/form-data">
                 <div class="card mt-3 mb-3">
                     <div class="card-body">
                         <div class="row">
@@ -511,7 +511,14 @@
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">{{ __('Documentation') }} <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="(Max. 10mb - Allowed files: jpg, jpeg, png, gif, doc, docx, ppt, pptx, pdf, xls, xlsx)" ></span></label>
                                                 <div class="multiple-file-upload">
-                                                    <input type="file" class="filepond file-upload-multiple" multiple data-allow-reorder="true" data-max-file-size="3MB" data-max-files="3">
+                                                    <input 
+                                                        type="file" 
+                                                        name="quotation_documents[]"
+                                                        class="quotation_documents" 
+                                                        multiple 
+                                                        data-allow-reorder="true" 
+                                                        data-max-file-size="3MB" 
+                                                        data-max-files="6">
                                                 </div>
                                                 <span class="text">
                                                     Max. file size: 10 mb
@@ -673,7 +680,6 @@
     <script src="{{ asset('plugins/src/filepond/FilePondPluginImageTransform.min.js') }}"></script>
     <script src="{{ asset('plugins/src/filepond/filepondPluginFileValidateSize.min.js') }}"></script>
     <script src="{{ asset('plugins/src/flatpickr/flatpickr.js') }}"></script>
-    <script src="{{ asset('plugins/src/filepond/custom-filepond.js') }}"></script>
 
     <script src="{{ asset('plugins/src/intl-tel-input/js/intlTelInput.min.js') }}"></script>
 
@@ -1929,6 +1935,25 @@ function clearValidationErrors() {
         updateOriginPortField();
         updateDestinationPortField();
     </script>
+
+<script>
+    // Inicializa FilePond en los campos de entrada de archivo correspondientes
+    const quotation_documents = document.querySelector('.quotation_documents');
+
+    FilePond.create(quotation_documents);
+
+    FilePond.setOptions({
+        server: {
+            url: baseurl + '/upload', // URL de carga
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        }
+    });
+</script>
+
+
+
 
 </body>
 </html>

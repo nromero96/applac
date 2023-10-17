@@ -6,8 +6,10 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use App\Helpers\helpers;
 
 use Illuminate\Support\Facades\Log;
+
 
 //model country
 use App\Models\Country;
@@ -18,10 +20,11 @@ class QuotationCreated extends Mailable{
 
     public $quotation;
 
-    public function __construct($quotation, $name, $lastname, $cargoDetails){
+    public function __construct($quotation, $name, $lastname, $email, $cargoDetails){
         $this->quotation = $quotation;
         $this->name = $name;
         $this->lastname = $lastname;
+        $this->email = $email;
         $this->cargoDetails = $cargoDetails; // Pasamos el array de detalles de carga
     }
 
@@ -48,9 +51,9 @@ class QuotationCreated extends Mailable{
             //get name of state
             $destination_state_name = $destination_state ? $destination_state->name : 'Unknown State';
         }
-    
-        // Construir el correo
-        return $this->view('emails.quotation_created', [
+
+        // Renderiza la vista 'emails.quotation_created' y obtén el contenido
+        $content = view('emails.quotation_created', [
             'origin_country_name' => $origin_country_name,
             'destination_country_name' => $destination_country_name,
             'origin_state_name' => $origin_state_name,
@@ -59,8 +62,14 @@ class QuotationCreated extends Mailable{
             'lastname' => $this->lastname,
             'quotation' => $this->quotation,
             'cargoDetails' => $this->cargoDetails,
-        ])->subject('Quote ID #: '. $this->quotation->id .' - Your Request with Latin American Cargo - '. $this->quotation->mode_of_transport .' - ['. $origin_country_name .' - '. $destination_country_name .'].');
+        ])->render();
+
+        // Llama a tu función sendMailApi para enviar el correo
+        sendMailApiLac($this->email, 'Quote ID #: '. $this->quotation->id .' - Your Request with Latin American Cargo - '. $this->quotation->mode_of_transport .' - ['. $origin_country_name .' - '. $destination_country_name .'].', $content, [config('services.copymail.mail_1')]);
     
+        // Retorna la vista utilizando la variable $content
+        return $this->html($content);
+
     }
 
 

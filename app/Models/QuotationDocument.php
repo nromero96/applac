@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class QuotationDocument extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'quotation_id',
+        'document_path',
+    ];
+
 }

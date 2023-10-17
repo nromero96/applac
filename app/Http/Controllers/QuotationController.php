@@ -7,6 +7,9 @@ use App\Mail\UserCreated;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
+use App\Models\TemporaryFile;
+use Illuminate\Support\Facades\Storage;
+
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Validation\Rule;
@@ -50,6 +53,7 @@ class QuotationController extends Controller
         ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
         ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
         ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
+        ->orderBy('quotations.id', 'desc')
         ->get();
 
 
@@ -78,7 +82,51 @@ class QuotationController extends Controller
 
     public function show($id)
     {
-        //
+        $data = [
+            'category_name' => 'quotations',
+            'page_name' => 'quotations_show',
+            'has_scrollspy' => 0,
+            'scrollspy_offset' => '',
+        ];
+
+        $quotation = Quotation::select(
+            'quotations.*',
+            DB::raw('COALESCE(users.name, guest_users.name) as customer_name'),
+            DB::raw('COALESCE(users.lastname, guest_users.lastname) as customer_lastname'),
+            DB::raw('COALESCE(users.company_name, guest_users.company_name) as customer_company_name'),
+            DB::raw('COALESCE(users.company_website, guest_users.company_website) as customer_company_website'),
+            DB::raw('COALESCE(users.email, guest_users.email) as customer_email'),
+            DB::raw('COALESCE(users.phone_code, guest_users.phone_code) as customer_phone_code'),
+            DB::raw('COALESCE(users.phone, guest_users.phone) as customer_phone'),
+            DB::raw('COALESCE(users.source, guest_users.source) as customer_source'),
+
+            //is user or guest user 
+            DB::raw('CASE WHEN users.id IS NOT NULL THEN "Customer" ELSE "Guest" END AS customer_type'),
+
+            'oc.name as origin_country',
+            'dc.name as destination_country',
+            'os.name as origin_state',
+            'ds.name as destination_state',
+        )
+
+        ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
+        ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
+        ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
+        ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
+        ->leftJoin('states as os', 'quotations.origin_state_id', '=', 'os.id')
+        ->leftJoin('states as ds', 'quotations.destination_state_id', '=', 'ds.id')
+
+
+        ->where('quotations.id', $id)
+
+        ->first();
+
+        $cargo_details = CargoDetail::where('quotation_id', $id)->get();
+
+        $quotation_documents = QuotationDocument::where('quotation_id', $id)->get();
+
+        return view('pages.quotations.show')->with($data)->with('quotation', $quotation)->with('cargo_details', $cargo_details)->with('quotation_documents', $quotation_documents);
+
     }
 
     public function edit($id)
@@ -257,16 +305,34 @@ class QuotationController extends Controller
                 }
 
                 $cargoDetails[] = $cargoDetail;
-
                 $cargo_detail = CargoDetail::create($cargoDetail);
+
+                // Verifica si se han proporcionado nombres de carpetas temporales
+                if ($request->has('quotation_documents') && is_array($request->quotation_documents)) {
+
+                    foreach ($request->quotation_documents as $temporaryFolder) {
+                        $temporaryFolder = str_replace(['[', ']', '"'], '', $temporaryFolder);
+                        // Busca el registro temporal correspondiente
+                        $temporaryfile_quotation_documents = TemporaryFile::where('folder', $temporaryFolder)->first();
+                        if ($temporaryfile_quotation_documents) {
+                            Storage::move('public/uploads/tmp/'.$temporaryFolder.'/'.$temporaryfile_quotation_documents->filename, 'public/uploads/quotation_documents/'.$temporaryfile_quotation_documents->filename);
+                            QuotationDocument::create([
+                                'quotation_id' => $quotation_id, // Asegúrate de definir $quotation_id
+                                'document_path' => $temporaryfile_quotation_documents->filename,
+                            ]);
+
+                            rmdir(storage_path('app/public/uploads/tmp/'.$temporaryFolder));
+                            $temporaryfile_quotation_documents->delete();
+
+                        }
+                    }
+                }
+
             }
 
 
             // Envía el correo electrónico con los detalles de carga
-            Mail::to($request->input('email'))
-                ->cc('niltondeveloper96@gmail.com')
-                ->send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'), $cargoDetails));
-
+            Mail::send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'),$request->input('email'), $cargoDetails));
 
         }else if($create_account == 'yes'){
             //verificate if existing email in users table, generate password for send mail and assign role customer
@@ -384,17 +450,38 @@ class QuotationController extends Controller
                     }
     
                     $cargoDetails[] = $cargoDetail;
-    
                     $cargo_detail = CargoDetail::create($cargoDetail);
+
+                    // Verifica si se han proporcionado nombres de carpetas temporales
+                    if ($request->has('quotation_documents') && is_array($request->quotation_documents)) {
+
+                        foreach ($request->quotation_documents as $temporaryFolder) {
+                            $temporaryFolder = str_replace(['[', ']', '"'], '', $temporaryFolder);
+                            // Busca el registro temporal correspondiente
+                            $temporaryfile_quotation_documents = TemporaryFile::where('folder', $temporaryFolder)->first();
+                            if ($temporaryfile_quotation_documents) {
+                                Storage::move('public/uploads/tmp/'.$temporaryFolder.'/'.$temporaryfile_quotation_documents->filename, 'public/uploads/quotation_documents/'.$temporaryfile_quotation_documents->filename);
+                                QuotationDocument::create([
+                                    'quotation_id' => $quotation_id, // Asegúrate de definir $quotation_id
+                                    'document_path' => $temporaryfile_quotation_documents->filename,
+                                ]);
+
+                                rmdir(storage_path('app/public/uploads/tmp/'.$temporaryFolder));
+                                $temporaryfile_quotation_documents->delete();
+
+                            }
+                        }
+                    }
+
                 }
 
+
+
                 // Envía el correo electrónico con los detalles de carga
-                Mail::to($request->input('email'))
-                ->cc('niltondeveloper96@gmail.com')
-                ->send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'), $cargoDetails));
+                Mail::send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'),$request->input('email'), $cargoDetails));
 
                 //sen mail to user email with password
-                Mail::to($request->input('email'))->send(new UserCreated($request->input('name'), $request->input('lastname'), $request->input('email'), $password));
+                Mail::send(new UserCreated($request->input('name'), $request->input('lastname'), $request->input('email'), $password));
 
             }
         }

@@ -26,7 +26,7 @@
 
                             @foreach ($quotations as $quotation)
                                 <tr>
-                                    <td><a href="./app-invoice-preview.html"><span class="inv-number">#{{ $quotation->quotation_id }}</span></a></td>
+                                    <td><a href="{{ route('quotations.show', $quotation->quotation_id) }}"><span class="inv-number">#{{ $quotation->quotation_id }}</span></a></td>
                                     <td>
                                         <div class="d-flex">
                                             <p class="align-self-center mb-0 user-name"> {{ $quotation->user_name.' '.$quotation->user_lastname }} </p>

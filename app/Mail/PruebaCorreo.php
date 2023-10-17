@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Mail;
-
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use App\Helpers\helpers;
 
 class PruebaCorreo extends Mailable
 {
@@ -28,6 +28,16 @@ class PruebaCorreo extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.prueba');
+        $toEmail = 'niltonromagu@gmail.com';
+        $subject = 'Asunto del correo Listo';
+
+    // Renderiza la vista 'emails.prueba' y obtén el contenido
+    $content = view('emails.prueba')->render();
+
+    // Llama a tu función sendMailApi desde Helpers para enviar el correo
+    $response = sendMailApiLac($toEmail, $subject, $content, [config('services.copymail.mail_1')]);
+
+    // Retorna la vista utilizando la variable $content
+    return $this->html($content);
     }
 }

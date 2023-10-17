@@ -6,6 +6,9 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use App\Helpers\helpers;
+
+use Illuminate\Support\Facades\Log;
 
 class UserCreated extends Mailable
 {
@@ -31,11 +34,16 @@ class UserCreated extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.user_created', [
+
+        $content = view('emails.user_created', [
             'name' => $this->name,
             'lastname' => $this->lastname,
             'email' => $this->email,
             'password' => $this->password,
-        ])->subject('Welcome to Latin American Cargo – Your New Account');
+        ])->render();
+
+        sendMailApiLac($this->email, 'Welcome to Latin American Cargo – Your New Account', $content);
+
+        return $this->html($content);
     }
 }
