@@ -290,7 +290,7 @@
                                 @if ($quotation->mode_of_transport == 'Air')
                                 Actual Weight (Kgs):
                                 @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
-                                Actual Weight (Kgs):
+                                Weight:
                                 @endif
                             </span><br>
                             {{ $quotation->total_actualweight }}

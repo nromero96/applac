@@ -30,17 +30,11 @@ use App\Mail\PruebaCorreo;
 */
 
 //send test mail simple text use smtp config
-Route::get('/send-test-mail', function () {
-
-    // Crea una instancia de la clase PruebaCorreo
-    $correo = new PruebaCorreo();
-
-    // Envia el correo utilizando la clase PruebaCorreo
-    Mail::send($correo);
-
-    return "Mail sent from the route using PruebaCorreo class.";
-
-});
+// Route::get('/send-test-mail', function () {
+//     $correo = new PruebaCorreo();
+//     Mail::send($correo);
+//     return "Mail sent from the route using PruebaCorreo class.";
+// });
 
 
 

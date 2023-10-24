@@ -129,85 +129,168 @@
                                         <thead>
                                             <tr>
                                                 <th class="bg-primary px-2 py-2 text-center" style="width: 50px" ><b>#</b></th>
-                                                <td class="px-2 py-2" colspan="2"><b>{{__("Package")}}</b></th>
-                                                <th class="px-2 py-2" colspan="4"><b>{{__("Dimensions")}}</b></th>
+                                                <th class="px-2 py-2" colspan="2"><b>{{__("Package")}}</b></th>
+                                                <th class="px-2 py-2" colspan="4">
+                                                    <b>
+                                                        @unless ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL')
+                                                            {{__("Dimensions")}}
+                                                        @endunless
+                                                    </b>
+                                                </th>
                                                 <th class="px-2 py-2" colspan="3"><b>{{__("Weight")}}</b></th>
-                                                <th class="px-2 py-2"><b>{{__("Total Volume")}}</b></th>
+
+                                                @unless ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL')
+                                                <th class="px-2 py-2"><b>
+                                                        @if($quotation->mode_of_transport == 'Air')
+                                                        {{__("Total Volume Weight")}}
+                                                        @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container')
+                                                            @if ($quotation->cargo_type == 'LTL' || $quotation->cargo_type == 'LCL')
+                                                            {{__("Total Volume")}}
+                                                            @endif
+                                                        @elseif ($quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
+                                                        {{__("Total CBM")}}
+                                                        @endif
+                                                </b></th>
+                                                @endunless
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {{-- Item --}}
+                                        
                                             @php
                                                 $numcont = 1;
                                             @endphp
 
-                                            @foreach ($cargo_details as $item)
-                                            <tr>
-                                                <td class="bg-primary text-light px-1 py-1 text-center" rowspan="2">#{{ $numcont }}</td>
-                                                <td class="px-1 py-1">
-                                                    {{ __('Package Type') }}:<br>
-                                                    <b>{{ $item->package_type }}</b>
-                                                </td>
-                                                <td class="px-1 py-1">
-                                                    {{ __('Qty') }}:<br>
-                                                    <b>{{ $item->qty }}</b>
-                                                </td>
-                                                <td class="px-1 py-1">
-                                                    {{ __('Length') }}:<br>
-                                                    <b>{{ $item->length }}</b>
-                                                </td>
-                                                <td class="px-1 py-1">
-                                                    {{ __('Width') }}:<br>
-                                                    <b>{{ $item->width }}</b>
-                                                </td>
-                                                <td class="px-1 py-1">
-                                                    {{ __('Height') }}:<br>
-                                                    <b>{{ $item->height }}</b>
-                                                </td>
-                                                <td class="px-1 py-1">
-                                                    {{ __('Unit') }}:<br>
-                                                    <b>{{ $item->dimensions_unit }}</b>
-                                                </td>
-                                                <td class="px-1 py-1">
-                                                    {{ __('Per piece') }}:<br>
-                                                    <b>{{ $item->per_piece }}</b>
-                                                </td>
-                                                <td class="px-1 py-1">
-                                                    {{ __('Total') }}:<br>
-                                                    <b>{{ $item->item_total_weight }}</b>
-                                                </td>
-                                                <td class="px-1 py-1">
-                                                    {{ __('Unit') }}:<br>
-                                                    <b>{{ $item->weight_unit }}</b>
-                                                </td>
-                                                <td class="px-1 py-1">
-                                                    {{ __('Kgs') }}:<br>
-                                                    <b>{{ $item->item_total_volume_weight_cubic_meter }}</b>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="px-2 py-2" colspan="5">{{ _('Cargo Description') }}: <b>{{ $item->cargo_description }}</b></td>
-                                                <td class="px-2 py-2" colspan="5">
+                                            @if ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL')
+                                                {{-- Item --}}
+                                                @foreach ($cargo_details as $item)
+                                                <tr>
+                                                    <td class="bg-primary text-light px-1 py-1 text-center" rowspan="2">#{{ $numcont }}</td>
 
-                                                    @if ($item->electric_vehicle == 'yes')
-                                                        <span style="color:#888ea8">Electric Vehicle:</span> {{ $item->electric_vehicle }}
+                                                    @if ($quotation->cargo_type == 'FTL')
+                                                        <td class="px-1 py-1">
+                                                            {{ __('Trailer Type') }}:<br>
+                                                            <b>{{ $item->package_type }}</b>
+                                                        </td>
+                                                        <td class="px-1 py-1">
+                                                            {{ __('# of Trailers') }}:<br>
+                                                            <b>{{ $item->qty }}</b>
+                                                        </td>
+                                                    @elseif ($quotation->cargo_type == 'FCL')
+                                                        <td class="px-1 py-1">
+                                                            {{ __('Container Type') }}:<br>
+                                                            <b>{{ $item->package_type }}</b>
+                                                        </td>
+                                                        <td class="px-1 py-1">
+                                                            {{ __('# of Containers') }}:<br>
+                                                            <b>{{ $item->qty }}</b>
+                                                        </td>
                                                     @endif
 
-                                                    @if ($item->dangerous_cargo == 'yes')
-                                                    <span style="color:#888ea8">Dangerous Cargo:</span> {{ $item->dangerous_cargo }}<br>
-                                                        @if ($item->dc_imoclassification_1 != '' || $item->dc_unnumber_1 != '') {{ $item->dc_imoclassification_1 .' : '. $item->dc_unnumber_1.', ' }} @endif
-                                                        @if ($item->dc_imoclassification_2 != '' || $item->dc_unnumber_2 != '') {{ $item->dc_imoclassification_2 .' : '. $item->dc_unnumber_2.', ' }} @endif
-                                                        @if ($item->dc_imoclassification_3 != '' || $item->dc_unnumber_3 != '') {{ $item->dc_imoclassification_3 .' : '. $item->dc_unnumber_3.', ' }} @endif
-                                                        @if ($item->dc_imoclassification_4 != '' || $item->dc_unnumber_4 != '') {{ $item->dc_imoclassification_4 .' : '. $item->dc_unnumber_4.', ' }} @endif
-                                                        @if ($item->dc_imoclassification_5 != '' || $item->dc_unnumber_5 != '') {{ $item->dc_imoclassification_5 .' : '. $item->dc_unnumber_5.', ' }} @endif
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                            {{-- End Item --}}
-                                            @php
-                                                $numcont ++;
-                                            @endphp
-                                            @endforeach
+                                                    <td colspan="4" class="px-1 py-1">
+                                                        {{ _('Cargo Description') }}: <b>{{ $item->cargo_description }}<br>
+                                                        @if ($item->dangerous_cargo == 'yes')
+                                                        <span style="color:#888ea8">Dangerous Cargo:</span> {{ $item->dangerous_cargo }}<br>
+                                                            @if ($item->dc_imoclassification_1 != '' || $item->dc_unnumber_1 != '') {{ $item->dc_imoclassification_1 .' : '. $item->dc_unnumber_1.', ' }} @endif
+                                                            @if ($item->dc_imoclassification_2 != '' || $item->dc_unnumber_2 != '') {{ $item->dc_imoclassification_2 .' : '. $item->dc_unnumber_2.', ' }} @endif
+                                                            @if ($item->dc_imoclassification_3 != '' || $item->dc_unnumber_3 != '') {{ $item->dc_imoclassification_3 .' : '. $item->dc_unnumber_3.', ' }} @endif
+                                                            @if ($item->dc_imoclassification_4 != '' || $item->dc_unnumber_4 != '') {{ $item->dc_imoclassification_4 .' : '. $item->dc_unnumber_4.', ' }} @endif
+                                                            @if ($item->dc_imoclassification_5 != '' || $item->dc_unnumber_5 != '') {{ $item->dc_imoclassification_5 .' : '. $item->dc_unnumber_5.', ' }} @endif
+                                                        @endif
+                                                    </td>
+                                                    <td colspan="2" class="px-1 py-1">
+                                                        {{ __('Total') }}:<br>
+                                                        <b>{{ $item->item_total_weight }}</b>
+                                                    </td>
+                                                    <td class="px-1 py-1">
+                                                        {{ __('Unit') }}:<br>
+                                                        <b>{{ $item->weight_unit }}</b>
+                                                    </td>
+                                                </tr>
+                                                {{-- End Item --}}
+                                                @php
+                                                    $numcont ++;
+                                                @endphp
+
+                                                @endforeach
+
+
+                                            @else
+                                               
+                                                @foreach ($cargo_details as $item)
+                                                {{-- Item --}}
+                                                <tr>
+                                                    <td class="bg-primary text-light px-1 py-1 text-center" rowspan="2">#{{ $numcont }}</td>
+                                                    <td class="px-1 py-1">
+                                                        {{ __('Package Type') }}:<br>
+                                                        <b>{{ $item->package_type }}</b>
+                                                    </td>
+                                                    <td class="px-1 py-1">
+                                                        {{ __('Qty') }}:<br>
+                                                        <b>{{ $item->qty }}</b>
+                                                    </td>
+                                                    <td class="px-1 py-1">
+                                                        {{ __('Length') }}:<br>
+                                                        <b>{{ $item->length }}</b>
+                                                    </td>
+                                                    <td class="px-1 py-1">
+                                                        {{ __('Width') }}:<br>
+                                                        <b>{{ $item->width }}</b>
+                                                    </td>
+                                                    <td class="px-1 py-1">
+                                                        {{ __('Height') }}:<br>
+                                                        <b>{{ $item->height }}</b>
+                                                    </td>
+                                                    <td class="px-1 py-1">
+                                                        {{ __('Unit') }}:<br>
+                                                        <b>{{ $item->dimensions_unit }}</b>
+                                                    </td>
+                                                    <td class="px-1 py-1">
+                                                        {{ __('Per piece') }}:<br>
+                                                        <b>{{ $item->per_piece }}</b>
+                                                    </td>
+                                                    <td class="px-1 py-1">
+                                                        {{ __('Total') }}:<br>
+                                                        <b>{{ $item->item_total_weight }}</b>
+                                                    </td>
+                                                    <td class="px-1 py-1">
+                                                        {{ __('Unit') }}:<br>
+                                                        <b>{{ $item->weight_unit }}</b>
+                                                    </td>
+                                                    <td class="px-1 py-1">
+                                                        @if ($quotation->mode_of_transport == 'Air')
+                                                        {{ __('Kgs') }}:<br>
+                                                        @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
+                                                        {{ __('m³') }}:<br>
+                                                        @endif
+                                                        <b>{{ $item->item_total_volume_weight_cubic_meter }}</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="px-2 py-2" colspan="5">{{ _('Cargo Description') }}: <b>{{ $item->cargo_description }}</b></td>
+                                                    <td class="px-2 py-2" colspan="5">
+
+                                                        @if ($item->electric_vehicle == 'yes')
+                                                            <span style="color:#888ea8">Electric Vehicle:</span> {{ $item->electric_vehicle }}
+                                                        @endif
+
+                                                        @if ($item->dangerous_cargo == 'yes')
+                                                        <span style="color:#888ea8">Dangerous Cargo:</span> {{ $item->dangerous_cargo }}<br>
+                                                            @if ($item->dc_imoclassification_1 != '' || $item->dc_unnumber_1 != '') {{ $item->dc_imoclassification_1 .' : '. $item->dc_unnumber_1.', ' }} @endif
+                                                            @if ($item->dc_imoclassification_2 != '' || $item->dc_unnumber_2 != '') {{ $item->dc_imoclassification_2 .' : '. $item->dc_unnumber_2.', ' }} @endif
+                                                            @if ($item->dc_imoclassification_3 != '' || $item->dc_unnumber_3 != '') {{ $item->dc_imoclassification_3 .' : '. $item->dc_unnumber_3.', ' }} @endif
+                                                            @if ($item->dc_imoclassification_4 != '' || $item->dc_unnumber_4 != '') {{ $item->dc_imoclassification_4 .' : '. $item->dc_unnumber_4.', ' }} @endif
+                                                            @if ($item->dc_imoclassification_5 != '' || $item->dc_unnumber_5 != '') {{ $item->dc_imoclassification_5 .' : '. $item->dc_unnumber_5.', ' }} @endif
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                {{-- End Item --}}
+                                                @php
+                                                    $numcont ++;
+                                                @endphp
+
+                                                @endforeach
+
+                                            @endif
 
 
                                         </tbody>
@@ -215,7 +298,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-12 mt-0">
+                            <div class="col-md-12 mt-0 @if ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL') d-none @else d-block; @endif">
                                 <div class="table-responsive">
                                     <table class="table table-bordered mb-0">
                                         <thead>
@@ -230,15 +313,28 @@
                                                     <b>{{ $quotation->total_qty }}</b>
                                                 </td>
                                                 <td class="px-2 py-1">
+                                                    @if ($quotation->mode_of_transport == 'Air')
                                                     {{ __('Actual Weight (Kgs)') }}:<br>
+                                                    @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
+                                                    {{ __('Weight') }}:<br>
+                                                    @endif
                                                     <b>{{ $quotation->total_actualweight }}</b>
                                                 </td>
                                                 <td class="px-2 py-1">
+                                                    @if ($quotation->mode_of_transport == 'Air')
                                                     {{ __('Volume Weight (Kgs)') }}:<br>
+                                                    @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container')
+                                                    {{ __('Volume (m³)') }}:<br>
+                                                    @elseif ( $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
+                                                    {{ __('Total CBM') }}:<br>
+                                                    @endif
                                                     <b>{{ $quotation->total_volum_weight }}</b>
                                                 </td>
-                                                <td class="px-2 py-1">{{ __('Chargeable Weight (Kgs)') }}:<br>
+                                                <td class="px-2 py-1">
+                                                    @if ($quotation->mode_of_transport == 'Air')
+                                                    {{ __('Chargeable Weight (Kgs)') }}:<br>
                                                     <b>{{ $quotation->tota_chargeable_weight }}</b>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -251,7 +347,7 @@
                             </div>
 
                             <div class="col-md-6 mt-0">
-                                <label class="fw-bold mb-0">{{__("Shipping date")}}:</label> {{ $quotation->shipping_date }} | {{ $quotation->no_shipping_date }}<br>
+                                <label class="fw-bold mb-0">{{__("Shipping date")}}:</label> @if($quotation->no_shipping_date == 'yes') {{ __('I don’t have a shipping date yet.') }} @else {{ $quotation->shipping_date }}@endif<br>
                                 <label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ $quotation->declared_value }}<br>
                                 <label class="fw-bold mb-0">{{__("Insurance required")}}:</label> {{ $quotation->insurance_required }}<br>
                                 <label class="fw-bold mb-0">{{__("Currency")}}:</label> {{ $quotation->currency }}<br>
