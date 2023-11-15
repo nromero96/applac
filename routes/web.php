@@ -95,6 +95,7 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
 
     //quotation
     Route::resource('quotations', QuotationController::class)->names('quotations');
+    Route::put('quotations/{id}/update-status', [QuotationController::class, 'updateStatus'])->name('quotationupdatestatus');
 
     //suppliers
     Route::resource('suppliers', SupplierController::class)->names('suppliers');

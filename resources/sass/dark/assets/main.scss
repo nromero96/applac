@@ -65,6 +65,14 @@ body.dark {
     display: none;
   }
 
+  .notelist li{
+    line-height: 15px;
+      background: #0e1726;
+      border-radius: 0px 5px 20px 5px;
+      padding: 5px 5px;
+      margin-bottom: 5px;
+  }
+
   .custom-file-input:focus ~ .custom-file-label {
     border: 1px solid $dark;
     box-shadow: none;

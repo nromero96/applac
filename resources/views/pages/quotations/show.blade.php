@@ -400,6 +400,8 @@
                         </div>
 
 
+
+
                         <!-- Modal Service -->
                         <div class="modal fade modal-lg" id="serviceModal" tabindex="-1" role="dialog" aria-labelledby="serviceModalTitle" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -467,7 +469,72 @@
 
                     </div>
                 </div>
+
+
+                <div class="row mt-2">
+                    <div class="col-md-7">
+                        <div class="statbox widget box box-shadow mt-2">
+                            <div class="widget-header px-2 pt-2 pb-0">
+                                <h6 class="mb-0">
+                                    {{ __('Status') }}:
+                                    <span class="badge 
+                                                    @if ($quotation->status == 'Pending')
+                                                        badge-light-warning
+                                                    @elseif ($quotation->status == 'Attended')
+                                                        badge-light-info
+                                                    @elseif ($quotation->status == 'Quote Sent')status
+                                                        badge-light-success
+                                                    @endif
+                                                    inv-status">
+                                                    {{ $quotation->status }}
+                                        </span>
+                                </h6>
+                            </div>
+                            <div class="widget-content widget-content-area px-2 pb-3 pt-1">
+                                <form class="row" action="{{ route('quotationupdatestatus', ['id' => $quotation->id]) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="col-md-4">
+                                        <input type="hidden" name="type" value="Internal">
+                                        <select name="action" id="action" class="form-select">
+                                            <option value="Pending" @if($quotation->status == 'Pending') selected @endif>Pending</option>
+                                            <option value="Attended" @if($quotation->status == 'Attended') selected @endif>Attended</option>
+                                            <option value="Quote Sent" @if($quotation->status == 'Quote Sent') selected @endif>Quote Sent</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" name="note" id="note" placeholder="{{ __('Note...') }}">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" class="btn btn-secondary w-100 px-2 py-2">{{ __('Update') }}</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="mt-2">
+                            <h6 class="mb-1">{{ __('History') }}:</h6>
+                            @if ($quotation_notes->count() > 0)
+                                <ul class="my-0 ps-3 notelist">
+                                    @foreach ($quotation_notes as $note)
+                                        <li style="line-height: 14px;">
+                                            <b class="text-info">{{ $note->note }}</b><br>
+                                            {{ $note->action }}<br>
+                                            <small>{{ $note->created_at }}</small>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <span class="mb-1 d-block">N/A</span>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
         </div>
     </div>
 

@@ -45,7 +45,7 @@
                                                 <div class="row">
                                                     <div class="col-md-6 mb-2">
                                                         <label for="servicecategory_id" class="form-label fw-bold mb-0">Service</label>
-                                                        <select class="form-control" name="servicecategory_id" id="servicecategory_id" required="">
+                                                        <select class="form-select" name="servicecategory_id" id="servicecategory_id" required="">
                                                             <option value="">{{ __('Select...') }}</option>
                                                             @foreach ($servicecategories as $servicecategory)
                                                                 <option value="{{ $servicecategory->id }}">{{ $servicecategory->servicecategory_name }}</option>
@@ -55,7 +55,7 @@
 
                                                     <div class="col-md-6 mb-2">
                                                         <label for="rating_supplier" class="form-label fw-bold mb-0">Rate This Supplier</label>
-                                                        <select class="form-control" name="rating_supplier" id="rating_supplier" required="">
+                                                        <select class="form-select" name="rating_supplier" id="rating_supplier" required="">
                                                             <option value="">{{ __('Select...') }}</option>
                                                             <option value="5">5 Stars</option>
                                                             <option value="4">4 Stars</option>
@@ -93,7 +93,7 @@
                                                                     <div class="col-md-6" id="dvcol_origen">
                                                                         <label class="form-label fw-bold">{{ __('Origin') }}:</label>
                                                                         <div class="form-group mt-1 mb-1">
-                                                                            <select class="form-control" name="origin_country_id">
+                                                                            <select class="form-select" name="origin_country_id">
                                                                                 <option value="">{{ __('Country') }}</option>
                                                                                 @foreach ($countries as $countrie)
                                                                                     <option value="{{ $countrie->id }}">{{ $countrie->name }}</option>
@@ -101,7 +101,7 @@
                                                                             </select>
                                                                         </div>
                                                                         <div class="form-group mt-1 mb-1">
-                                                                            <select class="form-control" name="origin_state_id" required="">
+                                                                            <select class="form-select" name="origin_state_id" required="">
                                                                                 <option value="">{{ __('State') }}</option>
                                                                             </select>
                                                                         </div>
@@ -112,7 +112,7 @@
                                                                     <div class="col-md-6" id="dvcol_destination">
                                                                         <label class="form-label fw-bold">{{ __('Destination') }}:</label>
                                                                         <div class="form-group mt-1 mb-1">
-                                                                            <select class="form-control" name="destination_country_id">
+                                                                            <select class="form-select" name="destination_country_id">
                                                                                 <option value="">{{ __('Country') }}</option>
                                                                                 @foreach ($countries as $countrie)
                                                                                     <option value="{{ $countrie->id }}">{{ $countrie->name }}</option>
@@ -120,7 +120,7 @@
                                                                             </select>
                                                                         </div>
                                                                         <div class="form-group mt-1 mb-1">
-                                                                            <select class="form-control" name="destination_state_id" required="">
+                                                                            <select class="form-select" name="destination_state_id" required="">
                                                                                 <option value="">State</option>
                                                                             </select>
                                                                         </div>
@@ -131,7 +131,7 @@
                                                                 </div>
                                                                 <div class="row form-group mb-1 rowcrossing">
                                                                     <div class="col-md-12">
-                                                                        <select class="form-control" name="crossing">
+                                                                        <select class="form-select" name="crossing">
                                                                             <option value="">Crossing</option>
                                                                         </select>
                                                                     </div>

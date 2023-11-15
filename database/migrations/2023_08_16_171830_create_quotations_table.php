@@ -42,7 +42,7 @@ class CreateQuotationsTable extends Migration
             $table->string('insurance_required',5);
             $table->string('currency',30);
             $table->string('rating',30)->nullable();
-            $table->string('status',30)->default('pending');
+            $table->string('status',30)->default('Pending');
             $table->unsignedBigInteger('assigned_user_id')->nullable();
             $table->timestamps();
         });

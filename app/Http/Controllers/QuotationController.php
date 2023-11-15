@@ -16,6 +16,7 @@ use Illuminate\Validation\Rule;
 
 use App\Models\Country;
 use App\Models\Quotation;
+use App\Models\QuotationNote;
 use App\Models\QuotationDocument;
 use App\Models\CargoDetail;
 
@@ -125,7 +126,11 @@ class QuotationController extends Controller
 
         $quotation_documents = QuotationDocument::where('quotation_id', $id)->get();
 
-        return view('pages.quotations.show')->with($data)->with('quotation', $quotation)->with('cargo_details', $cargo_details)->with('quotation_documents', $quotation_documents);
+        $quotation_notes = QuotationNote::where('quotation_id', $id)
+        ->orderBy('id', 'desc')
+        ->get();
+
+        return view('pages.quotations.show')->with($data)->with('quotation', $quotation)->with('cargo_details', $cargo_details)->with('quotation_documents', $quotation_documents)->with('quotation_notes', $quotation_notes);
 
     }
 
@@ -144,6 +149,41 @@ class QuotationController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        try {
+            // Obtener la inscripción actual
+            $quotation = Quotation::findOrFail($id);
+
+            // Validación de datos (ajusta estas reglas según tus necesidades)
+            $validatedData = $request->validate([
+                'type' => 'required|max:30', // 'Customer', 'Internal'
+                'action' => 'required',
+                'note' => 'nullable|string',
+            ]);
+
+            // Insertar la nota de estado
+            QuotationNote::create([
+                'quotation_id' => $id,
+                'type' => $validatedData['type'],
+                'action' => "Changed from '{$quotation->status}' to '{$validatedData['action']}'",
+                'note' => $validatedData['note'] ?? 'No note',
+                'user_id' => auth()->id(),
+            ]);
+
+            // Actualizar el estado de la inscripción después de registrar la nota
+            $quotation->update([
+                'status' => $validatedData['action'],
+                'updated_at' => now(),
+            ]);
+
+            return redirect()->route('quotations.show', ['quotation' => $id])->with('success', 'Estado actualizado con éxito');
+        } catch (\Exception $e) {
+            // Manejo de errores
+            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el estado.');
+        }
     }
 
 

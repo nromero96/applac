@@ -60,6 +60,20 @@ body.dark .light-element {
   display: block;
 }
 
+.notelist{
+
+}
+
+.notelist li{
+  line-height: 15px;
+    background: #f6ebeb;
+    border-radius: 0px 5px 20px 5px;
+    padding: 5px 5px;
+    margin-bottom: 5px;
+}
+
+
+
 select.form-custom::-ms-expand {
   display: none;
 }

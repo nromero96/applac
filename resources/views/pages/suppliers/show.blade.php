@@ -313,7 +313,7 @@
                                                     <div class="row">
                                                         <div class="col-md-6 mb-3">
                                                             <label for="servicecategory_id" class="form-label fw-bold mb-0">{{ __('Service') }}</label>
-                                                            <select class="form-control" name="servicecategory_id" id="servicecategory_id" required="">
+                                                            <select class="form-select" name="servicecategory_id" id="servicecategory_id" required="">
                                                                 <option value="">{{ __('Select...') }}</option>
                                                                 @foreach ($servicecategories as $servicecategory)
                                                                     <option value="{{ $servicecategory->id }}">{{ $servicecategory->servicecategory_name }}</option>

@@ -70,6 +70,13 @@ body.dark code {
 body.dark select.form-custom::-ms-expand {
   display: none;
 }
+body.dark .notelist li {
+  line-height: 15px;
+  background: #0e1726;
+  border-radius: 0px 5px 20px 5px;
+  padding: 5px 5px;
+  margin-bottom: 5px;
+}
 body.dark .custom-file-input:focus ~ .custom-file-label {
   border: 1px solid #3b3f5c;
   box-shadow: none;

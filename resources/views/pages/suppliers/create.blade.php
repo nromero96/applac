@@ -44,7 +44,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="country_id" class="form-label fw-bold">{{__("Country")}}<span class="text-danger">*</span></label>
-                                <select class="form-control" name="country_id" id="country_id" required>
+                                <select class="form-select" name="country_id" id="country_id" required>
                                     <option value="">{{ __('Select a country...') }}</option>
                                     @foreach($countries as $country)
                                     <option value="{{$country->id}}">{{$country->name}}</option>
@@ -54,7 +54,7 @@
                             </div>
                             <div class="col-md-4">
                                 <label for="state_id" class="form-label fw-bold">{{__("State")}}<span class="text-danger">*</span></label>
-                                <select class="form-control" name="state_id" id="state_id" required>
+                                <select class="form-select" name="state_id" id="state_id" required>
                                     <option value="">{{ __('Select a state...') }}</option>
                                     
                                 </select>
