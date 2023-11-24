@@ -25,5 +25,48 @@ var invoiceList = $('#invoice-list').DataTable({
 });
 
 
-multiCheck(invoiceList);
+document.addEventListener('DOMContentLoaded', function () {
+    // Inicializar TomSelect
+    document.querySelectorAll('.user-select').forEach(function (select) {
+        var cotizacionId = select.dataset.cotizacionId;
 
+        var tomSelect = new TomSelect(select, {
+            valueField: 'id',
+            labelField: 'name',
+            searchField: 'name',
+            load: function (query, callback) {
+                if (!query.length) return callback();
+                fetch('/searchuserstoassign?q=' + encodeURIComponent(query))
+                    .then(response => response.json())
+                    .then(data => callback(data));
+            },
+            preload: true,
+            items: [select.value],
+            onChange: function (values) {
+                // Capturar el ID del usuario seleccionado
+                var userId = values[0];
+
+                alert('Asignar la cotización #' + cotizacionId + ' al usuario #' + userId);
+
+                // Realizar una solicitud AJAX para asignar el usuario
+                fetch("/quotations/" + cotizacionId + "/assignuser", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                    body: JSON.stringify({ user_id: userId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Puedes manejar la respuesta si es necesario
+                    console.log(data);
+                })
+                .catch(error => {
+                    // Puedes manejar el error si es necesario
+                    console.error(error);
+                });
+            }
+        });
+    });
+});

@@ -81,6 +81,14 @@
             <link rel="stylesheet" type="text/css" href="{{asset('plugins/src/table/datatable/datatables.css')}}">
 
             <link rel="stylesheet" type="text/css" href="{{asset('plugins/css/light/table/datatable/dt-global_style.css')}}">
+
+            {{-- tomSelect --}}
+            <link rel="stylesheet" type="text/css" href="{{asset('plugins/src/tomSelect/tom-select.default.min.css')}}">
+            <link rel="stylesheet" type="text/css" href="{{asset('plugins/css/light/tomSelect/custom-tomSelect.css')}}">
+            <link rel="stylesheet" type="text/css" href="{{asset('plugins/css/dark/tomSelect/custom-tomSelect.css')}}">
+
+            {{-- Select2 --}}
+
             <link rel="stylesheet" type="text/css" href="{{asset('plugins/css/light/table/datatable/custom_dt_custom.css')}}">
             <link rel="stylesheet" type="text/css" href="{{asset('assets/css/light/apps/invoice-list.css')}}">
 

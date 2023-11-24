@@ -5,6 +5,13 @@
 
 <div class="layout-px-spacing">
 
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
     <div class="middle-content container-xxl p-0">
         <div class="row" id="cancel-row">
         
@@ -54,10 +61,25 @@
                                         </span>
                                     </td>
                                     <td>
-                                        -
+                                        <select class="user-select" data-cotizacion-id="{{ $quotation->quotation_id }}">
+                                            @foreach ($users as $user)
+                                                @if ($user->id == $quotation->quotation_assigned_user_id)
+                                                    <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+                                                @else
+                                                    <option value="">{{ __('No asigned') }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
                                     </td>
                                     <td>
-                                        -
+                                        {{-- Rating aleatorio --}}
+                                        @php
+                                            $rating = rand(1, 5);
+                                        @endphp
+                                        @for ($i = 0; $i < $rating; $i++)
+                                            <span class="star">*</span>
+                                        @endfor
+
                                     </td>
                                     <td>
                                         <span class="inv-date" data-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{{ $quotation->quotation_created_at }}">

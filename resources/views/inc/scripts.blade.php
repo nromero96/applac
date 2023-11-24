@@ -27,6 +27,10 @@
             {{-- All quotes --}}
             <script src="{{asset('plugins/src/table/datatable/datatables.js')}}"></script>
             <script src="{{asset('plugins/src/table/datatable/button-ext/dataTables.buttons.min.js')}}"></script>
+            {{-- tomSelect --}}
+            <script src="{{asset('plugins/src/tomSelect/tom-select.base.js')}}"></script>
+            <script src="{{asset('plugins/src/tomSelect/custom-tom-select.js')}}"></script>
+
             <script src="{{asset('assets/js/apps/quotations/commercial/list.js')}}"></script>
             @break
         @case('quotationspersonal')

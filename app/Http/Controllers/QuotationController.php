@@ -20,7 +20,6 @@ use App\Models\QuotationNote;
 use App\Models\QuotationDocument;
 use App\Models\CargoDetail;
 
-
 use App\Models\GuestUser;
 use App\Models\User;
 
@@ -48,6 +47,7 @@ class QuotationController extends Controller
             'quotations.status as quotation_status',
             'oc.name as origin_country',
             'dc.name as destination_country',
+            'quotations.assigned_user_id as quotation_assigned_user_id',
             'quotations.created_at as quotation_created_at'
         )
         ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
@@ -57,8 +57,10 @@ class QuotationController extends Controller
         ->orderBy('quotations.id', 'desc')
         ->get();
 
+        $users = User::all();
 
-        return view('pages.quotations.index')->with($data)->with('quotations', $quotations);
+
+        return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users);
     }
 
     public function onlineregister(){
@@ -531,6 +533,47 @@ class QuotationController extends Controller
         return response()->json(['success' => false, 'errors' => $e->errors()], 422);
     } catch (\Exception $e) {
         return response()->json(['success' => false, 'error' => 'Error interno del servidor'], 500);
+    }
+}
+
+public function searchUserstoAssign(Request $request)
+{
+    $search = $request->input('q');
+    $users = User::where('name', 'like', "%$search%")
+                    ->whereHas('roles', function ($query) {
+                        $query->where('name', '!=', 'Customer');
+                    })
+                    ->get();
+
+    $data = [];
+
+    foreach ($users as $user) {
+        $data[] = [
+            'id' => $user->id,
+            'name' => $user->name,
+            'lastname' => $user->lastname
+        ];
+    }
+
+    return response()->json($data);
+}
+
+
+public function assignUsertoQuote(Request $request, $cotizacionId)
+{
+    try {
+        $quotation = Quotation::find($cotizacionId);
+
+        if (!$quotation) {
+            return response()->json(['error' => 'Cotización no encontrada'], 404);
+        }
+
+        $quotation->assigned_user_id = $request->input('user_id');
+        $quotation->save();
+
+        return response()->json(['success' => 'Usuario asignado con éxito']);
+    } catch (\Exception $e) {
+        return response()->json(['error' => $e->getMessage()], 500);
     }
 }
 
