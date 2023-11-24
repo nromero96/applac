@@ -54,6 +54,26 @@
                                                     inv-status">
                                                     {{ $quotation->quotation_status }}
                                         </span>
+
+                                        @php
+                                                        $date1 = new DateTime($quotation->quotation_created_at);
+
+                                                        if ($quotation->quotation_note_created_at) {
+                                                            $date2 = new DateTime($quotation->quotation_note_created_at);
+                                                            $diff = $date1->diff($date2);
+                                                        } else {
+                                                            $diff = null; // Otra opción podría ser establecer $diff como un valor predeterminado o personalizado
+                                                        }
+                                                    @endphp
+
+                                                    @if ($diff && $diff->h > 0)
+                                                        <span class="badge badge-light-info">{{ __('Attended in') }} {{ $diff->h }} {{ __('hs') }}</span>
+                                                    @elseif ($diff)
+                                                        <span class="badge badge-light-info">{{ __('Attended in') }} {{ $diff->i }} {{ __('mts') }}</span>
+                                                    @else
+                                                        <span class="badge badge-light-danger">{{ __('New') }}</span>
+                                                    @endif
+
                                     </td>
                                     <td>
                                         <span class="inv-country">
