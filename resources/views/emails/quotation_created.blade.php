@@ -195,17 +195,17 @@
                         <tr>
                             <td width="33px" style="background: #b80000;color: white; text-align: center;">#{{ $numerations }}</td>
                             @if ($quotation->cargo_type == 'FTL')
-                                <td><span style="color:#888ea8">Trailer Type:</span><br>{{ $cargo_detail['package_type'] }}</td>
-                                <td><span style="color:#888ea8"># of Trailers:</span><br>{{ $cargo_detail['qty'] }}</td>
+                                <td><span style="color:#888ea8;font-weight:bold;">Trailer Type:</span><br>{{ $cargo_detail['package_type'] }}</td>
+                                <td><span style="color:#888ea8;font-weight:bold;"># of Trailers:</span><br>{{ $cargo_detail['qty'] }}</td>
                             @elseif ($quotation->cargo_type == 'FCL')
-                                <td><span style="color:#888ea8">Container Type:</span><br>{{ $cargo_detail['package_type'] }}</td>
-                                <td><span style="color:#888ea8"># of Containers:</span><br>{{ $cargo_detail['qty'] }}</td>
+                                <td><span style="color:#888ea8;font-weight:bold;">Container Type:</span><br>{{ $cargo_detail['package_type'] }}</td>
+                                <td><span style="color:#888ea8;font-weight:bold;"># of Containers:</span><br>{{ $cargo_detail['qty'] }}</td>
                             @endif
                             <td colspan="4">
-                                <span style="color:#888ea8">Cargo Description:</span> {{ $cargo_detail['cargo_description'] }}
+                                <span style="color:#888ea8;font-weight:bold;">Cargo Description:</span> {{ $cargo_detail['cargo_description'] }}
                                 @if ($cargo_detail['dangerous_cargo'] == 'yes')
                                 <br>
-                                <span style="color:#888ea8">Dangerous Cargo:</span> {{ $cargo_detail['dangerous_cargo'] }}<br>
+                                <span style="color:#888ea8;font-weight:bold;">Dangerous Cargo:</span> {{ $cargo_detail['dangerous_cargo'] }}<br>
                                     @if ($cargo_detail['dc_imoclassification_1'] != '' || $cargo_detail['dc_unnumber_1'] != '') {{ $cargo_detail['dc_imoclassification_1'] .' : '. $cargo_detail['dc_unnumber_1'].', ' }} @endif
                                     @if ($cargo_detail['dc_imoclassification_2'] != '' || $cargo_detail['dc_unnumber_2'] != '') {{ $cargo_detail['dc_imoclassification_2'] .' : '. $cargo_detail['dc_unnumber_2'].', ' }} @endif
                                     @if ($cargo_detail['dc_imoclassification_3'] != '' || $cargo_detail['dc_unnumber_3'] != '') {{ $cargo_detail['dc_imoclassification_3'] .' : '. $cargo_detail['dc_unnumber_3'].', ' }} @endif
@@ -213,8 +213,8 @@
                                     @if ($cargo_detail['dc_imoclassification_5'] != '' || $cargo_detail['dc_unnumber_5'] != '') {{ $cargo_detail['dc_imoclassification_5'] .' : '. $cargo_detail['dc_unnumber_5'].', ' }} @endif
                                 @endif
                             </td>
-                            <td colspan="2"><span style="color:#888ea8">Total:</span><br>{{ $cargo_detail['item_total_weight'] }}</td>
-                            <td><span style="color:#888ea8">Unit:</span><br>{{ $cargo_detail['weight_unit'] }}</td>
+                            <td colspan="2"><span style="color:#888ea8;font-weight:bold;">Total:</span><br>{{ $cargo_detail['item_total_weight'] }}</td>
+                            <td><span style="color:#888ea8;font-weight:bold;">Unit:</span><br>{{ $cargo_detail['weight_unit'] }}</td>
                         </tr>
                         @php
                             $numerations++;
@@ -228,16 +228,16 @@
 
                             <tr>
                                 <td rowspan="2" width="33px" style="background: #b80000;color: white; text-align: center;">#{{ $numerations }}</td>
-                                <td><span style="color:#888ea8">Package Type:</span><br>{{ $cargo_detail['package_type'] }}</td>
-                                <td><span style="color:#888ea8">Qty:</span><br>{{ $cargo_detail['qty'] }}</td>
-                                <td><span style="color:#888ea8">Length:</span><br>{{ $cargo_detail['length'] }}</td>
-                                <td><span style="color:#888ea8">Width:</span><br>{{ $cargo_detail['width'] }}</td>
-                                <td><span style="color:#888ea8">Height:</span><br>{{ $cargo_detail['height'] }}</td>
-                                <td><span style="color:#888ea8">Unit:</span><br>{{ $cargo_detail['dimensions_unit'] }}</td>
-                                <td><span style="color:#888ea8">Per piece:</span><br>{{ $cargo_detail['per_piece'] }}</td>
-                                <td><span style="color:#888ea8">Total:</span><br>{{ $cargo_detail['item_total_weight'] }}</td>
-                                <td><span style="color:#888ea8">Unit:</span><br>{{ $cargo_detail['weight_unit'] }}</td>
-                                <td><span style="color:#888ea8">
+                                <td><span style="color:#888ea8;font-weight:bold;">Package Type:</span><br>{{ $cargo_detail['package_type'] }}</td>
+                                <td><span style="color:#888ea8;font-weight:bold;">Qty:</span><br>{{ $cargo_detail['qty'] }}</td>
+                                <td><span style="color:#888ea8;font-weight:bold;">Length:</span><br>{{ $cargo_detail['length'] }}</td>
+                                <td><span style="color:#888ea8;font-weight:bold;">Width:</span><br>{{ $cargo_detail['width'] }}</td>
+                                <td><span style="color:#888ea8;font-weight:bold;">Height:</span><br>{{ $cargo_detail['height'] }}</td>
+                                <td><span style="color:#888ea8;font-weight:bold;">Unit:</span><br>{{ $cargo_detail['dimensions_unit'] }}</td>
+                                <td><span style="color:#888ea8;font-weight:bold;">Per piece:</span><br>{{ $cargo_detail['per_piece'] }}</td>
+                                <td><span style="color:#888ea8;font-weight:bold;">Total:</span><br>{{ $cargo_detail['item_total_weight'] }}</td>
+                                <td><span style="color:#888ea8;font-weight:bold;">Unit:</span><br>{{ $cargo_detail['weight_unit'] }}</td>
+                                <td><span style="color:#888ea8;font-weight:bold;">
                                     @if ($quotation->mode_of_transport == 'Air')
                                     Kgs:
                                     @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
@@ -246,10 +246,10 @@
                                 </span><br>{{ $cargo_detail['item_total_volume_weight_cubic_meter'] }}</td>
                             </tr>
                             <tr>
-                                <td colspan="5"><span style="color:#888ea8">Cargo Description:</span> {{ $cargo_detail['cargo_description'] }}</td>
+                                <td colspan="5"><span style="color:#888ea8;font-weight:bold;">Cargo Description:</span> {{ $cargo_detail['cargo_description'] }}</td>
                                 <td colspan="5">
                                     @if ($cargo_detail['dangerous_cargo'] == 'yes')
-                                    <span style="color:#888ea8">Dangerous Cargo:</span> {{ $cargo_detail['dangerous_cargo'] }}<br>
+                                    <span style="color:#888ea8;font-weight:bold;">Dangerous Cargo:</span> {{ $cargo_detail['dangerous_cargo'] }}<br>
                                         @if ($cargo_detail['dc_imoclassification_1'] != '' || $cargo_detail['dc_unnumber_1'] != '') {{ $cargo_detail['dc_imoclassification_1'] .' : '. $cargo_detail['dc_unnumber_1'].', ' }} @endif
                                         @if ($cargo_detail['dc_imoclassification_2'] != '' || $cargo_detail['dc_unnumber_2'] != '') {{ $cargo_detail['dc_imoclassification_2'] .' : '. $cargo_detail['dc_unnumber_2'].', ' }} @endif
                                         @if ($cargo_detail['dc_imoclassification_3'] != '' || $cargo_detail['dc_unnumber_3'] != '') {{ $cargo_detail['dc_imoclassification_3'] .' : '. $cargo_detail['dc_unnumber_3'].', ' }} @endif
@@ -282,11 +282,11 @@
                     </tr>
                     <tr>
                         <td>
-                            <span style="color:#888ea8">Qty:</span><br>
+                            <span style="color:#888ea8;font-weight:bold;">Qty:</span><br>
                             {{ $quotation->total_qty }}
                         </td>
                         <td>
-                            <span style="color:#888ea8">
+                            <span style="color:#888ea8;font-weight:bold;">
                                 @if ($quotation->mode_of_transport == 'Air')
                                 Actual Weight (Kgs):
                                 @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
@@ -296,7 +296,7 @@
                             {{ $quotation->total_actualweight }}
                         </td>
                         <td>
-                            <span style="color:#888ea8">
+                            <span style="color:#888ea8;font-weight:bold;">
                                 @if ($quotation->mode_of_transport == 'Air')
                                 Volume Weight (Kgs):
                                 @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container')
@@ -309,7 +309,7 @@
                         </td>
                         <td>
                             @if ($quotation->mode_of_transport == 'Air')
-                            <span style="color:#888ea8">
+                            <span style="color:#888ea8;font-weight:bold;">
                                 Chargeable Weight (Kgs)
                             </span><br>
                             {{ $quotation->tota_chargeable_weight }}
@@ -348,7 +348,7 @@
         <tbody>
             <tr>
                 <td width="95" style="width:95px; border-bottom: 5px solid #FFCC00; text-decoration:none">
-                    <img src="https://www.latinamericancargo.com/firmas/lac_logo.png" border="0" width="95"
+                    <img src="https://app.latinamericancargo.com/assets/img/lac_logo.png" border="0" width="95"
                         height="29.73" alt="logo LAC" title="LAC">
                 </td>
                 <td width="28" style="width:28px;"></td>
@@ -388,7 +388,7 @@
                 <td valign="top" style="color: #000000; text-decoration: none;">
                     <p style="font-size: 9pt; margin: 0 0 23px 0"> Track your shipments →<a
                             style="font-size: 8pt; text-decoration: none; color: #000000;"
-                            href="https://www.info.logixboard.com/latinamericancargo-customer-experience-platform/">
+                            href="http://quemtr.webtracker.wisegrid.net/">
                             <b>LAC
                                 ShipmentTracker</b></a></p>
                 </td>

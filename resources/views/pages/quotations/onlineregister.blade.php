@@ -203,7 +203,7 @@
                                                     <input type="radio" value="RoRo" id="option4" name="mode_of_transport" />
                                                     <label for="option4" class="mb-0">
                                                         <div class="radio-icon">
-                                                            <img src="{{ asset('assets/img/icon-roro.png') }}" alt="Opción 4" />
+                                                            <img src="{{ asset('assets/img/lac_roro_icon.png') }}" alt="Opción 4" />
                                                         </div>
                                                         <div class="radio-text">RoRo</div>
                                                         <div class="radio-sub-text">-</div>
@@ -215,7 +215,7 @@
                                                     <input type="radio" value="Breakbulk" id="option5" name="mode_of_transport" />
                                                     <label for="option5" class="mb-0">
                                                         <div class="radio-icon">
-                                                            <img src="{{ asset('assets/img/icono-breakbulk.png') }}" alt="Opción 5" />
+                                                            <img src="{{ asset('assets/img/lac_breakbulk_icon.png') }}" alt="Opción 5" />
                                                         </div>
                                                         <div class="radio-text">Breakbulk</div>
                                                         <div class="radio-sub-text">-</div>
@@ -1002,7 +1002,6 @@
                 '<select class="form-select px-2" name="dimensions_unit[]">' +
                 '<option value="M.">M.</option>' +
                 '<option value="Cm.">Cm.</option>' +
-                '<option value="Feet">Feet</option>' +
                 '<option value="Inch">Inch</option>' +
                 '</select>' +
                 '</div>' +
@@ -1267,11 +1266,16 @@
 
                     // Capturar el evento de clic en el botón "Cancel" dentro del modal
                     $modal.find('.cancel-dange-button').on('click', function () {
-                        // Si el checkbox no estaba marcado originalmente, lo desmarcamos
-                        $checkbox.prop('checked', false);
-                        $modal.modal('hide'); // Cerrar el modal
-                        //delete imolistdetail content html
-                        $modal.find('.imolistdetail').html(`<div class="row d-none">
+
+                        //confirm antes de cancelar
+                        var confirmCanceldange = confirm("Are you sure you want to cancel?");
+
+                        if(confirmCanceldange){
+                            // Si el checkbox no estaba marcado originalmente, lo desmarcamos
+                            $checkbox.prop('checked', false);
+                            $modal.modal('hide'); // Cerrar el modal
+                            //delete imolistdetail content html
+                            $modal.find('.imolistdetail').html(`<div class="row d-none">
                                     <input type="hidden" name="dc_imoclassification_1[]" value="">
                                     <input type="hidden" name="dc_unnumber_1[]" value="">
                                 </div>
@@ -1292,6 +1296,7 @@
                                     <input type="hidden" name="dc_unnumber_5[]" value="">
                                 </div>
                                 `);
+                        }
                     });
 
                 });
