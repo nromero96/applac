@@ -81,6 +81,10 @@ body.dark .light-element {
   margin-bottom: 5px;
 }
 
+.rend-16 {
+  right: 16px;
+}
+
 select.form-custom::-ms-expand {
   display: none;
 }

@@ -1231,6 +1231,10 @@
                             '</div>' +
                         '</div>' +
                     '</div>' +
+                    '<div class="col-md-6 position-relative">'+
+                        '<span class="infototi position-absolute rend-16" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter the details for your shipment, including quantities, dimensions (length, width, height), and weights in the format: [quantity] x [dimensions] x [weight]. Example: 10 x 12x10x8 inches x 5 lbs." ></span>'+
+                        '<textarea name="details_shipment[]" class="form-control" placeholder="Please enter the details for your shipment..."></textarea>'+
+                    '</div>'
                     '</div></div>';
                 $('#listcargodetails').append(html);
                 initializeDangerousCargoModal();
@@ -1494,7 +1498,6 @@
             const perPieceInput = itemdetail.find('input[name="per_piece[]"]');
             const totalWeightInput = itemdetail.find('input[name="item_total_weight[]"]');
             const totalVolumeWeightInput = itemdetail.find('input[name="item_total_volume_weight_cubic_meter[]"]');
-            const weightUnitInput = itemdetail.find('select[name="weight_unit[]"]');
             const dimensionsUnitInput = itemdetail.find('select[name="dimensions_unit[]"]');
             const lengthInput = itemdetail.find('input[name="length[]"]');
             const widthInput = itemdetail.find('input[name="width[]"]');
@@ -1502,7 +1505,6 @@
 
             const qty = +qtyInput.val() || 0;
             const perPiece = +perPieceInput.val() || 0;
-            const weightUnit = weightUnitInput.val();
             const dimensionsUnit = dimensionsUnitInput.val();
             const length = +lengthInput.val() || 0;
             const width = +widthInput.val() || 0;
@@ -1530,10 +1532,6 @@
                     break;
                 }
 
-                if (weightUnit === 'Lbs') {
-                totalVolumeWeight *= 0.45359237;
-                }
-
                 totalWeightInput.val(totalWeight.toFixed(2));
                 totalVolumeWeightInput.val(totalVolumeWeight.toFixed(2));
             } else {
@@ -1550,10 +1548,6 @@
                 case 'Inch':
                     totalCubicMeter = (length * width * height) * 0.0000163871 * qty;
                     break;
-                }
-
-                if (weightUnit === 'Lbs') {
-                totalCubicMeter *= 0.45359237;
                 }
 
                 totalWeightInput.val(totalWeight.toFixed(2));

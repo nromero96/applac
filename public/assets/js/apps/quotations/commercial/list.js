@@ -1,3 +1,6 @@
+// Define la variable columnsVisibility
+var columnsVisibility = JSON.parse(localStorage.getItem('columnsVisibility')) || [0, 1, 2, 3, 4, 5, 6, 7, 8];
+
 var invoiceList = $('#invoice-list').DataTable({
     "dom": "<'inv-list-top-section'<'row'<'col-sm-12 col-md-6 d-flex justify-content-md-start justify-content-center'l<'dt-action-buttons align-self-center'B>><'col-sm-12 col-md-6 d-flex justify-content-md-end justify-content-center mt-md-0 mt-3'f<'toolbar align-self-center'>>>>" +
         "<'table-responsive'tr>" +
@@ -21,7 +24,9 @@ var invoiceList = $('#invoice-list').DataTable({
     },
     "stripeClasses": [],
     "lengthMenu": [7, 10, 20, 50],
-    "pageLength": 10
+    "pageLength": 10,
+
+
 });
 
 
@@ -70,3 +75,4 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+

@@ -5,17 +5,22 @@
 
 <div class="layout-px-spacing">
 
-
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
-
     <div class="middle-content container-xxl p-0">
         <div class="row" id="cancel-row">
-        
             <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing">
+
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <div class="widget-content widget-content-area br-8">
                     <table id="invoice-list" class="table dt-table-hover" style="width:100%">
                         <thead>
@@ -35,7 +40,14 @@
 
                             @foreach ($quotations as $quotation)
                                 <tr>
-                                    <td><a href="{{ route('quotations.show', $quotation->quotation_id) }}"><span class="inv-number">#{{ $quotation->quotation_id }}</span></a></td>
+                                    <td>
+                                        
+                                        @if ($quotation->quotation_assigned_user_id == Auth::user()->id || Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Customer'))
+                                            <a href="{{ route('quotations.show', $quotation->quotation_id) }}"><span class="inv-number">#{{ $quotation->quotation_id }}</span></a>
+                                        @else
+                                            #{{ $quotation->quotation_id }}
+                                        @endif
+                                    </td>
                                     <td>
                                         <div class="d-flex">
                                             <p class="align-self-center mb-0 user-name"> {{ $quotation->user_name.' '.$quotation->user_lastname }} </p>
@@ -81,24 +93,54 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <select class="user-select" data-cotizacion-id="{{ $quotation->quotation_id }}">
-                                            @foreach ($users as $user)
-                                                @if ($user->id == $quotation->quotation_assigned_user_id)
-                                                    <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+
+                                        {{-- Select if user logged is admin spatie --}}
+                                        @if (Auth::user()->hasRole('Administrator'))
+                                            <select class="user-select" data-cotizacion-id="{{ $quotation->quotation_id }}">
+                                                @foreach ($users as $user)
+                                                    @if ($user->id == $quotation->quotation_assigned_user_id)
+                                                        <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
+                                                    @else
+                                                        <option value="">{{ __('No asigned') }}</option>
+                                                    @endif
+                                                @endforeach
+                                            </select>
+                                        @else
+
+                                            @if($quotation->quotation_assigned_user_id == null)
+
+                                                @if (Auth::user()->hasRole('Customer'))
+                                                    <span class="badge badge-light-danger">{{ __('No asigned') }}</span>
                                                 @else
-                                                    <option value="">{{ __('No asigned') }}</option>
+                                                    <a class="badge badge-primary text-start me-2 action-edit" href="{{ route('assignQuoteForMe', $quotation->quotation_id) }}">
+                                                        {{ __('Make') }}
+                                                    </a>
                                                 @endif
-                                            @endforeach
-                                        </select>
+                                                
+                                            @else
+                                                @if ($quotation->quotation_assigned_user_id == Auth::user()->id)
+                                                    <span class="badge badge-light-success">{{ __('You') }}</span>
+                                                @else
+                                                    <span class="badge badge-light-danger">{{ __('Other') }}</span>
+                                                @endif
+                                            @endif
+
+                                        @endif
+
                                     </td>
                                     <td>
-                                        {{-- Rating aleatorio --}}
-                                        @php
-                                            $rating = rand(1, 5);
-                                        @endphp
-                                        @for ($i = 0; $i < $rating; $i++)
-                                            <span class="star">*</span>
-                                        @endfor
+
+                                        @if (Auth::user()->hasRole('Customer'))
+                                            N/A
+                                        @else
+                                            {{-- Rating aleatorio --}}
+                                            @php
+                                                $rating = rand(1, 5);
+                                            @endphp
+                                            @for ($i = 0; $i < $rating; $i++)
+                                                <span class="star">*</span>
+                                            @endfor
+                                        @endif
 
                                     </td>
                                     <td>
@@ -108,7 +150,11 @@
                                         </span>
                                     </td>
                                     <td>
-                                        <a class="badge badge-light-primary text-start me-2 action-edit" href="{{ route('quotations.show', $quotation->quotation_id) }}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
+                                        @if ($quotation->quotation_assigned_user_id == Auth::user()->id || Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Customer'))
+                                            <a class="badge badge-light-primary text-start me-2 action-edit" href="{{ route('quotations.show', $quotation->quotation_id) }}"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
+                                        @else
+                                            <a class="badge badge-light-primary text-start me-2 action-edit disabled" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

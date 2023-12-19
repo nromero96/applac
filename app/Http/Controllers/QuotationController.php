@@ -39,35 +39,68 @@ class QuotationController extends Controller
             'scrollspy_offset' => '',
         ];
 
-        $quotations = Quotation::select(
-            'quotations.id as quotation_id',
-            DB::raw('COALESCE(users.name, guest_users.name) as user_name'),
-            DB::raw('COALESCE(users.lastname, guest_users.lastname) as user_lastname'),
-            DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
-            'quotations.status as quotation_status',
-            'oc.name as origin_country',
-            'dc.name as destination_country',
-            'quotations.assigned_user_id as quotation_assigned_user_id',
-            'quotations.created_at as quotation_created_at',
-            'quotation_notes.created_at as quotation_note_created_at',
+        //lista de cotizaciones para el usuario logueado si es customer
+        if(auth()->user()->hasRole('Customer')){
+            $quotations = Quotation::select(
+                'quotations.id as quotation_id',
+                DB::raw('COALESCE(users.name, guest_users.name) as user_name'),
+                DB::raw('COALESCE(users.lastname, guest_users.lastname) as user_lastname'),
+                DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
+                'quotations.status as quotation_status',
+                'oc.name as origin_country',
+                'dc.name as destination_country',
+                'quotations.assigned_user_id as quotation_assigned_user_id',
+                'quotations.created_at as quotation_created_at',
+                'quotation_notes.created_at as quotation_note_created_at',
+    
+            )
+            ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
+            ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
+            ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
+            ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
+    
+            //get created_at last Quotation Notes
+            ->leftJoin('quotation_notes', function($join){
+                $join->on('quotations.id', '=', 'quotation_notes.quotation_id')
+                ->where('quotation_notes.id', '=', DB::raw("(select max(id) from quotation_notes WHERE quotation_id = quotations.id)"));
+            })
+    
+            ->where('quotations.customer_user_id', auth()->id())
+            ->orderBy('quotations.id', 'desc')
+            ->get();
+    
+        } else {
 
-        )
-        ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
-        ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
-        ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
-        ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
+            $quotations = Quotation::select(
+                'quotations.id as quotation_id',
+                DB::raw('COALESCE(users.name, guest_users.name) as user_name'),
+                DB::raw('COALESCE(users.lastname, guest_users.lastname) as user_lastname'),
+                DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
+                'quotations.status as quotation_status',
+                'oc.name as origin_country',
+                'dc.name as destination_country',
+                'quotations.assigned_user_id as quotation_assigned_user_id',
+                'quotations.created_at as quotation_created_at',
+                'quotation_notes.created_at as quotation_note_created_at',
 
-        //get created_at last Quotation Notes
-        ->leftJoin('quotation_notes', function($join){
-            $join->on('quotations.id', '=', 'quotation_notes.quotation_id')
-            ->where('quotation_notes.id', '=', DB::raw("(select max(id) from quotation_notes WHERE quotation_id = quotations.id)"));
-        })
+            )
+            ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
+            ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
+            ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
+            ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
 
-        ->orderBy('quotations.id', 'desc')
-        ->get();
+            //get created_at last Quotation Notes
+            ->leftJoin('quotation_notes', function($join){
+                $join->on('quotations.id', '=', 'quotation_notes.quotation_id')
+                ->where('quotation_notes.id', '=', DB::raw("(select max(id) from quotation_notes WHERE quotation_id = quotations.id)"));
+            })
+
+            ->orderBy('quotations.id', 'desc')
+            ->get();
+
+        }
 
         $users = User::all();
-
 
         return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users);
     }
@@ -141,7 +174,12 @@ class QuotationController extends Controller
         ->orderBy('id', 'desc')
         ->get();
 
-        return view('pages.quotations.show')->with($data)->with('quotation', $quotation)->with('cargo_details', $cargo_details)->with('quotation_documents', $quotation_documents)->with('quotation_notes', $quotation_notes);
+        //verificate if quotation is assigned to user logged or is Administator
+        if($quotation->assigned_user_id == auth()->id() || auth()->user()->hasRole('Administrator') || ($quotation->customer_user_id == auth()->id()  && auth()->user()->hasRole('Customer')) ){
+            return view('pages.quotations.show')->with($data)->with('quotation', $quotation)->with('cargo_details', $cargo_details)->with('quotation_documents', $quotation_documents)->with('quotation_notes', $quotation_notes);
+        }else{
+            return redirect()->route('quotations.index')->with('error', 'You do not have permission to view this quote.');
+        }
 
     }
 
@@ -568,24 +606,52 @@ public function searchUserstoAssign(Request $request)
 }
 
 
-public function assignUsertoQuote(Request $request, $cotizacionId)
-{
-    try {
-        $quotation = Quotation::find($cotizacionId);
+    public function assignUsertoQuote(Request $request, $cotizacionId)
+    {
+        try {
+            $quotation = Quotation::find($cotizacionId);
 
-        if (!$quotation) {
-            return response()->json(['error' => 'Cotización no encontrada'], 404);
+            if (!$quotation) {
+                return response()->json(['error' => 'Cotización no encontrada'], 404);
+            }
+
+            $quotation->assigned_user_id = $request->input('user_id');
+            $quotation->save();
+
+            return response()->json(['success' => 'Usuario asignado con éxito']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
         }
-
-        $quotation->assigned_user_id = $request->input('user_id');
-        $quotation->save();
-
-        return response()->json(['success' => 'Usuario asignado con éxito']);
-    } catch (\Exception $e) {
-        return response()->json(['error' => $e->getMessage()], 500);
     }
-}
 
+    public function assignQuoteForMe(Request $request, $cotizacionId)
+    {
+        try {
+            $quotation = Quotation::find($cotizacionId);
+
+            if (!$quotation) {
+                return response()->json(['error' => 'Quote not found'], 404);
+            }
+
+            // Verificar si la cotización ya está asignada
+            if ($quotation->assigned_user_id != null || $quotation->assigned_user_id != 0 || $quotation->assigned_user_id != '') {
+                // La cotización ya está asignada a un usuario y redireccionar a la lista de cotizaciones
+                return redirect()->route('quotations.index')
+                    ->with('error', 'Quote #'.$cotizacionId.' already assigned to another user.');
+            }
+
+            // Asignar la cotización al usuario autenticado
+            $quotation->assigned_user_id = auth()->id();
+            $quotation->save();
+
+            // Redireccionar a la cotización
+            return redirect()->route('quotations.show', ['quotation' => $cotizacionId])
+                ->with('success', 'Quote successfully assigned, you can now manage it.');
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
 
 
 
