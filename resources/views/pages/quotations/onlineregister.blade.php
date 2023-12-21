@@ -1196,6 +1196,9 @@
                                     '<option>Select...</option>' +
                                     $typelist +
                                 '</select>' +
+                                '<div class="mt-2 dvtemperature d-none">' +
+                                    '<input type="text" name="temperature[]" class="form-control px-2" placeholder="Temperature">'+
+                                '</div>'+
                             '</div>' +
                             '<div class="col-md-5 px-1 ps-sm-1 mb-2">' +
                                 '<label class="form-label mb-0">'+$qtylabel+'</label>' +
@@ -1231,10 +1234,10 @@
                             '</div>' +
                         '</div>' +
                     '</div>' +
-                    '<div class="col-md-6 position-relative">'+
+                    '<div class="col-md-6 position-relative dvdetailship d-none">'+
                         '<span class="infototi position-absolute rend-16" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter the details for your shipment, including quantities, dimensions (length, width, height), and weights in the format: [quantity] x [dimensions] x [weight]. Example: 10 x 12x10x8 inches x 5 lbs." ></span>'+
                         '<textarea name="details_shipment[]" class="form-control" placeholder="Please enter the details for your shipment..."></textarea>'+
-                    '</div>'
+                    '</div>' +
                     '</div></div>';
                 $('#listcargodetails').append(html);
                 initializeDangerousCargoModal();
@@ -1489,69 +1492,110 @@
                 //remove text in class msg_pcktype
                 $(this).closest('.itemdetail').find('.msg_pcktype').text('');
             }
+
+            //if cargo_type selected is FTL or FCL
+            if($('input[name="cargo_type"]:checked').val() == 'FTL' || $('input[name="cargo_type"]:checked').val() == 'FCL'){
+                //if package_type selected is 48 / 53 Ft Refrigerated Trailer (Reefer)
+                if(selectedValue == '48 / 53 Ft Refrigerated Trailer (Reefer)'){
+                    //show div dvtemperature
+                    $(this).closest('.itemdetail').find('.dvtemperature').removeClass('d-none');
+                    //hide div dvdetailship
+                    $(this).closest('.itemdetail').find('.dvdetailship').addClass('d-none');
+                    //clear textarea details_shipment
+                    $(this).closest('.itemdetail').find('textarea[name="details_shipment[]"]').val('');
+                //20' Flat Rack
+                }else if(selectedValue == 'Flatbed' || selectedValue == 'Double Drop' || selectedValue == 'Step Deck' || selectedValue == 'RGN/Lowboy' || selectedValue == 'Other' || selectedValue == '20\' Flat Rack' || selectedValue == '40\' Flat Rack' || selectedValue == '40\' Flat Rack High Cube' || selectedValue == '20\' Open Top' || selectedValue == '40\' Open Top' || selectedValue == '40\' Open Top High Cube'){
+                    //hide div dvtemperature
+                    $(this).closest('.itemdetail').find('.dvtemperature').addClass('d-none');
+                    //show div dvdetailship
+                    $(this).closest('.itemdetail').find('.dvdetailship').removeClass('d-none');
+                    //clear input temperature
+                    $(this).closest('.itemdetail').find('input[name="temperature[]"]').val('');
+                }else{
+                    //hide div dvtemperature
+                    $(this).closest('.itemdetail').find('.dvtemperature').addClass('d-none');
+                    //clear input temperature
+                    $(this).closest('.itemdetail').find('input[name="temperature[]"]').val('');
+                    //hide div dvdetailship
+                    $(this).closest('.itemdetail').find('.dvdetailship').addClass('d-none');
+                    //clear textarea details_shipment
+                    $(this).closest('.itemdetail').find('textarea[name="details_shipment[]"]').val('');
+                }
+            }
+
         });
 
 
         $(document).on('keyup change', '.itemdetail input[name="qty[]"], .itemdetail input[name="per_piece[]"], .itemdetail input[name="length[]"], .itemdetail input[name="width[]"], .itemdetail input[name="height[]"], .itemdetail select[name="weight_unit[]"], .itemdetail select[name="dimensions_unit[]"]', function() {
-            const itemdetail = $(this).closest('.itemdetail');
-            const qtyInput = itemdetail.find('input[name="qty[]"]');
-            const perPieceInput = itemdetail.find('input[name="per_piece[]"]');
-            const totalWeightInput = itemdetail.find('input[name="item_total_weight[]"]');
-            const totalVolumeWeightInput = itemdetail.find('input[name="item_total_volume_weight_cubic_meter[]"]');
-            const dimensionsUnitInput = itemdetail.find('select[name="dimensions_unit[]"]');
-            const lengthInput = itemdetail.find('input[name="length[]"]');
-            const widthInput = itemdetail.find('input[name="width[]"]');
-            const heightInput = itemdetail.find('input[name="height[]"]');
 
-            const qty = +qtyInput.val() || 0;
-            const perPiece = +perPieceInput.val() || 0;
-            const dimensionsUnit = dimensionsUnitInput.val();
-            const length = +lengthInput.val() || 0;
-            const width = +widthInput.val() || 0;
-            const height = +heightInput.val() || 0;
+            if($('input[name="cargo_type"]:checked').val() == 'FTL' || $('input[name="cargo_type"]:checked').val() == 'FCL'){
+                //no calculations
+            }else{
 
-            const totalWeight = qty * perPiece;
-            let totalVolumeWeight = 0;
-            let totalCubicMeter = 0;
 
-            const modeOfTransport = $('input[name="mode_of_transport"]:checked').val();
+                const itemdetail = $(this).closest('.itemdetail');
+                const qtyInput = itemdetail.find('input[name="qty[]"]');
+                const perPieceInput = itemdetail.find('input[name="per_piece[]"]');
+                const totalWeightInput = itemdetail.find('input[name="item_total_weight[]"]');
+                const totalVolumeWeightInput = itemdetail.find('input[name="item_total_volume_weight_cubic_meter[]"]');
+                const dimensionsUnitInput = itemdetail.find('select[name="dimensions_unit[]"]');
+                const lengthInput = itemdetail.find('input[name="length[]"]');
+                const widthInput = itemdetail.find('input[name="width[]"]');
+                const heightInput = itemdetail.find('input[name="height[]"]');
 
-            if (modeOfTransport === 'Air') {
-                switch (dimensionsUnit) {
-                case 'M.':
-                    totalVolumeWeight = (length * width * height) / 0.006 * qty;
-                    break;
-                case 'Cm.':
-                    totalVolumeWeight = (length * width * height) / 6000 * qty;
-                    break;
-                case 'Feet':
-                    totalVolumeWeight = (length * width * height) / 0.2118 * qty;
-                    break;
-                case 'Inch':
-                    totalVolumeWeight = (length * width * height) / 366.14 * qty;
-                    break;
+                const qty = +qtyInput.val() || 0;
+                const perPiece = +perPieceInput.val() || 0;
+                const dimensionsUnit = dimensionsUnitInput.val();
+                const length = +lengthInput.val() || 0;
+                const width = +widthInput.val() || 0;
+                const height = +heightInput.val() || 0;
+
+                const totalWeight = qty * perPiece;
+
+                let totalVolumeWeight = 0;
+                let totalCubicMeter = 0;
+
+                const modeOfTransport = $('input[name="mode_of_transport"]:checked').val();
+
+                if (modeOfTransport === 'Air') {
+                    switch (dimensionsUnit) {
+                    case 'M.':
+                        totalVolumeWeight = (length * width * height) / 0.006 * qty;
+                        break;
+                    case 'Cm.':
+                        totalVolumeWeight = (length * width * height) / 6000 * qty;
+                        break;
+                    case 'Feet':
+                        totalVolumeWeight = (length * width * height) / 0.2118 * qty;
+                        break;
+                    case 'Inch':
+                        totalVolumeWeight = (length * width * height) / 366.14 * qty;
+                        break;
+                    }
+
+                    totalWeightInput.val(totalWeight.toFixed(2));
+                    totalVolumeWeightInput.val(totalVolumeWeight.toFixed(2));
+                } else {
+                    switch (dimensionsUnit) {
+                    case 'M.':
+                        totalCubicMeter = (length * width * height) * qty;
+                        break;
+                    case 'Cm.':
+                        totalCubicMeter = (length * width * height) / 1000000 * qty;
+                        break;
+                    case 'Feet':
+                        totalCubicMeter = (length * width * height) * 0.0283168 * qty;
+                        break;
+                    case 'Inch':
+                        totalCubicMeter = (length * width * height) * 0.0000163871 * qty;
+                        break;
+                    }
+
+                    totalWeightInput.val(totalWeight.toFixed(2));
+                    totalVolumeWeightInput.val(totalCubicMeter.toFixed(2));
+
                 }
 
-                totalWeightInput.val(totalWeight.toFixed(2));
-                totalVolumeWeightInput.val(totalVolumeWeight.toFixed(2));
-            } else {
-                switch (dimensionsUnit) {
-                case 'M.':
-                    totalCubicMeter = (length * width * height) * qty;
-                    break;
-                case 'Cm.':
-                    totalCubicMeter = (length * width * height) / 1000000 * qty;
-                    break;
-                case 'Feet':
-                    totalCubicMeter = (length * width * height) * 0.0283168 * qty;
-                    break;
-                case 'Inch':
-                    totalCubicMeter = (length * width * height) * 0.0000163871 * qty;
-                    break;
-                }
-
-                totalWeightInput.val(totalWeight.toFixed(2));
-                totalVolumeWeightInput.val(totalCubicMeter.toFixed(2));
             }
 
             updateTotals();

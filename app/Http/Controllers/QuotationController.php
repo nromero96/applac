@@ -342,7 +342,9 @@ class QuotationController extends Controller
             $cargoDetails = [];
 
             $package_types = $request->input('package_type') ?? [];
+            $temperatures = $request->input('temperature') ?? [];
             $qtys = $request->input('qty') ?? [];
+            $details_shipments = $request->input('details_shipment') ?? [];
             $cargo_descriptions = $request->input('cargo_description') ?? [];
             $item_total_weights = $request->input('item_total_weight') ?? [];
             $weight_units = $request->input('weight_unit') ?? [];
@@ -391,6 +393,12 @@ class QuotationController extends Controller
                     $cargoDetail['dimensions_unit'] = $request->input('dimensions_unit')[$i] ?? null;
                     $cargoDetail['per_piece'] = $request->input('per_piece')[$i] ?? null;
                     $cargoDetail['item_total_volume_weight_cubic_meter'] = $request->input('item_total_volume_weight_cubic_meter')[$i] ?? null;
+                }
+
+                //if cargo type is FTL or FCL
+                if ($cargo_type === 'FTL' || $cargo_type === 'FCL') {
+                    $cargoDetail['temperature'] = $request->input('temperature')[$i] ?? null;
+                    $cargoDetail['details_shipment'] = $request->input('details_shipment')[$i] ?? null;
                 }
 
                 $cargoDetails[] = $cargoDetail;

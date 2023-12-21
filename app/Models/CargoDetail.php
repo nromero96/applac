@@ -12,7 +12,9 @@ class CargoDetail extends Model
     protected $fillable = [
         'quotation_id',
         'package_type',
+        'temperature',
         'qty',
+        'details_shipment',
         'length',
         'width',
         'height',
