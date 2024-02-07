@@ -140,7 +140,7 @@ body.dark .code-section pre {
   margin-bottom: 0;
   height: 0;
   padding: 0;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 body.dark .code-section-container.show-code .code-section pre {
   height: auto;
@@ -520,7 +520,7 @@ body.dark .form-control {
   padding: 8px 10px;
   letter-spacing: 1px;
   padding: 0.5rem 0.5rem;
-  border-radius: 6px;
+  border-radius: 4px;
   background: #1b2e4b;
   height: auto;
   transition: none;
@@ -606,7 +606,7 @@ body.dark .form-select {
   border: 1px solid #1b2e4b;
   color: #009688;
   background-color: #1b2e4b;
-  border-radius: 6px;
+  border-radius: 4px;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23009688' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
   transition: none;
 }
@@ -812,7 +812,7 @@ body.dark .btn {
   word-wrap: break-word;
   transition: 0.2s ease-out;
   touch-action: manipulation;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   background-color: #f1f2f3;
   box-shadow: 0px 5px 20px 0 rgba(0, 0, 0, 0.1);
@@ -1698,8 +1698,8 @@ body.dark .show > .btn-outline-primary.dropdown-toggle:after, body.dark .show > 
   color: #fff !important;
 }
 body.dark .btn-outline-primary {
-  border: 1px solid #4361ee !important;
-  color: #4361ee !important;
+  border: 1px solid #c00000 !important;
+  color: #c00000 !important;
   background-color: transparent;
   box-shadow: none;
 }
@@ -1781,11 +1781,11 @@ body.dark .btn-outline-dark:hover {
   box-shadow: 0 10px 20px -10px rgba(59, 63, 92, 0.59) !important;
 }
 body.dark .btn-check:active + .btn-outline-primary, body.dark .btn-check:checked + .btn-outline-primary {
-  background-color: #4361ee !important;
+  background-color: #c00000 !important;
   color: #fff !important;
 }
 body.dark .btn-outline-primary.active, body.dark .btn-outline-primary.dropdown-toggle.show, body.dark .btn-outline-primary:active {
-  background-color: #4361ee !important;
+  background-color: #c00000 !important;
   color: #fff !important;
 }
 body.dark .btn-check:active + .btn-outline-info, body.dark .btn-check:checked + .btn-outline-info {
@@ -2195,7 +2195,7 @@ body.dark .badge {
   display: inline-block;
   padding: 4.6px 8px;
   color: #FFF;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 body.dark .badge:hover {
   transition: all 0.3s ease-out;
@@ -3096,7 +3096,7 @@ body.dark .br-4 {
   border-radius: 4px !important;
 }
 body.dark .br-6 {
-  border-radius: 6px !important;
+  border-radius: 4px !important;
 }
 body.dark .br-8 {
   border-radius: 8px !important;

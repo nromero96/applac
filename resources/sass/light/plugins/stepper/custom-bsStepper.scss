@@ -1,6 +1,8 @@
 @import '../../base/base';
 .bs-stepper-content {
   width: 100%;
+  padding: 0px;
+  padding-top: 3em;
 }
 
 .bs-stepper .step.crossed + .line {
@@ -8,18 +10,20 @@
 }
 
 .step.crossed .step-trigger {
-  &.disabled .bs-stepper-circle, &:disabled .bs-stepper-circle {
-    background-color: $primary;
-    color: #fff;
+  &.disabled .bs-stepper-circle {
+    background-color: #c0000000;
+    color: #81995c;
   }
 }
+
+
 
 .bs-stepper .line, .bs-stepper-line {
   background-color: #e0e6ed;
 }
 
 .bs-stepper-circle {
-  background-color: #bfc9d4;
+  background-color: #ffffff00;
 
   svg {
     width: 16px;
@@ -27,27 +31,52 @@
   }
 }
 
+.step.crossed .step-trigger{
+  opacity: 1 !important;
+}
+
 .bs-stepper .step-trigger {
-  color: $dark;
+  display: block;
+  color: #595959;
   font-weight: 600;
   letter-spacing: 1px;
+  border-bottom: 3px solid;
+  border-radius: 0;
+  padding-bottom: 0px;
 
   &.disabled, &:disabled {
-    opacity: 0.55;
+    opacity: 0.5;
   }
 
   &.disabled .bs-stepper-circle, &:disabled .bs-stepper-circle {
-    color: #000;
-    font-weight: 700;
+    color: #595959;
+    font-size: 41px;
+    font-weight: 400;
+    height: 1em;
+    width: 4em;
+    font-family: 'Kanit';
   }
 }
 
-.active .bs-stepper-circle {
-  background-color: $primary;
+.active .step-trigger{
+  border-color: $primary;
 }
 
-.bs-stepper-label:focus {
-  color: $primary;
+.active .bs-stepper-circle {
+    background-color: #ffffff00;
+    color: $primary;
+    font-family: 'Kanit';
+    font-size: 41px;
+    font-weight: 400;
+    height: 1em;
+    width: 4em;
+}
+
+.bs-stepper-label {
+  font-weight: bold;
+  &:focus {
+    color: $primary;
+  }
 }
 
 /* 

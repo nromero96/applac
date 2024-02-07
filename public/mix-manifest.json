@@ -1,10 +1,12 @@
 {
-    "/layouts/vertical-light-menu/css/dark/structure.css": "/layouts/vertical-light-menu/css/dark/structure.css",
     "/layouts/vertical-light-menu/css/light/structure.css": "/layouts/vertical-light-menu/css/light/structure.css",
     "/layouts/vertical-light-menu/css/dark/loader.css": "/layouts/vertical-light-menu/css/dark/loader.css",
     "/layouts/vertical-light-menu/css/light/loader.css": "/layouts/vertical-light-menu/css/light/loader.css",
+    "/assets/css/light/front_form.css": "/assets/css/light/front_form.css",
     "/assets/css/dark/main.css": "/assets/css/dark/main.css",
     "/assets/css/light/main.css": "/assets/css/light/main.css",
+    "/plugins/css/dark/stepper/custom-bsStepper.css": "/plugins/css/dark/stepper/custom-bsStepper.css",
+    "/plugins/css/light/stepper/custom-bsStepper.css": "/plugins/css/light/stepper/custom-bsStepper.css",
     "/plugins/css/dark/tagify/custom-tagify.css": "/plugins/css/dark/tagify/custom-tagify.css",
     "/plugins/css/light/tagify/custom-tagify.css": "/plugins/css/light/tagify/custom-tagify.css",
     "/assets/css/dark/apps/suppliers.css": "/assets/css/dark/apps/suppliers.css",
@@ -18,5 +20,6 @@
     "/plugins/css/dark/apex/custom-apexcharts.css": "/plugins/css/dark/apex/custom-apexcharts.css",
     "/plugins/css/light/apex/custom-apexcharts.css": "/plugins/css/light/apex/custom-apexcharts.css",
     "/assets/css/dark/components/list-group.css": "/assets/css/dark/components/list-group.css",
-    "/assets/css/light/components/list-group.css": "/assets/css/light/components/list-group.css"
+    "/assets/css/light/components/list-group.css": "/assets/css/light/components/list-group.css",
+    "/layouts/vertical-light-menu/css/dark/structure.css": "/layouts/vertical-light-menu/css/dark/structure.css"
 }

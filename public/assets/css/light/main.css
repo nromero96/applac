@@ -159,7 +159,7 @@ select.form-custom::-ms-expand {
   margin-bottom: 0;
   height: 0;
   padding: 0;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 
 .code-section-container.show-code .code-section pre {
@@ -555,7 +555,7 @@ span.red {
   padding: 8px 10px;
   letter-spacing: 1px;
   padding: 0.5rem 0.5rem;
-  border-radius: 6px;
+  border-radius: 4px;
   background: #fff;
   height: auto;
   transition: none;
@@ -646,7 +646,7 @@ span.red {
   border: 1px solid #bfc9d4;
   color: #3b3f5c;
   background-color: #fff;
-  border-radius: 6px;
+  border-radius: 4px;
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23B80000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
   transition: none;
 }
@@ -872,7 +872,7 @@ select.form-control.form-custom {
   word-wrap: break-word;
   transition: 0.2s ease-out;
   touch-action: manipulation;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   background-color: #e0e6ed;
   will-change: opacity, transform;
@@ -1834,8 +1834,8 @@ fieldset:disabled .btn {
 }
 
 .btn-outline-primary {
-  border: 1px solid #4361ee !important;
-  color: #4361ee !important;
+  border: 1px solid #c00000 !important;
+  color: #c00000 !important;
   background-color: transparent;
   box-shadow: none;
 }
@@ -1932,12 +1932,12 @@ fieldset:disabled .btn {
 }
 
 .btn-check:active + .btn-outline-primary, .btn-check:checked + .btn-outline-primary {
-  background-color: #4361ee !important;
+  background-color: #c00000 !important;
   color: #fff !important;
 }
 
 .btn-outline-primary.active, .btn-outline-primary.dropdown-toggle.show, .btn-outline-primary:active {
-  background-color: #4361ee !important;
+  background-color: #c00000 !important;
   color: #fff !important;
 }
 
@@ -2450,7 +2450,7 @@ fieldset:disabled .btn {
   display: inline-block;
   padding: 4.6px 8px;
   color: #FFF;
-  border-radius: 6px;
+  border-radius: 4px;
 }
 .badge:hover {
   transition: all 0.3s ease-out;
@@ -3535,7 +3535,7 @@ fieldset:disabled .btn {
 }
 
 .br-6 {
-  border-radius: 6px !important;
+  border-radius: 4px !important;
 }
 
 .br-8 {

@@ -12,592 +12,653 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Commercial Cargo | Quotation | LAC</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon.ico') }}"/>
+    <link href="{{ asset('layouts/vertical-light-menu/css/light/loader.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('layouts/vertical-light-menu/css/dark/loader.css') }}" rel="stylesheet" type="text/css" />
+    <script src="{{ asset('layouts/vertical-light-menu/loader.js') }}"></script>
     
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css2?family=Kanit&amp;family=Nunito:wght@400;600;700&amp;display=swap" rel="stylesheet">
-
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     
+    <link href="{{ asset('layouts/vertical-light-menu/css/light/plugins.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/light/authentication/auth-boxed.css') }}" rel="stylesheet" type="text/css" />
+    
+    <link href="{{ asset('layouts/vertical-light-menu/css/dark/plugins.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/dark/authentication/auth-boxed.css') }}" rel="stylesheet" type="text/css" />
+
     <link href="{{ asset('assets/css/light/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
-    
-    <link href="{{ asset('assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css">
-    
-    <link href="{{ asset('plugins/src/flatpickr/flatpickr.css') }}" rel="stylesheet" type="text/css" />
-    
-    <link href="{{ asset('plugins/src/stepper/bsStepper.min.css') }}" rel="stylesheet" type="text/css" />
-    
-    <link href="{{ asset('plugins/src/filepond/filepond.min.css') }}" rel="stylesheet" type="text/css" >
-    
-    <link href="{{ asset('plugins/src/filepond/FilePondPluginImagePreview.min.css') }}" rel="stylesheet" type="text/css">
-    
-    <link href="{{ asset('plugins/src/intl-tel-input/css/intlTelInput.min.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/css/dark/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
 
-    <link href="{{ asset('assets/css/light/front_form.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css">
+
+    <link href="{{ asset('plugins/src/flatpickr/flatpickr.css') }}" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <link rel="stylesheet" href="{{ asset('plugins/src/filepond/filepond.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('plugins/src/filepond/FilePondPluginImagePreview.min.css') }}">
+    
+    <link href="{{ asset('plugins/css/light/filepond/custom-filepond.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('plugins/css/dark/filepond/custom-filepond.css') }}" rel="stylesheet" type="text/css" />
+
+    <link href="{{ asset('plugins/css/light/flatpickr/custom-flatpickr.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('plugins/css/dark/flatpickr/custom-flatpickr.css') }}" rel="stylesheet" type="text/css" />
+    
+    <link rel="stylesheet" href="{{ asset('plugins/src/intl-tel-input/css/intlTelInput.min.css') }}" type="text/css">
+
+    <style>
+
+        body{
+            background: #ffffff;
+        }
+    
+    .radio-card{
+        background: #FFFFFF;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .radio-card .radio-icon img{
+        width: 32px;
+        height: 32px;
+        cursor: pointer;
+    }
+
+    .radio-card input[type="radio"] {
+        margin: 0 auto;
+        width: 20px;
+        height: 20px;
+        border: 1px solid #D8D8D8;
+        margin-bottom: 10px;
+        accent-color: #B80000;
+        cursor: pointer;
+    }
+
+    .radio-card .radio-text{
+        font-style: normal;
+        font-weight: 400;
+        font-size: 18px;
+        line-height: 25px;
+        text-align: center;
+        color: #42403E;
+        cursor: pointer;
+    }
+
+    .radio-card .radio-sub-text{
+        font-style: normal;
+        font-weight: 400;
+        font-size: 15px;
+        line-height: 20px;
+        text-align: center;
+        color: #42403E;
+        opacity: 0.6;
+        cursor: pointer;
+    }
+
+    .form-control:disabled:not(.flatpickr-input), .form-control[readonly]:not(.flatpickr-input) {
+        color: #7c7c7c;
+    }
+
+    .cursor-pointer{
+        cursor: pointer;
+    }
+
+    .infototi{
+        position: relative;
+        cursor: pointer;
+        display: inherit;
+        width: 16px !important;
+        height: 16px !important;
+    }
+
+    .infototi::before {
+        content: '';
+        position: absolute;
+        top: 2px;
+        left: 2px;
+        width: 16px;
+        height: 16px;
+        background-image: url("assets/img/icon-tooltip.svg");
+    }
+
+
+    </style>
+
 
 </head>
 <body class="form">
 
+    <!-- BEGIN LOADER -->
+    <div id="load_screen"> <div class="loader"> <div class="loader-content">
+        <div class="spinner-grow align-self-center"></div>
+    </div></div></div>
+    <!--  END LOADER -->
 
     <div class="auth-container d-flex">
         <div class="container mx-auto align-self-center">
-
-
-
             <form method="POST" id="form_quotations" enctype="multipart/form-data">
-                <div id="wizard_Default" class="col-lg-12 layout-spacing mt-3">
-                    <div class="statbox widget box box-shadow">
-                        <div class="widget-header">
-                            <div class="row">
-                                <div class="col-xl-12 col-md-12 col-sm-12 col-12 text-center pt-3">
-                                    <h2 class="fw-bold">{{ __('Get a Quote Now') }}</h2>
-                                    <p>{{ __('Fill out the form below to get your international freight quote!') }}</p>
-                                </div>
+                <div class="card mt-3 mb-3">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 mb-3 text-center">
+                                <h2 class="fw-bold">{{ __('Get a Quote Now') }}</h2>
+                                <p>{{ __('Fill out the form below to get your international freight quote!') }}</p>
                             </div>
-                        </div>
-                        <div class="widget-content widget-content-area">
-                            <div class="bs-stepper stepper-form-one">
-                                <div class="bs-stepper-header" role="tablist">
-                                    <div class="step" data-target="#defaultStep-one">
-                                        <button type="button" class="step-trigger" role="tab" >
-                                            <span class="bs-stepper-circle">1</span><br>
-                                            <span class="bs-stepper-label">{{ __('Transporte') }}</span>
-                                        </button>
+
+                            {{-- Transport Details --}}
+                            <div class="col-md-12 mb-3" id="cargoinfodata">
+                                <div class="row">
+                                    <div class="col-md-12 mb-4">
+                                        <h5 class="fw-bold">{{ __('Transport Details') }}</h5>
                                     </div>
-                                    <div class="line"></div>
-                                    <div class="step" data-target="#defaultStep-two">
-                                        <button type="button" class="step-trigger" role="tab"  >
-                                            <span class="bs-stepper-circle">2</span><br>
-                                            <span class="bs-stepper-label">{{ __('Location') }}</span>
-                                        </button>
+        
+                                    <div class="col-md-12 mb-1">
+                                        <h6 class="fw-bold">{{ __('Mode of transport') }}</h6>
                                     </div>
-                                    <div class="line"></div>
-                                    <div class="step" data-target="#defaultStep-three">
-                                        <button type="button" class="step-trigger" role="tab"  >
-                                            <span class="bs-stepper-circle">3</span><br>
-                                            <span class="bs-stepper-label">
-                                                <span class="bs-stepper-title">{{ __('Cargo') }}</span>
-                                            </span>
-                                        </button>
-                                    </div>
-                                    <div class="line"></div>
-                                    <div class="step" data-target="#defaultStep-four">
-                                        <button type="button" class="step-trigger" role="tab"  >
-                                            <span class="bs-stepper-circle">4</span><br>
-                                            <span class="bs-stepper-label">
-                                                <span class="bs-stepper-title">{{ __('Contact') }}</span>
-                                            </span>
-                                        </button>
+        
+                                    <div class="col-md-12">
+                                        <div class="row align-items-center justify-content-center">
+                                            <div class="col mb-4 text-center">
+                                                <div class="radio-card p-2">
+                                                    <input type="radio" value="Air" id="option1" name="mode_of_transport" checked />
+                                                    <label for="option1" class="mb-0">
+                                                        <div class="radio-icon">
+                                                            <img src="{{ asset('assets/img/60a35f0d358aaa2332423e.png') }}" alt="Opción 1" />
+                                                        </div>
+                                                        <div class="radio-text">Air</div>
+                                                        <div class="radio-sub-text">-</div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col mb-4 text-center">
+                                                <div class="radio-card p-2">
+                                                    <input type="radio" value="Ground" id="option2" name="mode_of_transport" />
+                                                    <label for="option2" class="mb-0">
+                                                        <div class="radio-icon">
+                                                            <img src="{{ asset('assets/img/52866310c621e0014627d90f78f04fce.png') }}" alt="Opción 2" />
+                                                        </div>
+                                                        <div class="radio-text">Ground</div>
+                                                        <div class="radio-sub-text">(LTL/FTL)</div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col mb-4 text-center">
+                                                <div class="radio-card p-2">
+                                                    <input type="radio" value="Container" id="option3" name="mode_of_transport" />
+                                                    <label for="option3" class="mb-0">
+                                                        <div class="radio-icon">
+                                                            <img src="{{ asset('assets/img/067d8aadd24e98dbaedc18f9312c7f3a.png') }}" alt="Opción 3" />
+                                                        </div>
+                                                        <div class="radio-text">Container</div>
+                                                        <div class="radio-sub-text">(LCL/FCL)</div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col mb-4 text-center">
+                                                <div class="radio-card p-2">
+                                                    <input type="radio" value="RoRo" id="option4" name="mode_of_transport" />
+                                                    <label for="option4" class="mb-0">
+                                                        <div class="radio-icon">
+                                                            <img src="{{ asset('assets/img/lac_roro_icon.png') }}" alt="Opción 4" />
+                                                        </div>
+                                                        <div class="radio-text">RoRo</div>
+                                                        <div class="radio-sub-text">-</div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col mb-4 text-center">
+                                                <div class="radio-card p-2">
+                                                    <input type="radio" value="Breakbulk" id="option5" name="mode_of_transport" />
+                                                    <label for="option5" class="mb-0">
+                                                        <div class="radio-icon">
+                                                            <img src="{{ asset('assets/img/lac_breakbulk_icon.png') }}" alt="Opción 5" />
+                                                        </div>
+                                                        <div class="radio-text">Breakbulk</div>
+                                                        <div class="radio-sub-text">-</div>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="text-danger" id="mode_of_transport_error"></div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="bs-stepper-content" id="cargoinfodata">
-                                    <div id="defaultStep-one" class="content" role="tabpanel">
-                                        
-                                        {{-- Mode of transport --}}
-                                        <div class="row">
-                                            <div class="col-md-12 mb-3">
-                                                <h5 class="fw-bold">{{ __('Mode of transport') }}</h5>
+
+                                <div class="row d-none" id="dv_cargotype">
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label">{{ __('Cargo Type') }}</label>
+                                        <div class="" id="dv_cargotype_ground">
+                                            <div class="form-check form-check-inline ps-0">
+                                                <input type="radio" id="cargo_type1" name="cargo_type" class="custom-control-input cursor-pointer" value="LTL">
+                                                <label class="custom-control-label cursor-pointer" for="cargo_type1">LTL</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose LTL (Less than a Trailer Load) if you do not have enough cargo to fill an entire 48ft / 53ft standard trailer." ></span>
                                             </div>
-                
-                                            <div class="col-md-12">
-                                                <div class="row align-items-center justify-content-center">
-                                                    <div class="col mb-4 text-center">
-                                                        <div class="radio-card p-2">
-                                                            <input type="radio" value="Air" id="option1" name="mode_of_transport" checked />
-                                                            <label for="option1" class="mb-0">
-                                                                <div class="radio-icon">
-                                                                    <img src="{{ asset('assets/img/60a35f0d358aaa2332423e.png') }}" alt="Opción 1" />
-                                                                </div>
-                                                                <div class="radio-text">Air</div>
-                                                                <div class="radio-sub-text">-</div>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col mb-4 text-center">
-                                                        <div class="radio-card p-2">
-                                                            <input type="radio" value="Ground" id="option2" name="mode_of_transport" />
-                                                            <label for="option2" class="mb-0">
-                                                                <div class="radio-icon">
-                                                                    <img src="{{ asset('assets/img/52866310c621e0014627d90f78f04fce.png') }}" alt="Opción 2" />
-                                                                </div>
-                                                                <div class="radio-text">Ground</div>
-                                                                <div class="radio-sub-text">(LTL/FTL)</div>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col mb-4 text-center">
-                                                        <div class="radio-card p-2">
-                                                            <input type="radio" value="Container" id="option3" name="mode_of_transport" />
-                                                            <label for="option3" class="mb-0">
-                                                                <div class="radio-icon">
-                                                                    <img src="{{ asset('assets/img/067d8aadd24e98dbaedc18f9312c7f3a.png') }}" alt="Opción 3" />
-                                                                </div>
-                                                                <div class="radio-text">Container</div>
-                                                                <div class="radio-sub-text">(LCL/FCL)</div>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col mb-4 text-center">
-                                                        <div class="radio-card p-2">
-                                                            <input type="radio" value="RoRo" id="option4" name="mode_of_transport" />
-                                                            <label for="option4" class="mb-0">
-                                                                <div class="radio-icon">
-                                                                    <img src="{{ asset('assets/img/lac_roro_icon.png') }}" alt="Opción 4" />
-                                                                </div>
-                                                                <div class="radio-text">RoRo</div>
-                                                                <div class="radio-sub-text">-</div>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col mb-4 text-center">
-                                                        <div class="radio-card p-2">
-                                                            <input type="radio" value="Breakbulk" id="option5" name="mode_of_transport" />
-                                                            <label for="option5" class="mb-0">
-                                                                <div class="radio-icon">
-                                                                    <img src="{{ asset('assets/img/lac_breakbulk_icon.png') }}" alt="Opción 5" />
-                                                                </div>
-                                                                <div class="radio-text">Breakbulk</div>
-                                                                <div class="radio-sub-text">-</div>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="text-danger" id="mode_of_transport_error"></div>
-                                                </div>
+                                            <div class="form-check form-check-inline ps-0">
+                                                <input type="radio" id="cargo_type2" name="cargo_type" class="custom-control-input cursor-pointer" value="FTL">
+                                                <label class="custom-control-label cursor-pointer" for="cargo_type2">FTL</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose FTL (Full Trailer Load) for a complete 48ft / 53ft standard trailer, or a specialized one: reefer, flatbed, RGN, lowboy, etc." ></span>
                                             </div>
                                         </div>
-
-                                        <div class="row" >
-                                            <div class="col-md-6 mb-3 d-none" id="dv_cargotype">
-                                                <label class="form-label">{{ __('Cargo Type') }}</label>
-                                                <div class="" id="dv_cargotype_ground">
-                                                    <div class="form-check form-check-inline ps-0">
-                                                        <input type="radio" id="cargo_type1" name="cargo_type" class="cargo-type custom-control-input cursor-pointer" value="LTL">
-                                                        <label class="custom-control-label cargo-type-label cursor-pointer" for="cargo_type1">LTL</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose LTL (Less than a Trailer Load) if you do not have enough cargo to fill an entire 48ft / 53ft standard trailer." ></span>
-                                                    </div>
-                                                    <div class="form-check form-check-inline ps-0">
-                                                        <input type="radio" id="cargo_type2" name="cargo_type" class="cargo-type custom-control-input cursor-pointer" value="FTL">
-                                                        <label class="custom-control-label cargo-type-label cursor-pointer" for="cargo_type2">FTL</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose FTL (Full Trailer Load) for a complete 48ft / 53ft standard trailer, or a specialized one: reefer, flatbed, RGN, lowboy, etc." ></span>
-                                                    </div>
-                                                </div>
-                                                <div class="d-none" id="dv_cargotype_container">
-                                                    <div class="form-check form-check-inline ps-0">
-                                                        <input type="radio" id="cargo_type3" name="cargo_type" class="cargo-type custom-control-input cursor-pointer" value="LCL">
-                                                        <label class="custom-control-label cargo-type-label cursor-pointer" for="cargo_type3">LCL</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose LCL (Less Than a Container Load) if you do not have enough cargo to fill an entire 20ft / 40ft standard container." ></span>
-                                                    </div>
-                                                    <div class="form-check form-check-inline ps-0">
-                                                        <input type="radio" id="cargo_type4" name="cargo_type" class="cargo-type custom-control-input cursor-pointer" value="FCL">
-                                                        <label class="custom-control-label cargo-type-label cursor-pointer" for="cargo_type4">FCL</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose FCL (Full Container Load) for a complete 20ft / 40ft standard container, or a specialized one: reefer, flat rack, open top, etc." ></span>
-                                                    </div>
-                                                </div>
-                                                <div class="d-none" id="dv_cargotype_roro">
-                                                    <div class="form-check form-check-inline ps-0">
-                                                        <input type="radio" id="cargo_type5" name="cargo_type" class="cargo-type custom-control-input cursor-pointer" value="Commercial (Business-to-Business)">
-                                                        <label class="custom-control-label cargo-type-label cursor-pointer" for="cargo_type5">Commercial (Business-to-Business)</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Goods, vehicles, machinery, etc. sold to overseas companies for business purposes. Requires commercial documentation and may incur tariffs." ></span>
-                                                    </div>
-                                                    <div class="form-check form-check-inline ps-0">
-                                                        <input type="radio" id="cargo_type6" name="cargo_type" class="cargo-type custom-control-input cursor-pointer" value="Personal Vehicle">
-                                                        <label class="custom-control-label cargo-type-label cursor-pointer" for="cargo_type6">Personal Vehicle</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Personal vehicles shipped for non-commercial reasons. Requires specific personal documentation, possible tariff exemptions." ></span>
-                                                    </div>
-                                                </div>
-                                                <div class="text-danger" id="cargo_type_error"></div>
+                                        <div class="d-none" id="dv_cargotype_container">
+                                            <div class="form-check form-check-inline ps-0">
+                                                <input type="radio" id="cargo_type3" name="cargo_type" class="custom-control-input cursor-pointer" value="LCL">
+                                                <label class="custom-control-label cursor-pointer" for="cargo_type3">LCL</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose LCL (Less Than a Container Load) if you do not have enough cargo to fill an entire 20ft / 40ft standard container." ></span>
                                             </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label mb-0">{{ __('Service Type') }}</label>
-                                                <select class="form-select" name="service_type" id="service_type" required>
-                                                    <option value="">{{ __('Select...') }}</option>
-                                                    <option value="Door-to-Door">{{ __('Door-to-Door') }}</option>
-                                                    <option value="Door-to-Airport">{{ __('Door-to-Airport') }}</option>
-                                                    <option value="Airport-to-Door">{{ __('Airport-to-Door') }}</option>
-                                                    <option value="Airport-to-Airport">{{ __('Airport-to-Airport') }}</option>
+                                            <div class="form-check form-check-inline ps-0">
+                                                <input type="radio" id="cargo_type4" name="cargo_type" class="custom-control-input cursor-pointer" value="FCL">
+                                                <label class="custom-control-label cursor-pointer" for="cargo_type4">FCL</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Choose FCL (Full Container Load) for a complete 20ft / 40ft standard container, or a specialized one: reefer, flat rack, open top, etc." ></span>
+                                            </div>
+                                        </div>
+                                        <div class="d-none" id="dv_cargotype_roro">
+                                            <div class="form-check form-check-inline ps-0">
+                                                <input type="radio" id="cargo_type5" name="cargo_type" class="custom-control-input cursor-pointer" value="Commercial (Business-to-Business)">
+                                                <label class="custom-control-label cursor-pointer" for="cargo_type5">Commercial (Business-to-Business)</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Goods, vehicles, machinery, etc. sold to overseas companies for business purposes. Requires commercial documentation and may incur tariffs." ></span>
+                                            </div>
+                                            <div class="form-check form-check-inline ps-0">
+                                                <input type="radio" id="cargo_type6" name="cargo_type" class="custom-control-input cursor-pointer" value="Personal Vehicle">
+                                                <label class="custom-control-label cursor-pointer" for="cargo_type6">Personal Vehicle</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Personal vehicles shipped for non-commercial reasons. Requires specific personal documentation, possible tariff exemptions." ></span>
+                                            </div>
+                                        </div>
+                                        <div class="text-danger" id="cargo_type_error"></div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">{{ __('Service Type') }}</label>
+                                        <select class="form-select" name="service_type" id="service_type" required>
+                                            <option value="">{{ __('Select...') }}</option>
+                                            <option value="Door-to-Door">{{ __('Door-to-Door') }}</option>
+                                            <option value="Door-to-Airport">{{ __('Door-to-Airport') }}</option>
+                                            <option value="Airport-to-Door">{{ __('Airport-to-Door') }}</option>
+                                            <option value="Airport-to-Airport">{{ __('Airport-to-Airport') }}</option>
+                                        </select>
+                                        <div class="text-danger" id="service_type_error"></div>
+                                    </div>
+                                </div>
+
+                                {{-- Location Details --}}
+                                <div class="row mt-3">
+                                    <div class="col-md-12 mb-3">
+                                        <h5 class="fw-bold">{{ __('Location Details') }}</h5>
+                                    </div>
+
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label class="form-label">{{ __('Origin Country') }}</label>
+                                            <select class="form-select" name="origin_country_id" id="origin_country_id" required>
+                                                <option value="">{{ __('Select...') }}</option>
+                                            </select>
+                                            <div class="text-danger" id="origin_country_id_error"></div>
+                                        </div>
+                                        <div class="mb-0">
+                                            <label class="form-label" id="origin_labeladdress">{{ __('Pick up Address') }}</label>
+                                            <label class="form-label d-none" id="origin_labelairport">{{ __('City') }}</label>
+                                            <label class="form-label d-none" id="origin_labelport">{{ __('Origin Port') }}</label>
+                                            <label class="form-label d-none" id="origin_labelcfs">{{ __('Origin CFS/Port') }}</label>
+                                        </div>
+                                        <div class="mb-2 d-none" id="origin_div_airportorport">
+                                            <input type="text" class="form-control" name="origin_airportorport" id="origin_airportorport" placeholder="{{ __('Enter Airport') }}">
+                                            <div class="text-danger" id="origin_airportorport_error"></div>
+                                        </div>
+                                        <div class="" id="origin_div_fulladress">
+                                            <div class="mb-2">
+                                                <input type="text" class="form-control" name="origin_address" id="origin_address" placeholder="{{ __('Enter street address') }}">
+                                                <div class="text-danger" id="origin_address_error"></div>
+                                            </div>
+                                            <div class="mb-2">
+                                                <input type="text" class="form-control" name="origin_city" id="origin_city" placeholder="{{ __('Enter City') }}">
+                                                <div class="text-danger" id="origin_city_error"></div>
+                                            </div>
+                                            <div class="mb-2">
+                                                <select class="form-select" name="origin_state_id" id="origin_state_id">
+                                                    <option value="">{{ __('State...') }}</option>
                                                 </select>
-                                                <div class="text-danger" id="service_type_error"></div>
+                                                <div class="text-danger" id="origin_state_id_error"></div>
                                             </div>
-                                        </div>
-                                        
-                                        <div class="button-action text-center mt-4 mb-3">
-                                            <a class="btn btn-outline-primary btn-prev me-3 d-none" disabled> ← Prev</a>
-                                            <a class="btn btn-primary btn-nxt">{{ __('Continue to Location') }} →</a>
+                                            <div class="mb-2">
+                                                <input type="text" class="form-control" name="origin_zip_code" id="origin_zip_code" placeholder="{{ __('Enter Zip Code') }}">
+                                                <div class="text-danger" id="origin_zip_code_error"></div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div id="defaultStep-two" class="content" role="tabpanel">
-                                        
-                                        {{-- Location Details --}}
-                                        <div class="row">
-                                            <div class="col-md-12 mb-3">
-                                                <h5 class="fw-bold">{{ __('Location Details') }}</h5>
-                                            </div>
-
-                                            <div class="col-md-5">
-                                                <div class="mb-2">
-                                                    <label class="form-label mb-0">{{ __('Origin Country') }}</label>
-                                                    <select class="form-select" name="origin_country_id" id="origin_country_id" required>
-                                                        <option value="">{{ __('Select...') }}</option>
-                                                    </select>
-                                                    <div class="text-danger" id="origin_country_id_error"></div>
-                                                </div>
-                                                <div class="mb-0">
-                                                    <label class="form-label mb-0" id="origin_labeladdress">{{ __('Pick up Address') }}</label>
-                                                    <label class="form-label mb-0 d-none" id="origin_labelairport">{{ __('City') }}</label>
-                                                    <label class="form-label mb-0 d-none" id="origin_labelport">{{ __('Origin Port') }}</label>
-                                                    <label class="form-label mb-0 d-none" id="origin_labelcfs">{{ __('Origin CFS/Port') }}</label>
-                                                </div>
-                                                <div class="mb-2 d-none" id="origin_div_airportorport">
-                                                    <input type="text" class="form-control" name="origin_airportorport" id="origin_airportorport" placeholder="{{ __('Enter Airport') }}">
-                                                    <div class="text-danger" id="origin_airportorport_error"></div>
-                                                </div>
-                                                <div class="" id="origin_div_fulladress">
-                                                    <div class="mb-2">
-                                                        <input type="text" class="form-control" name="origin_address" id="origin_address" placeholder="{{ __('Enter street address') }}">
-                                                        <div class="text-danger" id="origin_address_error"></div>
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <label class="form-label mb-0">{{ __('City') }}</label>
-                                                        <input type="text" class="form-control" name="origin_city" id="origin_city" placeholder="{{ __('Enter City') }}">
-                                                        <div class="text-danger" id="origin_city_error"></div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6 mb-2">
-                                                            <label class="form-label mb-0">{{ __('State') }}</label>
-                                                            <select class="form-select" name="origin_state_id" id="origin_state_id">
-                                                                <option value="">{{ __('Select') }}</option>
-                                                            </select>
-                                                            <div class="text-danger" id="origin_state_id_error"></div>
-                                                        </div>
-                                                        <div class="col-md-6 mb-2">
-                                                            <label class="form-label mb-0">{{ __('Zip Code') }}</label>
-                                                            <input type="text" class="form-control" name="origin_zip_code" id="origin_zip_code" placeholder="{{ __('Enter Zip Code') }}">
-                                                            <div class="text-danger" id="origin_zip_code_error"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <div class="d-flex align-items-center justify-content-center h-100">
-                                                    <svg width="7" height="22" viewBox="0 0 7 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M1 21L6 11L1 1" stroke="#D8D8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    </svg> 
-                                                    <svg width="7" height="22" viewBox="0 0 7 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M1 21L6 11L1 1" stroke="#D8D8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    </svg>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-5">
-                                                <div class="mb-2">
-                                                    <label class="form-label mb-0">{{ __('Destination Country') }}</label>
-                                                    <select class="form-select" name="destination_country_id" id="destination_country_id" required>
-                                                        <option value="">{{ __('Select') }}</option>
-                                                    </select>
-                                                    <div class="text-danger" id="destination_country_id_error"></div>
-                                                </div>
-                                                <div class="mb-0">
-                                                    <label class="form-label mb-0" id="destination_labeladdress">{{ __('Delivery Address') }}</label>
-                                                    <label class="form-label mb-0 d-none" id="destination_labelairport">{{ __('City') }}</label>
-                                                    <label class="form-label mb-0 d-none" id="destination_labelport">{{ __('Destination Port') }}</label>
-                                                    <label class="form-label mb-0 d-none" id="destination_labelcfs">{{ __('Destination CFS/Port') }}</label>
-                                                </div>
-
-                                                <div class="mb-2 d-none" id="destination_div_airportorport">
-                                                    <input type="text" class="form-control" name="destination_airportorport" id="destination_airportorport" placeholder="{{ __('Enter Airport') }}">
-                                                    <div class="text-danger" id="destination_airportorport_error"></div>
-                                                </div>
-                                                <div class="" id="destination_div_fulladress">
-                                                    <div class="mb-2">
-                                                        <input type="text" class="form-control" name="destination_address" id="destination_address" placeholder="{{ __('Enter street address') }}">
-                                                        <div class="text-danger" id="destination_address_error"></div>
-                                                    </div>
-                                                    <div class="mb-2">
-                                                        <label class="form-label mb-0">{{ __('City') }}</label>
-                                                        <input type="text" class="form-control" name="destination_city" id="destination_city" placeholder="{{ __('City') }}">
-                                                        <div class="text-danger" id="destination_city_error"></div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-6 mb-2">
-                                                            <label class="form-label mb-0">{{ __('State') }}</label>
-                                                            <select class="form-select" name="destination_state_id" id="destination_state_id">
-                                                                <option value="">{{ __('Select') }}</option>
-                                                            </select>
-                                                            <div class="text-danger" id="destination_state_id_error"></div>
-                                                        </div>
-                                                        <div class="col-md-6 mb-2">
-                                                            <label class="form-label mb-0">{{ __('Zip Code') }}</label>
-                                                            <input type="text" class="form-control" name="destination_zip_code" id="destination_zip_code" placeholder="{{ __('Enter Zip Code') }}">
-                                                            <div class="text-danger" id="destination_zip_code_error"></div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div class="button-action text-center mt-4 mb-3">
-                                            <a class="btn btn-outline-primary btn-prev me-3"> ← {{ __('Return') }} </a>
-                                            <a class="btn btn-primary btn-nxt"> {{ __('Continue to Cargo') }} → </a>
+                                    <div class="col-md-2">
+                                        <div class="d-flex align-items-center justify-content-center h-100">
+                                            <svg width="7" height="22" viewBox="0 0 7 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M1 21L6 11L1 1" stroke="#D8D8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg> 
+                                            <svg width="7" height="22" viewBox="0 0 7 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M1 21L6 11L1 1" stroke="#D8D8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
                                         </div>
                                     </div>
-                                    <div id="defaultStep-three" class="content" role="tabpanel" >
-                                        
-                                        {{-- Cargo Details --}}
-                                        <div class="row">
-                                            <div class="col-md-12 mb-3">
-                                                <h5 class="fw-bold">{{ __('Cargo Details') }}</h5>
-                                            </div>
+                                    <div class="col-md-5">
+                                        <div class="mb-3">
+                                            <label class="form-label">{{ __('Destination Country') }}</label>
+                                            <select class="form-select" name="destination_country_id" id="destination_country_id" required>
+                                                <option value="">{{ __('Select...') }}</option>
+                                            </select>
+                                            <div class="text-danger" id="destination_country_id_error"></div>
+                                        </div>
+                                        <div class="mb-0">
+                                            <label class="form-label" id="destination_labeladdress">{{ __('Delivery Address') }}</label>
+                                            <label class="form-label d-none" id="destination_labelairport">{{ __('City') }}</label>
+                                            <label class="form-label d-none" id="destination_labelport">{{ __('Destination Port') }}</label>
+                                            <label class="form-label d-none" id="destination_labelcfs">{{ __('Destination CFS/Port') }}</label>
+                                        </div>
 
+                                        <div class="mb-2 d-none" id="destination_div_airportorport">
+                                            <input type="text" class="form-control" name="destination_airportorport" id="destination_airportorport" placeholder="{{ __('Enter Airport') }}">
+                                            <div class="text-danger" id="destination_airportorport_error"></div>
+                                        </div>
+                                        <div class="" id="destination_div_fulladress">
+                                            <div class="mb-2">
+                                                <input type="text" class="form-control" name="destination_address" id="destination_address" placeholder="{{ __('Enter street address') }}">
+                                                <div class="text-danger" id="destination_address_error"></div>
+                                            </div>
+                                            <div class="mb-2">
+                                                <input type="text" class="form-control" name="destination_city" id="destination_city" placeholder="{{ __('City') }}">
+                                                <div class="text-danger" id="destination_city_error"></div>
+                                            </div>
+                                            <div class="mb-2">
+                                                <select class="form-select" name="destination_state_id" id="destination_state_id">
+                                                    <option value="">State...</option>
+                                                </select>
+                                                <div class="text-danger" id="destination_state_id_error"></div>
+                                            </div>
+                                            <div class="mb-2">
+                                                <input type="text" class="form-control" name="destination_zip_code" id="destination_zip_code" placeholder="{{ __('Enter Zip Code') }}">
+                                                <div class="text-danger" id="destination_zip_code_error"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Cargo Details --}}
+                                <div class="row mt-3">
+                                    <div class="col-md-12 mb-1">
+                                        <h5 class="fw-bold">{{ __('Cargo Details') }}</h5>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        {{-- Title Details --}}
+                                        <div class="row align-items-end">
+                                            <div class="col-md-4">
+                                                <h6 class="fw-bold">{{ __('Package') }}</h6>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <h6 class="fw-bold">{{ __('Dimensions') }}</h6>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <h6 class="fw-bold">{{ __('Weight') }}</h6>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <h6 class="fw-bold" id="txt_totvolwei">{{ __('Total Volume Weight') }}</h6>
+                                            </div>
+                                        </div>
+                                        {{-- Detail lista --}}
+                                        <div id="listcargodetails">
+                                            {{-- lista de detalles --}}
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <a class="btn btn-light-danger mb-2 me-4 additemdetail">
+                                            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                            <span class="btn-text-inner">{{ __('Add item') }}</span>
+                                        </a>
+                                    
+                                    </div>
+
+                                    <div class="col-md-12" id="dv_totsummary">
+                                        <div class="row mt-2">
                                             <div class="col-md-12">
-                                                {{-- Title Details --}}
-                                                <div class="row align-items-end">
-                                                    <div class="col-md-4">
-                                                        <h6 class="fw-bold">{{ __('Package') }}</h6>
+                                                <div class="card bg-light p-3">
+                                                    <div class="row">
+                                                        <div class="col-md-3">
+                                                            <h6 class="fw-bold">Total (summary)</h6>
+                                                        </div>
+                                                        <div class="col-md-9">
+                                                            <h6 class="fw-bold" style="color: rgb(255 255 255 / 0%);">-</h6>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-4">
-                                                        <h6 class="fw-bold">{{ __('Dimensions') }}</h6>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <h6 class="fw-bold">{{ __('Weight') }}</h6>
-                                                    </div>
-                                                    <div class="col-md-1">
-                                                        <h6 class="fw-bold" id="txt_totvolwei">{{ __('Total Volume Weight') }}</h6>
-                                                    </div>
-                                                </div>
-                                                {{-- Detail lista --}}
-                                                <div id="listcargodetails">
-                                                    {{-- lista de detalles --}}
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12">
-                                                <a class="btn btn-light-primary mb-2 me-4 additemdetail">
-                                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                                                    <span class="btn-text-inner">{{ __('Add item') }}</span>
-                                                </a>
-                                            
-                                            </div>
-
-                                            <div class="col-md-12" id="dv_totsummary">
-                                                <div class="row mt-2">
-                                                    <div class="col-md-12">
-                                                        <div class="card bg-light p-3">
+                                                    <div class="row">
+                                                        <div class="col-md-2">
                                                             <div class="row">
-                                                                <div class="col-md-6">
-                                                                    <h6 class="fw-bold">Total (summary)</h6>
-
-                                                                    <span id="ts_infotext" class="d-block"></span>
-                                                                    <span id="ts_notetext" class="text-danger d-block"></span>
-
-                                                                </div>
-                                                                <div class="col-md-6">
-                                                                    <div class="row">
-                                                                        
-                                                                        <div class="col">
-                                                                            <label class="form-label mb-0">{{ __('Quantity') }}</label>
-                                                                            <input type="text" name="total_qty" class="form-control" placeholder="0" readonly>
-                                                                        </div>
-                                                                        <div class="col">
-                                                                            <label class="form-label mb-0" id="txt_actwei">...</label>
-                                                                            <input type="text" name="total_actualweight" class="form-control" placeholder="0" readonly>
-                                                                        </div>
-                                                                        <div class="col">
-                                                                            <label class="form-label mb-0" id="txt_volwei">...</label>
-                                                                            <input type="text" name="total_volum_weight" class="form-control" placeholder="0" readonly>
-                                                                            <div class="text-danger" id="total_volum_weight_error"></div>
-                                                                        </div>
-                                                                        <div class="col" id="dv_chargwei">
-                                                                            <label class="form-label mb-0" id="txt_chargwei">...</label>
-                                                                            <input type="text" name="tota_chargeable_weight" class="form-control" placeholder="0" readonly>
-                                                                        </div>
-
-                                                                    </div>
+                                                                <div class="col-md-12">
+                                                                    <span class="form-label mb-0">Qty</span>
+                                                                    <input type="text" name="total_qty" class="form-control" placeholder="0" readonly>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-12">
-                                                {{-- Cargo description --}}
-                                                <div class="row mb-2 mt-4">
-                                                    <div class="col-md-12 mb-3">
-                                                        <h5 class="fw-bold">{{ __('Additional Information') }}</h5>
-                                                    </div>
-                                                    <div class="col-md-6 mb-3">
-                                                        <label class="form-label">{{ __('Shipping date (select range)') }}</label>
-                                                        <input type="date" name="shipping_date" id="shipping_date" class="form-control" placeholder="YYY - MM - DD" required>
-                                                        <div class="text-danger" id="shipping_date_error"></div>
-                                                        <div class="form-check form-check-primary form-check-inline mt-1">
-                                                            <input type="hidden" name="no_shipping_date" value="no">
-                                                            <input class="form-check-input" type="checkbox" name="no_shipping_date" id="no_shipping_date" value="yes">
-                                                            <label class="form-check-label" for="no_shipping_date">
-                                                                I don’t have a shipping date yet
-                                                            </label>
+                                                        <div class="col-md-4">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <span class="form-label mb-0" id="txt_actwei">...</span>
+                                                                    <input type="text" name="total_actualweight" class="form-control" placeholder="0" readonly>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <span class="form-label mb-0" id="txt_volwei">...</span>
+                                                                    <input type="text" name="total_volum_weight" class="form-control" placeholder="0" readonly>
+                                                                    <div class="text-danger" id="total_volum_weight_error"></div>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                        <div class="text-danger" id="no_shipping_date_error"></div>
+                                                        <div class="col-md-6" id="dv_chargwei">
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <span class="form-label mb-0" id="txt_chargwei">...</span>
+                                                                    <input type="text" name="tota_chargeable_weight" class="form-control" placeholder="0" readonly>
+                                                                </div>
+                                                                <div class="col-md-6"></div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="col-md-4 mb-3">
-                                                        <label class="form-label">{{ __('Declared value') }}</label>
-                                                        <input type="text" name="declared_value" id="declared_value" class="form-control" placeholder="" required>
-                                                        <div class="text-danger" id="declared_value_error"></div>
+                                                    <div class="row">
                                                         
-                                                        <div class="form-check form-check-primary form-check-inline mt-1">
-                                                            <input type="hidden" name="insurance_required" value="no">
-                                                            <input class="form-check-input" type="checkbox" name="insurance_required" id="insurance_required" value="yes">
-                                                            <label class="form-check-label" for="insurance_required">
-                                                                Insurance required
-                                                            </label>
+                                                        <div class="col-md-12 mt-1">
+                                                            <span id="ts_infotext" class="d-block"></span>
+                                                            <span id="ts_notetext" class="text-danger d-block"></span>
                                                         </div>
-                                                        <div class="text-danger" id="insurance_required_error"></div>
                                                     </div>
-                                                    <div class="col-md-2 mb-3">
-                                                        <label class="form-label">{{ __('Currency') }}</label>
-                                                        <select name="currency" id="currency" class="form-select">
-                                                            <option value="USD - US Dollar">USD - US Dollar</option>
-                                                            <option value="EUR - Euro">EUR - Euro</option>
-                                                        </select>
-                                                        <div class="text-danger" id="currency_error"></div>
-                                                    </div>
-                                                    <div class="col-md-12 mb-3">
-                                                        <label class="form-label">{{ __('Documentation') }} <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="(Max. 10mb - Allowed files: jpg, jpeg, png, gif, doc, docx, ppt, pptx, pdf, xls, xlsx)" ></span></label>
-                                                        <div class="multiple-file-upload">
-                                                            <input 
-                                                                type="file" 
-                                                                name="quotation_documents[]"
-                                                                class="quotation_documents" 
-                                                                multiple 
-                                                                data-allow-reorder="true" 
-                                                                data-max-file-size="3MB" 
-                                                                data-max-files="6">
-                                                        </div>
-                                                        <span class="text-info-filedata">
-                                                            Max. file size: 10 mb
-                                                        </span>
-                                                    </div>
-
                                                 </div>
                                             </div>
-                                        </div>
-
-                                        <div class="button-action text-center mt-4 mb-3">
-                                            <a class="btn btn-outline-primary btn-prev me-3"> ← {{ __('Return') }} </a>
-                                            <a class="btn btn-primary btn-nxt"> {{ __('Continue to Contact') }} → </a>
                                         </div>
                                     </div>
-                                    <div id="defaultStep-four" class="content" role="tabpanel" >
-                                        
-                                        {{-- Contact Details --}}
-                                        <div class="row">
+
+                                    <div class="col-md-12">
+                                        {{-- Cargo description --}}
+                                        <div class="row mb-2 mt-4">
                                             <div class="col-md-12 mb-3">
-                                                <h5 class="fw-bold">{{ __('Contact Information') }}</h5>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="name" class="form-label mb-0">{{ __('First Name') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="name" id="name" class="form-control">
-                                                <div class="text-danger" id="name_error"></div>
+                                                <h5 class="fw-bold">{{ __('Additional Information') }}</h5>
                                             </div>
                                             <div class="col-md-6 mb-3">
-                                                <label for="lastname" class="form-label mb-0">{{ __('Last Name') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="lastname" id="lastname" class="form-control">
-                                                <div class="text-danger" id="lastname_error"></div>
+                                                <label class="form-label">{{ __('Shipping date (select range)') }}</label>
+                                                <input type="date" name="shipping_date" id="shipping_date" class="form-control" required>
+                                                <div class="text-danger" id="shipping_date_error"></div>
+                                                <div class="form-check form-check-primary form-check-inline mt-1">
+                                                    <input type="hidden" name="no_shipping_date" value="no">
+                                                    <input class="form-check-input" type="checkbox" name="no_shipping_date" id="no_shipping_date" value="yes">
+                                                    <label class="form-check-label" for="no_shipping_date">
+                                                        I don’t have a shipping date yet
+                                                    </label>
+                                                </div>
+                                                <div class="text-danger" id="no_shipping_date_error"></div>
                                             </div>
-                                        </div>
-
-                                        <div class="row" id="info_company">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="company_name" class="form-label mb-0">{{ __('Company name') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="company_name" id="company_name" class="form-control">
-                                                <div class="text-danger" id="company_name_error"></div>
+                                            <div class="col-md-4 mb-3">
+                                                <label class="form-label">{{ __('Declared value') }}</label>
+                                                <input type="text" name="declared_value" id="declared_value" class="form-control" placeholder="" required>
+                                                <div class="text-danger" id="declared_value_error"></div>
+                                                
+                                                <div class="form-check form-check-primary form-check-inline mt-1">
+                                                    <input type="hidden" name="insurance_required" value="no">
+                                                    <input class="form-check-input" type="checkbox" name="insurance_required" id="insurance_required" value="yes">
+                                                    <label class="form-check-label" for="insurance_required">
+                                                        Insurance required
+                                                    </label>
+                                                </div>
+                                                <div class="text-danger" id="insurance_required_error"></div>
                                             </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="company_website" class="form-label mb-0">{{ __('Company website') }}</label>
-                                                <input type="text" name="company_website" id="company_website" class="form-control">
-                                                <div class="text-danger" id="company_website_error"></div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="email" class="form-label mb-0">{{ __('Email address') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="email" id="email" class="form-control">
-                                                <div class="text-danger" id="email_error"></div>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="confirm_email" class="form-label mb-0">{{ __('Confirm email address') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="confirm_email" id="confirm_email" class="form-control">
-                                                <div class="text-danger" id="confirm_email_error"></div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-6 mb-3">
-                                                <label for="phone" class="form-label mb-0 d-block">{{ __('Phone') }} <span class="text-danger">*</span></label>
-                                                <input type="hidden" name="phone_code" id="phone_code" value="1">
-                                                <input type="tel" id="phone" name="phone" class="form-control">
-                                                <!-- Agrega el contenedorphone para mostrar la bandera y el código -->
-                                                <div id="phone-container" class="mt-2"></div>
-                                                <div class="text-danger" id="phone_error"></div>
-                                            </div>
-                                            <div class="col-md-6 mb-3">
-                                                <label for="source" class="form-label mb-0">{{ __('How do you know about us?') }}</label>
-                                                <select name="source" id="source" class="form-select">
-                                                    <option value="">{{ __('Select...') }}</option>
-                                                    <option value="I am an existing customer">{{ __('I am an existing customer') }}</option>
-                                                    <option value="Google Search">{{ __('Google Search') }}</option>
-                                                    <option value="Linkedin">{{ __('Linkedin') }}</option>
-                                                    <option value="Social Media">{{ __('Social Media') }}</option>
-                                                    <option value="Referral">{{ __('Referral') }}</option>
-                                                    <option value="Other">{{ __('Other') }}</option>
+                                            <div class="col-md-2 mb-3">
+                                                <label class="form-label">{{ __('Currency') }}</label>
+                                                <select name="currency" id="currency" class="form-select">
+                                                    <option value="USD - US Dollar">USD - US Dollar</option>
+                                                    <option value="EUR - Euro">EUR - Euro</option>
                                                 </select>
-                                                <div class="text-danger" id="source_error"></div>
+                                                <div class="text-danger" id="currency_error"></div>
                                             </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="form-check form-check-primary form-check-inline mt-1">
-                                                    <input type="hidden" name="create_account" value="no">
-                                                    <input class="form-check-input" type="checkbox" name="create_account" id="create_account" value="yes">
-                                                    <label class="form-check-label" for="create_account">
-                                                        Create an account
-                                                    </label>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">{{ __('Documentation') }} <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="(Max. 10mb - Allowed files: jpg, jpeg, png, gif, doc, docx, ppt, pptx, pdf, xls, xlsx)" ></span></label>
+                                                <div class="multiple-file-upload">
+                                                    <input 
+                                                        type="file" 
+                                                        name="quotation_documents[]"
+                                                        class="quotation_documents" 
+                                                        multiple 
+                                                        data-allow-reorder="true" 
+                                                        data-max-file-size="3MB" 
+                                                        data-max-files="6">
                                                 </div>
-
-                                                <div class="form-check form-check-primary form-check-inline mt-1">
-                                                    <input type="hidden" name="subscribed_to_newsletter" value="no">
-                                                    <input class="form-check-input" type="checkbox" name="subscribed_to_newsletter" id="subscribed_to_newsletter" value="yes">
-                                                    <label class="form-check-label" for="subscribed_to_newsletter">
-                                                        Subscribe to our newsletter
-                                                    </label>
-                                                </div>
+                                                <span class="text">
+                                                    Max. file size: 10 mb
+                                                </span>
                                             </div>
-                                        </div>
-
-                                        <div class="button-action text-center mt-4">
-                                            <button class="btn btn-outline-primary btn-prev me-3"> ← {{ __('Return') }} </button>
-                                            <button type="submit" class="btn btn-primary me-3 send_rq" id="submitBtn">{{ __('Complete my Quote Request') }} →</button>
-                                            <div class="mx-5 mt-2 mb-1 text-center" id="loadingSpinner" style="display: none;">
-                                                <div class="spinner-border text-warning align-self-center"></div>
-                                            </div>
-                                        </div>
-
-                                        <div class="mt-2 text-danger" id="error_inputs_form">
 
                                         </div>
-
-                                        <p class="text-small text-center mt-4">
-                                            <span class="text d-inline-block w-75">
-                                                {{ __('By clicking complete my quote request you agree to let Latin American Cargo communicate with you by email for the purpose of providing freight rates offers and shipping related communication.') }}
-                                            </span>
-                                        </p>
-
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="mb-4">
+                                    <a href="javascript:void(0)" class="btn btn-primary btn-lg w-100 modal_customer">Get a Quote</a>
+                                </div>
+
+                                <!-- Modal Customer Information -->
+                                <div class="modal fade modal-lg" id="CustomerInformationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-body" id="modal_customer_information">
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="float: right;"></button>
+
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center">
+                                                        <img src="{{ asset('assets/img/icon-front-customer.png') }}" class="mb-3" alt="LAC">
+                                                        <h4>{{ __('You’re almost there') }}</h4>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="name" class="form-label mb-0">{{ __('First Name') }} <span class="text-danger">*</span></label>
+                                                        <input type="text" name="name" id="name" class="form-control">
+                                                        <div class="text-danger" id="name_error"></div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="lastname" class="form-label mb-0">{{ __('Last Name') }} <span class="text-danger">*</span></label>
+                                                        <input type="text" name="lastname" id="lastname" class="form-control">
+                                                        <div class="text-danger" id="lastname_error"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row" id="info_company">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="company_name" class="form-label mb-0">{{ __('Company name') }} <span class="text-danger">*</span></label>
+                                                        <input type="text" name="company_name" id="company_name" class="form-control">
+                                                        <div class="text-danger" id="company_name_error"></div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="company_website" class="form-label mb-0">{{ __('Company website') }}</label>
+                                                        <input type="text" name="company_website" id="company_website" class="form-control">
+                                                        <div class="text-danger" id="company_website_error"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="email" class="form-label mb-0">{{ __('Email address') }} <span class="text-danger">*</span></label>
+                                                        <input type="text" name="email" id="email" class="form-control">
+                                                        <div class="text-danger" id="email_error"></div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="confirm_email" class="form-label mb-0">{{ __('Confirm email address') }} <span class="text-danger">*</span></label>
+                                                        <input type="text" name="confirm_email" id="confirm_email" class="form-control">
+                                                        <div class="text-danger" id="confirm_email_error"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="phone" class="form-label mb-0 d-block">{{ __('Phone') }} <span class="text-danger">*</span></label>
+                                                        <input type="hidden" name="phone_code" id="phone_code" value="1">
+                                                        <input type="tel" id="phone" name="phone" class="form-control">
+                                                        <!-- Agrega el contenedorphone para mostrar la bandera y el código -->
+                                                        <div id="phone-container" class="mt-2"></div>
+                                                        <div class="text-danger" id="phone_error"></div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3">
+                                                        <label for="source" class="form-label mb-0">{{ __('How do you know about us?') }}</label>
+                                                        <select name="source" id="source" class="form-select">
+                                                            <option value="">{{ __('Select...') }}</option>
+                                                            <option value="I am an existing customer">{{ __('I am an existing customer') }}</option>
+                                                            <option value="Google Search">{{ __('Google Search') }}</option>
+                                                            <option value="Linkedin">{{ __('Linkedin') }}</option>
+                                                            <option value="Social Media">{{ __('Social Media') }}</option>
+                                                            <option value="Referral">{{ __('Referral') }}</option>
+                                                            <option value="Other">{{ __('Other') }}</option>
+                                                        </select>
+                                                        <div class="text-danger" id="source_error"></div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-12 mb-3">
+                                                        <div class="form-check form-check-primary form-check-inline mt-1">
+                                                            <input type="hidden" name="create_account" value="no">
+                                                            <input class="form-check-input" type="checkbox" name="create_account" id="create_account" value="yes">
+                                                            <label class="form-check-label" for="create_account">
+                                                                Create an account
+                                                            </label>
+                                                        </div>
+
+                                                        <div class="form-check form-check-primary form-check-inline mt-1">
+                                                            <input type="hidden" name="subscribed_to_newsletter" value="no">
+                                                            <input class="form-check-input" type="checkbox" name="subscribed_to_newsletter" id="subscribed_to_newsletter" value="yes">
+                                                            <label class="form-check-label" for="subscribed_to_newsletter">
+                                                                Subscribe to our newsletter
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <button type="submit" class="btn btn-primary w-100" class="send_rq" id="submitBtn">{{ __('Complete my quote request') }}</button>
+                                                        <div class="mx-5 mt-2 mb-1 text-center" id="loadingSpinner" style="display: none;">
+                                                            <div class="spinner-border text-warning align-self-center"></div>
+                                                        </div>
+
+                                                        <div class="mt-2 text-danger" id="error_inputs_form">
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <p class="modal-text text-small mt-2">{{ __('By clicking complete my quote request you agree to let Latin American Cargo communicate with you by email for the purpose of providing freight rates offers and shipping related communication.') }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
 
                         </div>
                     </div>
                 </div>
             </form>
-
-
-
         </div>
     </div>
 
@@ -610,8 +671,6 @@
     <script src="{{ asset('bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
-    <script src="{{ asset('plugins/src/stepper/bsStepper.min.js') }}"></script>
-
     <script src="{{ asset('plugins/src/filepond/filepond.min.js') }}"></script>
     <script src="{{ asset('plugins/src/filepond/FilePondPluginFileValidateType.min.js') }}"></script>
     <script src="{{ asset('plugins/src/filepond/FilePondPluginImageExifOrientation.min.js') }}"></script>
@@ -620,11 +679,9 @@
     <script src="{{ asset('plugins/src/filepond/FilePondPluginImageResize.min.js') }}"></script>
     <script src="{{ asset('plugins/src/filepond/FilePondPluginImageTransform.min.js') }}"></script>
     <script src="{{ asset('plugins/src/filepond/filepondPluginFileValidateSize.min.js') }}"></script>
-    
     <script src="{{ asset('plugins/src/flatpickr/flatpickr.js') }}"></script>
-    <script src="{{ asset('plugins/src/intl-tel-input/js/intlTelInput.min.js') }}"></script>
 
-    <script src="{{ asset('assets/js/front_form.js') }}"></script>
+    <script src="{{ asset('plugins/src/intl-tel-input/js/intlTelInput.min.js') }}"></script>
 
     <script>
         $(document).ready(function() {
@@ -813,15 +870,15 @@
                                 </div>
                             </div>
 
-                            <a class="btn btn-light-primary mb-2 me-4 addimodetail">
+                            <a class="btn btn-light-danger mb-2 me-4 addimodetail">
                                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                 <span class="btn-text-inner">Add additional IMO Class and UN Number</span>
                             </a>
 
                         </div>
-                        <div class="modal-footer text-start">
-                            <button type="button" class="btn btn-outline-primary save-dange-button">Done</button>
-                            <button type="button" class="btn btn-primary cancel-dange-button">Cancel</button>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary save-dange-button">Done</button>
+                            <button type="button" class="btn btn-secondary cancel-dange-button">Cancel</button>
                         </div>
                         </div>
                     </div>
@@ -910,7 +967,7 @@
                 `;
 
 
-                var html = '<div class="mb-2 itemdetail"><div class="row mb-2">' +
+                var html = '<div class="p-2 mb-2 card itemdetail"><div class="row mb-2">' +
                 '<div class="col-md-4">' +
                 '<div class="row">' +
                 '<div class="col-md-9 mb-2">' +
@@ -973,10 +1030,10 @@
                 '<span class="form-label text_item_typemea">...</span>' +
                 '<input type="text" name="item_total_volume_weight_cubic_meter[]" class="form-control px-2" readonly>' +
                 '</div>' +
-                '<div class="col-md-4">' +
+                '<div class="col-md-6">' +
                 '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="Cargo Description (Commodity)">' +
                 '</div>' +
-                '<div class="col-md-5">'+
+                '<div class="col-md-3">'+
                     checkboxHTML+
                     modalContentDangerous+
                 '</div>'+
@@ -1129,7 +1186,7 @@
                     var $qtylabel = '';
                 }
 
-                var html = '<div class="mb-2 itemdetail">'+
+                var html = '<div class="p-2 mb-2 card itemdetail">'+
                 '<div class="row mb-2">' +
                     '<div class="col-md-3">' +
                         '<div class="row">' +
@@ -1741,9 +1798,8 @@ function clearValidationErrors() {
             var $shippingDateInput = $('#shipping_date');
             
             if ($(this).is(':checked')) {
-                //f3.clear();
-                //f3.destroy();
-                $shippingDateInput.val('');
+                f3.clear();
+                f3.destroy();
                 $shippingDateInput.prop('readonly', true);
                 $shippingDateInput.attr('required', false);
             } else {

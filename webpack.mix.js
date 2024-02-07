@@ -24,6 +24,8 @@ const mix = require('laravel-mix');
 mix.sass('resources/sass/light/assets/main.scss', 'public/assets/css/light')
     .sass('resources/sass/dark/assets/main.scss', 'public/assets/css/dark')
 
+    .sass('resources/sass/light/assets/front_form.scss', 'public/assets/css/light')
+
     .sass('resources/sass/layouts/vertical-light-menu/light/loader.scss', 'public/layouts/vertical-light-menu/css/light')
     .sass('resources/sass/layouts/vertical-light-menu/dark/loader.scss', 'public/layouts/vertical-light-menu/css/dark')
 
@@ -68,5 +70,9 @@ mix.sass('resources/sass/light/assets/main.scss', 'public/assets/css/light')
     //tagify
     .sass('resources/sass/light/plugins/tagify/custom-tagify.scss','public/plugins/css/light/tagify')
     .sass('resources/sass/dark/plugins/tagify/custom-tagify.scss','public/plugins/css/dark/tagify')
+
+    //bsStepper
+    .sass('resources/sass/light/plugins/stepper/custom-bsStepper.scss','public/plugins/css/light/stepper')
+    .sass('resources/sass/dark/plugins/stepper/custom-bsStepper.scss','public/plugins/css/dark/stepper')
 
     .sourceMaps();
