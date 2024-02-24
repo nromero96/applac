@@ -233,6 +233,7 @@ span.form-label {
 .btn-light-primary {
   color: #B80000;
   font-weight: bold;
+  background: #fae6e6;
 }
 .btn-light-primary:hover {
   color: #B80000 !important;
@@ -272,6 +273,11 @@ span.form-label {
   color: #B80000;
 }
 
+.list-tit-item {
+  font-weight: 400;
+  font-size: 20px;
+}
+
 .delete-imo {
   background-color: #FAE6E6;
   padding: 8px;
@@ -307,7 +313,7 @@ span.form-label {
 .bs-stepper-content {
   width: 100%;
   padding: 0px;
-  padding-top: 3em;
+  padding-top: 2.5em;
 }
 
 .bs-stepper .step.crossed + .line {

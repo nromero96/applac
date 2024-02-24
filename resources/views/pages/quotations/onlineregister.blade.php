@@ -341,16 +341,16 @@
                                                 {{-- Title Details --}}
                                                 <div class="row align-items-end">
                                                     <div class="col-md-4">
-                                                        <h6 class="fw-bold">{{ __('Package') }}</h6>
+                                                        <h6 class="list-tit-item">{{ __('Package') }}</h6>
                                                     </div>
                                                     <div class="col-md-4">
-                                                        <h6 class="fw-bold">{{ __('Dimensions') }}</h6>
+                                                        <h6 class="list-tit-item">{{ __('Dimensions') }}</h6>
                                                     </div>
                                                     <div class="col-md-3">
-                                                        <h6 class="fw-bold">{{ __('Weight') }}</h6>
+                                                        <h6 class="list-tit-item">{{ __('Weight') }}</h6>
                                                     </div>
                                                     <div class="col-md-1">
-                                                        <h6 class="fw-bold" id="txt_totvolwei">{{ __('Total Volume Weight') }}</h6>
+                                                        <h6 class="list-tit-item" id="txt_totvolwei">{{ __('Total Volume Weight') }}</h6>
                                                     </div>
                                                 </div>
                                                 {{-- Detail lista --}}
@@ -1141,7 +1141,7 @@
                                     '<input type="text" name="temperature[]" class="form-control px-2" placeholder="Temperature">'+
                                 '</div>'+
                             '</div>' +
-                            '<div class="col-md-5 px-1 ps-sm-1 mb-2">' +
+                            '<div class="col-md-5 ps-sm-1 mb-2">' +
                                 '<label class="form-label mb-0">'+$qtylabel+'</label>' +
                                 '<input type="text" name="qty[]" class="form-control px-2" required>' +
                             '</div>' +
@@ -1151,7 +1151,7 @@
                         '<label class="form-label mb-0">Cargo Description (Commodity)</label>' +
                         '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="">' +
                     '</div>' +
-                    '<div class="col-md-2 pt-2 px-1">'+
+                    '<div class="col-md-2 pt-sm-2 px-sm-1">'+
                         '<input type="hidden" name="dangerous_cargo['+itemIndex+']" value="">'+
                         '<div class="form-check my-2 pt-3"><input class="form-check-input dangerous-cargo-checkbox" type="checkbox" name="dangerous_cargo['+itemIndex+']" value="yes"><label class="form-check-label mb-0"> Dangerous Cargo. <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Hazardous shipments: flammable, toxic, corrosive, radioactive, or hazardous to health, safety, and the environment." ></span></label></div>'+
                         modalContentDangerous+

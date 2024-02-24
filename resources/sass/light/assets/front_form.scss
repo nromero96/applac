@@ -262,6 +262,7 @@ span.form-label{
 .btn-light-primary{
     color: $primary;
     font-weight: bold;
+    background: #fae6e6;
 
     &:hover {
         color: $primary !important;
@@ -308,6 +309,11 @@ span.form-label{
         color: $primary;
     }
 
+}
+
+.list-tit-item{
+  font-weight: 400;
+  font-size: 20px;
 }
 
 .delete-imo{
