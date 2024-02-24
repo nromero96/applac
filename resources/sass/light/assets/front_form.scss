@@ -348,7 +348,7 @@ span.form-label{
 .bs-stepper-content {
     width: 100%;
     padding: 0px;
-    padding-top: 3em;
+    padding-top: 2.5em;
   }
   
   .bs-stepper .step.crossed + .line {
@@ -459,10 +459,34 @@ span.form-label{
     margin-bottom: 15px;
   }
 
+  .radio-options{
+    .col{
+      margin-bottom: 1.5rem;
+    }
+  }
+
+  .button-action{
+    margin-top: 1.5rem;
+  }
   
   @media (max-width: 575px) {
     .bs-stepper-header {
-      display: block;
+      justify-content: center;
+
+      .step-trigger:disabled .bs-stepper-circle{
+        width: 2.4em;
+        font-size: 34px;
+      }
+
+      .active .bs-stepper-circle {
+        width: 2.4em;
+        font-size: 34px;
+      }
+
+      .bs-stepper-label {
+        font-size: 14px;
+      }
+
     }
   
     .bs-stepper {
@@ -487,6 +511,70 @@ span.form-label{
       padding: 0;
       padding: 20px 0 0;
     }
+
+    .radio-options{
+      display: block;
+
+      .col{
+        margin-bottom: .7rem;
+      }
+
+      .radio-card{
+        flex-direction: row;
+
+        input[type=radio]{
+          margin-top: 10px;
+        }
+
+        label{
+          width: 90%;
+
+          .radio-icon{
+            float: right;
+          }
+
+        }
+
+      }
+
+    }
+
+    .direct-icon{
+
+      svg{
+        transform: rotate(90deg);
+      }
+    }
+
+    .button-action{
+      margin-top: 0.3rem
+    }
+
+    .btn-nxt{
+      width: 100%;
+    }
+
+    .btn-prev{
+      width: 100%;
+      margin-bottom: .7rem;
+    }
+
+    .send_rq{
+      width: 100%;
+    }
+
+    .results-cd{
+      display: block;
+      .col{
+  
+        input{
+          margin-bottom: 1px;
+        }
+  
+      }
+    }
+
+
   }
 
     /*

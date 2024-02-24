@@ -405,9 +405,28 @@ span.form-label {
   margin-bottom: 15px;
 }
 
+.radio-options .col {
+  margin-bottom: 1.5rem;
+}
+
+.button-action {
+  margin-top: 1.5rem;
+}
+
 @media (max-width: 575px) {
   .bs-stepper-header {
-    display: block;
+    justify-content: center;
+  }
+  .bs-stepper-header .step-trigger:disabled .bs-stepper-circle {
+    width: 2.4em;
+    font-size: 34px;
+  }
+  .bs-stepper-header .active .bs-stepper-circle {
+    width: 2.4em;
+    font-size: 34px;
+  }
+  .bs-stepper-header .bs-stepper-label {
+    font-size: 14px;
   }
   .bs-stepper.vertical {
     display: block;
@@ -424,6 +443,46 @@ span.form-label {
   .bs-stepper-content {
     padding: 0;
     padding: 20px 0 0;
+  }
+  .radio-options {
+    display: block;
+  }
+  .radio-options .col {
+    margin-bottom: 0.7rem;
+  }
+  .radio-options .radio-card {
+    flex-direction: row;
+  }
+  .radio-options .radio-card input[type=radio] {
+    margin-top: 10px;
+  }
+  .radio-options .radio-card label {
+    width: 90%;
+  }
+  .radio-options .radio-card label .radio-icon {
+    float: right;
+  }
+  .direct-icon svg {
+    transform: rotate(90deg);
+  }
+  .button-action {
+    margin-top: 0.3rem;
+  }
+  .btn-nxt {
+    width: 100%;
+  }
+  .btn-prev {
+    width: 100%;
+    margin-bottom: 0.7rem;
+  }
+  .send_rq {
+    width: 100%;
+  }
+  .results-cd {
+    display: block;
+  }
+  .results-cd .col input {
+    margin-bottom: 1px;
   }
 }
 /*

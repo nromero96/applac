@@ -98,8 +98,8 @@
                                             </div>
                 
                                             <div class="col-md-12">
-                                                <div class="row align-items-center justify-content-center">
-                                                    <div class="col mb-4 text-center">
+                                                <div class="row align-items-center justify-content-center radio-options">
+                                                    <div class="col text-center">
                                                         <div class="radio-card p-2">
                                                             <input type="radio" value="Air" id="option1" name="mode_of_transport" checked />
                                                             <label for="option1" class="mb-0">
@@ -107,11 +107,11 @@
                                                                     <img src="{{ asset('assets/img/60a35f0d358aaa2332423e.png') }}" alt="Opción 1" />
                                                                 </div>
                                                                 <div class="radio-text">Air</div>
-                                                                <div class="radio-sub-text" style="color: #ffffff00;">-</div>
+                                                                <div class="radio-sub-text">~</div>
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="col mb-4 text-center">
+                                                    <div class="col text-center">
                                                         <div class="radio-card p-2">
                                                             <input type="radio" value="Ground" id="option2" name="mode_of_transport" />
                                                             <label for="option2" class="mb-0">
@@ -123,7 +123,7 @@
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="col mb-4 text-center">
+                                                    <div class="col text-center">
                                                         <div class="radio-card p-2">
                                                             <input type="radio" value="Container" id="option3" name="mode_of_transport" />
                                                             <label for="option3" class="mb-0">
@@ -135,7 +135,7 @@
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="col mb-4 text-center">
+                                                    <div class="col text-center">
                                                         <div class="radio-card p-2">
                                                             <input type="radio" value="RoRo" id="option4" name="mode_of_transport" />
                                                             <label for="option4" class="mb-0">
@@ -147,7 +147,7 @@
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="col mb-4 text-center">
+                                                    <div class="col text-center">
                                                         <div class="radio-card p-2">
                                                             <input type="radio" value="Breakbulk" id="option5" name="mode_of_transport" />
                                                             <label for="option5" class="mb-0">
@@ -155,7 +155,7 @@
                                                                     <img src="{{ asset('assets/img/lac_breakbulk_icon.png') }}" alt="Opción 5" />
                                                                 </div>
                                                                 <div class="radio-text">Breakbulk</div>
-                                                                <div class="radio-sub-text" style="color: #ffffff00;">-</div>
+                                                                <div class="radio-sub-text">~</div>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -212,7 +212,7 @@
                                             </div>
                                         </div>
                                         
-                                        <div class="button-action text-center mt-4 mb-3">
+                                        <div class="button-action text-center mb-3">
                                             <a class="btn btn-outline-primary btn-prev me-3 d-none" disabled> ← Prev</a>
                                             <a class="btn btn-primary btn-nxt">{{ __('Continue to Location') }} →</a>
                                         </div>
@@ -221,11 +221,10 @@
                                         
                                         {{-- Location Details --}}
                                         <div class="row">
-                                            <div class="col-md-12 mb-3">
-                                                <h5 class="subtit-steep">{{ __('Location Details') }}</h5>
-                                            </div>
+                                            
 
                                             <div class="col-md-5">
+                                                <h5 class="subtit-steep">{{ __('Origin Details') }}</h5>
                                                 <div class="mb-2">
                                                     <label class="form-label mb-0">{{ __('Origin Country') }}</label>
                                                     <select class="form-select" name="origin_country_id" id="origin_country_id" required>
@@ -270,16 +269,15 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-2">
-                                                <div class="d-flex align-items-center justify-content-center h-100">
-                                                    <svg width="7" height="22" viewBox="0 0 7 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M1 21L6 11L1 1" stroke="#D8D8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    </svg> 
-                                                    <svg width="7" height="22" viewBox="0 0 7 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path d="M1 21L6 11L1 1" stroke="#D8D8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <div class="d-flex align-items-center justify-content-center h-100 direct-icon">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="49" viewBox="0 0 24 49" fill="none">
+                                                        <path d="M13 34.5L18 24.5L13 14.5" stroke="#D8D8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        <path d="M6 34.5L11 24.5L6 14.5" stroke="#D8D8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                                     </svg>
                                                 </div>
                                             </div>
                                             <div class="col-md-5">
+                                                <h5 class="subtit-steep">{{ __('Destination Details') }}</h5>
                                                 <div class="mb-2">
                                                     <label class="form-label mb-0">{{ __('Destination Country') }}</label>
                                                     <select class="form-select" name="destination_country_id" id="destination_country_id" required>
@@ -326,7 +324,7 @@
                                             </div>
                                         </div>
                                         
-                                        <div class="button-action text-center mt-4 mb-3">
+                                        <div class="button-action text-center mb-3">
                                             <a class="btn btn-outline-primary btn-prev me-3"> ← {{ __('Return') }} </a>
                                             <a class="btn btn-primary btn-nxt"> {{ __('Continue to Cargo') }} → </a>
                                         </div>
@@ -382,7 +380,7 @@
 
                                                                 </div>
                                                                 <div class="col-md-6">
-                                                                    <div class="row">
+                                                                    <div class="row results-cd">
                                                                         
                                                                         <div class="col">
                                                                             <label class="form-label mb-0">{{ __('Quantity') }}</label>
@@ -472,7 +470,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="button-action text-center mt-4 mb-3">
+                                        <div class="button-action text-center mb-3">
                                             <a class="btn btn-outline-primary btn-prev me-3"> ← {{ __('Return') }} </a>
                                             <a class="btn btn-primary btn-nxt"> {{ __('Continue to Contact') }} → </a>
                                         </div>
@@ -569,7 +567,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="button-action text-center mt-4">
+                                        <div class="button-action text-center mb-3">
                                             <button class="btn btn-outline-primary btn-prev me-3"> ← {{ __('Return') }} </button>
                                             <button type="submit" class="btn btn-primary me-3 send_rq" id="submitBtn">{{ __('Complete my Quote Request') }}</button>
                                             <div class="mx-5 mt-2 mb-1 text-center" id="loadingSpinner" style="display: none;">
@@ -624,7 +622,7 @@
     <script src="{{ asset('plugins/src/flatpickr/flatpickr.js') }}"></script>
     <script src="{{ asset('plugins/src/intl-tel-input/js/intlTelInput.min.js') }}"></script>
 
-    <script src="{{ asset('assets/js/front_form.js') }}"></script>
+    <script src="{{ asset('assets/js/front_form.js') }}?v={{ config('app.version') }}"></script>
 
     <script>
         $(document).ready(function() {
@@ -920,7 +918,7 @@
                 '</select>' +
                 '<small class="text-danger msg_pcktype"></small>'+
                 '</div>' +
-                '<div class="col-md-3 ps-2 ps-sm-1 mb-2">' +
+                '<div class="col-md-3 ps-sm-1 mb-2">' +
                 '<label class="form-label mb-0">Qty</label>' +
                 '<input type="text" name="qty[]" class="form-control px-2" required>' +
                 '</div>' +
@@ -932,15 +930,15 @@
                 '<span class="form-label">Length</span>' +
                 '<input type="text" name="length[]" class="form-control px-2">' +
                 '</div>' +
-                '<div class="col-md-3 px-2 px-sm-1 mb-2">' +
+                '<div class="col-md-3 px-sm-1 mb-2">' +
                 '<span class="form-label">Width</span>' +
                 '<input type="text" name="width[]" class="form-control px-2">' +
                 '</div>' +
-                '<div class="col-md-3 px-2 px-sm-1 mb-2">' +
+                '<div class="col-md-3 px-sm-1 mb-2">' +
                 '<span class="form-label">Height</span>' +
                 '<input type="text" name="height[]" class="form-control px-2">' +
                 '</div>' +
-                '<div class="col-md-3 ps-2 ps-sm-1 mb-2">' +
+                '<div class="col-md-3 ps-sm-1 mb-2">' +
                 '<span class="form-label">Unit</span>' +
                 '<select class="form-select px-2" name="dimensions_unit[]">' +
                 '<option value="M.">M.</option>' +
@@ -960,7 +958,7 @@
                 '<span class="form-label">Total Weight</span>' +
                 '<input type="text" name="item_total_weight[]" class="form-control px-2" readonly>' +
                 '</div>' +
-                '<div class="col-md-4 ps-2 ps-sm-1 mb-2">' +
+                '<div class="col-md-4 ps-sm-1 mb-2">' +
                 '<span class="form-label">Unit</span>' +
                 '<select class="form-select px-2" name="weight_unit[]">' +
                 '<option value="Kgs">Kgs</option>' +
@@ -973,7 +971,7 @@
                 '<span class="form-label text_item_typemea">...</span>' +
                 '<input type="text" name="item_total_volume_weight_cubic_meter[]" class="form-control px-2" readonly>' +
                 '</div>' +
-                '<div class="col-md-4">' +
+                '<div class="col-md-4 mt-2 mt-sm-0">' +
                 '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="Cargo Description (Commodity)">' +
                 '</div>' +
                 '<div class="col-md-5">'+
@@ -1149,7 +1147,7 @@
                             '</div>' +
                         '</div>' +
                     '</div>' +
-                    '<div class="col-md-3">' +
+                    '<div class="col-md-3 mt-2 mt-sm-0">' +
                         '<label class="form-label mb-0">Cargo Description (Commodity)</label>' +
                         '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="">' +
                     '</div>' +
