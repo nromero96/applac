@@ -1635,23 +1635,7 @@ document.getElementById('form_quotations').addEventListener('submit', function(e
         if (xhr.status === 200) {
     const data = JSON.parse(xhr.responseText);
     if (data.success) {
-        //print html in id modal_customer_information javascript no jquery
-        var successInformation = `
-            <div class="row">
-                <div class="col-md-12 text-center">
-                    <img src="{{ asset('assets/img/check-circle.svg') }}" class="mb-3" alt="LAC">
-                    <h4>Successfully registered quote</h4>
-                    <p class="text-center">If you don't hear back in 48 hours, we might not provide the service you need right now.</p>
-                    <p class="text-center">Thanks for your understanding.</p>
-
-                    <div class="mb-4 mt-4">
-                        <a href="{{ route('quotations.onlineregister') }}" class="btn btn-primary btn-lg">{{ __('New Quote') }}</a>
-                    </div>
-                </div>
-            </div>
-        `;
-
-        document.getElementById('modal_customer_information').innerHTML = successInformation;
+        window.location.href = 'https://www.latinamericancargo.com/thank-you';
     } else {
         console.error('...Error inesperado en la respuesta:', xhr.responseText);
     }

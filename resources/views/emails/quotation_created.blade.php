@@ -6,11 +6,13 @@
 <body style="font-family: Arial, Helvetica, sans-serif">
     <p>Dear <b>{{$name}} {{$lastname}}</b>,</p>
 
-    <p>Thank you for your rate request. We should be responding within the next 24 hours.</p>
+    <p>Thank you for requesting a quote. We're currently reviewing your inquiry and aim to respond within 24 hours.</p>
+
+    <p>To confirm if your request falls under our service scope, please review the following information: https://www.latinamericancargo.com/</p>
 
     <p>Your Quote ID #: <b>{{ $quotation->id }}</b></p>
 
-    <p>Here are the details of your request:</p>
+    <p>Details:</p>
 
     <table style="width: 100%;background: #fbf0f0;padding: 19px 25px;border: 1px solid gainsboro;border-radius: 10px;">
         <tr>
@@ -351,9 +353,9 @@
         </tr>
     </table>
 
-    <p>For any queries, you can reach us at <b>sales@lacship.com.</b></p>
+    <p>For any additional questions or assistance, feel free to reach out to us at <b>sales@lacship.com</b>.</p>
 
-    <p><b>If you don&#39;t hear back in 48 hours, we might not provide the service you need right now.<br>Thanks for your understanding.</b></p>
+    <p><b>If you haven&#39;t heard back within 48 hours, it&#39;s because we won&#39;t be able to fulfill your request. We appreciate your understanding.</b></p>
 
     <p>Best regards,<br>
     Latin American Cargo</p>
