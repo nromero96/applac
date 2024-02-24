@@ -17,7 +17,6 @@
     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/css2?family=Kanit&amp;family=Nunito:wght@400;600;700&amp;display=swap" rel="stylesheet">
 
-    
     <link href="{{ asset('assets/css/light/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
     
     <link href="{{ asset('assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css">
@@ -49,8 +48,8 @@
                         <div class="widget-header">
                             <div class="row">
                                 <div class="col-xl-12 col-md-12 col-sm-12 col-12 text-center pt-3">
-                                    <h2 class="fw-bold">{{ __('Get a Quote Now') }}</h2>
-                                    <p>{{ __('Fill out the form below to get your international freight quote!') }}</p>
+                                    <h2 class="tit-form">{{ __('Get a Quote Now') }}</h2>
+                                    <p class="tit-form-descrip">{{ __('Fill out the form below to get your international freight quote!') }}</p>
                                 </div>
                             </div>
                         </div>
@@ -60,7 +59,7 @@
                                     <div class="step" data-target="#defaultStep-one">
                                         <button type="button" class="step-trigger" role="tab" >
                                             <span class="bs-stepper-circle">1</span><br>
-                                            <span class="bs-stepper-label">{{ __('Transporte') }}</span>
+                                            <span class="bs-stepper-label">{{ __('Transport') }}</span>
                                         </button>
                                     </div>
                                     <div class="line"></div>
@@ -95,7 +94,7 @@
                                         {{-- Mode of transport --}}
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
-                                                <h5 class="fw-bold">{{ __('Mode of transport') }}</h5>
+                                                <h5 class="subtit-steep">{{ __('Mode of transport') }}</h5>
                                             </div>
                 
                                             <div class="col-md-12">
@@ -108,7 +107,7 @@
                                                                     <img src="{{ asset('assets/img/60a35f0d358aaa2332423e.png') }}" alt="Opción 1" />
                                                                 </div>
                                                                 <div class="radio-text">Air</div>
-                                                                <div class="radio-sub-text">-</div>
+                                                                <div class="radio-sub-text" style="color: #ffffff00;">-</div>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -144,7 +143,7 @@
                                                                     <img src="{{ asset('assets/img/lac_roro_icon.png') }}" alt="Opción 4" />
                                                                 </div>
                                                                 <div class="radio-text">RoRo</div>
-                                                                <div class="radio-sub-text">-</div>
+                                                                <div class="radio-sub-text">Roll-On/Roll-Off</div>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -156,11 +155,11 @@
                                                                     <img src="{{ asset('assets/img/lac_breakbulk_icon.png') }}" alt="Opción 5" />
                                                                 </div>
                                                                 <div class="radio-text">Breakbulk</div>
-                                                                <div class="radio-sub-text">-</div>
+                                                                <div class="radio-sub-text" style="color: #ffffff00;">-</div>
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="text-danger" id="mode_of_transport_error"></div>
+                                                    <div class="text-danger msg-info" id="mode_of_transport_error"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -198,7 +197,7 @@
                                                         <label class="custom-control-label cargo-type-label cursor-pointer" for="cargo_type6">Personal Vehicle</label> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Personal vehicles shipped for non-commercial reasons. Requires specific personal documentation, possible tariff exemptions." ></span>
                                                     </div>
                                                 </div>
-                                                <div class="text-danger" id="cargo_type_error"></div>
+                                                <div class="text-danger msg-info" id="cargo_type_error"></div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label mb-0">{{ __('Service Type') }}</label>
@@ -209,7 +208,7 @@
                                                     <option value="Airport-to-Door">{{ __('Airport-to-Door') }}</option>
                                                     <option value="Airport-to-Airport">{{ __('Airport-to-Airport') }}</option>
                                                 </select>
-                                                <div class="text-danger" id="service_type_error"></div>
+                                                <div class="text-danger msg-info" id="service_type_error"></div>
                                             </div>
                                         </div>
                                         
@@ -223,7 +222,7 @@
                                         {{-- Location Details --}}
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
-                                                <h5 class="fw-bold">{{ __('Location Details') }}</h5>
+                                                <h5 class="subtit-steep">{{ __('Location Details') }}</h5>
                                             </div>
 
                                             <div class="col-md-5">
@@ -232,7 +231,7 @@
                                                     <select class="form-select" name="origin_country_id" id="origin_country_id" required>
                                                         <option value="">{{ __('Select...') }}</option>
                                                     </select>
-                                                    <div class="text-danger" id="origin_country_id_error"></div>
+                                                    <div class="text-danger msg-info" id="origin_country_id_error"></div>
                                                 </div>
                                                 <div class="mb-0">
                                                     <label class="form-label mb-0" id="origin_labeladdress">{{ __('Pick up Address') }}</label>
@@ -242,17 +241,17 @@
                                                 </div>
                                                 <div class="mb-2 d-none" id="origin_div_airportorport">
                                                     <input type="text" class="form-control" name="origin_airportorport" id="origin_airportorport" placeholder="{{ __('Enter Airport') }}">
-                                                    <div class="text-danger" id="origin_airportorport_error"></div>
+                                                    <div class="text-danger msg-info" id="origin_airportorport_error"></div>
                                                 </div>
                                                 <div class="" id="origin_div_fulladress">
                                                     <div class="mb-2">
                                                         <input type="text" class="form-control" name="origin_address" id="origin_address" placeholder="{{ __('Enter street address') }}">
-                                                        <div class="text-danger" id="origin_address_error"></div>
+                                                        <div class="text-danger msg-info" id="origin_address_error"></div>
                                                     </div>
                                                     <div class="mb-2">
                                                         <label class="form-label mb-0">{{ __('City') }}</label>
                                                         <input type="text" class="form-control" name="origin_city" id="origin_city" placeholder="{{ __('Enter City') }}">
-                                                        <div class="text-danger" id="origin_city_error"></div>
+                                                        <div class="text-danger msg-info" id="origin_city_error"></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 mb-2">
@@ -260,12 +259,12 @@
                                                             <select class="form-select" name="origin_state_id" id="origin_state_id">
                                                                 <option value="">{{ __('Select') }}</option>
                                                             </select>
-                                                            <div class="text-danger" id="origin_state_id_error"></div>
+                                                            <div class="text-danger msg-info" id="origin_state_id_error"></div>
                                                         </div>
                                                         <div class="col-md-6 mb-2">
                                                             <label class="form-label mb-0">{{ __('Zip Code') }}</label>
                                                             <input type="text" class="form-control" name="origin_zip_code" id="origin_zip_code" placeholder="{{ __('Enter Zip Code') }}">
-                                                            <div class="text-danger" id="origin_zip_code_error"></div>
+                                                            <div class="text-danger msg-info" id="origin_zip_code_error"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -286,7 +285,7 @@
                                                     <select class="form-select" name="destination_country_id" id="destination_country_id" required>
                                                         <option value="">{{ __('Select') }}</option>
                                                     </select>
-                                                    <div class="text-danger" id="destination_country_id_error"></div>
+                                                    <div class="text-danger msg-info" id="destination_country_id_error"></div>
                                                 </div>
                                                 <div class="mb-0">
                                                     <label class="form-label mb-0" id="destination_labeladdress">{{ __('Delivery Address') }}</label>
@@ -297,17 +296,17 @@
 
                                                 <div class="mb-2 d-none" id="destination_div_airportorport">
                                                     <input type="text" class="form-control" name="destination_airportorport" id="destination_airportorport" placeholder="{{ __('Enter Airport') }}">
-                                                    <div class="text-danger" id="destination_airportorport_error"></div>
+                                                    <div class="text-danger msg-info" id="destination_airportorport_error"></div>
                                                 </div>
                                                 <div class="" id="destination_div_fulladress">
                                                     <div class="mb-2">
                                                         <input type="text" class="form-control" name="destination_address" id="destination_address" placeholder="{{ __('Enter street address') }}">
-                                                        <div class="text-danger" id="destination_address_error"></div>
+                                                        <div class="text-danger msg-info" id="destination_address_error"></div>
                                                     </div>
                                                     <div class="mb-2">
                                                         <label class="form-label mb-0">{{ __('City') }}</label>
                                                         <input type="text" class="form-control" name="destination_city" id="destination_city" placeholder="{{ __('City') }}">
-                                                        <div class="text-danger" id="destination_city_error"></div>
+                                                        <div class="text-danger msg-info" id="destination_city_error"></div>
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 mb-2">
@@ -315,12 +314,12 @@
                                                             <select class="form-select" name="destination_state_id" id="destination_state_id">
                                                                 <option value="">{{ __('Select') }}</option>
                                                             </select>
-                                                            <div class="text-danger" id="destination_state_id_error"></div>
+                                                            <div class="text-danger msg-info" id="destination_state_id_error"></div>
                                                         </div>
                                                         <div class="col-md-6 mb-2">
                                                             <label class="form-label mb-0">{{ __('Zip Code') }}</label>
                                                             <input type="text" class="form-control" name="destination_zip_code" id="destination_zip_code" placeholder="{{ __('Enter Zip Code') }}">
-                                                            <div class="text-danger" id="destination_zip_code_error"></div>
+                                                            <div class="text-danger msg-info" id="destination_zip_code_error"></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -337,7 +336,7 @@
                                         {{-- Cargo Details --}}
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
-                                                <h5 class="fw-bold">{{ __('Cargo Details') }}</h5>
+                                                <h5 class="subtit-steep">{{ __('Cargo Details') }}</h5>
                                             </div>
 
                                             <div class="col-md-12">
@@ -396,7 +395,7 @@
                                                                         <div class="col">
                                                                             <label class="form-label mb-0" id="txt_volwei">...</label>
                                                                             <input type="text" name="total_volum_weight" class="form-control" placeholder="0" readonly>
-                                                                            <div class="text-danger" id="total_volum_weight_error"></div>
+                                                                            <div class="text-danger msg-info" id="total_volum_weight_error"></div>
                                                                         </div>
                                                                         <div class="col" id="dv_chargwei">
                                                                             <label class="form-label mb-0" id="txt_chargwei">...</label>
@@ -415,12 +414,12 @@
                                                 {{-- Cargo description --}}
                                                 <div class="row mb-2 mt-4">
                                                     <div class="col-md-12 mb-3">
-                                                        <h5 class="fw-bold">{{ __('Additional Information') }}</h5>
+                                                        <h5 class="subtit-steep">{{ __('Additional Information') }}</h5>
                                                     </div>
                                                     <div class="col-md-6 mb-3">
                                                         <label class="form-label">{{ __('Shipping date (select range)') }}</label>
-                                                        <input type="date" name="shipping_date" id="shipping_date" class="form-control" placeholder="YYY - MM - DD" required>
-                                                        <div class="text-danger" id="shipping_date_error"></div>
+                                                        <input type="date" name="shipping_date" id="shipping_date" class="form-control" placeholder="YYYY - MM - DD" required>
+                                                        <div class="text-danger msg-info" id="shipping_date_error"></div>
                                                         <div class="form-check form-check-primary form-check-inline mt-1">
                                                             <input type="hidden" name="no_shipping_date" value="no">
                                                             <input class="form-check-input" type="checkbox" name="no_shipping_date" id="no_shipping_date" value="yes">
@@ -428,12 +427,12 @@
                                                                 I don’t have a shipping date yet
                                                             </label>
                                                         </div>
-                                                        <div class="text-danger" id="no_shipping_date_error"></div>
+                                                        <div class="text-danger msg-info" id="no_shipping_date_error"></div>
                                                     </div>
                                                     <div class="col-md-4 mb-3">
                                                         <label class="form-label">{{ __('Declared value') }}</label>
                                                         <input type="text" name="declared_value" id="declared_value" class="form-control" placeholder="" required>
-                                                        <div class="text-danger" id="declared_value_error"></div>
+                                                        <div class="text-danger msg-info" id="declared_value_error"></div>
                                                         
                                                         <div class="form-check form-check-primary form-check-inline mt-1">
                                                             <input type="hidden" name="insurance_required" value="no">
@@ -442,7 +441,7 @@
                                                                 Insurance required
                                                             </label>
                                                         </div>
-                                                        <div class="text-danger" id="insurance_required_error"></div>
+                                                        <div class="text-danger msg-info" id="insurance_required_error"></div>
                                                     </div>
                                                     <div class="col-md-2 mb-3">
                                                         <label class="form-label">{{ __('Currency') }}</label>
@@ -450,7 +449,7 @@
                                                             <option value="USD - US Dollar">USD - US Dollar</option>
                                                             <option value="EUR - Euro">EUR - Euro</option>
                                                         </select>
-                                                        <div class="text-danger" id="currency_error"></div>
+                                                        <div class="text-danger msg-info" id="currency_error"></div>
                                                     </div>
                                                     <div class="col-md-12 mb-3">
                                                         <label class="form-label">{{ __('Documentation') }} <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="(Max. 10mb - Allowed files: jpg, jpeg, png, gif, doc, docx, ppt, pptx, pdf, xls, xlsx)" ></span></label>
@@ -483,19 +482,19 @@
                                         {{-- Contact Details --}}
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
-                                                <h5 class="fw-bold">{{ __('Contact Information') }}</h5>
+                                                <h5 class="subtit-steep">{{ __('Contact Information') }}</h5>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label for="name" class="form-label mb-0">{{ __('First Name') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="name" id="name" class="form-control">
-                                                <div class="text-danger" id="name_error"></div>
+                                                <div class="text-danger msg-info" id="name_error"></div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label for="lastname" class="form-label mb-0">{{ __('Last Name') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="lastname" id="lastname" class="form-control">
-                                                <div class="text-danger" id="lastname_error"></div>
+                                                <div class="text-danger msg-info" id="lastname_error"></div>
                                             </div>
                                         </div>
 
@@ -503,12 +502,12 @@
                                             <div class="col-md-6 mb-3">
                                                 <label for="company_name" class="form-label mb-0">{{ __('Company name') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="company_name" id="company_name" class="form-control">
-                                                <div class="text-danger" id="company_name_error"></div>
+                                                <div class="text-danger msg-info" id="company_name_error"></div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label for="company_website" class="form-label mb-0">{{ __('Company website') }}</label>
                                                 <input type="text" name="company_website" id="company_website" class="form-control">
-                                                <div class="text-danger" id="company_website_error"></div>
+                                                <div class="text-danger msg-info" id="company_website_error"></div>
                                             </div>
                                         </div>
 
@@ -516,12 +515,12 @@
                                             <div class="col-md-6 mb-3">
                                                 <label for="email" class="form-label mb-0">{{ __('Email address') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="email" id="email" class="form-control">
-                                                <div class="text-danger" id="email_error"></div>
+                                                <div class="text-danger msg-info" id="email_error"></div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label for="confirm_email" class="form-label mb-0">{{ __('Confirm email address') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="confirm_email" id="confirm_email" class="form-control">
-                                                <div class="text-danger" id="confirm_email_error"></div>
+                                                <div class="text-danger msg-info" id="confirm_email_error"></div>
                                             </div>
                                         </div>
 
@@ -532,7 +531,7 @@
                                                 <input type="tel" id="phone" name="phone" class="form-control">
                                                 <!-- Agrega el contenedorphone para mostrar la bandera y el código -->
                                                 <div id="phone-container" class="mt-2"></div>
-                                                <div class="text-danger" id="phone_error"></div>
+                                                <div class="text-danger msg-info" id="phone_error"></div>
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label for="source" class="form-label mb-0">{{ __('How do you know about us?') }}</label>
@@ -545,7 +544,7 @@
                                                     <option value="Referral">{{ __('Referral') }}</option>
                                                     <option value="Other">{{ __('Other') }}</option>
                                                 </select>
-                                                <div class="text-danger" id="source_error"></div>
+                                                <div class="text-danger msg-info" id="source_error"></div>
                                             </div>
                                         </div>
 
@@ -555,7 +554,8 @@
                                                     <input type="hidden" name="create_account" value="no">
                                                     <input class="form-check-input" type="checkbox" name="create_account" id="create_account" value="yes">
                                                     <label class="form-check-label" for="create_account">
-                                                        Create an account
+                                                        {{ __('Create an account and get quotes quicker') }}
+                                                        <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="When you create an account, we will store your basic contact information and will be able to deliver quicker quotes for your following service requests."></span>
                                                     </label>
                                                 </div>
 
@@ -563,7 +563,7 @@
                                                     <input type="hidden" name="subscribed_to_newsletter" value="no">
                                                     <input class="form-check-input" type="checkbox" name="subscribed_to_newsletter" id="subscribed_to_newsletter" value="yes">
                                                     <label class="form-check-label" for="subscribed_to_newsletter">
-                                                        Subscribe to our newsletter
+                                                        {{ __('Subscribe to our newsletter') }}
                                                     </label>
                                                 </div>
                                             </div>
@@ -571,7 +571,7 @@
 
                                         <div class="button-action text-center mt-4">
                                             <button class="btn btn-outline-primary btn-prev me-3"> ← {{ __('Return') }} </button>
-                                            <button type="submit" class="btn btn-primary me-3 send_rq" id="submitBtn">{{ __('Complete my Quote Request') }} →</button>
+                                            <button type="submit" class="btn btn-primary me-3 send_rq" id="submitBtn">{{ __('Complete my Quote Request') }}</button>
                                             <div class="mx-5 mt-2 mb-1 text-center" id="loadingSpinner" style="display: none;">
                                                 <div class="spinner-border text-warning align-self-center"></div>
                                             </div>
@@ -1870,13 +1870,13 @@ function clearValidationErrors() {
                         <option value="">Select...</option>
                         ${selectedOriginCountry in puertosPorPais ? puertosPorPais[selectedOriginCountry].map(puerto => `<option value="${puerto}">${puerto}</option>`).join('') : ''}
                     </select>
-                    <div class="text-danger" id="origin_airportorport_error"></div>
+                    <div class="text-danger msg-info" id="origin_airportorport_error"></div>
                 `;
             } else {
                 // Si no se selecciona "Personal Vehicle," mostrar el campo de entrada en origen
                 originPortDiv.innerHTML = `
                     <input type="text" class="form-control" name="origin_airportorport" id="origin_airportorport" placeholder="Enter Port">
-                    <div class="text-danger" id="origin_airportorport_error"></div>
+                    <div class="text-danger msg-info" id="origin_airportorport_error"></div>
                 `;
             }
 
@@ -1896,13 +1896,13 @@ function clearValidationErrors() {
                 <option value="">Select...</option>
                 ${selectedDestinationCountry in puertosPorPais ? puertosPorPais[selectedDestinationCountry].map(puerto => `<option value="${puerto}">${puerto}</option>`).join('') : ''}
             </select>
-            <div class="text-danger" id="destination_airportorport_error"></div>
+            <div class="text-danger msg-info" id="destination_airportorport_error"></div>
         `;
     } else {
         // Si no se selecciona "Personal Vehicle," mostrar el campo select en destino
         destinationPortDiv.innerHTML = `
             <input type="text" class="form-control" name="destination_airportorport" id="destination_airportorport" placeholder="Enter Port">
-            <div class="text-danger" id="destination_airportorport_error"></div>
+            <div class="text-danger msg-info" id="destination_airportorport_error"></div>
         `;
     }
 }

@@ -2,6 +2,51 @@ html {
   min-height: 100%;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Kanit";
+}
+
+p {
+  font-family: "Nunito";
+}
+
+.msg-info {
+  font-family: "Nunito";
+  font-size: 14px;
+}
+
+.tit-form {
+  font-size: 41px;
+  font-weight: 400;
+}
+
+.tit-form-descrip {
+  font-size: 18px;
+}
+
+.subtit-steep {
+  font-size: 24px;
+  font-weight: 400;
+}
+
+.st-complete .bs-stepper-circle {
+  color: white !important;
+}
+.st-complete .bs-stepper-circle:before {
+  content: "";
+  position: absolute;
+  width: 32px;
+  margin-top: 4px;
+  border-radius: 33px;
+  height: 32px;
+  z-index: 1;
+  background-image: url("/assets/img/complete-step-47592049.svg");
+  background-size: contain;
+}
+.st-complete .step-trigger:disabled {
+  opacity: 1 !important;
+}
+
 .radio-card {
   background: #ffffff;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -10,6 +55,7 @@ html {
   flex-direction: column;
   align-items: center;
   text-align: center;
+  font-family: "Nunito";
 }
 .radio-card .radio-icon img {
   width: 32px;
@@ -167,6 +213,7 @@ span.form-label {
 .btn {
   padding: 12px 24px;
   line-height: 21px;
+  font-family: "Nunito";
 }
 
 .btn-primary {
@@ -293,7 +340,7 @@ span.form-label {
   color: #595959;
   font-weight: 600;
   letter-spacing: 1px;
-  border-bottom: 3px solid;
+  border-bottom: 4px solid;
   border-radius: 0;
   padding-bottom: 0px;
 }
@@ -325,6 +372,7 @@ span.form-label {
 
 .bs-stepper-label {
   font-weight: bold;
+  font-family: "Nunito";
 }
 .bs-stepper-label:focus {
   color: #B80000;
@@ -429,7 +477,7 @@ span.form-label {
 }
 
 .filepond--root .filepond--drop-label, .filepond--drip, .filepond--panel-center, .filepond--panel-top, .filepond--panel-bottom {
-  background-color: #eceffe;
+  background-color: #fff2f2;
   border-radius: 4px;
   border: #B80000 1px dashed;
 }

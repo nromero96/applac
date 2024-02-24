@@ -7,30 +7,77 @@ document.addEventListener('DOMContentLoaded', function () {
     var stepperPrevButtonDefault = stepperWizardDefault.querySelectorAll('.btn-prev');
 
     function validateStep(step) {
-
+        //get selected radio name mode_of_transport
+        const mode_of_transport = document.querySelector('input[name="mode_of_transport"]:checked').value;
+    
+        const serviceType = document.getElementById('service_type');
+        const service_type_error = document.getElementById('service_type_error');
+            
+        const cargo_type = document.querySelector('input[name="cargo_type"]:checked');
+        const cargo_type_error = document.getElementById('cargo_type_error');
+    
+        const origin_country_id = document.getElementById('origin_country_id');
+        const origin_country_id_error = document.getElementById('origin_country_id_error');
+    
+        const destination_country_id = document.getElementById('destination_country_id');
+        const destination_country_id_error = document.getElementById('destination_country_id_error');
+    
         // Lógica de validación para cada paso
         if (step === '#defaultStep-one') {
-            //validar select id service_type
-        
-            const serviceType = document.getElementById('service_type').value;
-            if (serviceType === '') {
-                alert('Por favor, selecciona un tipo de servicio.');
-                return false;
+    
+            service_type_error.textContent = '';
+            cargo_type_error.textContent = '';
+    
+            if(mode_of_transport == 'Ground' || mode_of_transport == 'Container' || mode_of_transport == 'RoRo'){
+                if(cargo_type === null){
+                    //fucus radio name cargo_type
+                    cargo_type_error.textContent = 'Required cargo type.';
+                    return false;
+                }
             }
-
+    
+            if (serviceType.value === '') {
+                //focus serviceType
+                serviceType.focus();
+                service_type_error.textContent = 'Required service type.';
+                return false;
+            } else {
+                // Si el paso se valida correctamente, agregamos la clase 'st-complete' al paso
+                stepperWizardDefault.querySelector('[data-target="#defaultStep-one"]').classList.add('st-complete');
+            }
+    
         } else if (step === '#defaultStep-two') {
-            // Validación para el segundo paso
-            // Por ejemplo, verifica que se haya seleccionado un país de origen
-            const originCountry = document.getElementById('origin_country_id').value;
-            if (originCountry === '') {
-                alert('Por favor, selecciona un país de origen.');
+            
+            origin_country_id_error.textContent = '';
+            destination_country_id_error.textContent = '';
+            
+            if (origin_country_id.value === '') {
+                origin_country_id.focus();
+                origin_country_id_error.textContent = 'Required origin country.';
                 return false;
             }
+    
+            if(destination_country_id.value === ''){
+                destination_country_id.focus();
+                destination_country_id_error.textContent = 'Required destination country.';
+                return false;
+            } else {
+                // Si el paso se valida correctamente, agregamos la clase 'st-complete' al paso
+                stepperWizardDefault.querySelector('[data-target="#defaultStep-two"]').classList.add('st-complete');
+            }
+    
+        } else if (step === '#defaultStep-three') {
+
+            stepperWizardDefault.querySelector('[data-target="#defaultStep-three"]').classList.add('st-complete');
+
+        } else if (step === '#defaultStep-four') {
+            stepperWizardDefault.querySelector('[data-target="#defaultStep-four"]').classList.add('st-complete');
         }
         // Agrega más lógica de validación según sea necesario
-
+    
         return true;
     }
+    
 
     // Agrega eventos de clic para los botones de siguiente y anterior
     stepperNextButtonDefault.forEach(element => {
@@ -50,7 +97,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
     stepperPrevButtonDefault.forEach(element => {
         element.addEventListener('click', function () {
+            const completedSteps = stepperWizardDefault.querySelectorAll('.st-complete');
+
+            if(completedSteps.length > 0){
+                var lastCompletedStep = completedSteps[completedSteps.length - 1];
+                lastCompletedStep.classList.remove('st-complete');
+            }
+
+
+
+            // Retrocede al paso anterior
             stepperDefault.previous();
+
+
         });
     });
 
