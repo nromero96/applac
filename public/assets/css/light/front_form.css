@@ -10,6 +10,15 @@ p {
   font-family: "Nunito";
 }
 
+.confirm-percomp-modal .modal-body {
+  padding-top: 2.6rem;
+  padding-bottom: 3rem;
+}
+.confirm-percomp-modal .modal-body h2 {
+  width: 60%;
+  margin: 0 auto;
+}
+
 .msg-info {
   font-family: "Nunito";
   font-size: 14px;

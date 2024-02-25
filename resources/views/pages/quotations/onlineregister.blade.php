@@ -40,9 +40,63 @@
     <div class="auth-container d-flex">
         <div class="container mx-auto align-self-center">
 
-
-
             <form method="POST" id="form_quotations" enctype="multipart/form-data">
+
+
+
+                {{-- Modal personal or company --}}
+                <div class="modal fade confirm-percomp-modal" id="confirm-percomp-modal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+                    <!-- Contenido del modal aquí -->
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div id="options_best" class="">
+                                    <h2 class="text-center mb-4">
+                                        {{ __('Please, select the option that describes you best:') }}
+                                    </h2>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="radio" class="btn-check" name="options_best" value="business" id="ob_business" autocomplete="off">
+                                            <label class="btn btn-primary w-100" for="ob_business">{{ __('I’m a Business Representative') }}</label>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="radio" class="btn-check" name="options_best" value="personal" id="ob_personal" autocomplete="off">
+                                            <label class="btn btn-primary w-100" for="ob_personal">{{ __('I’m a Private Person') }}</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="options_best_personal" class="d-none">
+                                    <img style="width: 60px;" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDYiIGhlaWdodD0iNDYiIGZpbGw9IiNiODAwMDAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cGF0aCBkPSJNMTIgMTAuNzVhLjc1Ljc1IDAgMCAxIC43NS43NXY1YS43NS43NSAwIDAgMS0xLjUgMHYtNWEuNzUuNzUgMCAwIDEgLjc1LS43NVoiPjwvcGF0aD4KICA8cGF0aCBkPSJNMTIgOWExIDEgMCAxIDAgMC0yIDEgMSAwIDAgMCAwIDJaIj48L3BhdGg+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMy4yNSAxMmE4Ljc1IDguNzUgMCAxIDEgMTcuNSAwIDguNzUgOC43NSAwIDAgMS0xNy41IDBaTTEyIDQuNzVhNy4yNSA3LjI1IDAgMSAwIDAgMTQuNSA3LjI1IDcuMjUgMCAwIDAgMC0xNC41WiIgY2xpcC1ydWxlPSJldmVub2RkIj48L3BhdGg+Cjwvc3ZnPg==" alt="Personal" class="img-fluid d-block mx-auto mb-0">
+                                    <h4 class="text-center mb-2">
+                                        {{ __('Please note') }}
+                                    </h2>
+                                    <p class="text-center">
+                                        {{ __('We specialize in providing commercial cargo logistics solutions for companies. Our current service offering for individuals is limited to personal vehicle shipping through RORO port-to-port service.') }}
+                                    </p>
+                                    <p class="text-center">
+                                        {{ __('If you want to ship personal effects or household goods, please don’t proceed with this form as we won’t be be able to fulfil your request.') }}
+                                    </p>
+
+                                    <div class="text-center">
+                                        <div class="form-check-inline mt-2 mb-4">
+                                            <input type="checkbox" class="form-check-input" id="accept_terms_personal" name="accept_terms_personal" value="yes">
+                                            <label class="form-check-label" for="accept_terms_personal">
+                                                {{ __('I understand') }} 
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-primary" id="confirm_terms_personal" data-bs-dismiss="modal" disabled>{{ __('Continue with my quote request') }}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div id="wizard_Default" class="col-lg-12 layout-spacing mt-3">
                     <div class="statbox widget box box-shadow">
                         <div class="widget-header">
@@ -626,6 +680,40 @@
 
     <script>
         $(document).ready(function() {
+
+            //modal confirm-percomp-modal auto open javascript puro
+            var confirm_percomp_modal = new bootstrap.Modal(document.getElementById('confirm-percomp-modal'));
+            confirm_percomp_modal.show();
+
+            var dv_options_best = document.getElementById('options_best');
+            var dv_options_best_personal = document.getElementById('options_best_personal');
+
+            //if click radio name options_best
+            var options_best = document.getElementsByName('options_best');
+
+            for (var i = 0; i < options_best.length; i++) {
+                options_best[i].addEventListener('change', function() {
+                    if (this.value == 'personal') {
+                        dv_options_best_personal.classList.remove('d-none');
+                        dv_options_best.classList.add('d-none');
+                    } else {
+                        confirm_percomp_modal.hide();
+                    }
+                });
+            }
+
+            var accept_terms_personal = document.getElementById('accept_terms_personal');
+            var confirm_terms_personal = document.getElementById('confirm_terms_personal');
+
+            accept_terms_personal.addEventListener('change', function() {
+                if (this.checked) {
+                    confirm_terms_personal.removeAttribute('disabled');
+                } else {
+                    confirm_terms_personal.setAttribute('disabled', 'disabled');
+                }
+            });
+
+
             list_countries('all', 'all');
             // Cambiar el botón de radio por el nombre "mode_of_transport"
             $(document).on('change', 'input[name="mode_of_transport"]', function() {
@@ -1854,7 +1942,7 @@ function clearValidationErrors() {
                     </select>
                     <div class="text-danger msg-info" id="origin_airportorport_error"></div>
                 `;
-            } else {
+            } else if(selectedCargoType === 'Commercial (Business-to-Business)') {
                 // Si no se selecciona "Personal Vehicle," mostrar el campo de entrada en origen
                 originPortDiv.innerHTML = `
                     <input type="text" class="form-control" name="origin_airportorport" id="origin_airportorport" placeholder="Enter Port">
@@ -1865,29 +1953,29 @@ function clearValidationErrors() {
         }
 
         function updateDestinationPortField() {
-    const cargoTypeRadios = document.querySelectorAll('input[name="cargo_type"]');
-    const selectedCargoType = Array.from(cargoTypeRadios).find(radio => radio.checked)?.value;
+            const cargoTypeRadios = document.querySelectorAll('input[name="cargo_type"]');
+            const selectedCargoType = Array.from(cargoTypeRadios).find(radio => radio.checked)?.value;
 
-    // Obtener el valor del país de destino seleccionado
-    const selectedDestinationCountry = destinationCountrySelect.value;
+            // Obtener el valor del país de destino seleccionado
+            const selectedDestinationCountry = destinationCountrySelect.value;
 
-    if (selectedCargoType === "Personal Vehicle") {
-        // Si se selecciona "Personal Vehicle," mostrar el campo de entrada en destino
-        destinationPortDiv.innerHTML = `
-            <select class="form-control" name="destination_airportorport" id="destination_airportorport">
-                <option value="">Select...</option>
-                ${selectedDestinationCountry in puertosPorPais ? puertosPorPais[selectedDestinationCountry].map(puerto => `<option value="${puerto}">${puerto}</option>`).join('') : ''}
-            </select>
-            <div class="text-danger msg-info" id="destination_airportorport_error"></div>
-        `;
-    } else {
-        // Si no se selecciona "Personal Vehicle," mostrar el campo select en destino
-        destinationPortDiv.innerHTML = `
-            <input type="text" class="form-control" name="destination_airportorport" id="destination_airportorport" placeholder="Enter Port">
-            <div class="text-danger msg-info" id="destination_airportorport_error"></div>
-        `;
-    }
-}
+            if (selectedCargoType === "Personal Vehicle") {
+                // Si se selecciona "Personal Vehicle," mostrar el campo de entrada en destino
+                destinationPortDiv.innerHTML = `
+                    <select class="form-control" name="destination_airportorport" id="destination_airportorport">
+                        <option value="">Select...</option>
+                        ${selectedDestinationCountry in puertosPorPais ? puertosPorPais[selectedDestinationCountry].map(puerto => `<option value="${puerto}">${puerto}</option>`).join('') : ''}
+                    </select>
+                    <div class="text-danger msg-info" id="destination_airportorport_error"></div>
+                `;
+            } else if(selectedCargoType === 'Commercial (Business-to-Business)'){
+                // Si no se selecciona "Personal Vehicle," mostrar el campo select en destino
+                destinationPortDiv.innerHTML = `
+                    <input type="text" class="form-control" name="destination_airportorport" id="destination_airportorport" placeholder="Enter Port">
+                    <div class="text-danger msg-info" id="destination_airportorport_error"></div>
+                `;
+            }
+        }
 
 
         // Agregar event listeners para cambios en las selecciones de país de origen y destino
