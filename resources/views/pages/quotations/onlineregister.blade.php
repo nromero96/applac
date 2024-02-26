@@ -288,7 +288,7 @@
                                                 </div>
                                                 <div class="mb-0">
                                                     <label class="form-label mb-0" id="origin_labeladdress">{{ __('Pick up Address') }}</label>
-                                                    <label class="form-label mb-0 d-none" id="origin_labelairport">{{ __('City') }}</label>
+                                                    <label class="form-label mb-0 d-none" id="origin_labelairport">{{ __('Origin Airport') }}</label>
                                                     <label class="form-label mb-0 d-none" id="origin_labelport">{{ __('Origin Port') }}</label>
                                                     <label class="form-label mb-0 d-none" id="origin_labelcfs">{{ __('Origin CFS/Port') }}</label>
                                                 </div>
@@ -341,7 +341,7 @@
                                                 </div>
                                                 <div class="mb-0">
                                                     <label class="form-label mb-0" id="destination_labeladdress">{{ __('Delivery Address') }}</label>
-                                                    <label class="form-label mb-0 d-none" id="destination_labelairport">{{ __('City') }}</label>
+                                                    <label class="form-label mb-0 d-none" id="destination_labelairport">{{ __('Destination Airport') }}</label>
                                                     <label class="form-label mb-0 d-none" id="destination_labelport">{{ __('Destination Port') }}</label>
                                                     <label class="form-label mb-0 d-none" id="destination_labelcfs">{{ __('Destination CFS/Port') }}</label>
                                                 </div>
@@ -1179,7 +1179,7 @@
                 if(cargoType == 'FTL') {
                     var title_typelist = 'Trailer Type';
                     var $typelist = '<option value="48 / 53 Ft Trailer">48 / 53 Ft Trailer</option>' +
-                                    '<option value="48 / 53 Ft Refrigerated Trailer (Reefer)">48 / 53 Ft Refrigerated Trailer (Reefer)</option>' +
+                                    '<option value="48 / 53 Ft Reefer Trailer">48 / 53 Ft Reefer Trailer</option>' +
                                     '<option value="Flatbed">Flatbed</option>' +
                                     '<option value="Double Drop">Double Drop</option>' +
                                     '<option value="Step Deck">Step Deck</option>' +
@@ -1264,7 +1264,7 @@
                         '</div>' +
                     '</div>' +
                     '<div class="col-md-6 position-relative dvdetailship d-none">'+
-                        '<span class="infototi position-absolute rend-16" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter the details for your shipment, including quantities, dimensions (length, width, height), and weights in the format: [quantity] x [dimensions] x [weight]. Example: 10 x 12x10x8 inches x 5 lbs." ></span>'+
+                        '<span class="infototi position-absolute detship" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter the details for your shipment, including quantities, dimensions (length, width, height), and weights in the format: [quantity] x [dimensions] x [weight]. Example: 10 x 12x10x8 inches x 5 lbs." ></span>'+
                         '<textarea name="details_shipment[]" class="form-control" placeholder="Please enter the details for your shipment..."></textarea>'+
                     '</div>' +
                     '</div></div>';
@@ -1524,8 +1524,8 @@
 
             //if cargo_type selected is FTL or FCL
             if($('input[name="cargo_type"]:checked').val() == 'FTL' || $('input[name="cargo_type"]:checked').val() == 'FCL'){
-                //if package_type selected is 48 / 53 Ft Refrigerated Trailer (Reefer)
-                if(selectedValue == '48 / 53 Ft Refrigerated Trailer (Reefer)'){
+                //if package_type selected is 48 / 53 Ft Reefer Trailer
+                if(selectedValue == '48 / 53 Ft Reefer Trailer'){
                     //show div dvtemperature
                     $(this).closest('.itemdetail').find('.dvtemperature').removeClass('d-none');
                     //hide div dvdetailship
