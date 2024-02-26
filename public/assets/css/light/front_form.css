@@ -1,3 +1,4 @@
+@charset "UTF-8";
 html {
   min-height: 100%;
 }
@@ -17,6 +18,35 @@ p {
 .confirm-percomp-modal .modal-body h2 {
   width: 60%;
   margin: 0 auto;
+}
+
+.detship {
+  right: -8px;
+}
+
+.details_shipment {
+  /* Ancho del scroll */
+  scrollbar-width: thin; /* Para navegadores que no son WebKit */
+  scrollbar-color: #888 #f1f1f1; /* Para navegadores que no son WebKit */
+  /* Estilo del thumb (la barra de desplazamiento) */
+  /* Estilo del track (el área del scroll) */
+  /* Estilo del thumb (la barra de desplazamiento) */
+  /* Estilo del thumb al pasar el mouse sobre él */
+  /* Estilo del thumb en navegadores que no son WebKit */
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
+}
+.details_shipment ::-webkit-scrollbar {
+  width: 10px;
+}
+.details_shipment ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+.details_shipment ::-webkit-scrollbar-thumb {
+  background: #888;
+}
+.details_shipment ::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 .msg-info {

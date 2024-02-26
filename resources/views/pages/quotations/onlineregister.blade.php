@@ -1265,7 +1265,7 @@
                     '</div>' +
                     '<div class="col-md-6 position-relative dvdetailship d-none">'+
                         '<span class="infototi position-absolute detship" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter the details for your shipment, including quantities, dimensions (length, width, height), and weights in the format: [quantity] x [dimensions] x [weight]. Example: 10 x 12x10x8 inches x 5 lbs." ></span>'+
-                        '<textarea name="details_shipment[]" class="form-control" placeholder="Please enter the details for your shipment..."></textarea>'+
+                        '<textarea name="details_shipment[]" class="form-control details_shipment" placeholder="Please enter the details for your shipment..."></textarea>'+
                     '</div>' +
                     '</div></div>';
                 $('#listcargodetails').append(html);
