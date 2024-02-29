@@ -51,15 +51,15 @@
                         <div class="modal-content">
                             <div class="modal-body">
                                 <div id="options_best" class="">
-                                    <h2 class="text-center mb-4">
+                                    <h2 class="text-center mb-2">
                                         {{ __('Please, select the option that describes you best:') }}
                                     </h2>
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 mb-2">
                                             <input type="radio" class="btn-check" name="options_best" value="business" id="ob_business" autocomplete="off">
                                             <label class="btn btn-primary w-100" for="ob_business">{{ __('I’m a Business Representative') }}</label>
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 mb-2">
                                             <input type="radio" class="btn-check" name="options_best" value="personal" id="ob_personal" autocomplete="off">
                                             <label class="btn btn-primary w-100" for="ob_personal">{{ __('I’m a Private Person') }}</label>
                                         </div>
@@ -378,9 +378,9 @@
                                             </div>
                                         </div>
                                         
-                                        <div class="button-action text-center mb-3">
-                                            <a class="btn btn-outline-primary btn-prev me-3"> ← {{ __('Return') }} </a>
-                                            <a class="btn btn-primary btn-nxt"> {{ __('Continue to Cargo') }} → </a>
+                                        <div class="button-action text-center mb-3 d-flex flex-column flex-sm-row justify-content-center">
+                                            <a class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Return') }} </a>
+                                            <a class="btn btn-primary btn-nxt order-0 order-sm-1 mb-2 mb-sm-0"> {{ __('Continue to Cargo') }} → </a>
                                         </div>
                                     </div>
                                     <div id="defaultStep-three" class="content" role="tabpanel" >
@@ -404,7 +404,7 @@
                                                         <h6 class="list-tit-item">{{ __('Weight') }}</h6>
                                                     </div>
                                                     <div class="col-md-1">
-                                                        <h6 class="list-tit-item" id="txt_totvolwei">{{ __('Total Volume Weight') }}</h6>
+                                                        <h6 class="list-tit-item" id="txt_totvolwei">{{ __('Total') }}</h6>
                                                     </div>
                                                 </div>
                                                 {{-- Detail lista --}}
@@ -436,20 +436,20 @@
                                                                 <div class="col-md-6">
                                                                     <div class="row results-cd">
                                                                         
-                                                                        <div class="col">
+                                                                        <div class="col align-self-end">
                                                                             <label class="form-label mb-0">{{ __('Quantity') }}</label>
                                                                             <input type="text" name="total_qty" class="form-control" placeholder="0" readonly>
                                                                         </div>
-                                                                        <div class="col">
+                                                                        <div class="col align-self-end">
                                                                             <label class="form-label mb-0" id="txt_actwei">...</label>
                                                                             <input type="text" name="total_actualweight" class="form-control" placeholder="0" readonly>
                                                                         </div>
-                                                                        <div class="col">
+                                                                        <div class="col align-self-end">
                                                                             <label class="form-label mb-0" id="txt_volwei">...</label>
                                                                             <input type="text" name="total_volum_weight" class="form-control" placeholder="0" readonly>
                                                                             <div class="text-danger msg-info" id="total_volum_weight_error"></div>
                                                                         </div>
-                                                                        <div class="col" id="dv_chargwei">
+                                                                        <div class="col align-self-end" id="dv_chargwei">
                                                                             <label class="form-label mb-0" id="txt_chargwei">...</label>
                                                                             <input type="text" name="tota_chargeable_weight" class="form-control" placeholder="0" readonly>
                                                                         </div>
@@ -465,10 +465,10 @@
                                             <div class="col-md-12">
                                                 {{-- Cargo description --}}
                                                 <div class="row mb-2 mt-4">
-                                                    <div class="col-md-12 mb-3">
+                                                    <div class="col-md-12 mb-2">
                                                         <h5 class="subtit-steep">{{ __('Additional Information') }}</h5>
                                                     </div>
-                                                    <div class="col-md-6 mb-3">
+                                                    <div class="col-md-6 mb-2">
                                                         <label class="form-label">{{ __('Shipping date (select range)') }}</label>
                                                         <input type="date" name="shipping_date" id="shipping_date" class="form-control" placeholder="YYYY - MM - DD" required>
                                                         <div class="text-danger msg-info" id="shipping_date_error"></div>
@@ -481,7 +481,7 @@
                                                         </div>
                                                         <div class="text-danger msg-info" id="no_shipping_date_error"></div>
                                                     </div>
-                                                    <div class="col-md-4 mb-3">
+                                                    <div class="col-md-4 mb-2">
                                                         <label class="form-label">{{ __('Declared value') }}</label>
                                                         <input type="text" name="declared_value" id="declared_value" class="form-control" placeholder="" required>
                                                         <div class="text-danger msg-info" id="declared_value_error"></div>
@@ -495,7 +495,7 @@
                                                         </div>
                                                         <div class="text-danger msg-info" id="insurance_required_error"></div>
                                                     </div>
-                                                    <div class="col-md-2 mb-3">
+                                                    <div class="col-md-2 mb-2">
                                                         <label class="form-label">{{ __('Currency') }}</label>
                                                         <select name="currency" id="currency" class="form-select">
                                                             <option value="USD - US Dollar">USD - US Dollar</option>
@@ -503,7 +503,7 @@
                                                         </select>
                                                         <div class="text-danger msg-info" id="currency_error"></div>
                                                     </div>
-                                                    <div class="col-md-12 mb-3">
+                                                    <div class="col-md-12 mb-2">
                                                         <label class="form-label">{{ __('Documentation') }} <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="(Max. 10mb - Allowed files: jpg, jpeg, png, gif, doc, docx, ppt, pptx, pdf, xls, xlsx)" ></span></label>
                                                         <div class="multiple-file-upload">
                                                             <input 
@@ -524,9 +524,9 @@
                                             </div>
                                         </div>
 
-                                        <div class="button-action text-center mb-3">
-                                            <a class="btn btn-outline-primary btn-prev me-3"> ← {{ __('Return') }} </a>
-                                            <a class="btn btn-primary btn-nxt"> {{ __('Continue to Contact') }} → </a>
+                                        <div class="button-action text-center mb-3 d-flex flex-column flex-sm-row justify-content-center">
+                                            <a class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Return') }} </a>
+                                            <a class="btn btn-primary btn-nxt order-0 order-sm-1 mb-2 mb-sm-0"> {{ __('Continue to Contact') }} → </a>
                                         </div>
                                     </div>
                                     <div id="defaultStep-four" class="content" role="tabpanel" >
@@ -621,9 +621,10 @@
                                             </div>
                                         </div>
 
-                                        <div class="button-action text-center mb-3">
-                                            <button class="btn btn-outline-primary btn-prev me-3"> ← {{ __('Return') }} </button>
-                                            <button type="submit" class="btn btn-primary me-3 send_rq" id="submitBtn">{{ __('Complete my Quote Request') }}</button>
+                                        <div class="button-action text-center mb-3 d-flex flex-column flex-sm-row justify-content-center">
+                                            <button class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Return') }} </button>
+                                            <button type="submit" class="btn btn-primary send_rq order-0 order-sm-1 mb-2 mb-sm-0" id="submitBtn">{{ __('Complete my Quote Request') }}</button>
+                                            
                                             <div class="mx-5 mt-2 mb-1 text-center" id="loadingSpinner" style="display: none;">
                                                 <div class="spinner-border text-warning align-self-center"></div>
                                             </div>
@@ -634,7 +635,7 @@
                                         </div>
 
                                         <p class="text-small text-center mt-4">
-                                            <span class="text d-inline-block w-75">
+                                            <span class="text d-inline-block w-75 txtinfoquote">
                                                 {{ __('By clicking complete my quote request you agree to let Latin American Cargo communicate with you by email for the purpose of providing freight rates offers and shipping related communication.') }}
                                             </span>
                                         </p>
@@ -996,7 +997,13 @@
                 `;
 
 
-                var html = '<div class="mb-2 itemdetail"><div class="row mb-2">' +
+                var html = '<div class="mb-2 itemdetail">'+
+                '<div class="row">'+
+                    '<div class="col-md-12">'+
+                        '<b class="text-primary">Package #'+(itemIndex+1)+'</b>'+
+                    '</div>'+
+                '</div>'+
+                '<div class="row mb-2">' +
                 '<div class="col-md-4">' +
                 '<div class="row">' +
                 '<div class="col-md-9 mb-2">' +
@@ -1040,11 +1047,11 @@
                 '<div class="row">' +
                 '<div class="col-md-4 pe-2 pe-sm-1 mb-2">' +
                 '<span class="form-label">Per piece</span>' +
-                '<input type="text" name="per_piece[]" class="form-control v">' +
+                '<input type="text" name="per_piece[]" class="form-control">' +
                 '</div>' +
-                '<div class="col-md-4 px-2 px-sm-1 mb-2">' +
+                '<div class="col-md-4 pe-2 pe-sm-1 mb-2">' +
                 '<span class="form-label">Total Weight</span>' +
-                '<input type="text" name="item_total_weight[]" class="form-control px-2" readonly>' +
+                '<input type="text" name="item_total_weight[]" class="form-control" readonly>' +
                 '</div>' +
                 '<div class="col-md-4 ps-sm-1 mb-2">' +
                 '<span class="form-label">Unit</span>' +
@@ -1112,7 +1119,7 @@
 
                 // Restaurar los elementos a su estado predeterminado
                 $dv_totsummary.removeClass('d-none');
-                $txt_totvolwei.text('Total Volume Weight');
+                $txt_totvolwei.text('Total');
                 $txt_actwei.text('Actual Weight (Kgs)');
                 $txt_volwei.text('Volume Weight (Kgs)');
                 $txt_chargwei.text('Chargeable Weight (Kgs)');
@@ -1216,18 +1223,20 @@
                 }
 
                 var html = '<div class="mb-2 itemdetail">'+
+                '<div class="row">'+
+                    '<div class="col-md-12">'+
+                        '<b class="text-primary">Package #'+(itemIndex+1)+'</b>'+
+                    '</div>'+
+                '</div>'+
                 '<div class="row mb-2">' +
                     '<div class="col-md-3">' +
                         '<div class="row">' +
                             '<div class="col-md-7 mb-2">' +
                                 '<label class="form-label mb-0">'+title_typelist+'</label>' +
                                 '<select class="form-select" name="package_type[]" required>' +
-                                    '<option>Select...</option>' +
+                                    '<option value="">Select...</option>' +
                                     $typelist +
                                 '</select>' +
-                                '<div class="mt-2 dvtemperature d-none">' +
-                                    '<input type="text" name="temperature[]" class="form-control px-2" placeholder="Temperature">'+
-                                '</div>'+
                             '</div>' +
                             '<div class="col-md-5 ps-sm-1 mb-2">' +
                                 '<label class="form-label mb-0">'+$qtylabel+'</label>' +
@@ -1249,6 +1258,9 @@
                             '<div class="col-md-4">' +
                                 '<label class="form-label mb-0">Cargo Weight</label>' +
                                 '<input type="text" name="item_total_weight[]" class="form-control px-2">' +
+                                '<div class="mt-2 dvtemperature d-none">' +
+                                    '<input type="text" name="temperature[]" class="form-control px-2" placeholder="Temperature">'+
+                                '</div>'+
                             '</div>' +
                             '<div class="col-md-3">' +
                                 '<label class="form-label mb-0">Unit</label>' +
@@ -1256,6 +1268,13 @@
                                     '<option value="Kgs">Kgs</option>' +
                                     '<option value="Lbs">Lbs</option>' +
                                 '</select>' +
+                                '<div class="mt-2 dvtemperaturetype d-none">' +
+                                    '<select class="form-select px-2" name="temperature_type[]">' +
+                                        '<option value="">Select...</option>' +
+                                        '<option value="°C">°C</option>' +
+                                        '<option value="°F">°F</option>' +
+                                    '</select>' +
+                                '</div>'+
                             '</div>' +
                             '<div class="col-md-5 mt-3 text-end">' +
                                 '<button class="btn btn-light-info duplicate-item btn-icon me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Duplicate Item"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>'+
@@ -1525,9 +1544,11 @@
             //if cargo_type selected is FTL or FCL
             if($('input[name="cargo_type"]:checked').val() == 'FTL' || $('input[name="cargo_type"]:checked').val() == 'FCL'){
                 //if package_type selected is 48 / 53 Ft Reefer Trailer
-                if(selectedValue == '48 / 53 Ft Reefer Trailer'){
+                if(selectedValue == '48 / 53 Ft Reefer Trailer' || selectedValue == '20\' Reefer Standard' || selectedValue == '40\' Reefer Standard' || selectedValue == '40\' Reefer High Cube'){
                     //show div dvtemperature
                     $(this).closest('.itemdetail').find('.dvtemperature').removeClass('d-none');
+                    //show div dvtemperaturetype
+                    $(this).closest('.itemdetail').find('.dvtemperaturetype').removeClass('d-none');
                     //hide div dvdetailship
                     $(this).closest('.itemdetail').find('.dvdetailship').addClass('d-none');
                     //clear textarea details_shipment
@@ -1536,6 +1557,8 @@
                 }else if(selectedValue == 'Flatbed' || selectedValue == 'Double Drop' || selectedValue == 'Step Deck' || selectedValue == 'RGN/Lowboy' || selectedValue == 'Other' || selectedValue == '20\' Flat Rack' || selectedValue == '40\' Flat Rack' || selectedValue == '40\' Flat Rack High Cube' || selectedValue == '20\' Open Top' || selectedValue == '40\' Open Top' || selectedValue == '40\' Open Top High Cube'){
                     //hide div dvtemperature
                     $(this).closest('.itemdetail').find('.dvtemperature').addClass('d-none');
+                    //hide div div dvtemperaturetype
+                    $(this).closest('.itemdetail').find('.dvtemperaturetype').addClass('d-none');
                     //show div dvdetailship
                     $(this).closest('.itemdetail').find('.dvdetailship').removeClass('d-none');
                     //clear input temperature
@@ -1543,6 +1566,8 @@
                 }else{
                     //hide div dvtemperature
                     $(this).closest('.itemdetail').find('.dvtemperature').addClass('d-none');
+                    //hide div div dvtemperaturetype
+                    $(this).closest('.itemdetail').find('.dvtemperaturetype').addClass('d-none');
                     //clear input temperature
                     $(this).closest('.itemdetail').find('input[name="temperature[]"]').val('');
                     //hide div dvdetailship
@@ -1902,6 +1927,12 @@ function clearValidationErrors() {
             });
         });
 
+        //if click boton click hiden tooltip
+        $(document).on('click', '.btn', function(){
+            $('.tooltip').hide();
+        });
+
+
     </script>
     
     <script>
@@ -2007,6 +2038,7 @@ function clearValidationErrors() {
             }
         }
     });
+
 </script>
 
 

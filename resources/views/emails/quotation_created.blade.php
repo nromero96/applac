@@ -174,7 +174,7 @@
                         @unless ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL')
                         <td><b>
                                 @if($quotation->mode_of_transport == 'Air')
-                                Total Volume Weight
+                                Total
                                 @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container')
                                     @if ($quotation->cargo_type == 'LTL' || $quotation->cargo_type == 'LCL')
                                     Total Volume
@@ -195,18 +195,11 @@
                         @foreach ($cargoDetails as $cargo_detail)
 
                         <tr>
-                            <td width="33px" style="background: #b80000;color: white; text-align: center;">#{{ $numerations }}</td>
+                            <td width="33px" rowspan="2" style="background: #b80000;color: white; text-align: center;">#{{ $numerations }}</td>
                             @if ($quotation->cargo_type == 'FTL')
                                 <td>
                                     <span style="color:#888ea8;font-weight:bold;">Trailer Type:</span><br>
                                     {{ $cargo_detail['package_type'] }}
-
-                                    @if($cargo_detail['temperature'] != '')
-                                        <br>
-                                        <span style="color:#888ea8;font-weight:bold;">Temperature:</span><br>
-                                        {{ $cargo_detail['temperature'] }}
-                                    @endif
-
                                 </td>
                                 <td><span style="color:#888ea8;font-weight:bold;"># of Trailers:</span><br>{{ $cargo_detail['qty'] }}</td>
                             @elseif ($quotation->cargo_type == 'FCL')
@@ -214,11 +207,12 @@
                                 <td><span style="color:#888ea8;font-weight:bold;"># of Containers:</span><br>{{ $cargo_detail['qty'] }}</td>
                             @endif
                             <td colspan="4">
-                                @if($cargo_detail['details_shipment'] != '')
-                                    <span style="color:#888ea8;font-weight:bold;">Details of Shipment:</span> 
-                                    {{ $cargo_detail['details_shipment'] }}
+
+                                @if($cargo_detail['temperature'] != '')
+                                    <span style="color:#888ea8;font-weight:bold;">Temperature:</span> {{ $cargo_detail['temperature'] }} {{ $cargo_detail['temperature_type'] }}
                                     <br>
                                 @endif
+
                                 <span style="color:#888ea8;font-weight:bold;">Cargo Description:</span> {{ $cargo_detail['cargo_description'] }}
                                 @if ($cargo_detail['dangerous_cargo'] == 'yes')
                                 <br>
@@ -233,6 +227,17 @@
                             <td colspan="2"><span style="color:#888ea8;font-weight:bold;">Total:</span><br>{{ $cargo_detail['item_total_weight'] }}</td>
                             <td><span style="color:#888ea8;font-weight:bold;">Unit:</span><br>{{ $cargo_detail['weight_unit'] }}</td>
                         </tr>
+
+                        @if($cargo_detail['details_shipment'] != '')
+                        <tr>
+                            <td colspan="5">
+                                <span style="color:#888ea8;font-weight:bold;">Details of Shipment:</span> 
+                                    {{ $cargo_detail['details_shipment'] }}
+                                <br>
+                            </td>
+                        </tr>
+                        @endif
+
                         @php
                             $numerations++;
                         @endphp

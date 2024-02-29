@@ -11,6 +11,10 @@ p {
   font-family: "Nunito";
 }
 
+.text-primary {
+  color: #B80000 !important;
+}
+
 .confirm-percomp-modal .modal-body {
   padding-top: 2.6rem;
   padding-bottom: 3rem;
@@ -52,6 +56,11 @@ p {
 .msg-info {
   font-family: "Nunito";
   font-size: 14px;
+}
+
+.txtinfoquote {
+  font-size: 13px;
+  color: #999999;
 }
 
 .tit-form {
@@ -223,6 +232,9 @@ span.form-label {
 .form-control:focus {
   border-color: #B80000;
   box-shadow: 0 0 0 0.1rem rgba(184, 0, 0, 0.25);
+}
+.form-control[readonly] {
+  background-color: #F8F8F8;
 }
 
 .form-select {

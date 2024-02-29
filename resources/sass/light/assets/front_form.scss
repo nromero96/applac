@@ -14,6 +14,10 @@ p{
   font-family: 'Nunito';
 }
 
+.text-primary{
+  color: $primary !important;
+}
+
 .confirm-percomp-modal{
 
   .modal-body{
@@ -65,6 +69,11 @@ p{
 .msg-info{
   font-family: 'Nunito';
   font-size: 14px;
+}
+
+.txtinfoquote{
+  font-size: 13px;
+  color: #999999;
 }
 
 .tit-form{
@@ -257,6 +266,11 @@ span.form-label{
         border-color: $primary;
         box-shadow: 0 0 0 0.1rem rgba(184, 0, 0, 0.25);
     }
+
+    &[readonly]{
+        background-color: #F8F8F8;
+    }
+
 }
 
 .form-select{

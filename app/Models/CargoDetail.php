@@ -13,6 +13,7 @@ class CargoDetail extends Model
         'quotation_id',
         'package_type',
         'temperature',
+        'temperature_type',
         'qty',
         'details_shipment',
         'length',
