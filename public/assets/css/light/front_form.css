@@ -11,8 +11,37 @@ p {
   font-family: "Nunito";
 }
 
+.bg-primary {
+  background-color: #B80000 !important;
+}
+
 .text-primary {
   color: #B80000 !important;
+}
+
+.hd-img-quote {
+  height: 250px;
+  background-size: cover;
+  background-position: center;
+  margin-bottom: -150px;
+}
+
+.btn-lang svg {
+  margin-top: -3px;
+}
+
+.btn-login svg {
+  margin-top: -3px;
+}
+
+.ft-form-quote {
+  background: #161515;
+}
+.ft-form-quote .ft-text-cr {
+  color: #ffffff;
+  font-size: 14px;
+  font-family: "Nunito";
+  margin-bottom: 0px;
 }
 
 .confirm-percomp-modal .modal-body {

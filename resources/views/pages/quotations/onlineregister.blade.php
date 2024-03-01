@@ -36,9 +36,39 @@
 </head>
 <body class="form">
 
+    <header class="bg-primary py-2 py-sm-3">
+        <div class="container">
+            <div class="d-flex flex-wrap justify-content-between justify-content-center justify-content-lg-start">
+                <a href="/" class="d-flex align-items-center my-lg-0 me-lg-auto text-white text-decoration-none">
+                    <img src="{{ asset('assets/img/logo_white_lac.svg') }}" alt="LAC">
+                </a>
+                <div class="nav col-lg-auto justify-content-center my-md-0 text-small">
+                    <button type="button" class="btn btn-lang rounded-pill text-white py-2 me-2">
+                        <svg width="20" height="20" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20z"></path>
+                            <path d="M2 12h20"></path>
+                            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                        </svg>
+                        <b>EN</b>
+                    </button>
+                    <button type="button" class="btn btn-login rounded-pill bg-white py-2">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <path d="M12 3a4 4 0 1 0 0 8 4 4 0 1 0 0-8z"></path>
+                          </svg>
+                        <b>Login</b>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div style="background-image: url({{ asset('assets/img/116806505d8b5c4ca3-53784-min.jpg') }})" class="hd-img-quote">
+        {{-- Image header --}}
+    </div>
 
     <div class="auth-container d-flex">
-        <div class="container mx-auto align-self-center">
+        <div class="container mx-auto px-4 pb-3 mb-3 align-self-center bg-white shadow">
 
             <form method="POST" id="form_quotations" enctype="multipart/form-data">
 
@@ -653,6 +683,12 @@
 
         </div>
     </div>
+
+    <footer class="ft-form-quote py-4 mt-5">
+        <div class="container">
+            <p class="ft-text-cr text-center">© 2024 Latin American Cargo. All Rights Reserved.</p>
+        </div>
+    </footer>
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
     <script>
