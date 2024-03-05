@@ -47,7 +47,7 @@ p{
   background: #161515;
 
   .ft-text-cr{
-    color: #ffffff;
+    color: #D2CDC5;
     font-size: 14px;
     font-family: 'Nunito';
     margin-bottom: 0px;
@@ -149,6 +149,14 @@ p{
     opacity: 1 !important;
   }
 
+
+}
+
+.bs-stepper{
+  
+  .line{
+    flex: 1 0 20px;
+  }
 
 }
 
@@ -503,9 +511,14 @@ span.form-label{
       font-size: 41px;
       font-weight: 400;
       height: 1em;
-      width: 4em;
+      width: 4.8em;
       font-family: 'Kanit';
     }
+
+    &:focus {
+      color: #595959;
+    }
+
   }
   
   .active .step-trigger{
@@ -519,7 +532,7 @@ span.form-label{
       font-size: 41px;
       font-weight: 400;
       height: 1em;
-      width: 4em;
+      width: 4.8em;
   }
   
   .bs-stepper-label {
@@ -677,6 +690,20 @@ span.form-label{
   
       }
     }
+
+    .logo-form{
+      width: 85px;
+    }
+
+    .btn-login{
+      padding: 12px 15px;
+      line-height: 15px;
+      margin: 3px 0px;
+    }
+
+    .tit-form {
+      font-size: 35px;
+  }
 
 
   }

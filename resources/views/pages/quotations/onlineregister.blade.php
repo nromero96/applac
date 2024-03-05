@@ -40,17 +40,17 @@
         <div class="container">
             <div class="d-flex flex-wrap justify-content-between justify-content-center justify-content-lg-start">
                 <a href="/" class="d-flex align-items-center my-lg-0 me-lg-auto text-white text-decoration-none">
-                    <img src="{{ asset('assets/img/logo_white_lac.svg') }}" alt="LAC">
+                    <img src="{{ asset('assets/img/logo_white_lac.svg') }}" alt="LAC" class="logo-form">
                 </a>
                 <div class="nav col-lg-auto justify-content-center my-md-0 text-small">
-                    <button type="button" class="btn btn-lang rounded-pill text-white py-2 me-2">
+                    {{-- <button type="button" class="btn btn-lang rounded-pill text-white py-2 me-2">
                         <svg width="20" height="20" fill="none" stroke="#ffffff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20z"></path>
                             <path d="M2 12h20"></path>
                             <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
                         </svg>
                         <b>EN</b>
-                    </button>
+                    </button> --}}
                     <button type="button" class="btn btn-login rounded-pill bg-white py-2">
                         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
@@ -68,7 +68,7 @@
     </div>
 
     <div class="auth-container d-flex">
-        <div class="container mx-auto px-4 pb-3 mb-3 align-self-center bg-white shadow">
+        <div class="container mx-auto px-3 px-sm-5 pb-5 mb-3 align-self-center bg-white shadow">
 
             <form method="POST" id="form_quotations" enctype="multipart/form-data">
 
@@ -131,8 +131,8 @@
                     <div class="statbox widget box box-shadow">
                         <div class="widget-header">
                             <div class="row">
-                                <div class="col-xl-12 col-md-12 col-sm-12 col-12 text-center pt-3">
-                                    <h2 class="tit-form">{{ __('Get a Quote Now') }}</h2>
+                                <div class="col-xl-12 col-md-12 col-sm-12 col-12 text-center pt-5">
+                                    <h2 class="tit-form">{{ __('Get a Shipping Quote') }}</h2>
                                     <p class="tit-form-descrip">{{ __('Fill out the form below to get your international freight quote!') }}</p>
                                 </div>
                             </div>
@@ -191,7 +191,7 @@
                                                                     <img src="{{ asset('assets/img/60a35f0d358aaa2332423e.png') }}" alt="Opción 1" />
                                                                 </div>
                                                                 <div class="radio-text">Air</div>
-                                                                <div class="radio-sub-text">~</div>
+                                                                <div class="radio-sub-text text-white">~</div>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -239,7 +239,7 @@
                                                                     <img src="{{ asset('assets/img/lac_breakbulk_icon.png') }}" alt="Opción 5" />
                                                                 </div>
                                                                 <div class="radio-text">Breakbulk</div>
-                                                                <div class="radio-sub-text">~</div>
+                                                                <div class="radio-sub-text text-white">~</div>
                                                             </label>
                                                         </div>
                                                     </div>
@@ -641,7 +641,7 @@
                                                     </label>
                                                 </div>
 
-                                                <div class="form-check form-check-primary form-check-inline mt-1">
+                                                <div class="form-check form-check-primary form-check-inline mt-1 d-none">
                                                     <input type="hidden" name="subscribed_to_newsletter" value="no">
                                                     <input class="form-check-input" type="checkbox" name="subscribed_to_newsletter" id="subscribed_to_newsletter" value="yes">
                                                     <label class="form-check-label" for="subscribed_to_newsletter">
@@ -1072,9 +1072,9 @@
                 '<div class="col-md-3 ps-sm-1 mb-2">' +
                 '<span class="form-label">Unit</span>' +
                 '<select class="form-select px-2" name="dimensions_unit[]">' +
-                '<option value="M.">M.</option>' +
-                '<option value="Cm.">Cm.</option>' +
-                '<option value="Inch">Inch</option>' +
+                '<option value="m.">m.</option>' +
+                '<option value="cm.">cm.</option>' +
+                '<option value="inch.">inch.</option>' +
                 '</select>' +
                 '</div>' +
                 '</div>' +
@@ -1085,7 +1085,7 @@
                 '<span class="form-label">Per piece</span>' +
                 '<input type="text" name="per_piece[]" class="form-control">' +
                 '</div>' +
-                '<div class="col-md-4 pe-2 pe-sm-1 mb-2">' +
+                '<div class="col-md-4 ps-sm-0 pe-2 pe-sm-1 mb-2">' +
                 '<span class="form-label">Total Weight</span>' +
                 '<input type="text" name="item_total_weight[]" class="form-control" readonly>' +
                 '</div>' +
@@ -1291,7 +1291,7 @@
                     '</div>'+
                     '<div class="col-md-4">'+
                         '<div class="row">'+
-                            '<div class="col-md-4">' +
+                            '<div class="col-md-4 ps-sm-2 pe-sm-0">' +
                                 '<label class="form-label mb-0">Cargo Weight</label>' +
                                 '<input type="text" name="item_total_weight[]" class="form-control px-2">' +
                                 '<div class="mt-2 dvtemperature d-none">' +
@@ -1306,7 +1306,6 @@
                                 '</select>' +
                                 '<div class="mt-2 dvtemperaturetype d-none">' +
                                     '<select class="form-select px-2" name="temperature_type[]">' +
-                                        '<option value="">Select...</option>' +
                                         '<option value="°C">°C</option>' +
                                         '<option value="°F">°F</option>' +
                                     '</select>' +
@@ -1649,16 +1648,16 @@
 
                 if (modeOfTransport === 'Air') {
                     switch (dimensionsUnit) {
-                    case 'M.':
+                    case 'm.':
                         totalVolumeWeight = (length * width * height) / 0.006 * qty;
                         break;
-                    case 'Cm.':
+                    case 'cm.':
                         totalVolumeWeight = (length * width * height) / 6000 * qty;
                         break;
-                    case 'Feet':
+                    case 'feet.':
                         totalVolumeWeight = (length * width * height) / 0.2118 * qty;
                         break;
-                    case 'Inch':
+                    case 'inch.':
                         totalVolumeWeight = (length * width * height) / 366.14 * qty;
                         break;
                     }
@@ -1667,16 +1666,16 @@
                     totalVolumeWeightInput.val(totalVolumeWeight.toFixed(2));
                 } else {
                     switch (dimensionsUnit) {
-                    case 'M.':
+                    case 'm.':
                         totalCubicMeter = (length * width * height) * qty;
                         break;
-                    case 'Cm.':
+                    case 'cm.':
                         totalCubicMeter = (length * width * height) / 1000000 * qty;
                         break;
-                    case 'Feet':
+                    case 'feet.':
                         totalCubicMeter = (length * width * height) * 0.0283168 * qty;
                         break;
-                    case 'Inch':
+                    case 'inch.':
                         totalCubicMeter = (length * width * height) * 0.0000163871 * qty;
                         break;
                     }
