@@ -506,6 +506,10 @@ span.form-label {
   margin-top: 1.5rem;
 }
 
+.additemdetail {
+  padding: 12px 16px;
+}
+
 @media (max-width: 575px) {
   .bs-stepper-header {
     justify-content: center;

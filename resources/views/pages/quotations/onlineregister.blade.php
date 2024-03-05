@@ -51,13 +51,13 @@
                         </svg>
                         <b>EN</b>
                     </button> --}}
-                    <button type="button" class="btn btn-login rounded-pill bg-white py-2">
+                    <a href="/login" class="btn btn-login rounded-pill bg-white py-2">
                         <svg width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                             <path d="M12 3a4 4 0 1 0 0 8 4 4 0 1 0 0-8z"></path>
                           </svg>
                         <b>Login</b>
-                    </button>
+                        </a>
                 </div>
             </div>
         </div>
@@ -445,7 +445,10 @@
 
                                             <div class="col-md-12">
                                                 <a class="btn btn-light-primary mb-2 me-4 additemdetail">
-                                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                                                    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M12 5v14"></path>
+                                                        <path d="M5 12h14"></path>
+                                                      </svg>
                                                     <span class="btn-text-inner">{{ __('Add item') }}</span>
                                                 </a>
                                             
@@ -956,7 +959,7 @@
             function addItemDetail() {
 
                 //contar cuantos itemdetail hay
-                var itemIndex = $('.itemdetail').length;
+                var itemIndex = $('.itemdetail').length + 1;
 
                 //get modeoftransport value checked
                 var modeoftransport = $('input[name="mode_of_transport"]:checked').val();
@@ -1036,7 +1039,7 @@
                 var html = '<div class="mb-2 itemdetail">'+
                     '<div class="row">'+
                         '<div class="col-md-12">'+
-                            '<b class="text-primary">Package #'+(itemIndex+1)+'</b>'+
+                            '<b class="text-primary">Package #<span class="count_numitem">'+itemIndex+'</span></b>'+
                         '</div>'+
                     '</div>'+
                     '<div class="row mb-2">' +
@@ -1124,6 +1127,16 @@
                 updateTextsLabelsAndHiddens();
                 initializeDangerousCargoModal();
                 initializeTooltips();
+                updateItemIndexes();
+            }
+
+            function updateItemIndexes() {
+                $('.itemdetail').each(function(index) {
+                    var itemIndex = index + 1;
+                    $(this).find('.count_numitem').text(itemIndex);
+                    $(this).find('[name^="electric_vehicle["]').attr('name', 'electric_vehicle[' + itemIndex + ']');
+                    $(this).find('[name^="dangerous_cargo["]').attr('name', 'dangerous_cargo[' + itemIndex + ']');
+                });
             }
 
             // change input[name="cargo_type"] event
@@ -1227,7 +1240,7 @@
 
             function addItemDetailNoCalculations(cargoType) {
 
-                var itemIndex = $('.itemdetail').length;
+                var itemIndex = $('.itemdetail').length + 1;
                 if(cargoType == 'FTL') {
                     var title_typelist = 'Trailer Type';
                     var $typelist = '<option value="48 / 53 Ft Trailer">48 / 53 Ft Trailer</option>' +
@@ -1270,7 +1283,7 @@
                 var html = '<div class="mb-2 itemdetail">'+
                     '<div class="row">'+
                         '<div class="col-md-12">'+
-                            '<b class="text-primary">Package #'+(itemIndex+1)+'</b>'+
+                            '<b class="text-primary">Package #<spam class="count_numitem">'+itemIndex+'</spam></b>'+
                         '</div>'+
                     '</div>'+
                     '<div class="row mb-2">' +
@@ -1337,6 +1350,7 @@
                 $('#listcargodetails').append(html);
                 initializeDangerousCargoModal();
                 initializeTooltips();
+                updateItemIndexes();
             }
 
 
@@ -1518,16 +1532,10 @@
             $(document).on('click', '.delete-item', function() {
                 $(this).closest('.itemdetail').remove();
 
-                // Recorre todas las filas de detalles de carga y actualiza los nombres y los índices de las casillas de verificación
-                $('.itemdetail').each(function(index) {
-                    // Actualiza los nombres de las casillas de verificación
-                    $(this).find('input[name^="electric_vehicle"]').attr('name', 'electric_vehicle[' + index + ']');
-                    $(this).find('input[name^="dangerous_cargo"]').attr('name', 'dangerous_cargo[' + index + ']');
-
-                    // Puedes hacer lo mismo para otros campos si es necesario
-                });
-
                 updateTotals(); // Actualiza los totales u otras funcionalidades después de eliminar
+            
+                updateItemIndexes();
+
             });
 
             //duplicar itemdetail con boton duplicate-item
@@ -1539,7 +1547,7 @@
 
                 initializeDangerousCargoModal();
                 initializeTooltips();
-            
+                updateItemIndexes();
             });
 
 
