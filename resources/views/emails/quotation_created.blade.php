@@ -232,7 +232,7 @@
                         <tr>
                             <td colspan="5">
                                 <span style="color:#808080;font-weight:bold;">Details of Shipment:</span> 
-                                    {{ $cargo_detail['details_shipment'] }}
+                                {!! nl2br(e($cargo_detail['details_shipment'])) !!}
                                 <br>
                             </td>
                         </tr>
