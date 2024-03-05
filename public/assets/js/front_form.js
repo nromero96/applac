@@ -113,6 +113,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // ... (otros eventos o funciones que puedas tener)
+
+    //remove disabled in class="step st-complete" for click and return to previous step
+    stepperWizardDefault.querySelectorAll('.step').forEach(element => {
+        element.addEventListener('click', function () {
+            if (element.classList.contains('st-complete')) {
+                
+                const completedSteps = stepperWizardDefault.querySelectorAll('.st-complete');
+
+                if(completedSteps.length > 0){
+                    var lastCompletedStep = completedSteps[completedSteps.length - 1];
+                    lastCompletedStep.classList.remove('st-complete');
+                }
+
+                // Retroceder un paso
+                stepperDefault.previous();
+            }
+        });
+    });
+    
+    
+
 
 });
