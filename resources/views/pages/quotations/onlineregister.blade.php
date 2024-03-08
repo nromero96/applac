@@ -39,7 +39,7 @@
     <header class="bg-primary py-2 py-sm-3">
         <div class="container">
             <div class="d-flex flex-wrap justify-content-between justify-content-center justify-content-lg-start">
-                <a href="/" class="d-flex align-items-center my-lg-0 me-lg-auto text-white text-decoration-none">
+                <a href="https://www.latinamericancargo.com/" class="d-flex align-items-center my-lg-0 me-lg-auto text-white text-decoration-none">
                     <img src="{{ asset('assets/img/logo_white_lac.svg') }}" alt="LAC" class="logo-form">
                 </a>
                 <div class="nav col-lg-auto justify-content-center my-md-0 text-small">
@@ -655,7 +655,7 @@
                                         </div>
 
                                         <div class="button-action text-center mb-3 d-flex flex-column flex-sm-row justify-content-center">
-                                            <button class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Return') }} </button>
+                                            <a class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Return') }} </a>
                                             <button type="submit" class="btn btn-primary send_rq order-0 order-sm-1 mb-2 mb-sm-0" id="submitBtn">{{ __('Complete my Quote Request') }}</button>
                                             
                                             <div class="mx-5 mt-2 mb-1 text-center" id="loadingSpinner" style="display: none;">
@@ -946,8 +946,8 @@
 
                         </div>
                         <div class="modal-footer text-start">
-                            <button type="button" class="btn btn-outline-primary save-dange-button">Done</button>
-                            <button type="button" class="btn btn-primary cancel-dange-button">Cancel</button>
+                            <button type="button" class="btn btn-outline-primary cancel-dange-button">Cancel</button>
+                            <button type="button" class="btn btn-primary save-dange-button">Done</button>
                         </div>
                         </div>
                     </div>
@@ -1132,8 +1132,8 @@
 
             function updateItemIndexes() {
                 $('.itemdetail').each(function(index) {
-                    var itemIndex = index + 1;
-                    $(this).find('.count_numitem').text(itemIndex);
+                    var itemIndex = index;
+                    $(this).find('.count_numitem').text(itemIndex + 1);
                     $(this).find('[name^="electric_vehicle["]').attr('name', 'electric_vehicle[' + itemIndex + ']');
                     $(this).find('[name^="dangerous_cargo["]').attr('name', 'dangerous_cargo[' + itemIndex + ']');
                 });
@@ -1803,7 +1803,9 @@ document.getElementById('form_quotations').addEventListener('submit', function(e
         if (xhr.status === 200) {
     const data = JSON.parse(xhr.responseText);
     if (data.success) {
-        window.location.href = 'https://www.latinamericancargo.com/thank-you';
+        submitBtn.disabled = true;
+        loadingSpinner.style.display = 'block';
+        window.location.href = 'https://www.latinamericancargo.com/demo-full-gutenberg/?ref=lac-app-form';
     } else {
         console.error('...Error inesperado en la respuesta:', xhr.responseText);
     }

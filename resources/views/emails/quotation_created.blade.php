@@ -213,7 +213,8 @@
                                     <br>
                                 @endif
 
-                                <span style="color:#808080;font-weight:bold;">Cargo Description:</span> {{ $cargo_detail['cargo_description'] }}
+                                <span style="color:#808080;font-weight:bold;">Cargo Description:</span> 
+                                {{ $cargo_detail['cargo_description'] }}
                                 @if ($cargo_detail['dangerous_cargo'] == 'yes')
                                 <br>
                                 <span style="color:#808080;font-weight:bold;">Dangerous Cargo:</span> {{ $cargo_detail['dangerous_cargo'] }}<br>
@@ -230,8 +231,8 @@
 
                         @if($cargo_detail['details_shipment'] != '')
                         <tr>
-                            <td colspan="5">
-                                <span style="color:#808080;font-weight:bold;">Details of Shipment:</span> 
+                            <td colspan="9">
+                                <span style="color:#808080;font-weight:bold;">Details of Shipment:</span><br>
                                 {!! nl2br(e($cargo_detail['details_shipment'])) !!}
                                 <br>
                             </td>
@@ -268,7 +269,9 @@
                                 </span><br>{{ $cargo_detail['item_total_volume_weight_cubic_meter'] }}</td>
                             </tr>
                             <tr>
-                                <td colspan="5"><span style="color:#808080;font-weight:bold;">Cargo Description:</span> {{ $cargo_detail['cargo_description'] }}</td>
+                                <td colspan="5"><span style="color:#808080;font-weight:bold;">Cargo Description:</span> 
+                                    {{ $cargo_detail['cargo_description'] }}
+                                </td>
                                 <td colspan="5">
                                     @if ($cargo_detail['dangerous_cargo'] == 'yes')
                                     <span style="color:#808080;font-weight:bold;">Dangerous Cargo:</span> {{ $cargo_detail['dangerous_cargo'] }}<br>

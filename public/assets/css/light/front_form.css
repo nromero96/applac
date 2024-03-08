@@ -34,11 +34,15 @@ p {
   margin-top: -3px;
 }
 
+#shipping_date {
+  color: #212529;
+}
+
 .ft-form-quote {
   background: #161515;
 }
 .ft-form-quote .ft-text-cr {
-  color: #D2CDC5;
+  color: #909090;
   font-size: 14px;
   font-family: "Nunito";
   margin-bottom: 0px;
@@ -603,6 +607,10 @@ span.form-label {
 */
 .filepond {
   margin: 0 auto;
+}
+
+.filepond--list {
+  margin-top: 7px !important;
 }
 
 .profile-image .filepond {

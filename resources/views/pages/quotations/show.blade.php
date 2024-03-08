@@ -199,6 +199,12 @@
                                                     @endif
 
                                                     <td colspan="4" class="px-1 py-1">
+
+                                                        @if($item->temperature != '')
+                                                            <span style="color:#808080;font-weight:bold;">Temperature:</span> {{ $item->temperature }} {{ $item->temperature }}
+                                                            <br>
+                                                        @endif
+
                                                         {{ _('Cargo Description') }}: <b>{{ $item->cargo_description }}<br>
                                                         @if ($item->dangerous_cargo == 'yes')
                                                         <span style="color:#888ea8">Dangerous Cargo:</span> {{ $item->dangerous_cargo }}<br>
@@ -218,6 +224,17 @@
                                                         <b>{{ $item->weight_unit }}</b>
                                                     </td>
                                                 </tr>
+
+                                                @if($item->details_shipment != '')
+                                                <tr>
+                                                    <td colspan="9" class="px-1 py-1">
+                                                        <span style="color:#808080;font-weight:bold;">Details of Shipment:</span><br>
+                                                        {!! nl2br(e($item->details_shipment)) !!}
+                                                        <br>
+                                                    </td>
+                                                </tr>
+                                                @endif
+
                                                 {{-- End Item --}}
                                                 @php
                                                     $numcont ++;
@@ -392,10 +409,10 @@
                                 <label class="fw-bold mb-0">{{__("Last Name")}}:</label> {{ $quotation->customer_lastname }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
-                                <label class="fw-bold mb-0">{{__("Company name")}}:</label> {{ $quotation->company_name }}<br>
+                                <label class="fw-bold mb-0">{{__("Company name")}}:</label> {{ $quotation->customer_company_name }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
-                                <label class="fw-bold mb-0">{{__("Company website")}}:</label> {{ $quotation->company_website }}<br>
+                                <label class="fw-bold mb-0">{{__("Company website")}}:</label> {{ $quotation->customer_company_website }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
                                 <label class="fw-bold mb-0">{{__("Email address")}}:</label> {{ $quotation->customer_email }}<br>
