@@ -238,6 +238,10 @@ class QuotationController extends Controller
 
     public function onlinestore(Request $request)
     {
+
+        //log request
+        Log::info('Request: ', $request->all());
+
     try {
         $validatedData = $request->validate([
             'mode_of_transport' => 'required|max:30',

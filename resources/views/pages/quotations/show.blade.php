@@ -176,7 +176,7 @@
                                                 {{-- Item --}}
                                                 @foreach ($cargo_details as $item)
                                                 <tr>
-                                                    <td class="bg-primary text-light px-1 py-1 text-center" rowspan="2">#{{ $numcont }}</td>
+                                                    <td class="bg-primary text-light px-1 py-1 text-center" rowspan="@if($item->details_shipment != '') 2 @else 1 @endif">#{{ $numcont }}</td>
 
                                                     @if ($quotation->cargo_type == 'FTL')
                                                         <td class="px-1 py-1">

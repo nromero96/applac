@@ -433,7 +433,7 @@
                                                     <div class="col-md-3">
                                                         <h6 class="list-tit-item d-none d-sm-block">{{ __('Weight') }}</h6>
                                                     </div>
-                                                    <div class="col-md-1">
+                                                    <div class="col-md-1 px-sm-0">
                                                         <h6 class="list-tit-item d-none d-sm-block" id="txt_totvolwei">{{ __('Total') }}</h6>
                                                     </div>
                                                 </div>
@@ -1057,6 +1057,9 @@
                                     '<label class="form-label mb-0">Qty</label>' +
                                     '<input type="text" name="qty[]" class="form-control px-2" required>' +
                                 '</div>' +
+                                '<div class="col-md-12 my-2 my-sm-0">' +
+                                    '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="Cargo Description (Commodity)">' +
+                                '</div>' +
                             '</div>' +
                         '</div>' +
                         '<div class="col-md-4">' +
@@ -1082,6 +1085,10 @@
                                         '<option value="inch.">inch.</option>' +
                                     '</select>' +
                                 '</div>' +
+                                '<div class="col-md-12">'+
+                                    checkboxHTML+
+                                    modalContentDangerous+
+                                '</div>'+
                             '</div>' +
                         '</div>' +
                         '<div class="col-md-3">' +
@@ -1104,21 +1111,14 @@
                                 '</div>' +
                             '</div>' +
                         '</div>' +
-                        '<div class="col-md-1">' +
+                        '<div class="col-md-1 px-sm-0">' +
                             '<h6 class="list-tit-item d-block d-sm-none mb-0">Total</h6>'+
                             '<span class="form-label text_item_typemea">...</span>' +
                             '<input type="text" name="item_total_volume_weight_cubic_meter[]" class="form-control px-2" readonly>' +
-                        '</div>' +
-                        '<div class="col-md-4 mt-2 mt-sm-0">' +
-                            '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="Cargo Description (Commodity)">' +
-                        '</div>' +
-                        '<div class="col-md-5">'+
-                            checkboxHTML+
-                            modalContentDangerous+
-                        '</div>'+
-                        '<div class="col-md-3 text-end">' +
-                            '<a class="btn btn-light-info duplicate-item btn-icon me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Duplicate Item"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></a>'+
-                            '<a class="btn btn-light-danger delete-item btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove Item"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></a>'+
+                            '<div class="text-end mt-2">' +
+                                '<a class="btn btn-light-info duplicate-item btn-icon me-1 mb-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Duplicate Item"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></a>'+
+                                '<a class="btn btn-light-danger delete-item btn-icon mb-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove Item"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></a>'+
+                            '</div>' +
                         '</div>' +
                     '</div>' +
                 '</div>';
@@ -1287,25 +1287,29 @@
                         '</div>'+
                     '</div>'+
                     '<div class="row mb-2">' +
-                        '<div class="col-md-3">' +
+                        '<div class="col-md-6">' +
                             '<div class="row">' +
                                 '<h6 class="list-tit-item d-block d-sm-none mb-0">Package</h6>'+
-                                '<div class="col-md-7 mb-2">' +
+                                '<div class="col-md-4 mb-2">' +
                                     '<label class="form-label mb-0">'+title_typelist+'</label>' +
                                     '<select class="form-select" name="package_type[]" required>' +
                                         '<option value="">Select...</option>' +
                                         $typelist +
                                     '</select>' +
                                 '</div>' +
-                                '<div class="col-md-5 ps-sm-1 mb-2">' +
-                                    '<label class="form-label mb-0">'+$qtylabel+'</label>' +
+                                '<div class="col-md-2 ps-sm-0 pe-sm-0 mb-2">' +
+                                    '<label class="form-label txtnumcarspac mb-0">'+$qtylabel+'</label>' +
                                     '<input type="text" name="qty[]" class="form-control px-2" required>' +
                                 '</div>' +
+                                '<div class="col-md-6 mt-0 mt-sm-0">' +
+                                    '<label class="form-label mb-0">Cargo Description (Commodity)</label>' +
+                                    '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="">' +
+                                '</div>' +
                             '</div>' +
-                        '</div>' +
-                        '<div class="col-md-3 mt-0 mt-sm-0">' +
-                            '<label class="form-label mb-0">Cargo Description (Commodity)</label>' +
-                            '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="">' +
+                            '<div class="mt-3 mt-sm-0 position-relative dvdetailship d-none">'+
+                                '<span class="infototi position-absolute detship" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter the details for your shipment, including quantities, dimensions (length, width, height), and weights in the format: [quantity] x [dimensions] x [weight]. Example: 10 x 12x10x8 inches x 5 lbs." ></span>'+
+                                '<textarea name="details_shipment[]" class="form-control details_shipment" placeholder="Please enter the details for your shipment..."></textarea>'+
+                            '</div>' +
                         '</div>' +
                         '<div class="col-md-2 pt-sm-2 px-sm-1">'+
                             '<input type="hidden" name="dangerous_cargo['+itemIndex+']" value="">'+
@@ -1315,35 +1319,39 @@
                         '<div class="col-md-4">'+
                             '<div class="row">'+
                                 '<h6 class="list-tit-item d-block d-sm-none mb-0">Weight</h6>'+
-                                '<div class="col-md-4 ps-sm-2 pe-sm-0">' +
-                                    '<label class="form-label mb-0">Cargo Weight</label>' +
-                                    '<input type="text" name="item_total_weight[]" class="form-control px-2">' +
-                                    '<div class="mt-2 dvtemperature d-none">' +
-                                        '<input type="text" name="temperature[]" class="form-control px-2" placeholder="Temperature">'+
-                                    '</div>'+
+                                '<div class="col-md-7 ps-sm-2 pe-sm-0">'+
+                                    '<div class="row">'+
+                                        '<div class="col-md-7 ps-sm-2 pe-sm-0">' +
+                                            '<label class="form-label mb-0">Cargo Weight</label>' +
+                                            '<input type="text" name="item_total_weight[]" class="form-control px-2">' +
+                                        '</div>' +
+                                        '<div class="col-md-5">' +
+                                            '<label class="form-label mb-0">Unit</label>' +
+                                            '<select class="form-select px-2" name="weight_unit[]">' +
+                                                '<option value="Kgs">Kgs</option>' +
+                                                '<option value="Lbs">Lbs</option>' +
+                                            '</select>' +
+                                        '</div>' +
+                                        '<div class="col-md-7 ps-sm-2 pe-sm-0">' +
+                                            '<div class="mt-2 dvtemperature d-none">' +
+                                                '<input type="text" name="temperature[]" class="form-control px-2" placeholder="Temperature">'+
+                                            '</div>'+
+                                        '</div>' +
+                                        '<div class="col-md-5">' +
+                                            '<div class="mt-2 dvtemperaturetype d-none">' +
+                                                '<select class="form-select px-2" name="temperature_type[]">' +
+                                                    '<option value="°C">°C</option>' +
+                                                    '<option value="°F">°F</option>' +
+                                                '</select>' +
+                                            '</div>'+
+                                        '</div>' +
+                                    '</div>' +
                                 '</div>' +
-                                '<div class="col-md-3">' +
-                                    '<label class="form-label mb-0">Unit</label>' +
-                                    '<select class="form-select px-2" name="weight_unit[]">' +
-                                        '<option value="Kgs">Kgs</option>' +
-                                        '<option value="Lbs">Lbs</option>' +
-                                    '</select>' +
-                                    '<div class="mt-2 dvtemperaturetype d-none">' +
-                                        '<select class="form-select px-2" name="temperature_type[]">' +
-                                            '<option value="°C">°C</option>' +
-                                            '<option value="°F">°F</option>' +
-                                        '</select>' +
-                                    '</div>'+
-                                '</div>' +
-                                '<div class="col-md-5 mt-3 text-end">' +
-                                    '<button class="btn btn-light-info duplicate-item btn-icon me-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Duplicate Item"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>'+
-                                    '<button class="btn btn-light-danger delete-item btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove Item"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>'+
+                                '<div class="col-md-5 mt-2 mt-sm-4 text-end">' +
+                                    '<button class="btn btn-light-info duplicate-item btn-icon me-1 mb-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Duplicate Item"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>'+
+                                    '<button class="btn btn-light-danger delete-item btn-icon mb-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove Item"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></button>'+
                                 '</div>' +
                             '</div>' +
-                        '</div>' +
-                        '<div class="col-md-6 position-relative dvdetailship d-none">'+
-                            '<span class="infototi position-absolute detship" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter the details for your shipment, including quantities, dimensions (length, width, height), and weights in the format: [quantity] x [dimensions] x [weight]. Example: 10 x 12x10x8 inches x 5 lbs." ></span>'+
-                            '<textarea name="details_shipment[]" class="form-control details_shipment" placeholder="Please enter the details for your shipment..."></textarea>'+
                         '</div>' +
                     '</div>' +
                 '</div>';
@@ -1805,7 +1813,7 @@ document.getElementById('form_quotations').addEventListener('submit', function(e
     if (data.success) {
         submitBtn.disabled = true;
         loadingSpinner.style.display = 'block';
-        window.location.href = 'https://www.latinamericancargo.com/demo-full-gutenberg/?ref=lac-app-form';
+        window.location.href = 'https://www.latinamericancargo.com/thank-you/?ref=lac-app-form';
     } else {
         console.error('...Error inesperado en la respuesta:', xhr.responseText);
     }

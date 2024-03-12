@@ -57,8 +57,12 @@ p {
   margin: 0 auto;
 }
 
+.txtnumcarspac {
+  letter-spacing: -0.5px;
+}
+
 .detship {
-  right: -8px;
+  right: -18px;
 }
 
 .details_shipment {

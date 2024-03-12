@@ -195,7 +195,7 @@
                         @foreach ($cargoDetails as $cargo_detail)
 
                         <tr>
-                            <td width="33px" rowspan="2" style="background: #b80000;color: white; text-align: center;">#{{ $numerations }}</td>
+                            <td width="33px" rowspan="@if($cargo_detail['details_shipment'] != '') 2 @else 1 @endif" style="background: #b80000;color: white; text-align: center;">#{{ $numerations }}</td>
                             @if ($quotation->cargo_type == 'FTL')
                                 <td>
                                     <span style="color:#808080;font-weight:bold;">Trailer Type:</span><br>
