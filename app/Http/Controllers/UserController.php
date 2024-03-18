@@ -58,6 +58,7 @@ class UserController extends Controller
                 'company_name'      =>      'nullable|string',
                 'company_website'   =>      'nullable|string',
                 'email'             =>      'required|email|unique:users,email',
+                'phone_code'        =>      'required|string',
                 'phone'             =>      'nullable|string',
                 'source'            =>      'nullable|string',
                 'password'          =>      'required|alpha_num|min:6'
@@ -81,6 +82,7 @@ class UserController extends Controller
         $users->company_name = $request->company_name;
         $users->company_website = $request->company_website;
         $users->email = $request->email;
+        $users->phone_code = $request->phone_code;
         $users->phone = $request->phone;
         $users->source = $request->source;
         $users->password = bcrypt($request->password);
@@ -145,6 +147,7 @@ class UserController extends Controller
             'company_name' => $request['company_name'],
             'company_website' => $request['company_website'],
             'password' => $pass,
+            'phone_code' => $request['phone_code'],
             'phone' => $request['phone'],
             'source' => $request['source'],
             'photo' => $photouser,
@@ -172,7 +175,7 @@ class UserController extends Controller
         $id = \Auth::user()->id;
         // $category_name = '';
         $data = [
-            'category_name' => '',
+            'category_name' => 'users',
             'page_name' => 'myprofile',
             'has_scrollspy' => 0,
             'scrollspy_offset' => '',
@@ -213,6 +216,7 @@ class UserController extends Controller
             'lastname' => $request['lastname'],
             'company_name' => $request['company_name'],
             'company_website' => $request['company_website'],
+            'phone_code' => $request['phone_code'],
             'phone' => $request['phone'],
             'source' => $request['source'],
             'password' => $pass,

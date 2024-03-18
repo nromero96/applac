@@ -44,17 +44,23 @@
                         <div class="auth-overlay" style="background-image: url({{asset('assets/img/bg-lg-1-min.jpg')}});background-size: cover;"></div>
                         <div class="auth-cover">
                             <div class="position-relative">
+                                <img src="{{asset('assets/img/logo_white_lac.svg')}}" alt="Latin American Cargo">
                                 <h2 class="mt-5 text-white font-weight-bolder px-2">{{__('Your best international freight shipping partner to & from Latin America')}}</h2>
                             </div>
                         </div>
 
                     </div>
 
-                    <div class="col-xxl-4 col-xl-5 col-lg-5 col-md-8 col-12 d-flex flex-column align-self-center ms-lg-auto me-lg-0 mx-auto">
+                    <div class="col-md-6 col-12 d-flex flex-column align-self-center ms-lg-auto me-lg-0 mx-auto px-sm-5">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
+                                        
+                                        <div class="text-center mb-3 d-block d-sm-none">
+                                            <img src="{{asset('assets/img/lac_logo.png')}}" alt="Latin American Cargo">
+                                        </div>
+
                                         <div class="text-end">
                                             <a href="locale/en" class="" ><span class="badge {{ (app()->getLocale() == 'en') ? 'badge-light-primary' : 'badge-light-dark' }}">EN</span></span></a>
                                             <a href="locale/es" class="" ><span class="badge {{ (app()->getLocale() == 'es') ? 'badge-light-primary' : 'badge-light-dark' }}">ES</span></span></a>
@@ -97,13 +103,13 @@
 
                                     <div class="col-12">
                                         <div class="mb-4">
-                                            <button class="btn btn-secondary w-100">{{ __('Login') }}</button>
+                                            <button class="btn btn-secondary py-2 w-100"><b>{{ __('Login') }}</b></button>
                                         </div>
                                     </div>
 
                                     <div class="col-12">
                                         <div class="text-center">
-                                            <p class="mb-0">{{ __("Dont't have an account ?") }} <a href="javascript:void(0);" class="text-warning">{{ __("Sign Up") }}</a></p>
+                                            <p class="mb-0">{{ __("Dont't have an account?") }} <a href="{{ route('register') }}" class="text-warning">{{ __("Register") }}</a></p>
                                         </div>
                                     </div>
 

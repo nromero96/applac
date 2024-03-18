@@ -5,9 +5,35 @@
 
 <div class="layout-px-spacing">
 
+    @if(\Auth::user()->hasRole('Customer'))
+    <div class="row layout-top-spacing">
+        <div class="col-md-12">
+            <h4>{{__("Hi")}} <b>{{\Auth::user()->name}}</b> 👋</h5>
+            <p>{{__("Welcome to Latin American Cargo (LAC)")}}</p>
+        </div>
+    </div>
+    @endif
+
+    @if(\Auth::user()->hasRole('Employee'))
+    <div class="row layout-top-spacing">
+        <div class="col-md-12">
+            <h4>{{__("Hi")}} <b>{{\Auth::user()->name}}</b> 👋</h5>
+            <p>{{__("Welcome to Latin American Cargo (LAC)")}}</p>
+        </div>
+    </div>
+    @endif
+
+    @if(\Auth::user()->hasRole('Administrator'))
     <div class="middle-content container-xxl p-0">
 
         <div class="row layout-top-spacing">
+            <div class="col-md-12">
+                <h4>{{__("Hi")}} <b>{{\Auth::user()->name}}</b> 👋</h5>
+                <p>{{__("Welcome to Latin American Cargo (LAC)")}}</p>
+            </div>
+        </div>
+
+        <div class="row">
 
             <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <div class="widget widget-six">
@@ -236,6 +262,7 @@
         </div>
 
     </div>
+    @endif
 
 </div>
 

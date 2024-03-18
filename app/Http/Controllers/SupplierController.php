@@ -21,6 +21,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 use Illuminate\Support\Facades\Storage;
 
+//log
+use Illuminate\Support\Facades\Log;
+
 
 
 class SupplierController extends Controller implements HasMedia
@@ -49,78 +52,83 @@ class SupplierController extends Controller implements HasMedia
     // Verify if search parameters exist
     if (isset($_GET['search'])) {
         $search = $_GET['search'];
-$rating_supplier = $_GET['rating_supplier'];
-$servicecategory_id = $_GET['servicecategory_id'];
-$get_services_list = $_GET['services_list'];
-$services_list = !empty($get_services_list) ? explode(',', $get_services_list) : '';
-$origin_country_id = $_GET['origin_country_id'];
-$origin_state_id = $_GET['origin_state_id'];
-$origin_city = $_GET['origin_city'];
-$destination_country_id = $_GET['destination_country_id'];
-$destination_state_id = $_GET['destination_state_id'];
-$destination_city = $_GET['destination_city'];
-$crossing = $_GET['crossing'];
-$return_route = $_GET['return_route'];
+        $rating_supplier = $_GET['rating_supplier'];
+        $servicecategory_id = $_GET['servicecategory_id'];
+        $get_services_list = $_GET['services_list'];
+        $services_list = !empty($get_services_list) ? explode(',', $get_services_list) : '';
+        $origin_country_id = $_GET['origin_country_id'];
+        $origin_state_id = $_GET['origin_state_id'];
+        $origin_city = $_GET['origin_city'];
+        $destination_country_id = $_GET['destination_country_id'];
+        $destination_state_id = $_GET['destination_state_id'];
+        $destination_city = $_GET['destination_city'];
+        $crossing = $_GET['crossing'];
+        $return_route = $_GET['return_route'];
 
-$suppliers = $suppliersQuery
-    ->leftJoin('supplierservices', 'supplierservices.supplier_id', '=', 'suppliers.id')
-    ->leftJoin('supplierserviceroutes', 'supplierserviceroutes.supplierservice_id', '=', 'supplierservices.id')
-    ->where('suppliers.company_rating', '>=', $rating_supplier)
-    ->where(function ($query) use ($servicecategory_id, $services_list, $origin_country_id, $origin_state_id, $origin_city, $destination_country_id, $destination_state_id, $destination_city, $crossing, $return_route) {
-        if ($servicecategory_id != '') {
-            $query->where('supplierservices.servicecategory_id', '=', $servicecategory_id);
-        }
+        //log
+        Log::info('Supplier search', ['search' => $search, 'rating_supplier' => $rating_supplier, 'servicecategory_id' => $servicecategory_id, 'services_list' => $services_list, 'origin_country_id' => $origin_country_id, 'origin_state_id' => $origin_state_id, 'origin_city' => $origin_city, 'destination_country_id' => $destination_country_id, 'destination_state_id' => $destination_state_id, 'destination_city' => $destination_city, 'crossing' => $crossing, 'return_route' => $return_route]);
 
-        if (!empty($services_list)) {
-            $query->where(function ($query) use ($services_list) {
-                foreach ($services_list as $key => $value) {
-                    $query->orWhere('supplierservices.services_list', 'like', '%' . $value . '%');
+        $suppliers = $suppliersQuery
+            ->leftJoin('supplierservices', 'supplierservices.supplier_id', '=', 'suppliers.id')
+            ->leftJoin('supplierserviceroutes', 'supplierserviceroutes.supplierservice_id', '=', 'supplierservices.id')
+            ->where('suppliers.company_rating', '>=', $rating_supplier)
+            ->where(function ($query) use ($servicecategory_id, $services_list, $origin_country_id, $origin_state_id, $origin_city, $destination_country_id, $destination_state_id, $destination_city, $crossing, $return_route) {
+                $query->where(function ($query) use ($servicecategory_id) {
+                    if ($servicecategory_id != '') {
+                        $query->where('supplierservices.servicecategory_id', '=', $servicecategory_id);
+                    }
+                });
+
+                $query->where(function ($query) use ($services_list) {
+                    if (!empty($services_list)) {
+                        foreach ($services_list as $key => $value) {
+                            $query->orWhere('supplierservices.services_list', 'like', '%' . $value . '%');
+                        }
+                    }
+                });
+
+                $query->where(function ($query) use ($origin_country_id, $origin_state_id, $origin_city, $destination_country_id, $destination_state_id, $destination_city, $crossing, $return_route) {
+                    if ($origin_country_id != '') {
+                        $query->where('supplierserviceroutes.origin_country', '=', $origin_country_id);
+                    }
+                    if ($origin_state_id != '') {
+                        $query->where('supplierserviceroutes.origin_state', '=', $origin_state_id);
+                    }
+                    if ($origin_city != '') {
+                        $query->where('supplierserviceroutes.origin_city', '=', $origin_city);
+                    }
+                    if ($destination_country_id != '') {
+                        $query->where('supplierserviceroutes.destination_country', '=', $destination_country_id);
+                    }
+                    if ($destination_state_id != '') {
+                        $query->where('supplierserviceroutes.destination_state', '=', $destination_state_id);
+                    }
+                    if ($destination_city != '') {
+                        $query->where('supplierserviceroutes.destination_city', '=', $destination_city);
+                    }
+    
+                    // Añade la lógica para la búsqueda de origen y destino
+                    $query->orWhere(function ($query) use ($origin_country_id, $origin_state_id, $origin_city, $destination_country_id, $destination_state_id, $destination_city) {
+                        $query->where('supplierserviceroutes.origin_country', '=', $origin_country_id)
+                            ->where('supplierserviceroutes.destination_country', '=', $destination_country_id)
+                            ->where('supplierserviceroutes.return_route', '=', '1');
+                    })
+                    ->orWhere(function ($query) use ($origin_country_id, $origin_state_id, $origin_city, $destination_country_id, $destination_state_id, $destination_city) {
+                        $query->where('supplierserviceroutes.origin_country', '=', $destination_country_id)
+                            ->where('supplierserviceroutes.destination_country', '=', $origin_country_id)
+                            ->where('supplierserviceroutes.return_route', '=', '1');
+                    });
+                });
+
+                if ($crossing != '') {
+                    $query->where('supplierserviceroutes.crossing', '=', $crossing);
                 }
-            });
-        }
-
-        if ($origin_country_id != '') {
-            $query->where('supplierserviceroutes.origin_country', '=', $origin_country_id);
-        }
-        if ($origin_state_id != '') {
-            $query->where('supplierserviceroutes.origin_state', '=', $origin_state_id);
-        }
-        if ($origin_city != '') {
-            $query->where('supplierserviceroutes.origin_city', '=', $origin_city);
-        }
-        if ($destination_country_id != '') {
-            $query->where('supplierserviceroutes.destination_country', '=', $destination_country_id);
-        }
-        if ($destination_state_id != '') {
-            $query->where('supplierserviceroutes.destination_state', '=', $destination_state_id);
-        }
-        if ($destination_city != '') {
-            $query->where('supplierserviceroutes.destination_city', '=', $destination_city);
-        }
-
-        // Añade la lógica para la búsqueda de origen y destino
-        $query->orWhere(function ($query) use ($origin_country_id, $origin_state_id, $origin_city, $destination_country_id, $destination_state_id, $destination_city) {
-            $query->where('supplierserviceroutes.origin_country', '=', $origin_country_id)
-                ->where('supplierserviceroutes.destination_country', '=', $destination_country_id)
-                ->where('supplierserviceroutes.return_route', '=', '1');
-        })
-        ->orWhere(function ($query) use ($origin_country_id, $origin_state_id, $origin_city, $destination_country_id, $destination_state_id, $destination_city) {
-            $query->where('supplierserviceroutes.origin_country', '=', $destination_country_id)
-                ->where('supplierserviceroutes.destination_country', '=', $origin_country_id)
-                ->where('supplierserviceroutes.return_route', '=', '1');
-        });
-
-        if ($crossing != '') {
-            $query->where('supplierserviceroutes.crossing', '=', $crossing);
-        }
-        if ($return_route != '') {
-            $query->where('supplierserviceroutes.return_route', '=', $return_route);
-        }
-    })
-    ->distinct('suppliers.id')
-    ->get();
-
-
+                if ($return_route != '') {
+                    $query->where('supplierserviceroutes.return_route', '=', $return_route);
+                }
+            })
+            ->distinct('suppliers.id')
+            ->get();
     } else {
         $suppliers = $suppliersQuery->get();
     }

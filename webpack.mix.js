@@ -33,6 +33,12 @@ mix.sass('resources/sass/light/assets/main.scss', 'public/assets/css/light')
     .sass('resources/sass/layouts/vertical-light-menu/dark/structure.scss', 'public/layouts/vertical-light-menu/css/dark')
 
     // Authentication
+    .sass('resources/sass/light/assets/authentication/auth-cover.scss', 'public/assets/css/light/authentication')
+    .sass('resources/sass/dark/assets/authentication/auth-cover.scss', 'public/assets/css/dark/authentication')
+    
+    .sass('resources/sass/light/assets/authentication/auth-boxed.scss', 'public/assets/css/light/authentication')
+    .sass('resources/sass/dark/assets/authentication/auth-boxed.scss', 'public/assets/css/dark/authentication')
+
 
     // Components
     .sass('resources/sass/light/assets/components/list-group.scss','public/assets/css/light/components')

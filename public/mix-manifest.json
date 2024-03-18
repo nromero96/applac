@@ -21,5 +21,9 @@
     "/plugins/css/light/apex/custom-apexcharts.css": "/plugins/css/light/apex/custom-apexcharts.css",
     "/assets/css/dark/components/list-group.css": "/assets/css/dark/components/list-group.css",
     "/assets/css/light/components/list-group.css": "/assets/css/light/components/list-group.css",
+    "/assets/css/dark/authentication/auth-boxed.css": "/assets/css/dark/authentication/auth-boxed.css",
+    "/assets/css/light/authentication/auth-boxed.css": "/assets/css/light/authentication/auth-boxed.css",
+    "/assets/css/dark/authentication/auth-cover.css": "/assets/css/dark/authentication/auth-cover.css",
+    "/assets/css/light/authentication/auth-cover.css": "/assets/css/light/authentication/auth-cover.css",
     "/layouts/vertical-light-menu/css/dark/structure.css": "/layouts/vertical-light-menu/css/dark/structure.css"
 }

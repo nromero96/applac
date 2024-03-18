@@ -47,15 +47,14 @@ body {
 
 .auth-cover-bg-image {
   position: absolute;
-  width: 55%;
+  width: 50%;
   top: 0;
   bottom: 0;
   left: 0;
 }
 
 .auth-cover img {
-  width: 450px;
-  height: 450px;
+  width: 165px;
 }
 
 .auth-overlay {
@@ -65,7 +64,7 @@ body {
   height: 100%;
   border-radius: inherit;
   background-image: linear-gradient(-225deg, #231557 0%, #44107A 29%, rgb(255 19 97 / 75%) 100%);
-  width: 55%;
+  width: 50%;
 }
 
 .opt-input {

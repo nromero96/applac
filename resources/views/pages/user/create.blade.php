@@ -62,7 +62,14 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="inputPhone" class="form-label fw-bold">{{__("Phone")}} <span class="text-danger">*</span></label>
-                                <input type="text" name="phone" class="form-control" id="inputPhone" value="{{old('phone')}}" required>
+                                <div class="row">
+                                    <div class="col-3 col-md-2 pe-0">
+                                        <input type="text" name="phone_code" class="form-control text-center" id="phone_code" value="{{old('phone_code')}}" placeholder="Code" required>
+                                    </div>
+                                    <div class="col-9 col-md-10 ps-0">
+                                        <input type="text" name="phone" class="form-control" id="inputPhone" value="{{old('phone')}}" placeholder="Phone number" required>
+                                    </div>
+                                </div>
                                 {!!$errors->first("phone", "<span class='text-danger'>:message</span>")!!}
                             </div>
                             <div class="col-md-6">
