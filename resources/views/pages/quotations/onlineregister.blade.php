@@ -81,7 +81,7 @@
                         <div class="modal-content">
                             <div class="modal-body">
                                 <div id="options_best" class="">
-                                    <h2 class="text-center mb-2">
+                                    <h2 class="text-center mb-4 bm-sm-5">
                                         {{ __('Please, select the option that describes you best:') }}
                                     </h2>
                                     <div class="row">
@@ -338,7 +338,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 mb-2">
-                                                            <label class="form-label mb-0">{{ __('State') }}</label>
+                                                            <label class="form-label mb-0">{{ __('State/Province') }}</label>
                                                             <select class="form-select" name="origin_state_id" id="origin_state_id">
                                                                 <option value="">{{ __('Select') }}</option>
                                                             </select>
@@ -392,7 +392,7 @@
                                                     </div>
                                                     <div class="row">
                                                         <div class="col-md-6 mb-2">
-                                                            <label class="form-label mb-0">{{ __('State') }}</label>
+                                                            <label class="form-label mb-0">{{ __('State/Province') }}</label>
                                                             <select class="form-select" name="destination_state_id" id="destination_state_id">
                                                                 <option value="">{{ __('Select') }}</option>
                                                             </select>
@@ -502,7 +502,7 @@
                                                         <h5 class="subtit-steep">{{ __('Additional Information') }}</h5>
                                                     </div>
                                                     <div class="col-md-6 mb-2">
-                                                        <label class="form-label">{{ __('Shipping date (select range)') }}</label>
+                                                        <label class="form-label mb-0">{{ __('Shipping date (select range)') }}</label>
                                                         <input type="date" name="shipping_date" id="shipping_date" class="form-control" placeholder="YYYY - MM - DD" required>
                                                         <div class="text-danger msg-info" id="shipping_date_error"></div>
                                                         <div class="form-check form-check-primary form-check-inline mt-1">
@@ -515,7 +515,7 @@
                                                         <div class="text-danger msg-info" id="no_shipping_date_error"></div>
                                                     </div>
                                                     <div class="col-md-4 mb-2">
-                                                        <label class="form-label">{{ __('Declared value') }}</label>
+                                                        <label class="form-label mb-0">{{ __('Declared value') }}</label>
                                                         <input type="text" name="declared_value" id="declared_value" class="form-control" placeholder="" required>
                                                         <div class="text-danger msg-info" id="declared_value_error"></div>
                                                         
@@ -529,7 +529,7 @@
                                                         <div class="text-danger msg-info" id="insurance_required_error"></div>
                                                     </div>
                                                     <div class="col-md-2 mb-2">
-                                                        <label class="form-label">{{ __('Currency') }}</label>
+                                                        <label class="form-label mb-0">{{ __('Currency') }}</label>
                                                         <select name="currency" id="currency" class="form-select">
                                                             <option value="USD - US Dollar">USD - US Dollar</option>
                                                             <option value="EUR - Euro">EUR - Euro</option>
@@ -537,7 +537,7 @@
                                                         <div class="text-danger msg-info" id="currency_error"></div>
                                                     </div>
                                                     <div class="col-md-12 mb-2">
-                                                        <label class="form-label">{{ __('Documentation') }} <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="(Max. 10mb - Allowed files: jpg, jpeg, png, gif, doc, docx, ppt, pptx, pdf, xls, xlsx)" ></span></label>
+                                                        <label class="form-label mb-0">{{ __('Documentation') }} <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="(Max. 10mb - Allowed files: jpg, jpeg, png, gif, doc, docx, ppt, pptx, pdf, xls, xlsx)" ></span></label>
                                                         <div class="multiple-file-upload">
                                                             <input 
                                                                 type="file" 
@@ -571,12 +571,12 @@
                                             </div>
                                         </div>
                                         <div class="row">
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-6 mb-2">
                                                 <label for="name" class="form-label mb-0">{{ __('First Name') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="name" id="name" class="form-control">
                                                 <div class="text-danger msg-info" id="name_error"></div>
                                             </div>
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-6 mb-2">
                                                 <label for="lastname" class="form-label mb-0">{{ __('Last Name') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="lastname" id="lastname" class="form-control">
                                                 <div class="text-danger msg-info" id="lastname_error"></div>
@@ -584,12 +584,12 @@
                                         </div>
 
                                         <div class="row" id="info_company">
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-6 mb-2">
                                                 <label for="company_name" class="form-label mb-0">{{ __('Company name') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="company_name" id="company_name" class="form-control">
                                                 <div class="text-danger msg-info" id="company_name_error"></div>
                                             </div>
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-6 mb-2">
                                                 <label for="company_website" class="form-label mb-0">{{ __('Company website') }}</label>
                                                 <input type="text" name="company_website" id="company_website" class="form-control">
                                                 <div class="text-danger msg-info" id="company_website_error"></div>
@@ -597,12 +597,12 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-6 mb-2">
                                                 <label for="email" class="form-label mb-0">{{ __('Email address') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="email" id="email" class="form-control">
                                                 <div class="text-danger msg-info" id="email_error"></div>
                                             </div>
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-6 mb-2">
                                                 <label for="confirm_email" class="form-label mb-0">{{ __('Confirm email address') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="confirm_email" id="confirm_email" class="form-control">
                                                 <div class="text-danger msg-info" id="confirm_email_error"></div>
@@ -610,7 +610,7 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-6 mb-2">
                                                 <label for="phone" class="form-label mb-0 d-block">{{ __('Phone') }} <span class="text-danger">*</span></label>
                                                 <input type="hidden" name="phone_code" id="phone_code" value="1">
                                                 <input type="tel" id="phone" name="phone" class="form-control">
@@ -618,7 +618,7 @@
                                                 <div id="phone-container" class="mt-2"></div>
                                                 <div class="text-danger msg-info" id="phone_error"></div>
                                             </div>
-                                            <div class="col-md-6 mb-3">
+                                            <div class="col-md-6 mb-2">
                                                 <label for="source" class="form-label mb-0">{{ __('How do you know about us?') }}</label>
                                                 <select name="source" id="source" class="form-select">
                                                     <option value="">{{ __('Select...') }}</option>
@@ -637,11 +637,12 @@
                                             <div class="col-md-12">
                                                 <div class="form-check form-check-primary form-check-inline mt-1">
                                                     <input type="hidden" name="create_account" value="no">
-                                                    <input class="form-check-input" type="checkbox" name="create_account" id="create_account" value="yes">
-                                                    <label class="form-check-label" for="create_account">
+                                                    <input class="form-check-input cursor-pointer" type="checkbox" name="create_account" id="create_account" value="yes"  disabled>
+                                                    <label class="form-check-label cursor-pointer" for="create_account">
                                                         {{ __('Create an account and get quotes quicker') }}
                                                         <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="When you create an account, we will store your basic contact information and will be able to deliver quicker quotes for your following service requests."></span>
                                                     </label>
+                                                    <div class="msg-info" id="messageuserexist"></div>
                                                 </div>
 
                                                 <div class="form-check form-check-primary form-check-inline mt-1 d-none">
@@ -915,7 +916,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <p>If you are shipping any type of dangerous cargo, you must specify lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris at lacus et erat elementum imperdiet. Donec dignissim metus et elit porttitor, eu porta elit pharetra.</p>
+                            <p>For the safe and efficient handling of your shipments, we kindly request that you provide the IMO Classification and UN Number for any dangerous cargo being shipped. This information ensures compliance with regulatory standards and allows us to properly prepare for transportation.</p>
                             <div class="imolistdetail">
                                 <div class="row d-none">
                                     <input type="hidden" name="dc_imoclassification_1[]" value="">
@@ -1306,8 +1307,8 @@
                                     '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="">' +
                                 '</div>' +
                             '</div>' +
-                            '<div class="mt-3 mt-sm-0 position-relative dvdetailship d-none">'+
-                                '<span class="infototi position-absolute detship" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter the details for your shipment, including quantities, dimensions (length, width, height), and weights in the format: [quantity] x [dimensions] x [weight]. Example: 10 x 12x10x8 inches x 5 lbs." ></span>'+
+                            '<div class="mt-1 mt-sm-0 position-relative dvdetailship d-none">'+
+                                '<label class="form-label mb-0">Additional Shipment Details <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter the details for your shipment, including quantities, dimensions (length, width, height), and weights in the format: [quantity] x [dimensions] x [weight]. Example: 10 x 12x10x8 inches x 5 lbs." ></span></label>'+
                                 '<textarea name="details_shipment[]" class="form-control details_shipment" placeholder="Please enter the details for your shipment..."></textarea>'+
                             '</div>' +
                         '</div>' +
@@ -1788,8 +1789,6 @@ function displayValidationErrors(errors) {
 document.getElementById('form_quotations').addEventListener('submit', function(event) {
     event.preventDefault();
 
-    clearValidationErrors();
-
     const submitBtn = document.getElementById('submitBtn');
     const loadingSpinner = document.getElementById('loadingSpinner');
 
@@ -1840,19 +1839,7 @@ document.getElementById('form_quotations').addEventListener('submit', function(e
     xhr.send(formData);
 });
 
-// Función para limpiar los mensajes de error en cada campo
-function clearValidationErrors() {
-    const fieldNames = ['mode_of_transport', 'cargo_type', 'service_type', 'origin_country_id', 'origin_airportorport','origin_address','origin_city','origin_state_id','origin_zip_code','destination_country_id','destination_airportorport','destination_address','destination_city','destination_state_id','destination_zip_code','total_volum_weight','shipping_date','no_shipping_date','declared_value','insurance_required','currency','name','lastname','company_name','company_website','email','confirm_email','phone','source'];
-    fieldNames.forEach(fieldName => {
-        const errorDiv = document.getElementById(`${fieldName}_error`);
-        errorDiv.textContent = '';
-    });
-
-    const errorDiv = document.getElementById('error_inputs_form');
-    errorDiv.innerHTML = '';
-}
-
-    </script>
+</script>
 
     <script>
         //click in origin_country_id select add state select by ajax
@@ -1863,7 +1850,7 @@ function clearValidationErrors() {
                 type: 'GET',
                 success: function(data) {
                     if (data.length > 0) {
-                        var html = '<option value="">State...</option>';
+                        var html = '<option value="">State/Province...</option>';
                         $.each(data, function(index, value) {
                             html += '<option value="'+value.id+'">'+value.name+'</option>';
                         });
@@ -1881,7 +1868,7 @@ function clearValidationErrors() {
                 type: 'GET',
                 success: function(data) {
                     if (data.length > 0) {
-                        var html = '<option value="">State...</option>';
+                        var html = '<option value="">State/Province...</option>';
                         $.each(data, function(index, value) {
                             html += '<option value="'+value.id+'">'+value.name+'</option>';
                         });
@@ -1929,35 +1916,6 @@ function clearValidationErrors() {
         }
 
         //open modal id CustomerInformationModal if click in class modal_customer
-        $(document).on('click', '.modal_customer', function(){
-            clearValidationErrors();
-
-            //buscar todo los input y select required y add class is-invalid
-            $('#cargoinfodata input[required], #cargoinfodata select[required]').each(function(){
-                if($(this).val() == ''){
-                    $(this).addClass('is-invalid');
-                    //focus in input or select
-                    $(this).focus();
-                }else{
-                    $(this).removeClass('is-invalid');
-                }
-            });
-
-            //contar los itemdetail
-            var countItemDetail = $('.itemdetail').length;
-
-            //si countItemDetail no es mayor a 0 alert
-            if(countItemDetail == 0){
-                alert('Please add at least one Cargo Details');
-                return false;
-            }
-            
-            if($('#cargoinfodata input[required].is-invalid').length == 0 && $('#cargoinfodata select[required].is-invalid').length == 0 && countItemDetail > 0){
-                $('#CustomerInformationModal').modal('show');
-            }
-
-        });
-
 
         var phoneInput = document.querySelector("#phone");
         var phoneInputInstance = window.intlTelInput(phoneInput, {

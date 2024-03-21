@@ -61,10 +61,6 @@ p {
   letter-spacing: -0.5px;
 }
 
-.detship {
-  right: -18px;
-}
-
 .details_shipment {
   /* Ancho del scroll */
   scrollbar-width: thin; /* Para navegadores que no son WebKit */
@@ -522,6 +518,9 @@ span.form-label {
 }
 
 @media (max-width: 575px) {
+  .confirm-percomp-modal .modal-body h2 {
+    width: 100%;
+  }
   .bs-stepper-header {
     justify-content: center;
   }

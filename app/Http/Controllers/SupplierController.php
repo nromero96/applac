@@ -65,9 +65,6 @@ class SupplierController extends Controller implements HasMedia
         $crossing = $_GET['crossing'];
         $return_route = $_GET['return_route'];
 
-        //log
-        Log::info('Supplier search', ['search' => $search, 'rating_supplier' => $rating_supplier, 'servicecategory_id' => $servicecategory_id, 'services_list' => $services_list, 'origin_country_id' => $origin_country_id, 'origin_state_id' => $origin_state_id, 'origin_city' => $origin_city, 'destination_country_id' => $destination_country_id, 'destination_state_id' => $destination_state_id, 'destination_city' => $destination_city, 'crossing' => $crossing, 'return_route' => $return_route]);
-
         $suppliers = $suppliersQuery
             ->leftJoin('supplierservices', 'supplierservices.supplier_id', '=', 'suppliers.id')
             ->leftJoin('supplierserviceroutes', 'supplierserviceroutes.supplierservice_id', '=', 'supplierservices.id')

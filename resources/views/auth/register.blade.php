@@ -60,7 +60,7 @@
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
                                         <div class="text-center mb-3 d-block d-sm-none">
-                                            <img src="{{asset('assets/img/lac_logo.png')}}" alt="Latin American Cargo">
+                                            <img src="{{asset('assets/img/logo-original-lac.svg')}}" alt="Latin American Cargo" class="lg-htform">
                                         </div>
                                         
                                         <div class="text-end">
@@ -71,7 +71,7 @@
                                         <p>{{ __('Register now to manage your transportation quotes with us.') }}</p>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-2">
                                             <label class="form-label mb-0">{{ __('First Name') }} <span class="text-danger">*</span></label>
                                             <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name">
                                             @error('name')
@@ -82,7 +82,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-2">
                                             <label class="form-label mb-0">{{ __('Last Name') }} <span class="text-danger">*</span></label>
                                             <input id="lastname" type="text" class="form-control @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required autocomplete="lastname">
                                             @error('lastname')
@@ -93,7 +93,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-2">
                                             <label class="form-label mb-0">{{ __('Company name') }} <span class="text-danger">*</span></label>
                                             <input id="company_name" type="text" class="form-control @error('company_name') is-invalid @enderror" name="company_name" value="{{ old('company_name') }}" required autocomplete="company_name">
                                             @error('company_name')
@@ -104,7 +104,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-2">
                                             <label class="form-label mb-0">{{ __('Company website') }}</label>
                                             <input id="company_website" type="text" class="form-control @error('company_website') is-invalid @enderror" name="company_website" value="{{ old('company_website') }}" autocomplete="company_website">
                                             @error('company_website')
@@ -115,7 +115,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-2">
                                             <label class="form-label mb-0">{{ __('Email address') }} <span class="text-danger">*</span></label>
                                             <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
                                             @error('email')
@@ -126,7 +126,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-2">
                                             <label class="form-label mb-0">{{ __('Confirm email address') }} <span class="text-danger">*</span></label>
                                             <input id="confirm_email" type="email" class="form-control @error('confirm_email') is-invalid @enderror" name="confirm_email" value="{{ old('confirm_email') }}" required autocomplete="confirm_email">
                                             @error('confirm_email')
@@ -134,10 +134,11 @@
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
+                                            <span id="confirm_emailtext" class="form-text text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-2">
                                             <label class="form-label mb-0">{{ __('Phone') }} <span class="text-danger">*</span></label>
                                             <input type="hidden" name="phone_code" id="phone_code" value="1">
                                             <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
@@ -146,10 +147,11 @@
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
+
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
+                                        <div class="mb-2">
                                             <label class="form-label mb-0">{{ __('How do you know about us?') }} </label>
                                             <select class="form-select @error('phone') is-invalid @enderror" name="source" id="source" 
                                                 <option value="">Select...</option>
@@ -168,26 +170,28 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">{{ __('Password') }} <span class="text-danger">*</span></label>
+                                        <div class="mb-2">
+                                            <label class="form-label mb-0">{{ __('Password') }} <span class="text-danger">*</span></label>
                                             <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
                                             @error('password')
                                                 <span class="invalid-feedback" role="alert">
                                                     <strong>{{ $message }}</strong>
                                                 </span>
                                             @enderror
+                                            <span id="passwordsecurity" class="form-text"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label">{{ __('Confirm Password') }} <span class="text-danger">*</span></label>
+                                        <div class="mb-2">
+                                            <label class="form-label mb-0">{{ __('Confirm Password') }} <span class="text-danger">*</span></label>
                                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                            <span id="password-confirmtext" class="form-text text-danger"></span>
                                         </div>
                                     </div>
 
-                                    <div class="col-12 mt-2 mt-sm-0">
+                                    <div class="col-12 mt-2 mt-sm-2">
                                         <div class="mb-4">
-                                            <button class="btn btn-primary py-2 w-100"><b>{{ __('Register') }}</b></button>
+                                            <button class="btn btn-primary py-2 w-100 btn-register" disabled><b>{{ __('Register') }}</b></button>
                                         </div>
                                     </div>
 
@@ -196,21 +200,6 @@
                                             <p class="mb-0">{{ __("Are you already registered?") }} <a href="{{ route('login') }}" class="text-warning">{{ __("Login") }}</a></p>
                                         </div>
                                     </div>
-
-                                    @if (session('status'))
-                                        <div class="alert alert-danger mt-2" role="alert" id="status-alert">
-                                            {{ session('status') }}
-                                        </div>
-
-                                        <script>
-                                            setTimeout(function() {
-                                                document.getElementById('status-alert').remove();
-                                            }, 5000); // 10000 milisegundos = 10 segundos
-                                        </script>
-                                    @endif
-
-
-
                                 </div>
                             </div>
                         </div>
@@ -229,6 +218,20 @@
     <script>
         //initialize the javascript
         document.addEventListener('DOMContentLoaded', function () {
+            
+            const email = document.querySelector('#email');
+            
+            const confirmEmail = document.querySelector('#confirm_email');
+            const confirmEmailtext = document.querySelector('#confirm_emailtext');
+
+            const password = document.querySelector('#password');
+            const passwordsecurity = document.querySelector('#passwordsecurity');
+            
+            const confirmPassword = document.querySelector('#password-confirm');
+            const confirmPasswordtext = document.querySelector('#password-confirmtext');
+
+            const btnregister = document.querySelector('.btn-register');
+
             var phoneInput = document.querySelector("#phone");
             var phoneInputInstance = window.intlTelInput(phoneInput, {
                 separateDialCode: true,
@@ -243,6 +246,40 @@
                     phoneCodeInput.value = dialCode;
                 });
             });
+
+
+            function updateRegistrationStatus() {
+                const emailMatch = email.value === confirmEmail.value;
+                const passwordMatch = password.value === confirmPassword.value;
+                const passwordValid = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{9,}$/.test(password.value);
+
+                let passwordStrength = "";
+                passwordsecurity.style.color = "black";
+                if (password.value.length >= 9 && passwordValid) {
+                    passwordStrength = "Password Secure.";
+                    passwordsecurity.style.color = "green";
+                } else if (password.value.length >= 6) {
+                    passwordStrength = "Moderate, include at least 1 letter, 1 number, 1 special character";
+                    passwordsecurity.style.color = "orange";
+                } else {
+                    passwordStrength = "Weak, minimum 9 characters required";
+                    passwordsecurity.style.color = "red";
+                }
+
+                passwordsecurity.innerHTML = passwordStrength;
+                confirmEmailtext.innerHTML = emailMatch ? "" : "Emails do not match";
+                confirmPasswordtext.innerHTML = passwordMatch ? "" : "Passwords do not match";
+
+                btnregister.disabled = !emailMatch || !passwordMatch || !passwordValid;
+            }
+
+            email.addEventListener('input', updateRegistrationStatus);
+            confirmEmail.addEventListener('input', updateRegistrationStatus);
+            password.addEventListener('input', updateRegistrationStatus);
+            confirmPassword.addEventListener('input', updateRegistrationStatus);
+
+
+
         });
 
     </script>

@@ -58,7 +58,7 @@
                                     <div class="col-md-12 mb-3">
                                         
                                         <div class="text-center mb-3 d-block d-sm-none">
-                                            <img src="{{asset('assets/img/lac_logo.png')}}" alt="Latin American Cargo">
+                                            <img src="{{asset('assets/img/logo-original-lac.svg')}}" alt="Latin American Cargo" class="lg-htform">
                                         </div>
 
                                         <div class="text-end">

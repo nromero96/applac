@@ -25,7 +25,7 @@ return [
     'copymail' => [
         'mail_1' => env('MAILCOPY_MAIL_1'),
         'mail_2' => env('MAILCOPY_MAIL_2'),
-        'mail_2' => env('MAILCOPY_MAIL_3'),
+        'mail_3' => env('MAILCOPY_MAIL_3'),
     ],
 
     'mailgun' => [

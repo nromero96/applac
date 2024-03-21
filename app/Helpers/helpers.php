@@ -1,7 +1,7 @@
 <?php
 use GuzzleHttp\Client;
 
-function sendMailApiLac($toEmail, $subject, $content, $ccEmails = [])
+function sendMailApiLac($toEmail, $subject, $content, $ccEmails = [], $bccEmails = [])
 {
     $client = new Client();
 
@@ -16,6 +16,12 @@ function sendMailApiLac($toEmail, $subject, $content, $ccEmails = [])
     foreach ($ccEmails as $ccEmail) {
         $personalizations[0]['cc'][] = [
             'email' => $ccEmail,
+        ];
+    }
+
+    foreach ($bccEmails as $bccEmail) {
+        $personalizations[0]['bcc'][] = [
+            'email' => $bccEmail,
         ];
     }
 

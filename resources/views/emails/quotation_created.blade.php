@@ -6,9 +6,17 @@
 <body style="font-family: Arial, Helvetica, sans-serif">
     <p>Dear <b>{{$name}} {{$lastname}}</b>,</p>
 
-    <p>Thank you for requesting a quote. We're currently reviewing your inquiry and aim to respond within 24 hours.</p>
+    <p>Thank you for reaching out to us.</p>
+    
+    <p>We've received your quote request and are currently reviewing it. Our team aims to provide a response within 24 hours.</p>
 
-    <p>To confirm if your request falls under our service scope, please review the following information: https://www.latinamericancargo.com/</p>
+    <p>Please note that any communication from us will come exclusively from our authorized domains: <b>lacship.com</b> or <b>latinamericancargo.com</b>.</p>
+    
+    <p>Please note: If you do not receive a response from us within this time frame, it is because we cannot offer the service you require. We appreciate your understanding.</p>
+
+    <p>To confirm if your request falls under our service scope, please review the following information: https://www.latinamericancargo.com/service-scope</p>
+
+    <p>Thank you for trusting Latin American Cargo.</p>
 
     <p>Your Quote ID #: <b>{{ $quotation->id }}</b></p>
 
@@ -42,14 +50,14 @@
                     <b>Origin Country:</b> {{ $origin_country_name }}<br>
                     <b>Origin Address:</b> {{ $quotation->origin_address }}<br>
                     <b>Origin City:</b> {{ $quotation->origin_city }}<br>
-                    <b>Origin State:</b> {{ $origin_state_name }}<br>
+                    <b>Origin State/Province:</b> {{ $origin_state_name }}<br>
                     <b>Origin Zip Code:</b> {{ $quotation->origin_zip_code }}<br>
                 </td>
                 <td>
                     <b>Destination Country:</b> {{ $destination_country_name }}<br>
                     <b>Destination Address:</b> {{ $quotation->destination_address }}<br>
                     <b>Destination City:</b> {{ $quotation->destination_city }}<br>
-                    <b>Destination State:</b> {{ $destination_state_name }}<br>
+                    <b>Destination State/Province:</b> {{ $destination_state_name }}<br>
                     <b>Destination Zip Code:</b> {{ $quotation->destination_zip_code }}<br>
                 </td>
             @elseif ($quotation->service_type === 'Door-to-Airport')
@@ -57,7 +65,7 @@
                     <b>Origin Country:</b> {{ $origin_country_name }}<br>
                     <b>Origin Address:</b> {{ $quotation->origin_address }}<br>
                     <b>Origin City:</b> {{ $quotation->origin_city }}<br>
-                    <b>Origin State:</b> {{ $origin_state_name }}<br>
+                    <b>Origin State/Province:</b> {{ $origin_state_name }}<br>
                     <b>Origin Zip Code:</b> {{ $quotation->origin_zip_code }}<br>
                 </td>
                 <td>
@@ -73,7 +81,7 @@
                 <b>Destination Country:</b> {{ $destination_country_name }}<br>
                 <b>Destination Address:</b> {{ $quotation->destination_address }}<br>
                 <b>Destination City:</b> {{ $quotation->destination_city }}<br>
-                <b>Destination State:</b> {{ $destination_state_name }}<br>
+                <b>Destination State/Province:</b> {{ $destination_state_name }}<br>
                 <b>Destination Zip Code:</b> {{ $quotation->destination_zip_code }}<br>
             </td>
             @elseif ($quotation->service_type === 'Airport-to-Airport')
@@ -90,7 +98,7 @@
                 <b>Origin Country:</b> {{ $origin_country_name }}<br>
                 <b>Origin Address:</b> {{ $quotation->origin_address }}<br>
                 <b>Origin City:</b> {{ $quotation->origin_city }}<br>
-                <b>Origin State:</b> {{ $origin_state_name }}<br>
+                <b>Origin State/Province:</b> {{ $origin_state_name }}<br>
                 <b>Origin Zip Code:</b> {{ $quotation->origin_zip_code }}<br>
             </td>
             <td>
@@ -106,7 +114,7 @@
                 <b>Destination Country:</b> {{ $destination_country_name }}<br>
                 <b>Destination Address:</b> {{ $quotation->destination_address }}<br>
                 <b>Destination City:</b> {{ $quotation->destination_city }}<br>
-                <b>Destination State:</b> {{ $destination_state_name }}<br>
+                <b>Destination State/Province:</b> {{ $destination_state_name }}<br>
                 <b>Destination Zip Code:</b> {{ $quotation->destination_zip_code }}<br>
             </td>
             @elseif ($quotation->service_type === 'CFS/Port-to-CFS/Port')
@@ -123,7 +131,7 @@
                 <b>Origin Country:</b> {{ $origin_country_name }}<br>
                 <b>Origin Address:</b> {{ $quotation->origin_address }}<br>
                 <b>Origin City:</b> {{ $quotation->origin_city }}<br>
-                <b>Origin State:</b> {{ $origin_state_name }}<br>
+                <b>Origin State/Province:</b> {{ $origin_state_name }}<br>
                 <b>Origin Zip Code:</b> {{ $quotation->origin_zip_code }}<br>
             </td>
             <td>
@@ -139,7 +147,7 @@
                 <b>Destination Country:</b> {{ $destination_country_name }}<br>
                 <b>Destination Address:</b> {{ $quotation->destination_address }}<br>
                 <b>Destination City:</b> {{ $quotation->destination_city }}<br>
-                <b>Destination State:</b> {{ $destination_state_name }}<br>
+                <b>Destination State/Province:</b> {{ $destination_state_name }}<br>
                 <b>Destination Zip Code:</b> {{ $quotation->destination_zip_code }}<br>
             </td>
             @elseif ($quotation->service_type === 'Port-to-Port')

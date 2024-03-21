@@ -228,19 +228,16 @@ class QuotationController extends Controller
                 'updated_at' => now(),
             ]);
 
-            return redirect()->route('quotations.show', ['quotation' => $id])->with('success', 'Estado actualizado con éxito');
+            return redirect()->route('quotations.show', ['quotation' => $id])->with('success', 'Updated status successfully quotation #'.$id);
         } catch (\Exception $e) {
             // Manejo de errores
-            return redirect()->back()->with('error', 'Ocurrió un error al actualizar el estado.');
+            return redirect()->back()->with('error', 'Error updating status quotation #'.$id);
         }
     }
 
 
     public function onlinestore(Request $request)
     {
-
-        //log request
-        Log::info('Request: ', $request->all());
 
     try {
         $validatedData = $request->validate([
@@ -434,8 +431,16 @@ class QuotationController extends Controller
             }
 
 
-            // Envía el correo electrónico con los detalles de carga
-            Mail::send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'),$request->input('email'), $cargoDetails));
+            try {
+                // Envía el correo electrónico con los detalles de carga
+                Mail::send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'), $request->input('email'), $cargoDetails));
+            
+                // Si no se lanzó una excepción, asumimos que el correo se envió correctamente
+                Log::info('Correo electrónico enviado correctamente de la cotización: ' . $quotation_id);
+            } catch (\Exception $e) {
+                // Captura cualquier excepción que pueda ocurrir durante el envío del correo
+                Log::error('Error al enviar el correo electrónico de la cotización: ' . $quotation_id . ' - ' . $e->getMessage());
+            }
 
         }else if($create_account == 'yes'){
             //verificate if existing email in users table, generate password for send mail and assign role customer
@@ -501,7 +506,10 @@ class QuotationController extends Controller
                 $cargoDetails = [];
 
                 $package_types = $request->input('package_type') ?? [];
+                $temperature = $request->input('temperature') ?? [];
+                $temperature_type = $request->input('temperature_type') ?? [];
                 $qtys = $request->input('qty') ?? [];
+                $details_shipments = $request->input('details_shipment') ?? [];
                 $cargo_descriptions = $request->input('cargo_description') ?? [];
                 $item_total_weights = $request->input('item_total_weight') ?? [];
                 $weight_units = $request->input('weight_unit') ?? [];
@@ -551,6 +559,13 @@ class QuotationController extends Controller
                         $cargoDetail['per_piece'] = $request->input('per_piece')[$i] ?? null;
                         $cargoDetail['item_total_volume_weight_cubic_meter'] = $request->input('item_total_volume_weight_cubic_meter')[$i] ?? null;
                     }
+
+                    //if cargo type is FTL or FCL
+                    if ($cargo_type === 'FTL' || $cargo_type === 'FCL') {
+                        $cargoDetail['temperature'] = $request->input('temperature')[$i] ?? null;
+                        $cargoDetail['temperature_type'] = $request->input('temperature_type')[$i] ?? null;
+                        $cargoDetail['details_shipment'] = $request->input('details_shipment')[$i] ?? null;
+                    }
     
                     $cargoDetails[] = $cargoDetail;
                     $cargo_detail = CargoDetail::create($cargoDetail);
@@ -578,14 +593,26 @@ class QuotationController extends Controller
 
                 }
 
+                try {
+                    // Envía el correo electrónico con los detalles de carga
+                    Mail::send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'),$request->input('email'), $cargoDetails));
 
+                    //log email sent
+                    Log::info('Correo electrónico enviado correctamente de la cotización: ' . $quotation_id);
+                } catch (\Exception $e) {
+                    // Captura cualquier excepción que pueda ocurrir durante el envío del correo
+                    Log::error('Error al enviar el correo electrónico de la cotización: ' . $quotation_id . ' - ' . $e->getMessage());
+                }
 
-                // Envía el correo electrónico con los detalles de carga
-                Mail::send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'),$request->input('email'), $cargoDetails));
-
-                //sen mail to user email with password
-                Mail::send(new UserCreated($request->input('name'), $request->input('lastname'), $request->input('email'), $password));
-
+                try {
+                    //sen mail to user email with password
+                    Mail::send(new UserCreated($request->input('name'), $request->input('lastname'), $request->input('email'), $password));
+                    //log email sent
+                    Log::info('Correo electrónico enviado de su cuenta creada correctamente a: ' . $request->input('email'));
+                } catch (\Exception $e) {
+                    // Captura cualquier excepción que pueda ocurrir durante el envío del correo
+                    Log::error('Error al enviar el correo electrónico de su cuenta creada a: ' . $request->input('email') . ' - ' . $e->getMessage());
+                }
             }
         }
 

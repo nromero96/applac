@@ -227,4 +227,15 @@ class UserController extends Controller
         return redirect()->back();
     }
 
+    //verificar si el email ya existe
+    public function verifyemailRegister(Request $request){
+        $email = $request->email;
+        $user = User::where('email', $email)->first();
+        if($user){
+            return response()->json(['status' => 'error', 'message' => 'Email already registered. Change or continue as guest.']);
+        }else{
+            return response()->json(['status' => 'success', 'message' => 'Email available. Access will be sent there.']);
+        }
+    }
+
 }

@@ -100,7 +100,7 @@
                                     @if ($quotation->service_type === 'Door-to-Door' || $quotation->service_type === 'Door-to-Airport' || $quotation->service_type === 'Door-to-CFS/Port' || $quotation->service_type === 'Door-to-Port')
                                         <label class="fw-bold mb-0">{{__("Origin Address")}}:</label> {{ $quotation->origin_address }}<br>
                                         <label class="fw-bold mb-0">{{__("Origin City")}}:</label> {{ $quotation->origin_city }}<br>
-                                        <label class="fw-bold mb-0">{{__("Origin State")}}:</label> {{ $quotation->origin_state }}<br>
+                                        <label class="fw-bold mb-0">{{__("Origin State/Province")}}:</label> {{ $quotation->origin_state }}<br>
                                         <label class="fw-bold mb-0">{{__("Origin Zip Code")}}:</label> {{ $quotation->origin_zip_code }}<br>
                                     @endif
 
@@ -120,7 +120,7 @@
                                     @if ($quotation->service_type === 'Door-to-Door' || $quotation->service_type === 'Airport-to-Door' || $quotation->service_type === 'CFS/Port-to-Door' || $quotation->service_type === 'Port-to-Door')
                                         <label class="fw-bold mb-0">{{__("Destination Address")}}:</label> {{ $quotation->destination_address }}<br>
                                         <label class="fw-bold mb-0">{{__("Destination City")}}:</label> {{ $quotation->destination_city }}<br>
-                                        <label class="fw-bold mb-0">{{__("Destination State")}}:</label> {{ $quotation->destination_state }}<br>
+                                        <label class="fw-bold mb-0">{{__("Destination State/Province")}}:</label> {{ $quotation->destination_state }}<br>
                                         <label class="fw-bold mb-0">{{__("Destination Zip Code")}}:</label> {{ $quotation->destination_zip_code }}<br>
                                     @endif
 
@@ -502,7 +502,8 @@
 
                 <div class="row mt-2">
                     <div class="col-md-7">
-                        <div class="statbox widget box box-shadow mt-2">
+                        @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
+                            <div class="statbox widget box box-shadow mt-2">
                             <div class="widget-header px-2 pt-2 pb-0">
                                 <h6 class="mb-0">
                                     {{ __('Status') }}:
@@ -540,7 +541,9 @@
 
                                 </form>
                             </div>
-                        </div>
+                            </div>
+                        @endif
+
                     </div>
                     <div class="col-md-5">
                         <div class="mt-2">

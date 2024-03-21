@@ -31,9 +31,13 @@ use App\Mail\PruebaCorreo;
 
 //send test mail simple text use smtp config
 // Route::get('/send-test-mail', function () {
-//     $correo = new PruebaCorreo();
-//     Mail::send($correo);
-//     return "Mail sent from the route using PruebaCorreo class.";
+//     try {
+//         $correo = new PruebaCorreo();
+//         Mail::send($correo);
+//         return "Correo enviado desde la ruta usando la clase PruebaCorreo.";
+//     } catch (\Exception $e) {
+//         return "Se produjo un error al enviar el correo: " . $e->getMessage();
+//     }
 // });
 
 
@@ -53,6 +57,9 @@ Route::get('getWhitelistData/{serviceCategoryId}', [SupplierController::class, '
 //quotation
 Route::get('quotations-onlineregister', [QuotationController::class, 'onlineregister'])->name('quotations.onlineregister');
 Route::post('quotationsonlinestore', [QuotationController::class, 'onlinestore'])->name('quotationsonlinestore');
+
+//verify email registration user
+Route::post('/verify-email-register', [UserController::class, 'verifyemailRegister'])->name('verifyemailregister');
 
 //upload
 Route::post('upload',[UploadController::class, 'store']);

@@ -65,7 +65,7 @@ class QuotationCreated extends Mailable{
         ])->render();
 
         // Llama a tu función sendMailApi para enviar el correo
-        sendMailApiLac($this->email, 'Quote ID #: '. $this->quotation->id .' - Your Request with Latin American Cargo - '. $this->quotation->mode_of_transport .' - ['. $origin_country_name .' - '. $destination_country_name .'].', $content, [config('services.copymail.mail_1')]);
+        sendMailApiLac($this->email, 'Quote ID #: '. $this->quotation->id .' - Your Request with Latin American Cargo - '. $this->quotation->mode_of_transport .' - ['. $origin_country_name .' - '. $destination_country_name .'].', $content, [], [config('services.copymail.mail_1'), config('services.copymail.mail_2')]);
     
         // Retorna la vista utilizando la variable $content
         return $this->html($content);

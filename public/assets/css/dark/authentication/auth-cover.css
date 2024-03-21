@@ -55,6 +55,9 @@ body.dark .auth-cover-bg-image {
 body.dark .auth-cover img {
   width: 165px;
 }
+body.dark .lg-htform {
+  width: 135px;
+}
 body.dark .auth-overlay {
   position: absolute;
   left: 0;

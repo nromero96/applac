@@ -6,6 +6,13 @@ document.addEventListener('DOMContentLoaded', function () {
     var stepperNextButtonDefault = stepperWizardDefault.querySelectorAll('.btn-nxt');
     var stepperPrevButtonDefault = stepperWizardDefault.querySelectorAll('.btn-prev');
 
+    const email = document.getElementById('email');
+    const confirm_email = document.getElementById('confirm_email');
+    const confirm_email_error = document.getElementById('confirm_email_error');
+    const create_account = document.getElementById('create_account');
+    const messageuserexist = document.getElementById('messageuserexist');
+    const submitBtn = document.getElementById('submitBtn');
+
     function validateStep(step) {
         //get selected radio name mode_of_transport
         const mode_of_transport = document.querySelector('input[name="mode_of_transport"]:checked').value;
@@ -131,8 +138,69 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     });
-    
-    
 
+    //mach email and confirm email
+    email.addEventListener('keyup', function () {
+        if (email.value !== confirm_email.value) {
+            confirm_email_error.textContent = 'Emails do not match.';
+            create_account.checked = false;
+            create_account.disabled = true;
+            messageuserexist.textContent = '';
+        } else {
+            confirm_email_error.textContent = '';
+            create_account.disabled = false; 
+        }
+    });
+
+    confirm_email.addEventListener('keyup', function () {
+        if (email.value !== confirm_email.value) {
+            confirm_email_error.textContent = 'Emails do not match.';
+            create_account.checked = false;
+            create_account.disabled = true;
+            messageuserexist.textContent = '';
+        } else {
+            confirm_email_error.textContent = '';
+            create_account.disabled = false;
+        }
+    });
+
+
+    //if checked create_account
+    create_account.addEventListener('change', function () {
+        if (create_account.checked) {
+            // Verificar si el correo electrónico existe en la base de datos y mostrar un mensaje de error a través de la URL /verify-email-register
+            fetch('/verify-email-register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify({
+                    email: email.value
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Verificar la respuesta del servidor
+                if (data.status === 'error') {
+                    // Si hay un error, mostrar el mensaje de error
+                    messageuserexist.textContent = data.message;
+                    messageuserexist.classList.add('text-danger');
+                } else {
+                    // Si no hay error, limpiar el mensaje de error
+                    messageuserexist.textContent = data.message;
+                    messageuserexist.classList.remove('text-danger');
+                    messageuserexist.classList.add('text-success');
+                }
+            })
+            .catch(error => {
+                // Capturar y manejar errores de red u otros errores
+                console.error('Error:', error);
+            });
+        } else {
+            messageuserexist.textContent = '';
+        }
+    });
+    
 
 });
