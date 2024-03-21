@@ -39,7 +39,7 @@
             <form method="POST" action="{{ route('login') }}">
                 @csrf
                 <div class="row">
-                    <div class="col-6 d-lg-flex d-none h-100 my-auto top-0 start-0 text-center justify-content-center flex-column">
+                    <div class="col-6 col-md-6 d-none d-sm-block h-100 my-auto top-0 start-0 text-center justify-content-center">
                         <div class="auth-cover-bg-image"></div>
                         <div class="auth-overlay" style="background-image: url({{asset('assets/img/bg-lg-1-min.jpg')}});background-size: cover;"></div>
                         <div class="auth-cover">
@@ -51,7 +51,7 @@
 
                     </div>
 
-                    <div class="col-md-6 col-12 d-flex flex-column align-self-center ms-lg-auto me-lg-0 mx-auto px-sm-5">
+                    <div class="col-12 col-md-6 align-self-center mx-auto px-sm-5">
                         <div class="card">
                             <div class="card-body">
                                 <div class="row">
