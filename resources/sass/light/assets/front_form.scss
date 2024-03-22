@@ -29,6 +29,17 @@ p{
   margin-bottom: -150px;
 }
 
+.infologedata{
+  border: 1px solid white;
+  padding: 1px 1px 1px 16px;
+  
+  img {
+    width: 35px;
+    margin-left: 5px;
+  }
+
+}
+
 .btn-lang{
 
   svg{
@@ -123,6 +134,7 @@ p{
 
 .tit-form-descrip{
   font-size: 18px;
+  color: #42403E;
 }
 
 .subtit-steep{

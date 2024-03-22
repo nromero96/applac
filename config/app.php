@@ -14,7 +14,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-    'version' => '1.0.2',
+    'version' => '1.0.3',
     /*
     |--------------------------------------------------------------------------
     | Application Environment

@@ -51,13 +51,21 @@
                         </svg>
                         <b>EN</b>
                     </button> --}}
-                    <a href="/login" class="btn btn-login rounded-pill bg-white py-2">
-                        <svg width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                            <path d="M12 3a4 4 0 1 0 0 8 4 4 0 1 0 0-8z"></path>
-                          </svg>
-                        <b>Log In</b>
+                    @auth
+                        <div class="rounded-pill text-white infologedata">
+                            {{ __('Hello') }}, <b>{{ Auth::user()->name }}</b>
+                            <a href="{{ route('quotations.index') }}"><img src="{{ asset('storage/uploads/profile_images').'/'. Auth::user()->photo}}" class="rounded-circle"></a>
+                        </div>
+                    @else
+                        <a href="{{ route('quotations.index') }}" class="btn btn-login rounded-pill bg-white py-2">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <path d="M12 3a4 4 0 1 0 0 8 4 4 0 1 0 0-8z"></path>
+                            </svg>
+                            <b>Log In</b>
                         </a>
+                    @endauth
+
                 </div>
             </div>
         </div>
@@ -134,6 +142,11 @@
                                 <div class="col-xl-12 col-md-12 col-sm-12 col-12 text-center pt-5">
                                     <h2 class="tit-form">{{ __('Get a Shipping Quote') }}</h2>
                                     <p class="tit-form-descrip">{{ __('Fill out the form below to get your international freight quote!') }}</p>
+                                    @auth
+                                        {{-- No show data --}}
+                                    @else
+                                        <p class="tit-form-descrip mt-3">{{ __('Already have an account?') }} <a href="{{ route('quotations.index') }}" class="text-primary">{{ __('Log In here') }}</a></p>
+                                    @endauth
                                 </div>
                             </div>
                         </div>
@@ -573,12 +586,12 @@
                                         <div class="row">
                                             <div class="col-md-6 mb-2">
                                                 <label for="name" class="form-label mb-0">{{ __('First Name') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="name" id="name" class="form-control">
+                                                <input type="text" name="name" id="name" class="form-control" @auth value="{{ Auth::user()->name }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="name_error"></div>
                                             </div>
                                             <div class="col-md-6 mb-2">
                                                 <label for="lastname" class="form-label mb-0">{{ __('Last Name') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="lastname" id="lastname" class="form-control">
+                                                <input type="text" name="lastname" id="lastname" class="form-control" @auth value="{{ Auth::user()->lastname }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="lastname_error"></div>
                                             </div>
                                         </div>
@@ -586,12 +599,12 @@
                                         <div class="row" id="info_company">
                                             <div class="col-md-6 mb-2">
                                                 <label for="company_name" class="form-label mb-0">{{ __('Company name') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="company_name" id="company_name" class="form-control">
+                                                <input type="text" name="company_name" id="company_name" class="form-control" @auth value="{{ Auth::user()->company_name }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="company_name_error"></div>
                                             </div>
                                             <div class="col-md-6 mb-2">
                                                 <label for="company_website" class="form-label mb-0">{{ __('Company website') }}</label>
-                                                <input type="text" name="company_website" id="company_website" class="form-control">
+                                                <input type="text" name="company_website" id="company_website" class="form-control" @auth value="{{ Auth::user()->company_website }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="company_website_error"></div>
                                             </div>
                                         </div>
@@ -599,12 +612,12 @@
                                         <div class="row">
                                             <div class="col-md-6 mb-2">
                                                 <label for="email" class="form-label mb-0">{{ __('Email address') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="email" id="email" class="form-control">
+                                                <input type="text" name="email" id="email" class="form-control" @auth value="{{ Auth::user()->email }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="email_error"></div>
                                             </div>
                                             <div class="col-md-6 mb-2">
                                                 <label for="confirm_email" class="form-label mb-0">{{ __('Confirm email address') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="confirm_email" id="confirm_email" class="form-control">
+                                                <input type="text" name="confirm_email" id="confirm_email" class="form-control" @auth value="{{ Auth::user()->email }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="confirm_email_error"></div>
                                             </div>
                                         </div>
@@ -612,14 +625,17 @@
                                         <div class="row">
                                             <div class="col-md-6 mb-2">
                                                 <label for="phone" class="form-label mb-0 d-block">{{ __('Phone') }} <span class="text-danger">*</span></label>
-                                                <input type="hidden" name="phone_code" id="phone_code" value="1">
-                                                <input type="tel" id="phone" name="phone" class="form-control">
+                                                <input type="hidden" name="phone_code" id="phone_code" @auth value="{{ Auth::user()->phone_code }}" readonly @else value="1" @endauth>
+                                                <input type="tel" id="phone" name="phone" class="form-control" placeholder="Phone number" @auth value="{{ Auth::user()->phone }}" readonly @endauth>
                                                 <!-- Agrega el contenedorphone para mostrar la bandera y el código -->
                                                 <div id="phone-container" class="mt-2"></div>
                                                 <div class="text-danger msg-info" id="phone_error"></div>
                                             </div>
                                             <div class="col-md-6 mb-2">
                                                 <label for="source" class="form-label mb-0">{{ __('How do you know about us?') }}</label>
+                                                @auth
+                                                    <input type="text" name="source" value="I am an existing customer" class="form-control" readonly>
+                                                @else
                                                 <select name="source" id="source" class="form-select">
                                                     <option value="">{{ __('Select...') }}</option>
                                                     <option value="I am an existing customer">{{ __('I am an existing customer') }}</option>
@@ -629,11 +645,12 @@
                                                     <option value="Referral">{{ __('Referral') }}</option>
                                                     <option value="Other">{{ __('Other') }}</option>
                                                 </select>
+                                                @endauth
                                                 <div class="text-danger msg-info" id="source_error"></div>
                                             </div>
                                         </div>
 
-                                        <div class="row">
+                                        <div class="row @auth d-none @endauth">
                                             <div class="col-md-12">
                                                 <div class="form-check form-check-primary form-check-inline mt-1">
                                                     <input type="hidden" name="create_account" value="no">
@@ -1061,6 +1078,10 @@
                                 '<div class="col-md-12 my-2 my-sm-0">' +
                                     '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="Cargo Description (Commodity)">' +
                                 '</div>' +
+                                '<div class="col-md-12">'+
+                                    checkboxHTML+
+                                    modalContentDangerous+
+                                '</div>'+
                             '</div>' +
                         '</div>' +
                         '<div class="col-md-4">' +
@@ -1086,10 +1107,6 @@
                                         '<option value="inch.">inch.</option>' +
                                     '</select>' +
                                 '</div>' +
-                                '<div class="col-md-12">'+
-                                    checkboxHTML+
-                                    modalContentDangerous+
-                                '</div>'+
                             '</div>' +
                         '</div>' +
                         '<div class="col-md-3">' +
@@ -1116,7 +1133,7 @@
                             '<h6 class="list-tit-item d-block d-sm-none mb-0">Total</h6>'+
                             '<span class="form-label text_item_typemea">...</span>' +
                             '<input type="text" name="item_total_volume_weight_cubic_meter[]" class="form-control px-2" readonly>' +
-                            '<div class="text-end mt-2">' +
+                            '<div class="text-end mt-2 mt-sm-4 pt-sm-3">' +
                                 '<a class="btn btn-light-info duplicate-item btn-icon me-1 mb-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Duplicate Item"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></a>'+
                                 '<a class="btn btn-light-danger delete-item btn-icon mb-0" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove Item"><svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg></a>'+
                             '</div>' +
