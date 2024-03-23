@@ -1,8 +1,42 @@
 document.addEventListener('DOMContentLoaded', function () {
+    
+    //modal confirm-percomp-modal auto open javascript puro
+    var confirm_percomp_modal = new bootstrap.Modal(document.getElementById('confirm-percomp-modal'));
+    confirm_percomp_modal.show();
+
+    var dv_options_best = document.getElementById('options_best');
+    var dv_options_best_personal = document.getElementById('options_best_personal');
+
+    //if click radio name options_best
+    var options_best = document.getElementsByName('options_best');
+
+    for (var i = 0; i < options_best.length; i++) {
+        options_best[i].addEventListener('change', function() {
+            if (this.value == 'personal') {
+                dv_options_best_personal.classList.remove('d-none');
+                dv_options_best.classList.add('d-none');
+            } else {
+                confirm_percomp_modal.hide();
+            }
+        });
+    }
+
+    var accept_terms_personal = document.getElementById('accept_terms_personal');
+    var confirm_terms_personal = document.getElementById('confirm_terms_personal');
+
+    accept_terms_personal.addEventListener('change', function() {
+        if (this.checked) {
+            confirm_terms_personal.removeAttribute('disabled');
+        } else {
+            confirm_terms_personal.setAttribute('disabled', 'disabled');
+        }
+    });
+    
     var stepperWizardDefault = document.querySelector('.stepper-form-one');
     var stepperDefault = new Stepper(stepperWizardDefault, {
         animation: true
     });
+
     var stepperNextButtonDefault = stepperWizardDefault.querySelectorAll('.btn-nxt');
     var stepperPrevButtonDefault = stepperWizardDefault.querySelectorAll('.btn-prev');
 
@@ -12,6 +46,25 @@ document.addEventListener('DOMContentLoaded', function () {
     const create_account = document.getElementById('create_account');
     const messageuserexist = document.getElementById('messageuserexist');
     const submitBtn = document.getElementById('submitBtn');
+
+    // Configuración del token CSRF para todas las solicitudes AJAX
+    function setCsrfToken(xhr) {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
+    }
+
+    // Inicializa FilePond en los campos de entrada de archivo correspondientes
+    const quotation_documents = document.querySelector('.quotation_documents');
+    FilePond.create(quotation_documents);
+    FilePond.setOptions({
+        server: {
+            url: baseurl + '/upload', // URL de carga
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        }
+    });
+
 
     function validateStep(step) {
         //get selected radio name mode_of_transport
@@ -29,6 +82,21 @@ document.addEventListener('DOMContentLoaded', function () {
         const destination_country_id = document.getElementById('destination_country_id');
         const destination_country_id_error = document.getElementById('destination_country_id_error');
     
+
+        //data contact
+        const contact_name = document.getElementById('name');
+        const contact_name_error = document.getElementById('name_error');
+
+        const contact_lastname = document.getElementById('lastname');
+        const contact_lastname_error = document.getElementById('lastname_error');
+
+        const contact_email = document.getElementById('email');
+        const contact_email_error = document.getElementById('email_error');
+
+        const contact_phone = document.getElementById('phone');
+        const contact_phone_error = document.getElementById('phone_error');
+
+
         // Lógica de validación para cada paso
         if (step === '#defaultStep-one') {
     
@@ -78,7 +146,32 @@ document.addEventListener('DOMContentLoaded', function () {
             stepperWizardDefault.querySelector('[data-target="#defaultStep-three"]').classList.add('st-complete');
 
         } else if (step === '#defaultStep-four') {
-            stepperWizardDefault.querySelector('[data-target="#defaultStep-four"]').classList.add('st-complete');
+
+            if(contact_name.value === ''){
+                contact_name.focus();
+                contact_name_error.textContent = 'Required name.';
+                return false;
+            }
+
+            if(contact_lastname.value === ''){
+                contact_lastname.focus();
+                contact_lastname_error.textContent = 'Required lastname.';
+                return false;
+            }
+
+            if(contact_email.value === ''){
+                contact_email.focus();
+                contact_email_error.textContent = 'Required email.';
+                return false;
+            }
+
+            if(contact_phone.value === ''){
+                contact_phone.focus();
+                contact_phone_error.textContent = 'Required phone.';
+                return false;
+            } else {
+                stepperWizardDefault.querySelector('[data-target="#defaultStep-four"]').classList.add('st-complete');
+            }
         }
         // Agrega más lógica de validación según sea necesario
     
@@ -146,9 +239,11 @@ document.addEventListener('DOMContentLoaded', function () {
             create_account.checked = false;
             create_account.disabled = true;
             messageuserexist.textContent = '';
+            submitBtn.disabled = true;
         } else {
             confirm_email_error.textContent = '';
-            create_account.disabled = false; 
+            create_account.disabled = false;
+            submitBtn.disabled = false;
         }
     });
 
@@ -158,9 +253,11 @@ document.addEventListener('DOMContentLoaded', function () {
             create_account.checked = false;
             create_account.disabled = true;
             messageuserexist.textContent = '';
+            submitBtn.disabled = true;
         } else {
             confirm_email_error.textContent = '';
             create_account.disabled = false;
+            submitBtn.disabled = false;
         }
     });
 
@@ -186,11 +283,13 @@ document.addEventListener('DOMContentLoaded', function () {
                     // Si hay un error, mostrar el mensaje de error
                     messageuserexist.textContent = data.message;
                     messageuserexist.classList.add('text-danger');
+                    submitBtn.disabled = true;
                 } else {
                     // Si no hay error, limpiar el mensaje de error
                     messageuserexist.textContent = data.message;
                     messageuserexist.classList.remove('text-danger');
                     messageuserexist.classList.add('text-success');
+                    submitBtn.disabled = false;
                 }
             })
             .catch(error => {
@@ -199,8 +298,68 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         } else {
             messageuserexist.textContent = '';
+            submitBtn.disabled = false;
         }
     });
+    
+
+    document.getElementById('form_quotations').addEventListener('submit', function(event) {
+        event.preventDefault();
+    
+        const submitBtn = document.getElementById('submitBtn');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        if (!validateStep('#defaultStep-four')) {
+            return;
+        }
+    
+        // Deshabilitar el botón y mostrar el mensaje de carga
+        submitBtn.disabled = true;
+        loadingSpinner.style.display = 'block';
+    
+        const formData = new FormData(document.getElementById('form_quotations'));
+        const xhr = new XMLHttpRequest();
+    
+        xhr.open('POST', '/quotationsonlinestore');
+        setCsrfToken(xhr);
+    
+        xhr.onload = function() {
+            // Restaurar el botón y ocultar el mensaje de carga
+            submitBtn.disabled = false;
+            loadingSpinner.style.display = 'none';
+    
+            if (xhr.status === 200) {
+                const data = JSON.parse(xhr.responseText);
+                if (data.success) {
+                    submitBtn.disabled = true;
+                    loadingSpinner.style.display = 'block';
+                    window.location.href = 'https://www.latinamericancargo.com/thank-you/?ref=lac-app-form';
+                } else {
+                    console.error('...Error inesperado en la respuesta:', xhr.responseText);
+                }
+            } else if (xhr.status === 422) {
+                const data = JSON.parse(xhr.responseText);
+                if (data.errors) {
+                    displayValidationErrors(data.errors);
+                } else {
+                    console.error('...Error de validación en la respuesta:', xhr.responseText);
+                }
+            } else {
+                console.error('...Error al enviar la solicitud:', xhr.statusText);
+            }
+    
+        };
+    
+        xhr.onerror = function() {
+            // Restaurar el botón y ocultar el mensaje de carga en caso de error
+            submitBtn.disabled = false;
+            loadingSpinner.style.display = 'none';
+            console.error('Error al enviar la solicitud:', xhr.statusText);
+        };
+    
+        xhr.send(formData);
+    });
+
     
 
 });

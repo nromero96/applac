@@ -8,11 +8,11 @@
 
     <p>Thank you for reaching out to us.</p>
     
-    <p>We've received your quote request and are currently reviewing it. Our team aims to provide a response within 24 hours.</p>
+    <p><b>We've received your quote request and are currently reviewing it.</b> Our team aims to provide a response within 24 hours.</p>
 
     <p>Please note that any communication from us will come exclusively from our authorized domains: <b>lacship.com</b> or <b>latinamericancargo.com</b>.</p>
     
-    <p>Please note: If you do not receive a response from us within this time frame, it is because we cannot offer the service you require. We appreciate your understanding.</p>
+    <p><b>Please note: If you do not receive a response from us within this time frame, it is because we cannot offer the service you require. We appreciate your understanding.</b></p>
 
     <p>To confirm if your request falls under our service scope, please review the following information: https://www.latinamericancargo.com/service-scope</p>
 
@@ -370,8 +370,6 @@
     </table>
 
     <p>For any additional questions or assistance, feel free to reach out to us at <b>sales@lacship.com</b>.</p>
-
-    <p><b>If you haven&#39;t heard back within 48 hours, it&#39;s because we won&#39;t be able to fulfill your request. We appreciate your understanding.</b></p>
 
     <p>Best regards,<br>
     Latin American Cargo</p>

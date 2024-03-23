@@ -1,8 +1,3 @@
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -298,7 +293,7 @@
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label mb-0">{{ __('Service Type') }}</label>
-                                                <select class="form-select" name="service_type" id="service_type" required>
+                                                <select class="form-select" name="service_type" id="service_type">
                                                     <option value="">{{ __('Select...') }}</option>
                                                     <option value="Door-to-Door">{{ __('Door-to-Door') }}</option>
                                                     <option value="Door-to-Airport">{{ __('Door-to-Airport') }}</option>
@@ -324,7 +319,7 @@
                                                 <h5 class="subtit-steep">{{ __('Origin Details') }}</h5>
                                                 <div class="mb-2">
                                                     <label class="form-label mb-0">{{ __('Origin Country') }}</label>
-                                                    <select class="form-select" name="origin_country_id" id="origin_country_id" required>
+                                                    <select class="form-select" name="origin_country_id" id="origin_country_id">
                                                         <option value="">{{ __('Select...') }}</option>
                                                     </select>
                                                     <div class="text-danger msg-info" id="origin_country_id_error"></div>
@@ -377,7 +372,7 @@
                                                 <h5 class="subtit-steep">{{ __('Destination Details') }}</h5>
                                                 <div class="mb-2">
                                                     <label class="form-label mb-0">{{ __('Destination Country') }}</label>
-                                                    <select class="form-select" name="destination_country_id" id="destination_country_id" required>
+                                                    <select class="form-select" name="destination_country_id" id="destination_country_id">
                                                         <option value="">{{ __('Select') }}</option>
                                                     </select>
                                                     <div class="text-danger msg-info" id="destination_country_id_error"></div>
@@ -516,7 +511,7 @@
                                                     </div>
                                                     <div class="col-md-6 mb-2">
                                                         <label class="form-label mb-0">{{ __('Shipping date (select range)') }}</label>
-                                                        <input type="date" name="shipping_date" id="shipping_date" class="form-control" placeholder="YYYY - MM - DD" required>
+                                                        <input type="date" name="shipping_date" id="shipping_date" class="form-control" placeholder="YYYY - MM - DD">
                                                         <div class="text-danger msg-info" id="shipping_date_error"></div>
                                                         <div class="form-check form-check-primary form-check-inline mt-1">
                                                             <input type="hidden" name="no_shipping_date" value="no">
@@ -529,7 +524,7 @@
                                                     </div>
                                                     <div class="col-md-4 mb-2">
                                                         <label class="form-label mb-0">{{ __('Declared value') }}</label>
-                                                        <input type="text" name="declared_value" id="declared_value" class="form-control" placeholder="" required>
+                                                        <input type="text" name="declared_value" id="declared_value" class="form-control" placeholder="">
                                                         <div class="text-danger msg-info" id="declared_value_error"></div>
                                                         
                                                         <div class="form-check form-check-primary form-check-inline mt-1">
@@ -681,10 +676,6 @@
                                             </div>
                                         </div>
 
-                                        <div class="mt-2 text-danger" id="error_inputs_form">
-
-                                        </div>
-
                                         <p class="text-small text-center mt-4">
                                             <span class="text d-inline-block w-75 txtinfoquote">
                                                 {{ __('By clicking complete my quote request you agree to let Latin American Cargo communicate with you by email for the purpose of providing freight rates offers and shipping related communication.') }}
@@ -738,39 +729,6 @@
 
     <script>
         $(document).ready(function() {
-
-            //modal confirm-percomp-modal auto open javascript puro
-            var confirm_percomp_modal = new bootstrap.Modal(document.getElementById('confirm-percomp-modal'));
-            confirm_percomp_modal.show();
-
-            var dv_options_best = document.getElementById('options_best');
-            var dv_options_best_personal = document.getElementById('options_best_personal');
-
-            //if click radio name options_best
-            var options_best = document.getElementsByName('options_best');
-
-            for (var i = 0; i < options_best.length; i++) {
-                options_best[i].addEventListener('change', function() {
-                    if (this.value == 'personal') {
-                        dv_options_best_personal.classList.remove('d-none');
-                        dv_options_best.classList.add('d-none');
-                    } else {
-                        confirm_percomp_modal.hide();
-                    }
-                });
-            }
-
-            var accept_terms_personal = document.getElementById('accept_terms_personal');
-            var confirm_terms_personal = document.getElementById('confirm_terms_personal');
-
-            accept_terms_personal.addEventListener('change', function() {
-                if (this.checked) {
-                    confirm_terms_personal.removeAttribute('disabled');
-                } else {
-                    confirm_terms_personal.setAttribute('disabled', 'disabled');
-                }
-            });
-
 
             list_countries('all', 'all');
             // Cambiar el botón de radio por el nombre "mode_of_transport"
@@ -1066,14 +1024,14 @@
                                 '<h6 class="list-tit-item d-block d-sm-none mb-0">Package</h6>'+
                                 '<div class="col-md-9 mb-2">' +
                                     '<label class="form-label mb-0">'+titlelistpackage+'</label>' +
-                                    '<select class="form-select" name="package_type[]" required>' +
+                                    '<select class="form-select" name="package_type[]">' +
                                         listpackage +
                                     '</select>' +
                                     '<small class="text-danger msg_pcktype"></small>'+
                                 '</div>' +
                                 '<div class="col-md-3 ps-sm-1 mb-2">' +
                                     '<label class="form-label mb-0">Qty</label>' +
-                                    '<input type="text" name="qty[]" class="form-control px-2" required>' +
+                                    '<input type="text" name="qty[]" class="form-control px-2">' +
                                 '</div>' +
                                 '<div class="col-md-12 my-2 my-sm-0">' +
                                     '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="Cargo Description (Commodity)">' +
@@ -1310,14 +1268,14 @@
                                 '<h6 class="list-tit-item d-block d-sm-none mb-0">Package</h6>'+
                                 '<div class="col-md-4 mb-2">' +
                                     '<label class="form-label mb-0">'+title_typelist+'</label>' +
-                                    '<select class="form-select" name="package_type[]" required>' +
+                                    '<select class="form-select" name="package_type[]">' +
                                         '<option value="">Select...</option>' +
                                         $typelist +
                                     '</select>' +
                                 '</div>' +
                                 '<div class="col-md-2 ps-sm-0 pe-sm-0 mb-2">' +
                                     '<label class="form-label txtnumcarspac mb-0">'+$qtylabel+'</label>' +
-                                    '<input type="text" name="qty[]" class="form-control px-2" required>' +
+                                    '<input type="text" name="qty[]" class="form-control px-2">' +
                                 '</div>' +
                                 '<div class="col-md-6 mt-0 mt-sm-0">' +
                                     '<label class="form-label mb-0">Cargo Description (Commodity)</label>' +
@@ -1773,92 +1731,6 @@
     </script>
 
     <script>
-        // Configuración del token CSRF para todas las solicitudes AJAX
-function setCsrfToken(xhr) {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    xhr.setRequestHeader('X-CSRF-TOKEN', csrfToken);
-}
-
-function displayValidationErrors(errors) {
-    const fieldNames = ['mode_of_transport', 'cargo_type', 'service_type','origin_country_id', 'origin_airportorport','origin_address','origin_city','origin_state_id','origin_zip_code','destination_country_id','destination_airportorport','destination_address','destination_city','destination_state_id','destination_zip_code','total_volum_weight','shipping_date','no_shipping_date','declared_value','insurance_required','currency','name','confirm_email','lastname','company_name','company_website','email','phone','source'];
-    const errorDiv = document.getElementById('error_inputs_form');
-    let errorHtml = '';
-
-    fieldNames.forEach(fieldName => {
-        const fieldErrors = errors[fieldName];
-        if (fieldErrors) {
-            errorHtml += `<span>● ${fieldErrors[0]}</span><br>`;
-        }
-    });
-
-    fieldNames.forEach(fieldName => {
-        const errorDiv = document.getElementById(`${fieldName}_error`);
-        if (errors[fieldName]) {
-            errorDiv.textContent = errors[fieldName][0]; // Mostrar el primer mensaje de error
-        } else {
-            errorDiv.textContent = ''; // Limpiar el mensaje de error
-        }
-    });
-
-    errorDiv.innerHTML = errorHtml;
-}
-
-document.getElementById('form_quotations').addEventListener('submit', function(event) {
-    event.preventDefault();
-
-    const submitBtn = document.getElementById('submitBtn');
-    const loadingSpinner = document.getElementById('loadingSpinner');
-
-    // Deshabilitar el botón y mostrar el mensaje de carga
-    submitBtn.disabled = true;
-    loadingSpinner.style.display = 'block';
-
-    const formData = new FormData(document.getElementById('form_quotations'));
-    const xhr = new XMLHttpRequest();
-
-    xhr.open('POST', '{!! route('quotationsonlinestore') !!}');
-    setCsrfToken(xhr);
-
-    xhr.onload = function() {
-        // Restaurar el botón y ocultar el mensaje de carga
-        submitBtn.disabled = false;
-        loadingSpinner.style.display = 'none';
-
-        if (xhr.status === 200) {
-    const data = JSON.parse(xhr.responseText);
-    if (data.success) {
-        submitBtn.disabled = true;
-        loadingSpinner.style.display = 'block';
-        window.location.href = 'https://www.latinamericancargo.com/thank-you/?ref=lac-app-form';
-    } else {
-        console.error('...Error inesperado en la respuesta:', xhr.responseText);
-    }
-} else if (xhr.status === 422) {
-    const data = JSON.parse(xhr.responseText);
-    if (data.errors) {
-        displayValidationErrors(data.errors);
-    } else {
-        console.error('...Error de validación en la respuesta:', xhr.responseText);
-    }
-} else {
-    console.error('...Error al enviar la solicitud:', xhr.statusText);
-}
-
-    };
-
-    xhr.onerror = function() {
-        // Restaurar el botón y ocultar el mensaje de carga en caso de error
-        submitBtn.disabled = false;
-        loadingSpinner.style.display = 'none';
-        console.error('Error al enviar la solicitud:', xhr.statusText);
-    };
-
-    xhr.send(formData);
-});
-
-</script>
-
-    <script>
         //click in origin_country_id select add state select by ajax
         $(document).on('change', 'select[name="origin_country_id"]', function(){
             var country_id = $(this).val();
@@ -1909,13 +1781,9 @@ document.getElementById('form_quotations').addEventListener('submit', function(e
                 //f3.destroy();
                 $shippingDateInput.val('');
                 $shippingDateInput.prop('readonly', true);
-                $shippingDateInput.attr('required', false);
             } else {
                 $shippingDateInput.prop('readonly', false)
                                 .val('');
-                
-                $shippingDateInput.attr('required', true);
-
                 f3 = flatpickr($shippingDateInput[0], {
                     mode: "range",
                     minDate: "today",
@@ -2063,25 +1931,6 @@ document.getElementById('form_quotations').addEventListener('submit', function(e
         updateOriginPortField();
         updateDestinationPortField();
     </script>
-
-<script>
-    // Inicializa FilePond en los campos de entrada de archivo correspondientes
-    const quotation_documents = document.querySelector('.quotation_documents');
-
-    FilePond.create(quotation_documents);
-
-    FilePond.setOptions({
-        server: {
-            url: baseurl + '/upload', // URL de carga
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            }
-        }
-    });
-
-</script>
-
-
 
 
 </body>
