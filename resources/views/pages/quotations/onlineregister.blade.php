@@ -105,7 +105,7 @@
                                         {{ __('Please note') }}
                                     </h2>
                                     <p class="text-center">
-                                        {{ __('We specialize in providing commercial cargo logistics solutions for companies. Our current service offering for individuals is limited to personal vehicle shipping through RORO port-to-port service.') }}
+                                        {{ __('While our main focus is on commercial cargo logistics for businesses, we do offer RORO Services for shipping personal vehicles from the USA to certain Latin American countries') }}
                                     </p>
                                     <p class="text-center">
                                         {{ __('If you want to ship personal effects or household goods, please don’t proceed with this form as we won’t be be able to fulfil your request.') }}
@@ -606,12 +606,12 @@
 
                                         <div class="row">
                                             <div class="col-md-6 mb-2">
-                                                <label for="email" class="form-label mb-0">{{ __('Email address') }} <span class="text-danger">*</span></label>
+                                                <label for="email" class="form-label mb-0">{{ __('Company email') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="email" id="email" class="form-control" @auth value="{{ Auth::user()->email }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="email_error"></div>
                                             </div>
                                             <div class="col-md-6 mb-2">
-                                                <label for="confirm_email" class="form-label mb-0">{{ __('Confirm email address') }} <span class="text-danger">*</span></label>
+                                                <label for="confirm_email" class="form-label mb-0">{{ __('Confirm company email') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="confirm_email" id="confirm_email" class="form-control" @auth value="{{ Auth::user()->email }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="confirm_email_error"></div>
                                             </div>

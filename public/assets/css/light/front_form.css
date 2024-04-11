@@ -57,6 +57,10 @@ p {
   margin-bottom: 0px;
 }
 
+.modal-lg, .modal-xl {
+  --bs-modal-width: 680px;
+}
+
 .confirm-percomp-modal .modal-body {
   padding-top: 2.6rem;
   padding-bottom: 3rem;
@@ -64,6 +68,12 @@ p {
 .confirm-percomp-modal .modal-body h2 {
   width: 60%;
   margin: 0 auto;
+}
+.confirm-percomp-modal .modal-body p {
+  color: #42403E;
+  font-size: 15px;
+  line-height: 25px;
+  letter-spacing: 0;
 }
 
 .txtnumcarspac {

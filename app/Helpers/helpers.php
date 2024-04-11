@@ -1,7 +1,7 @@
 <?php
 use GuzzleHttp\Client;
 
-function sendMailApiLac($toEmail, $subject, $content, $ccEmails = [], $bccEmails = [])
+function sendMailApiLac($toEmail, $subject, $content, $attachments, $ccEmails = [], $bccEmails = [])
 {
     $client = new Client();
 
@@ -25,25 +25,39 @@ function sendMailApiLac($toEmail, $subject, $content, $ccEmails = [], $bccEmails
         ];
     }
 
+    $data = [
+        'personalizations' => $personalizations,
+        'from' => [
+            'email' => config('services.sendgrid.sender_email'),
+            'name' => config('services.sendgrid.sender_name')
+        ],
+        'subject' => $subject,
+        'content' => [
+            [
+                'type' => 'text/html',
+                'value' => $content,
+            ],
+        ],
+    ];
+
+    // Adjuntar archivos
+    if (!empty($attachments)) {
+        foreach ($attachments as $attachment) {
+            $data['attachments'][] = [
+                'content' => base64_encode(file_get_contents($attachment['url'])),
+                'filename' => basename($attachment['url']),
+                'type' => $attachment['mime_type'],
+                'disposition' => 'attachment',
+            ];
+        }
+    }
+
     $response = $client->post('https://api.sendgrid.com/v3/mail/send', [
         'headers' => [
             'Authorization' => 'Bearer ' . config('services.sendgrid.api_key'),
             'Content-Type' => 'application/json',
         ],
-        'json' => [
-            'personalizations' => $personalizations,
-            'from' => [
-                'email' => config('services.sendgrid.sender_email'),
-                'name' => config('services.sendgrid.sender_name')
-            ],
-            'subject' => $subject,
-            'content' => [
-                [
-                    'type' => 'text/html',
-                    'value' => $content,
-                ],
-            ],
-        ],
+        'json' => $data,
     ]);
 
     if ($response->getStatusCode() == 202) {

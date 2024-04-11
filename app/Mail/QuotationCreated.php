@@ -64,9 +64,62 @@ class QuotationCreated extends Mailable{
             'cargoDetails' => $this->cargoDetails,
         ])->render();
 
+        // Adjuntar el PDF
+        if($this->quotation->mode_of_transport == 'RoRo'){
+            if($this->quotation->cargo_type == 'Personal Vehicle'){
+                $originportlist_lane1 = ['Newark, NJ', 'Baltimore, MD', 'Jacksonville, FL'];
+                $destinationportlist_lane1 = ['Santo Domingo', 'Manzanillo', 'Cartagena'];
+
+                $originportlist_lane2 = ['Freeport, TX'];
+                $destinationportlist_lane2 = ['Manzanillo'];
+
+                $originportlist_lane3 = ['Newark, NJ', 'Baltimore, MD', 'Jacksonville, FL'];
+                $destinationportlist_lane3 = ['Puerto Cortes', 'Puerto Limon', 'Santo Tomas de Castilla'];
+
+                $originportlist_lane4 = ['Freeport, TX'];
+                $destinationportlist_lane4 = ['Puerto Cortes', 'Puerto Limon', 'Santo Tomas de Castilla'];
+
+                if(in_array($this->quotation->origin_airportorport, $originportlist_lane1) && in_array($this->quotation->destination_airportorport, $destinationportlist_lane1)){
+                    $pdf = [
+                        'url' => 'https://app.latinamericancargo.com/storage/uploads/LAC_Lane_1_Quote.pdf',
+                        'mime_type' => 'application/pdf',
+                    ];
+                } elseif(in_array($this->quotation->origin_airportorport, $originportlist_lane2) && in_array($this->quotation->destination_airportorport, $destinationportlist_lane2)){
+                    $pdf = [
+                        'url' => 'https://app.latinamericancargo.com/storage/uploads/LAC_Lane_2_Quote.pdf',
+                        'mime_type' => 'application/pdf',
+                    ];
+                } elseif(in_array($this->quotation->origin_airportorport, $originportlist_lane3) && in_array($this->quotation->destination_airportorport, $destinationportlist_lane3)){
+                    $pdf = [
+                        'url' => 'https://app.latinamericancargo.com/storage/uploads/LAC_Lane_3_Quote.pdf',
+                        'mime_type' => 'application/pdf',
+                    ];
+                } elseif(in_array($this->quotation->origin_airportorport, $originportlist_lane4) && in_array($this->quotation->destination_airportorport, $destinationportlist_lane4)){
+                    $pdf = [
+                        'url' => 'https://app.latinamericancargo.com/storage/uploads/LAC_Lane_4_Quote.pdf',
+                        'mime_type' => 'application/pdf',
+                    ];
+                }else{
+                    $pdf = null;
+                }
+
+            }else{
+                $pdf = null;
+            }
+        }else{
+            //no enviamos pdf
+            $pdf = null;
+        }
+
         // Llama a tu función sendMailApi para enviar el correo
-        sendMailApiLac($this->email, 'Quote ID #: '. $this->quotation->id .' - Your Request with Latin American Cargo - '. $this->quotation->mode_of_transport .' - ['. $origin_country_name .' - '. $destination_country_name .'].', $content, [], [config('services.copymail.mail_1'), config('services.copymail.mail_2')]);
-    
+        sendMailApiLac(
+            $this->email, 
+            'Quote ID #: '. $this->quotation->id .' - Your Request with Latin American Cargo - '. $this->quotation->mode_of_transport .' - ['. $origin_country_name .' - '. $destination_country_name .'].', 
+            $content,
+            ($pdf !== null) ? [$pdf] : [],
+            [], 
+            [config('services.copymail.mail_1'), config('services.copymail.mail_2')]);
+
         // Retorna la vista utilizando la variable $content
         return $this->html($content);
 

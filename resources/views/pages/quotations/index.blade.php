@@ -25,14 +25,19 @@
                     <table id="invoice-list" class="table dt-table-hover" style="width:100%">
                         <thead>
                             <tr>
-                                <th>{{ __('Quote Id') }}</th>
+                                <th>{{ __('Quote ID') }}</th>
                                 <th>{{ __('Name') }}</th>
                                 <th>{{ __('Email') }}</th>
                                 <th>{{ __('Status') }}</th>
-                                <th>{{ __('Country') }}</th>
+                                <th>{{ __('Service Type') }}</th>
+                                <th>{{ __('Route') }}</th>
+
+                                @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
                                 <th>{{ __('Assigned') }}</th>
                                 <th>{{ __('Rating') }}</th>
-                                <th>{{ __('Created') }}</th>
+                                @endif
+                        
+                                <th>{{ __('Requested') }}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -68,30 +73,46 @@
                                         </span>
 
                                         @php
-                                                        $date1 = new DateTime($quotation->quotation_created_at);
+                                            $date1 = new DateTime($quotation->quotation_created_at);
 
-                                                        if ($quotation->quotation_note_created_at) {
-                                                            $date2 = new DateTime($quotation->quotation_note_created_at);
-                                                            $diff = $date1->diff($date2);
-                                                        } else {
-                                                            $diff = null; // Otra opción podría ser establecer $diff como un valor predeterminado o personalizado
-                                                        }
-                                                    @endphp
+                                            if ($quotation->quotation_note_created_at) {
+                                                $date2 = new DateTime($quotation->quotation_note_created_at);
+                                                $diff = $date1->diff($date2);
+                                            } else {
+                                                $diff = null; // Otra opción podría ser establecer $diff como un valor predeterminado o personalizado
+                                            }
+                                        @endphp
 
-                                                    @if ($diff && $diff->h > 0)
-                                                        <span class="badge badge-light-info">{{ __('Attended in') }} {{ $diff->h }} {{ __('hs') }}</span>
-                                                    @elseif ($diff)
-                                                        <span class="badge badge-light-info">{{ __('Attended in') }} {{ $diff->i }} {{ __('mts') }}</span>
-                                                    @else
-                                                        <span class="badge badge-light-danger">{{ __('New') }}</span>
-                                                    @endif
+                                        @if($diff)
+                                            <span class="badge badge-light-info">
+                                                {{ __('Attended in') }} 
+                                                @if($diff->d > 0)
+                                                    {{ $diff->d }} {{ __('days') }}
+                                                @elseif($diff->h > 0)
+                                                    {{ $diff->h }} {{ __('hours') }}
+                                                @elseif($diff->i > 0 && $diff->i < 60)
+                                                    {{ $diff->i }} {{ __('minutes') }}
+                                                @else
+                                                    {{ __('Less than 1 minute') }}
+                                                @endif
+                                            </span>
+                                        @else
+                                            <span class="badge badge-light-danger">{{ __('New') }}</span>
+                                        @endif
 
+                                    </td>
+                                    <td>
+                                        {{ $quotation->quotation_service_type }}
                                     </td>
                                     <td>
                                         <span class="inv-country">
                                             {{ $quotation->origin_country }} - {{ $quotation->destination_country }}
                                         </span>
                                     </td>
+
+
+                                    @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
+
                                     <td>
 
                                         {{-- Select if user logged is admin spatie --}}
@@ -109,13 +130,9 @@
 
                                             @if($quotation->quotation_assigned_user_id == null)
 
-                                                @if (Auth::user()->hasRole('Customer'))
-                                                    <span class="badge badge-light-danger">{{ __('No asigned') }}</span>
-                                                @else
-                                                    <a class="badge badge-primary text-start me-2 action-edit" href="{{ route('assignQuoteForMe', $quotation->quotation_id) }}">
-                                                        {{ __('Make') }}
-                                                    </a>
-                                                @endif
+                                                <a class="badge badge-primary text-start me-2 action-edit" href="{{ route('assignQuoteForMe', $quotation->quotation_id) }}">
+                                                    {{ __('Make') }}
+                                                </a>
                                                 
                                             @else
                                                 @if ($quotation->quotation_assigned_user_id == Auth::user()->id)
@@ -129,20 +146,16 @@
 
                                     </td>
                                     <td>
-
-                                        @if (Auth::user()->hasRole('Customer'))
-                                            N/A
-                                        @else
-                                            {{-- Rating aleatorio --}}
-                                            @php
-                                                $rating = rand(1, 5);
-                                            @endphp
-                                            @for ($i = 0; $i < $rating; $i++)
+                                        {{-- Rating aleatorio --}}
+                                        @php
+                                            $rating = rand(1, 5);
+                                        @endphp
+                                        @for ($i = 0; $i < $rating; $i++)
                                                 <span class="star">*</span>
-                                            @endfor
-                                        @endif
-
+                                        @endfor
                                     </td>
+                                    @endif
+
                                     <td>
                                         <span class="inv-date" data-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{{ $quotation->quotation_created_at }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> 

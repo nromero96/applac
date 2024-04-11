@@ -40,7 +40,26 @@
                                 <h4 class="d-flex justify-content-between pb-2">
                                     <span>{{__("Quotation")}}: <span class="text-primary">#{{ $quotation->id }}</span></span>
                                     <div>
-                                        Rating: <b>4.5</b>
+                                        @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
+                                            
+                                            @php
+                                                $rating = 0;
+
+                                                if($quotation->mode_of_transport != null){
+                                                    $rating += 0.1;
+                                                }
+
+                                                if($quotation->cargo_type != null){
+                                                    $rating += 0.1;
+                                                }
+
+                                            @endphp
+
+                                            {{ __('Rating') }}: <b>{{ $rating }}</b>
+                                        @endif
+
+                                         <small class="fw-light">({{ __('Requested') }}: {{ $quotation->created_at }})</small>
+
                                     </div>
                                     <div class="dropdown-list dropdown text-end" role="group">
                                         <a href="javascript:void(0);" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -415,7 +434,7 @@
                                 <label class="fw-bold mb-0">{{__("Company website")}}:</label> {{ $quotation->customer_company_website }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
-                                <label class="fw-bold mb-0">{{__("Email address")}}:</label> {{ $quotation->customer_email }}<br>
+                                <label class="fw-bold mb-0">{{__("Company email")}}:</label> {{ $quotation->customer_email }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
                                 <label class="fw-bold mb-0">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}<br>

@@ -69,6 +69,10 @@ p{
   }
 }
 
+.modal-lg, .modal-xl {
+  --bs-modal-width: 680px;
+}
+
 .confirm-percomp-modal{
 
   .modal-body{
@@ -79,6 +83,14 @@ p{
       width: 60%;
       margin: 0 auto;
     }
+
+    p{
+      color: #42403E;
+      font-size: 15px;
+      line-height: 25px;
+      letter-spacing: 0;
+    }
+
   }
 }
 
