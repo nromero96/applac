@@ -527,7 +527,7 @@
                                 <h6 class="mb-0">
                                     {{ __('Status') }}:
                                     <span class="badge 
-                                                    @if ($quotation->status == 'Pending')
+                                                    @if ($quotation->status == 'Processing')
                                                         badge-light-warning
                                                     @elseif ($quotation->status == 'Attended')
                                                         badge-light-info
@@ -546,7 +546,7 @@
                                     <div class="col-md-4">
                                         <input type="hidden" name="type" value="Internal">
                                         <select name="action" id="action" class="form-select">
-                                            <option value="Pending" @if($quotation->status == 'Pending') selected @endif>Pending</option>
+                                            <option value="Processing" @if($quotation->status == 'Processing') selected @endif>Processing</option>
                                             <option value="Attended" @if($quotation->status == 'Attended') selected @endif>Attended</option>
                                             <option value="Quote Sent" @if($quotation->status == 'Quote Sent') selected @endif>Quote Sent</option>
                                         </select>

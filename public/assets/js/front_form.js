@@ -360,6 +360,19 @@ document.addEventListener('DOMContentLoaded', function () {
         xhr.send(formData);
     });
 
+    var listcargodetails_electrvehi = document.getElementById('listcargodetails');
+
+    listcargodetails_electrvehi.addEventListener('change', function(event) {
+        if (event.target.classList.contains('electric-vehicle-checkbox')) {
+            var confirm_electricvehicle_modal = new bootstrap.Modal(document.getElementById('confirm-electricvehicle-modal'));
     
+            // Muestra u oculta el modal según si el checkbox está marcado o no
+            if (event.target.checked) {
+                confirm_electricvehicle_modal.show();
+            } else {
+                confirm_electricvehicle_modal.hide();
+            }
+        }
+    });
 
 });

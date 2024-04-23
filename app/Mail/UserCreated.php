@@ -42,7 +42,13 @@ class UserCreated extends Mailable
             'password' => $this->password,
         ])->render();
 
-        sendMailApiLac($this->email, 'Welcome to Latin American Cargo – Your New Account', $content);
+        sendMailApiLac(
+            $this->email, 
+            'Welcome to Latin American Cargo – Your New Account', 
+            $content,
+            [],
+            []
+        );
 
         return $this->html($content);
     }

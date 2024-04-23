@@ -103,12 +103,15 @@
                                     <img style="width: 60px;" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDYiIGhlaWdodD0iNDYiIGZpbGw9IiNiODAwMDAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cGF0aCBkPSJNMTIgMTAuNzVhLjc1Ljc1IDAgMCAxIC43NS43NXY1YS43NS43NSAwIDAgMS0xLjUgMHYtNWEuNzUuNzUgMCAwIDEgLjc1LS43NVoiPjwvcGF0aD4KICA8cGF0aCBkPSJNMTIgOWExIDEgMCAxIDAgMC0yIDEgMSAwIDAgMCAwIDJaIj48L3BhdGg+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMy4yNSAxMmE4Ljc1IDguNzUgMCAxIDEgMTcuNSAwIDguNzUgOC43NSAwIDAgMS0xNy41IDBaTTEyIDQuNzVhNy4yNSA3LjI1IDAgMSAwIDAgMTQuNSA3LjI1IDcuMjUgMCAwIDAgMC0xNC41WiIgY2xpcC1ydWxlPSJldmVub2RkIj48L3BhdGg+Cjwvc3ZnPg==" alt="Personal" class="img-fluid d-block mx-auto mb-0">
                                     <h4 class="text-center mb-2">
                                         {{ __('Please note') }}
-                                    </h2>
+                                    </h4>
                                     <p class="text-center">
-                                        {{ __('While our main focus is on commercial cargo logistics for businesses, we do offer RORO Services for shipping personal vehicles from the USA to certain Latin American countries') }}
+                                        {{ __('While our main focus is on commercial cargo logistics for businesses (B2B), we do offer RORO shipping services for personal vehicles from the USA to select countries in Latin America.') }}
                                     </p>
                                     <p class="text-center">
-                                        {{ __('If you want to ship personal effects or household goods, please don’t proceed with this form as we won’t be be able to fulfil your request.') }}
+                                        {{ __('For questions, please refer to our') }} <a href="https://www.latinamericancargo.com/faq-personal-vehicle-shipping/" target="_blank" class="text-primary">{{ __('Personal Vehicle Shipping FAQ') }}</a>, {{ __('which provides more detailed information regarding our personal vehicles shipping services.') }}
+                                    </p>
+                                    <p class="text-center">
+                                        <b>{{ __("Please note that we do not handle personal effects or household goods.If you're seeking to ship personal items, kindly refrain from completing this form as we are unable to accommodate such requests.") }}</b>
                                     </p>
 
                                     <div class="text-center">
@@ -129,6 +132,33 @@
                     </div>
                 </div>
 
+                {{-- Modal Electric Vehicle --}}
+                <div class="modal fade confirm-electricvehicle-modal" id="confirm-electricvehicle-modal" data-bs-backdrop="static" tabindex="-1" aria-hidden="true">
+                    <!-- Contenido del modal aquí -->
+                    <div class="modal-dialog modal-lg modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <img style="width: 60px;" src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDYiIGhlaWdodD0iNDYiIGZpbGw9IiNiODAwMDAiIHZpZXdCb3g9IjAgMCAyNCAyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICA8cGF0aCBkPSJNMTIgMTAuNzVhLjc1Ljc1IDAgMCAxIC43NS43NXY1YS43NS43NSAwIDAgMS0xLjUgMHYtNWEuNzUuNzUgMCAwIDEgLjc1LS43NVoiPjwvcGF0aD4KICA8cGF0aCBkPSJNMTIgOWExIDEgMCAxIDAgMC0yIDEgMSAwIDAgMCAwIDJaIj48L3BhdGg+CiAgPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMy4yNSAxMmE4Ljc1IDguNzUgMCAxIDEgMTcuNSAwIDguNzUgOC43NSAwIDAgMS0xNy41IDBaTTEyIDQuNzVhNy4yNSA3LjI1IDAgMSAwIDAgMTQuNSA3LjI1IDcuMjUgMCAwIDAgMC0xNC41WiIgY2xpcC1ydWxlPSJldmVub2RkIj48L3BhdGg+Cjwvc3ZnPg==" alt="Personal" class="img-fluid d-block mx-auto mb-0">
+                                <h4 class="text-center mb-2">
+                                    {{ __('Please note') }}
+                                </h4>
+                                <p class="text-center">
+                                    <b>{{ __('Unfortunately, we are unable to accept electric vehicles for personal vehicle shipping due to various restrictions and service availability issues with our carriers.') }}</b>
+                                </p>
+                                <p class="text-center">
+                                        {{ __('Should you have any queries or require additional details about our services, we recommend referring to our') }} <a href="https://www.latinamericancargo.com/faq-personal-vehicle-shipping/" target="_blank" class="text-primary">{{ __('FAQ for Personal Vehicle Shipping') }}</a>, {{ __("where you'll find comprehensive information on our service offerings.") }}
+                                </p>
+                                <p class="text-center">
+                                    {{ __("We appreciate your understanding and remain available to assist you with any other freight forwarding needs.") }}
+                                </p>
+
+                                <div class="text-center">
+                                    <button type="button" class="btn btn-primary" id="confirm_electricvehicle" data-bs-dismiss="modal">{{ __('I understand') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div id="wizard_Default" class="col-lg-12 layout-spacing mt-3">
                     <div class="statbox widget box box-shadow">
@@ -1001,8 +1031,8 @@
                 var checkboxHTML = `
                     <div class="form-check my-2 ${display_ev}">
                         <input type="hidden" name="electric_vehicle[${itemIndex}]" value="">
-                        <input class="form-check-input" type="checkbox" name="electric_vehicle[${itemIndex}]" value="yes">
-                        <label class="form-check-label mb-0"> Electric Vehicle. <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="An electric vehicle is powered by electric motors using stored electricity." ></span></label>
+                        <input class="form-check-input electric-vehicle-checkbox" type="checkbox" name="electric_vehicle[${itemIndex}]" value="yes">
+                        <label class="form-check-label mb-0"> Electric Vehicle.</label>
                     </div>
                     <div class="form-check my-2 ${display_cd}">
                         <input type="hidden" name="dangerous_cargo[${itemIndex}]" value="">
@@ -1209,7 +1239,7 @@
                     list_countries('all', 'all');
                 } else if (cargoType === 'Personal Vehicle'){
                     $service_type.html('<option value="">Select...</option><option value="Port-to-Port">Port-to-Port</option>');
-                    list_countries('231', '10,30,43,47,52,61,63,90,97,169,172');
+                    list_countries('231', '47,52,61,97,169');
                 }
             }
 
@@ -1851,7 +1881,7 @@
         const destinationPortDiv = document.getElementById('destination_div_airportorport');
 
         const puertosPorPais = {
-            "231": ["Newark, NJ", "Baltimore, MD", "Jacksonville, FL", "Freeport, TX", "Davisville, RI"], // Estados Unidos
+            "231": ["Newark, NJ", "Baltimore, MD", "Jacksonville, FL", "Freeport, TX"], // Estados Unidos
             "10": ["Zarate"], // Argentina
             "30": ["Suape", "Santos"], // Brazil
             "43": ["Iquique", "San Antonio"], // Chile
@@ -1875,7 +1905,7 @@
                 // Si se selecciona "Personal Vehicle," mostrar el campo select en origen
                 const selectedOriginCountry = originCountrySelect.value;
                 originPortDiv.innerHTML = `
-                    <select class="form-control" name="origin_airportorport" id="origin_airportorport">
+                    <select class="form-select" name="origin_airportorport" id="origin_airportorport">
                         <option value="">Select...</option>
                         ${selectedOriginCountry in puertosPorPais ? puertosPorPais[selectedOriginCountry].map(puerto => `<option value="${puerto}">${puerto}</option>`).join('') : ''}
                     </select>
@@ -1901,7 +1931,7 @@
             if (selectedCargoType === "Personal Vehicle") {
                 // Si se selecciona "Personal Vehicle," mostrar el campo de entrada en destino
                 destinationPortDiv.innerHTML = `
-                    <select class="form-control" name="destination_airportorport" id="destination_airportorport">
+                    <select class="form-select" name="destination_airportorport" id="destination_airportorport">
                         <option value="">Select...</option>
                         ${selectedDestinationCountry in puertosPorPais ? puertosPorPais[selectedDestinationCountry].map(puerto => `<option value="${puerto}">${puerto}</option>`).join('') : ''}
                     </select>

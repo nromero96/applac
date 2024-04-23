@@ -52,8 +52,14 @@ class QuotationCreated extends Mailable{
             $destination_state_name = $destination_state ? $destination_state->name : 'Unknown State';
         }
 
-        // Renderiza la vista 'emails.quotation_created' y obtén el contenido
-        $content = view('emails.quotation_created', [
+        if($this->quotation->mode_of_transport == 'RoRo' && $this->quotation->cargo_type == 'Personal Vehicle'){
+            $contviewblade = 'emails.quotation_created_personal_vehicle_shipping';
+        }else{
+            $contviewblade = 'emails.quotation_created';
+        }
+
+        
+        $content = view($contviewblade, [
             'origin_country_name' => $origin_country_name,
             'destination_country_name' => $destination_country_name,
             'origin_state_name' => $origin_state_name,
@@ -64,48 +70,49 @@ class QuotationCreated extends Mailable{
             'cargoDetails' => $this->cargoDetails,
         ])->render();
 
+
         // Adjuntar el PDF
-        if($this->quotation->mode_of_transport == 'RoRo'){
-            if($this->quotation->cargo_type == 'Personal Vehicle'){
-                $originportlist_lane1 = ['Newark, NJ', 'Baltimore, MD', 'Jacksonville, FL'];
-                $destinationportlist_lane1 = ['Santo Domingo', 'Manzanillo', 'Cartagena'];
+        if($this->quotation->mode_of_transport == 'RoRo' && $this->quotation->cargo_type == 'Personal Vehicle'){
+                
+                $pdfs = [
+                    'Newark, NJ|Santo Domingo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004602_Newark_Santo_Domingo.pdf',
+                    'Newark, NJ|Manzanillo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004603_Newark_Manzanillo.pdf',
+                    'Newark, NJ|Cartagena' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004604_Newark_Cartagena.pdf',
+                    'Baltimore, MD|Santo Domingo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004605_Baltimore_Santo_Domingo.pdf',
+                    'Baltimore, MD|Manzanillo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004606_Baltimore_Manzanillo.pdf',
+                    'Baltimore, MD|Cartagena' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004607_Baltimore_Cartagena.pdf',
+                    'Jacksonville, FL|Santo Domingo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004608_Jacksonville_Santo_Domingo.pdf',
+                    'Jacksonville, FL|Manzanillo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004609_Jacksonville_Manzanillo.pdf',
+                    'Jacksonville, FL|Cartagena' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004610_Jacksonville_Cartagena.pdf',
+                    'Freeport, TX|Manzanillo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004611_Freeport_Manzanillo.pdf',
+                    'Newark, NJ|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004612_Newark_Puerto_Cortes.pdf',
+                    'Newark, NJ|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004613_Newark_Puerto_Limon.pdf',
+                    'Newark, NJ|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004614_Newark_Santo_Tomas.pdf',
+                    'Baltimore, MD|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004615_Baltimore_Puerto_Cortes.pdf',
+                    'Baltimore, MD|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004616_Baltimore_Puerto_Limon.pdf',
+                    'Baltimore, MD|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004617_Baltimore_Santo_Tomas.pdf',
+                    'Freeport, TX|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004618_Freeport_Puerto_Cortes.pdf',
+                    'Freeport, TX|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004619_Freeport_Puerto_Limon.pdf',
+                    'Freeport, TX|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004620_Freeport_Santo_Tomas.pdf',
+                    'Jacksonville, FL|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004641_Jacksonville_Puerto_Cortes.pdf',
+                    'Jacksonville, FL|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004642_Jacksonville_Puerto_Limon.pdf',
+                    'Jacksonville, FL|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004643_Jacksonville_Santo_Tomas.pdf',
+                ];
 
-                $originportlist_lane2 = ['Freeport, TX'];
-                $destinationportlist_lane2 = ['Manzanillo'];
+                // Combinación de puertos de la cotización actual
+                $port_combination = $this->quotation->origin_airportorport . '|' . $this->quotation->destination_airportorport;
+            
 
-                $originportlist_lane3 = ['Newark, NJ', 'Baltimore, MD', 'Jacksonville, FL'];
-                $destinationportlist_lane3 = ['Puerto Cortes', 'Puerto Limon', 'Santo Tomas de Castilla'];
-
-                $originportlist_lane4 = ['Freeport, TX'];
-                $destinationportlist_lane4 = ['Puerto Cortes', 'Puerto Limon', 'Santo Tomas de Castilla'];
-
-                if(in_array($this->quotation->origin_airportorport, $originportlist_lane1) && in_array($this->quotation->destination_airportorport, $destinationportlist_lane1)){
+                // Verificar si la combinación existe en el array de PDFs
+                if (isset($pdfs[$port_combination])) {
                     $pdf = [
-                        'url' => 'https://app.latinamericancargo.com/storage/uploads/LAC_Lane_1_Quote.pdf',
+                        'url' => $pdfs[$port_combination],
                         'mime_type' => 'application/pdf',
                     ];
-                } elseif(in_array($this->quotation->origin_airportorport, $originportlist_lane2) && in_array($this->quotation->destination_airportorport, $destinationportlist_lane2)){
-                    $pdf = [
-                        'url' => 'https://app.latinamericancargo.com/storage/uploads/LAC_Lane_2_Quote.pdf',
-                        'mime_type' => 'application/pdf',
-                    ];
-                } elseif(in_array($this->quotation->origin_airportorport, $originportlist_lane3) && in_array($this->quotation->destination_airportorport, $destinationportlist_lane3)){
-                    $pdf = [
-                        'url' => 'https://app.latinamericancargo.com/storage/uploads/LAC_Lane_3_Quote.pdf',
-                        'mime_type' => 'application/pdf',
-                    ];
-                } elseif(in_array($this->quotation->origin_airportorport, $originportlist_lane4) && in_array($this->quotation->destination_airportorport, $destinationportlist_lane4)){
-                    $pdf = [
-                        'url' => 'https://app.latinamericancargo.com/storage/uploads/LAC_Lane_4_Quote.pdf',
-                        'mime_type' => 'application/pdf',
-                    ];
-                }else{
+                } else {
                     $pdf = null;
                 }
 
-            }else{
-                $pdf = null;
-            }
         }else{
             //no enviamos pdf
             $pdf = null;
