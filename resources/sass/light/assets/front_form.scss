@@ -70,7 +70,29 @@ p{
 }
 
 .modal-lg, .modal-xl {
-  --bs-modal-width: 680px;
+  --bs-modal-width: 700px;
+}
+
+.confirm-electricvehicle-modal{
+  
+    .modal-body{
+      padding-top: 2.6rem;
+      padding-bottom: 3rem;
+  
+      h2{
+        width: 60%;
+        margin: 0 auto;
+      }
+  
+      p{
+        color: #42403E;
+        font-size: 15px;
+        line-height: 25px;
+        letter-spacing: 0;
+      }
+  
+    }
+  
 }
 
 .confirm-percomp-modal{

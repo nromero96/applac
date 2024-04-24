@@ -104,13 +104,13 @@
                                     <h4 class="text-center mb-2">
                                         {{ __('Please note') }}
                                     </h4>
-                                    <p class="text-center">
+                                    <p class="text-center mb-3">
                                         {{ __('While our main focus is on commercial cargo logistics for businesses (B2B), we do offer RORO shipping services for personal vehicles from the USA to select countries in Latin America.') }}
                                     </p>
-                                    <p class="text-center">
+                                    <p class="text-center mb-3">
                                         {{ __('For questions, please refer to our') }} <a href="https://www.latinamericancargo.com/faq-personal-vehicle-shipping/" target="_blank" class="text-primary">{{ __('Personal Vehicle Shipping FAQ') }}</a>, {{ __('which provides more detailed information regarding our personal vehicles shipping services.') }}
                                     </p>
-                                    <p class="text-center">
+                                    <p class="text-center mb-3">
                                         <b>{{ __("Please note that we do not handle personal effects or household goods.If you're seeking to ship personal items, kindly refrain from completing this form as we are unable to accommodate such requests.") }}</b>
                                     </p>
 
@@ -142,13 +142,13 @@
                                 <h4 class="text-center mb-2">
                                     {{ __('Please note') }}
                                 </h4>
-                                <p class="text-center">
+                                <p class="text-center mb-3">
                                     <b>{{ __('Unfortunately, we are unable to accept electric vehicles for personal vehicle shipping due to various restrictions and service availability issues with our carriers.') }}</b>
                                 </p>
-                                <p class="text-center">
+                                <p class="text-center mb-3">
                                         {{ __('Should you have any queries or require additional details about our services, we recommend referring to our') }} <a href="https://www.latinamericancargo.com/faq-personal-vehicle-shipping/" target="_blank" class="text-primary">{{ __('FAQ for Personal Vehicle Shipping') }}</a>, {{ __("where you'll find comprehensive information on our service offerings.") }}
                                 </p>
-                                <p class="text-center">
+                                <p class="text-center mb-4">
                                     {{ __("We appreciate your understanding and remain available to assist you with any other freight forwarding needs.") }}
                                 </p>
 
@@ -1032,7 +1032,7 @@
                     <div class="form-check my-2 ${display_ev}">
                         <input type="hidden" name="electric_vehicle[${itemIndex}]" value="">
                         <input class="form-check-input electric-vehicle-checkbox" type="checkbox" name="electric_vehicle[${itemIndex}]" value="yes">
-                        <label class="form-check-label mb-0"> Electric Vehicle.</label>
+                        <label class="form-check-label mb-0"> Electric Vehicle <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="An electric vehicle is powered by electric motors using stored electricity." ></span></label>
                     </div>
                     <div class="form-check my-2 ${display_cd}">
                         <input type="hidden" name="dangerous_cargo[${itemIndex}]" value="">
@@ -1239,7 +1239,7 @@
                     list_countries('all', 'all');
                 } else if (cargoType === 'Personal Vehicle'){
                     $service_type.html('<option value="">Select...</option><option value="Port-to-Port">Port-to-Port</option>');
-                    list_countries('231', '47,52,61,97,169');
+                    list_countries('231', '47,52,61,90,97,169');
                 }
             }
 
