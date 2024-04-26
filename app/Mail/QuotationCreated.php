@@ -52,13 +52,59 @@ class QuotationCreated extends Mailable{
             $destination_state_name = $destination_state ? $destination_state->name : 'Unknown State';
         }
 
-        if($this->quotation->mode_of_transport == 'RoRo' && $this->quotation->cargo_type == 'Personal Vehicle'){
+        // Array de PDFs
+        $pdfs = [
+            'Newark, NJ|Santo Domingo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004602_Newark_Santo_Domingo.pdf',
+            'Newark, NJ|Manzanillo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004603_Newark_Manzanillo.pdf',
+            'Newark, NJ|Cartagena' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004604_Newark_Cartagena.pdf',
+            'Baltimore, MD|Santo Domingo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004605_Baltimore_Santo_Domingo.pdf',
+            'Baltimore, MD|Manzanillo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004606_Baltimore_Manzanillo.pdf',
+            'Baltimore, MD|Cartagena' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004607_Baltimore_Cartagena.pdf',
+            'Jacksonville, FL|Santo Domingo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004608_Jacksonville_Santo_Domingo.pdf',
+            'Jacksonville, FL|Manzanillo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004609_Jacksonville_Manzanillo.pdf',
+            'Jacksonville, FL|Cartagena' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004610_Jacksonville_Cartagena.pdf',
+            'Freeport, TX|Manzanillo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004611_Freeport_Manzanillo.pdf',
+            'Newark, NJ|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004612_Newark_Puerto_Cortes.pdf',
+            'Newark, NJ|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004613_Newark_Puerto_Limon.pdf',
+            'Newark, NJ|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004614_Newark_Santo_Tomas.pdf',
+            'Baltimore, MD|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004615_Baltimore_Puerto_Cortes.pdf',
+            'Baltimore, MD|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004616_Baltimore_Puerto_Limon.pdf',
+            'Baltimore, MD|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004617_Baltimore_Santo_Tomas.pdf',
+            'Freeport, TX|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004618_Freeport_Puerto_Cortes.pdf',
+            'Freeport, TX|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004619_Freeport_Puerto_Limon.pdf',
+            'Freeport, TX|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004620_Freeport_Santo_Tomas.pdf',
+            'Jacksonville, FL|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004641_Jacksonville_Puerto_Cortes.pdf',
+            'Jacksonville, FL|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004642_Jacksonville_Puerto_Limon.pdf',
+            'Jacksonville, FL|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004643_Jacksonville_Santo_Tomas.pdf',
+        ];
+
+        // Combinación de puertos de la cotización actual
+        $port_combination = $this->quotation->origin_airportorport . '|' . $this->quotation->destination_airportorport;
+
+        $package_type = '';
+
+        // Verificar si $this->cargoDetails existe y no está vacío
+        if (!empty($this->cargoDetails) && count($this->cargoDetails) === 1) {
+            $package_type = isset($this->cargoDetails[0]['package_type']) ? $this->cargoDetails[0]['package_type'] : '';
+        }
+        
+        // Inicializar $pdf como null por defecto
+        $pdf = null;
+
+        if ($this->quotation->mode_of_transport == 'RoRo' && $this->quotation->cargo_type == 'Personal Vehicle' && ($package_type == 'Automobile' || $package_type == 'Motorcycle (crated or palletized) / ATV')) {
             $contviewblade = 'emails.quotation_created_personal_vehicle_shipping';
-        }else{
+        
+            // Verificar si la combinación de puertos tiene un PDF asociado y asignarlo a la variable $pdf
+            if (isset($pdfs[$port_combination])) {
+                $pdf = [
+                    'url' => $pdfs[$port_combination],
+                    'mime_type' => 'application/pdf',
+                ];
+            }
+        } else {
             $contviewblade = 'emails.quotation_created';
         }
 
-        
         $content = view($contviewblade, [
             'origin_country_name' => $origin_country_name,
             'destination_country_name' => $destination_country_name,
@@ -70,53 +116,6 @@ class QuotationCreated extends Mailable{
             'cargoDetails' => $this->cargoDetails,
         ])->render();
 
-
-        // Adjuntar el PDF
-        if($this->quotation->mode_of_transport == 'RoRo' && $this->quotation->cargo_type == 'Personal Vehicle'){
-                
-                $pdfs = [
-                    'Newark, NJ|Santo Domingo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004602_Newark_Santo_Domingo.pdf',
-                    'Newark, NJ|Manzanillo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004603_Newark_Manzanillo.pdf',
-                    'Newark, NJ|Cartagena' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004604_Newark_Cartagena.pdf',
-                    'Baltimore, MD|Santo Domingo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004605_Baltimore_Santo_Domingo.pdf',
-                    'Baltimore, MD|Manzanillo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004606_Baltimore_Manzanillo.pdf',
-                    'Baltimore, MD|Cartagena' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004607_Baltimore_Cartagena.pdf',
-                    'Jacksonville, FL|Santo Domingo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004608_Jacksonville_Santo_Domingo.pdf',
-                    'Jacksonville, FL|Manzanillo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004609_Jacksonville_Manzanillo.pdf',
-                    'Jacksonville, FL|Cartagena' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004610_Jacksonville_Cartagena.pdf',
-                    'Freeport, TX|Manzanillo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004611_Freeport_Manzanillo.pdf',
-                    'Newark, NJ|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004612_Newark_Puerto_Cortes.pdf',
-                    'Newark, NJ|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004613_Newark_Puerto_Limon.pdf',
-                    'Newark, NJ|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004614_Newark_Santo_Tomas.pdf',
-                    'Baltimore, MD|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004615_Baltimore_Puerto_Cortes.pdf',
-                    'Baltimore, MD|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004616_Baltimore_Puerto_Limon.pdf',
-                    'Baltimore, MD|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004617_Baltimore_Santo_Tomas.pdf',
-                    'Freeport, TX|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004618_Freeport_Puerto_Cortes.pdf',
-                    'Freeport, TX|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004619_Freeport_Puerto_Limon.pdf',
-                    'Freeport, TX|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004620_Freeport_Santo_Tomas.pdf',
-                    'Jacksonville, FL|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004641_Jacksonville_Puerto_Cortes.pdf',
-                    'Jacksonville, FL|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004642_Jacksonville_Puerto_Limon.pdf',
-                    'Jacksonville, FL|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004643_Jacksonville_Santo_Tomas.pdf',
-                ];
-
-                // Combinación de puertos de la cotización actual
-                $port_combination = $this->quotation->origin_airportorport . '|' . $this->quotation->destination_airportorport;
-            
-
-                // Verificar si la combinación existe en el array de PDFs
-                if (isset($pdfs[$port_combination])) {
-                    $pdf = [
-                        'url' => $pdfs[$port_combination],
-                        'mime_type' => 'application/pdf',
-                    ];
-                } else {
-                    $pdf = null;
-                }
-
-        }else{
-            //no enviamos pdf
-            $pdf = null;
-        }
 
         // Llama a tu función sendMailApi para enviar el correo
         sendMailApiLac(

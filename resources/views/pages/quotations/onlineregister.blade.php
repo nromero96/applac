@@ -111,7 +111,7 @@
                                         {{ __('For questions, please refer to our') }} <a href="https://www.latinamericancargo.com/faq-personal-vehicle-shipping/" target="_blank" class="text-primary">{{ __('Personal Vehicle Shipping FAQ') }}</a>, {{ __('which provides more detailed information regarding our personal vehicles shipping services.') }}
                                     </p>
                                     <p class="text-center mb-3">
-                                        <b>{{ __("Please note that we do not handle personal effects or household goods.If you're seeking to ship personal items, kindly refrain from completing this form as we are unable to accommodate such requests.") }}</b>
+                                        <b>{{ __("Please note that we do not handle personal effects or household goods. If you're seeking to ship personal items, kindly refrain from completing this form as we are unable to accommodate such requests.") }}</b>
                                     </p>
 
                                     <div class="text-center">
@@ -1239,6 +1239,7 @@
                     list_countries('all', 'all');
                 } else if (cargoType === 'Personal Vehicle'){
                     $service_type.html('<option value="">Select...</option><option value="Port-to-Port">Port-to-Port</option>');
+                    
                     list_countries('231', '47,52,61,90,97,169');
                 }
             }
@@ -1595,6 +1596,28 @@
             });
         }
 
+        function list_countries_destination(listdestination) {
+            $.ajax({
+                url: baseurl + '/getcountry/',
+                type: 'GET',
+                success: function(data) {
+                    if (data.length > 0) {
+                        var htmlDestination = '<option value="">Select...</option>';
+
+                        var destinationArray = listdestination.split(',').map(Number);
+
+                        $.each(data, function(index, value) {
+                            if (listdestination === 'all' || destinationArray.includes(value.id)) {
+                                htmlDestination += '<option value="' + value.id + '">' + value.name + '</option>';
+                            }
+                        });
+
+                        $('select[name="destination_country_id"]').html(htmlDestination);
+                    }
+                }
+            });
+        }
+
 
         $(document).on('change','.itemdetail select[name="package_type[]"]', function() {
             // Obtener el valor seleccionado y compararlo con el valor de la opción "Other"
@@ -1879,7 +1902,7 @@
         const destinationCountrySelect = document.getElementById('destination_country_id');
         const originPortDiv = document.getElementById('origin_div_airportorport');
         const destinationPortDiv = document.getElementById('destination_div_airportorport');
-
+    
         const puertosPorPais = {
             "231": ["Newark, NJ", "Baltimore, MD", "Jacksonville, FL", "Freeport, TX"], // Estados Unidos
             "10": ["Zarate"], // Argentina
@@ -1895,12 +1918,69 @@
             "172": ["Callao"] // Peru
             // Agrega más opciones según tus necesidades
         };
+    
+        const portPairs = [
+            'Newark, NJ|Santo Domingo',
+            'Newark, NJ|Manzanillo',
+            'Newark, NJ|Cartagena',
+            'Baltimore, MD|Santo Domingo',
+            'Baltimore, MD|Manzanillo',
+            'Baltimore, MD|Cartagena',
+            'Jacksonville, FL|Santo Domingo',
+            'Jacksonville, FL|Manzanillo',
+            'Jacksonville, FL|Cartagena',
+            'Freeport, TX|Manzanillo',
+            'Newark, NJ|Puerto Cortes',
+            'Newark, NJ|Puerto Limon',
+            'Newark, NJ|Santo Tomas',
+            'Baltimore, MD|Puerto Cortes',
+            'Baltimore, MD|Puerto Limon',
+            'Baltimore, MD|Santo Tomas',
+            'Freeport, TX|Puerto Cortes',
+            'Freeport, TX|Puerto Limon',
+            'Freeport, TX|Santo Tomas',
+            'Jacksonville, FL|Puerto Cortes',
+            'Jacksonville, FL|Puerto Limon',
+            'Jacksonville, FL|Santo Tomas',
+        ];
+    
+        function list_countries_destination_forport(ports) {
+            const availableCountries = [];
+            for (const country in puertosPorPais) {
+                const countryPorts = puertosPorPais[country];
+                for (const port of ports) {
+                    if (countryPorts.includes(port)) {
+                        availableCountries.push(country);
+                        break;
+                    }
+                }
+            }
+            return availableCountries;
+        }
+    
+        function updateDestinationCountries() {
+            const originPortSelect = document.getElementById('origin_airportorport');
+            // Obtener el puerto de origen seleccionado
+            const selectedOriginPort = originPortSelect.value;
+    
+            // Obtener los pares de puertos que contienen el puerto de origen seleccionado
+            const validPairs = portPairs.filter(pair => pair.startsWith(selectedOriginPort));
+    
+            // Extraer los puertos de destino de los pares válidos
+            const validDestinationPorts = validPairs.map(pair => pair.split('|')[1]);
+    
+            // Obtener los países disponibles para los puertos de destino válidos
+            const validDestinationCountries = list_countries_destination_forport(validDestinationPorts);
+            
+            list_countries_destination(validDestinationCountries.join(','));
 
+        }
+    
         function updateOriginPortField() {
             // Obtener el valor del cargo_type seleccionado
             const cargoTypeRadios = document.querySelectorAll('input[name="cargo_type"]');
             const selectedCargoType = Array.from(cargoTypeRadios).find(radio => radio.checked)?.value;
-
+    
             if (selectedCargoType === "Personal Vehicle") {
                 // Si se selecciona "Personal Vehicle," mostrar el campo select en origen
                 const selectedOriginCountry = originCountrySelect.value;
@@ -1911,6 +1991,11 @@
                     </select>
                     <div class="text-danger msg-info" id="origin_airportorport_error"></div>
                 `;
+
+                // Después de generar originPortSelect, agregar el event listener
+                const originPortSelect = document.getElementById('origin_airportorport');
+                originPortSelect.addEventListener('change', updateDestinationCountries);
+
             } else if(selectedCargoType === 'Commercial (Business-to-Business)') {
                 // Si no se selecciona "Personal Vehicle," mostrar el campo de entrada en origen
                 originPortDiv.innerHTML = `
@@ -1920,14 +2005,14 @@
             }
 
         }
-
+    
         function updateDestinationPortField() {
             const cargoTypeRadios = document.querySelectorAll('input[name="cargo_type"]');
             const selectedCargoType = Array.from(cargoTypeRadios).find(radio => radio.checked)?.value;
-
+    
             // Obtener el valor del país de destino seleccionado
             const selectedDestinationCountry = destinationCountrySelect.value;
-
+    
             if (selectedCargoType === "Personal Vehicle") {
                 // Si se selecciona "Personal Vehicle," mostrar el campo de entrada en destino
                 destinationPortDiv.innerHTML = `
@@ -1937,7 +2022,7 @@
                     </select>
                     <div class="text-danger msg-info" id="destination_airportorport_error"></div>
                 `;
-            } else if(selectedCargoType === 'Commercial (Business-to-Business)'){
+            } else if(selectedCargoType === 'Commercial (Business-to-Business)') {
                 // Si no se selecciona "Personal Vehicle," mostrar el campo select en destino
                 destinationPortDiv.innerHTML = `
                     <input type="text" class="form-control" name="destination_airportorport" id="destination_airportorport" placeholder="Enter Port">
@@ -1945,22 +2030,22 @@
                 `;
             }
         }
-
-
+    
         // Agregar event listeners para cambios en las selecciones de país de origen y destino
         originCountrySelect.addEventListener('change', updateOriginPortField);
         destinationCountrySelect.addEventListener('change', updateDestinationPortField);
-
+    
         // Agregar event listeners para cambios en los radio buttons
         for (const radio of document.querySelectorAll('input[name="cargo_type"], input[name="mode_of_transport"]')) {
             radio.addEventListener('change', () => updateOriginPortField());
             radio.addEventListener('change', () => updateDestinationPortField());
         }
-
+    
         // Llamar a las funciones al cargar la página para asegurarse de que los campos se actualicen correctamente.
         updateOriginPortField();
         updateDestinationPortField();
     </script>
+    
 
 
 </body>

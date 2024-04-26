@@ -369,8 +369,12 @@ document.addEventListener('DOMContentLoaded', function () {
             // Muestra u oculta el modal según si el checkbox está marcado o no
             if (event.target.checked) {
                 confirm_electricvehicle_modal.show();
+                //add class 'disabled' in <a class="btn-nxt"></a> in this step
+                stepperWizardDefault.querySelector('#defaultStep-three .btn-nxt').classList.add('disabled');
             } else {
                 confirm_electricvehicle_modal.hide();
+                //remove class 'disabled' in <a class="btn-nxt"></a> in this step
+                stepperWizardDefault.querySelector('#defaultStep-three .btn-nxt').classList.remove('disabled');
             }
         }
     });
