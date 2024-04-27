@@ -982,6 +982,7 @@
 
                 if(modeoftransport=='RoRo'){
                     var titlelistpackage = 'Cargo Type';
+                    var cargodescrcommodity = '';
                     var listpackage = `
                         <option value="" selected="selected">Cargo Type *</option>
                         <option value="Automobile">Automobile</option>
@@ -1001,6 +1002,7 @@
 
                 } else if(modeoftransport=='Breakbulk'){
                     var titlelistpackage = 'Cargo Type';
+                    var cargodescrcommodity = '(Commodity)';
                     var listpackage = `
                         <option value="" selected="selected">Cargo Type *</option>
                         <option value="Cases">Cases</option>
@@ -1017,6 +1019,7 @@
                     `;
                 } else {
                     var titlelistpackage = 'Package Type';
+                    var cargodescrcommodity = '(Commodity)';
                     var listpackage = `
                         <option value="">Select... *</option>
                         <option value="Pallet">Pallet</option>
@@ -1064,7 +1067,7 @@
                                     '<input type="text" name="qty[]" class="form-control px-2">' +
                                 '</div>' +
                                 '<div class="col-md-12 my-2 my-sm-0">' +
-                                    '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="Cargo Description (Commodity)">' +
+                                    '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="Cargo Description '+cargodescrcommodity+'">' +
                                 '</div>' +
                                 '<div class="col-md-12">'+
                                     checkboxHTML+
@@ -1095,6 +1098,7 @@
                                         '<option value="inch.">inch.</option>' +
                                     '</select>' +
                                 '</div>' +
+                                '<small class="text-danger msgvalid msgdimensions"></small>'+
                             '</div>' +
                         '</div>' +
                         '<div class="col-md-3">' +
@@ -1115,6 +1119,7 @@
                                         '<option value="Lbs">Lbs</option>' +
                                     '</select>' +
                                 '</div>' +
+                                '<small class="text-danger msgvalid msgweight"></small>'+
                             '</div>' +
                         '</div>' +
                         '<div class="col-md-1 px-sm-0">' +
@@ -1672,14 +1677,14 @@
         });
 
 
-        $(document).on('keyup change', '.itemdetail input[name="qty[]"], .itemdetail input[name="per_piece[]"], .itemdetail input[name="length[]"], .itemdetail input[name="width[]"], .itemdetail input[name="height[]"], .itemdetail select[name="weight_unit[]"], .itemdetail select[name="dimensions_unit[]"]', function() {
+        $(document).on('keyup change', '.itemdetail select[name="package_type[]"], .itemdetail input[name="qty[]"], .itemdetail input[name="per_piece[]"], .itemdetail input[name="length[]"], .itemdetail input[name="width[]"], .itemdetail input[name="height[]"], .itemdetail select[name="weight_unit[]"], .itemdetail select[name="dimensions_unit[]"]', function() {
+
+            const itemdetail = $(this).closest('.itemdetail');
 
             if($('input[name="cargo_type"]:checked').val() == 'FTL' || $('input[name="cargo_type"]:checked').val() == 'FCL'){
                 //no calculations
             }else{
 
-
-                const itemdetail = $(this).closest('.itemdetail');
                 const qtyInput = itemdetail.find('input[name="qty[]"]');
                 const perPieceInput = itemdetail.find('input[name="per_piece[]"]');
                 const totalWeightInput = itemdetail.find('input[name="item_total_weight[]"]');
@@ -1688,6 +1693,7 @@
                 const lengthInput = itemdetail.find('input[name="length[]"]');
                 const widthInput = itemdetail.find('input[name="width[]"]');
                 const heightInput = itemdetail.find('input[name="height[]"]');
+                const weightUnit = itemdetail.find('select[name="weight_unit[]"]');
 
                 const qty = +qtyInput.val() || 0;
                 const perPiece = +perPieceInput.val() || 0;
@@ -1740,6 +1746,34 @@
                     totalWeightInput.val(totalWeight.toFixed(2));
                     totalVolumeWeightInput.val(totalCubicMeter.toFixed(2));
 
+                }
+
+
+                //validations
+                const packageType = itemdetail.find('select[name="package_type[]"]').val();
+                if($('input[name="cargo_type"]:checked').val() == 'Personal Vehicle' && (packageType == 'Automobile' || packageType == 'Motorcycle (crated or palletized) / ATV')){
+                    //message in msgdimensions
+                    if(heightInput.val() > 2.10 && dimensionsUnit == 'm.'){
+                        itemdetail.find('.msgdimensions').text('2.10 meters max height');
+                    }else if(heightInput.val() > 210 && dimensionsUnit == 'cm.'){
+                        itemdetail.find('.msgdimensions').text('210 cm max height');
+                    }else if(heightInput.val() > 82.6 && dimensionsUnit == 'inch.'){
+                        itemdetail.find('.msgdimensions').text('82.6 inches max height');
+                    }else{
+                        //remove message in msgdimensions
+                        itemdetail.find('.msgdimensions').text('');
+                    }
+
+                    if((perPieceInput.val() > 3000 && weightUnit.val() == 'Kgs') || (perPieceInput.val() > 6613.87 && weightUnit.val() == 'Lbs')){
+                        itemdetail.find('.msgweight').text('3.0 metric tons max per piece');
+                    }else{
+                        itemdetail.find('.msgweight').text('');
+                    }
+
+                }else{
+                    //remove message in msgdimensions
+                    itemdetail.find('.msgdimensions').text('');
+                    itemdetail.find('.msgweight').text('');
                 }
 
             }

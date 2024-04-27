@@ -35,6 +35,17 @@ p {
   margin-left: 5px;
 }
 
+.msgvalid {
+  margin-top: -8px;
+  display: block;
+  line-height: 17px;
+}
+
+.msg_pcktype {
+  display: block;
+  line-height: 17px;
+}
+
 .btn-lang svg {
   margin-top: -3px;
 }
