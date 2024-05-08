@@ -1966,16 +1966,16 @@
             'Freeport, TX|Manzanillo',
             'Newark, NJ|Puerto Cortes',
             'Newark, NJ|Puerto Limon',
-            'Newark, NJ|Santo Tomas',
+            'Newark, NJ|Santo Tomas de Castilla',
             'Baltimore, MD|Puerto Cortes',
             'Baltimore, MD|Puerto Limon',
-            'Baltimore, MD|Santo Tomas',
+            'Baltimore, MD|Santo Tomas de Castilla',
             'Freeport, TX|Puerto Cortes',
             'Freeport, TX|Puerto Limon',
-            'Freeport, TX|Santo Tomas',
+            'Freeport, TX|Santo Tomas de Castilla',
             'Jacksonville, FL|Puerto Cortes',
             'Jacksonville, FL|Puerto Limon',
-            'Jacksonville, FL|Santo Tomas',
+            'Jacksonville, FL|Santo Tomas de Castilla',
         ];
     
         function list_countries_destination_forport(ports) {
