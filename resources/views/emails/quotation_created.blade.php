@@ -371,6 +371,15 @@
 
     <p>For any additional questions or assistance, feel free to reach out to us at <b>sales@lacship.com</b>.</p>
 
+    @if($quotation_documents)
+    <p style="margin-bottom: 0px;">The following files were attached:</p>
+    <ul style="margin-top: 2px;padding-left: 0px;">
+        @foreach($quotation_documents as $document)
+        <li><a href="{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}">{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}</a></li>
+        @endforeach
+    </ul>
+    @endif
+
     <p>Best regards,<br>
     Latin American Cargo</p>
 

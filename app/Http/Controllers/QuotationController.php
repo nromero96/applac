@@ -436,8 +436,12 @@ class QuotationController extends Controller
 
 
                 try {
-                    // Envía el correo electrónico con los detalles de carga
-                    Mail::send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'), $request->input('email'), $cargoDetails));
+
+                    //si hay archivos adjuntos obtenemos los links
+                    $quotation_documents = QuotationDocument::where('quotation_id', $quotation_id)->get();
+
+                    // Envía el correo electrónico con los detalles de carga y archivos adjuntos
+                    Mail::send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'), $request->input('email'), $cargoDetails, $quotation_documents));
                 
                     // Si no se lanzó una excepción, asumimos que el correo se envió correctamente
                     Log::info('Correo electrónico enviado correctamente de la cotización: ' . $quotation_id);
@@ -604,8 +608,12 @@ class QuotationController extends Controller
 
 
                     try {
+
+                        //si hay archivos adjuntos obtenemos los links
+                        $quotation_documents = QuotationDocument::where('quotation_id', $quotation_id)->get();
+
                         // Envía el correo electrónico con los detalles de carga
-                        Mail::send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'),$request->input('email'), $cargoDetails));
+                        Mail::send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'),$request->input('email'), $cargoDetails, $quotation_documents));
 
                         //log email sent
                         Log::info('Correo electrónico enviado correctamente de la cotización: ' . $quotation_id);

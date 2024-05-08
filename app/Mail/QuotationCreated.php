@@ -20,12 +20,14 @@ class QuotationCreated extends Mailable{
 
     public $quotation;
 
-    public function __construct($quotation, $name, $lastname, $email, $cargoDetails){
+
+    public function __construct($quotation, $name, $lastname, $email, $cargoDetails, $quotation_documents){
         $this->quotation = $quotation;
         $this->name = $name;
         $this->lastname = $lastname;
         $this->email = $email;
         $this->cargoDetails = $cargoDetails; // Pasamos el array de detalles de carga
+        $this->quotation_documents = $quotation_documents; // Pasamos el array de documentos de la cotización
     }
 
     public function build() {
@@ -114,6 +116,7 @@ class QuotationCreated extends Mailable{
             'lastname' => $this->lastname,
             'quotation' => $this->quotation,
             'cargoDetails' => $this->cargoDetails,
+            'quotation_documents' => $this->quotation_documents,
         ])->render();
 
 
