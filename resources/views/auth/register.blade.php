@@ -45,7 +45,9 @@
                         <div class="auth-overlay" style="background-image: url({{asset('assets/img/bg-lg-1-min.jpg')}});background-size: cover;"></div>
                         <div class="auth-cover">
                             <div class="position-relative">
-                                <img src="{{asset('assets/img/logo_white_lac.svg')}}" class="lgauco" alt="Latin American Cargo">
+                                <a href="https://www.latinamericancargo.com/">
+                                    <img src="{{asset('assets/img/logo_white_lac.svg')}}" class="lgauco" alt="Latin American Cargo">
+                                </a>
                                 <h2 class="mt-5 text-white font-weight-bolder px-2">
                                     {{__('Your best international freight shipping partner to & from Latin America')}}
                                 </h2>
@@ -60,7 +62,9 @@
                                 <div class="row">
                                     <div class="col-md-12 mb-3">
                                         <div class="text-center mb-3 d-block d-sm-none">
-                                            <img src="{{asset('assets/img/logo-original-lac.svg')}}" alt="Latin American Cargo" class="lg-htform">
+                                            <a href="https://www.latinamericancargo.com/">
+                                                <img src="{{asset('assets/img/logo-original-lac.svg')}}" alt="Latin American Cargo" class="lg-htform">
+                                            </a>
                                         </div>
                                         
                                         <div class="text-end">

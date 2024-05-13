@@ -28,11 +28,13 @@
         <b>Note:</b> To learn more about how to ship your vehicle overseas, as well as answers to frequently asked questions, please visit our <a href="https://www.latinamericancargo.com/faq-personal-vehicle-shipping/">FAQ for International Personal Vehicle Shipping</a>.
     </p>
 
+    <p>Your Quote ID #: <b>{{ $quotation->id }}</b></p>
+
     @if($quotation_documents)
     <p style="margin-bottom: 0px;">The following files were attached:</p>
-    <ul style="margin-top: 2px;padding-left: 0px;">
+    <ul style="margin-top: 2px;padding-left: 0px;list-style: none;">
         @foreach($quotation_documents as $document)
-        <li><a href="{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}">{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}</a></li>
+        <li style="margin-left: 0px;">├ <a href="{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}">{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}</a></li>
         @endforeach
     </ul>
     @endif
