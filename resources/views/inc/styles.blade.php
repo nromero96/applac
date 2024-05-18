@@ -36,7 +36,8 @@
 
         @case('users')
             {{-- Users --}}
-
+            <link href="{{ asset('assets/css/light/users/users-list.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('assets/css/dark/users/users-list.css') }}" rel="stylesheet" type="text/css" />
             @break
 
         @case('myprofile')

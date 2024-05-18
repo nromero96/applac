@@ -25,7 +25,31 @@ class UserController extends Controller
             'scrollspy_offset' => '',
         ];
 
-        $users = User::whereIn('status', ['active', 'inactive'])->get();
+        //get url parameters
+        $type = request()->get('type');
+
+        //1 is Has Role Administrator
+        //2 is Has Role Employee
+        //3 is Has Role Customer
+
+        if($type == 1 || empty($type)){
+            //get users with role administrator
+            $users = User::role('administrator')
+                            ->where('status', '!=', 'deleted')
+                            ->get();
+        }elseif($type == 2){
+            //get users with role employee
+            $users = User::role('employee')
+                            ->where('status', '!=', 'deleted')
+                            ->get();
+        }elseif($type == 3){
+            //get users with role customer
+            $users = User::role('customer')
+                            ->where('status', '!=', 'deleted')
+                            ->get();
+        }else{
+            $users = User::where('status', '!=', 'deleted')->get();
+        }
 
 
         // $pageName = 'analytics';

@@ -1,0 +1,7 @@
+body.dark .btn-taps {
+  border-color: #191e3a;
+}
+body.dark .btps-active {
+  background: #0e1726 !important;
+  border-color: #191e3a;
+}

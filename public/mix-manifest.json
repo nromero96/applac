@@ -19,6 +19,8 @@
     "/plugins/css/light/autocomplete/css/custom-autoComplete.css": "/plugins/css/light/autocomplete/css/custom-autoComplete.css",
     "/plugins/css/dark/apex/custom-apexcharts.css": "/plugins/css/dark/apex/custom-apexcharts.css",
     "/plugins/css/light/apex/custom-apexcharts.css": "/plugins/css/light/apex/custom-apexcharts.css",
+    "/assets/css/dark/users/users-list.css": "/assets/css/dark/users/users-list.css",
+    "/assets/css/light/users/users-list.css": "/assets/css/light/users/users-list.css",
     "/assets/css/dark/components/list-group.css": "/assets/css/dark/components/list-group.css",
     "/assets/css/light/components/list-group.css": "/assets/css/light/components/list-group.css",
     "/assets/css/dark/authentication/auth-boxed.css": "/assets/css/dark/authentication/auth-boxed.css",

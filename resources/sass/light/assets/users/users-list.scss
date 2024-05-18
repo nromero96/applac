@@ -1,0 +1,21 @@
+.btn-taps{
+    display: inline-block;
+    padding: 9px 12px;
+    border-radius: 10px 10px 0px 0px;
+    border: 1px solid;
+    border-color: #e0e6ed;
+    border-bottom: 0px;
+    &::hover{
+        font-weight: bold;
+    }
+}
+
+.btps-active{
+    background: white;
+    border-color: #e0e6ed;
+    font-weight: bold;
+}
+
+.widget-header{
+    border-radius: 0px 8px 0px 0px !important;
+}

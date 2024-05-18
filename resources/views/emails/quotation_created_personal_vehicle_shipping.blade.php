@@ -10,7 +10,7 @@
     
     <p>Please find attached our estimated quote to ship your Automobile/Motorcycle/ATV to {{ $destination_country_name }} - {{ $quotation->destination_airportorport }}.</p>
 
-    <p>If you agree with our estimated offer, we kindly ask that you provide the following details to: <a href="mailto:personal-vehicles@lacship.com">personal-vehicles@lacship.com<a></p>
+    <p>If you agree with our estimated offer, we kindly ask that you provide the following details to: <a href="mailto:quote-form@s@lacship.com">quote-form@s@lacship.com<a></p>
     
     <p>
         <b>1.</b> Signed shipping quote<br>
