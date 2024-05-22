@@ -103,9 +103,9 @@ class QuotationCreated extends Mailable{
                     'mime_type' => 'application/pdf',
                 ];
             }
-        } else if($origin_country == '231' && $destination_country == '55' ){
+        } else if($this->quotation->origin_country_id == '231' && $this->quotation->destination_country_id == '55' ){
             $contviewblade = 'emails.quotation_created_usa_to_cuba';
-        } else if($origin_country != '231' && $destination_country == '55' ){
+        } else if($this->quotation->origin_country_id != '231' && $this->quotation->destination_country_id == '55' ){
             $contviewblade = 'emails.quotation_created_other_to_cuba';
         } else {
             $contviewblade = 'emails.quotation_created';
