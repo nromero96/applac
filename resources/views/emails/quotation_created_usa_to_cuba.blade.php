@@ -22,7 +22,7 @@
         &nbsp;&nbsp;- Telephone Number
     </p>
 
-    <p style="background-color: #f8f8f8;font-size: 12px;padding: 9px;border-radius: 10px;">
+    <p style="background-color: #f8f8f8;padding: 13px;border-radius: 10px;">
         <b>Please note:</b><br>
         • Be sure to indicate your Quote ID# when communicating with our sales team.<br>
         • To confirm if your request falls under our service scope, please review the following information: <a href="https://www.latinamericancargo.com/service-scope">www.latinamericancargo.com/service-scope</a><br>
