@@ -12,6 +12,10 @@ class SettingController extends Controller
     public function index()
     {
 
+        if (!auth()->user()->can('settings.index')) {
+            return redirect()->route('dashboard.index')->with('error', 'You do not have permission to access this page');
+        }
+
         $data = [
             'category_name' => 'settings',
             'page_name' => 'settings',
