@@ -13,6 +13,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\CountryStateController;
+use App\Http\Controllers\SettingController;
 
 use App\Mail\PruebaCorreo;
 
@@ -133,6 +134,11 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
     Route::get('changefavourite-note', [NoteController::class, 'changeFavourite'])->name('notes.changefavourite');
     Route::get('changetag-note', [NoteController::class, 'changeTag'])->name('notes.changetag');
     Route::get('destroy-note', [NoteController::class, 'destroy'])->name('notes.destroy');
+
+
+    //settings
+    Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
+    Route::post('settings-update', [SettingController::class, 'update'])->name('settings.update');
 
 });
 

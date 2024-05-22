@@ -1,24 +1,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>New quote created, General Notification</title>
+    <title>New quote created, USA TO CUBA</title>
 </head>
 <body style="font-family: Arial, Helvetica, sans-serif">
     <p>Dear <b>{{$name}} {{$lastname}}</b>,</p>
 
     <p>Thank you for your interest in shipping with LAC.</p>
     
-    <p>Your quote request is currently under review. Our sales team aims to respond within two business days.</p>
-
     <p><b>Your Quote ID #: {{ $quotation->id }}</b></p>
 
-    <p>
-        At LAC, we believe in the power of specialization to drive success. With more than 25 years connecting the world with Latin America, we simplify your logistics, allowing you to focus on growing your business.<br>
-        To know more about the LAC advantage, visit latinamericancargo.com
+    <p>Please be informed, due to the embargo imposed on Cuba, we are unable to offer quotations without a proof of license/exemption from the Bureau of Industry and Security (BIS). For more information please visit <a href="https://www.bis.doc.gov">www.bis.doc.gov</a>.</p>
+
+    <p>If you already have a license from the BIS, please send the following information to <a href="mailto:quote-form@lacship.com">quote-form@lacship.com</a> and one of our sales representatives will contact you for further assistance:<br>
+        • LAC Quote ID#<br>
+        • Proof of license/exemption from BIS<br>
+        • Cuban Importer Information (Consignee), including:<br>
+        &nbsp;&nbsp;- Company Name<br>
+        &nbsp;&nbsp;- Address<br>
+        &nbsp;&nbsp;- Contact<br>
+        &nbsp;&nbsp;- Telephone Number
     </p>
 
     <p style="background-color: #f8f8f8;font-size: 12px;padding: 9px;border-radius: 10px;">
         <b>Please note:</b><br>
+        • Be sure to indicate your Quote ID# when communicating with our sales team.<br>
         • To confirm if your request falls under our service scope, please review the following information: <a href="https://www.latinamericancargo.com/service-scope">www.latinamericancargo.com/service-scope</a><br>
         • If you do not receive a response from us within the specified time frame, it is because we cannot offer the service you require. We appreciate your understanding.<br>
         • Any communication from us will come exclusively from our authorized domains: <b>lacship.com</b> or <b>latinamericancargo.com</b>.

@@ -6,38 +6,40 @@
 <body style="font-family: Arial, Helvetica, sans-serif">
     <p>Dear <b>{{$name}} {{$lastname}}</b>,</p>
 
-    <p>Thank you very much for your interest in shipping with LAC.</p>
+    <p>Thank you for your interest in shipping with LAC.</p>
     
     <p>Please find attached our estimated quote to ship your Automobile/Motorcycle/ATV to {{ $destination_country_name }} - {{ $quotation->destination_airportorport }}.</p>
 
-    <p>If you agree with our estimated offer, we kindly ask that you provide the following details to: <a href="mailto:quote-form@s@lacship.com">quote-form@s@lacship.com<a></p>
-    
-    <p>
-        <b>1.</b> Signed shipping quote<br>
-        <b>2.</b> Scanned copy of vehicle ownership title.<br>
-        <b>3.</b> Scanned copy of vehicle bill of sale.<br>
-        <b>4.</b> Pictures of your vehicle (if not already sent in the form).<br>
-        <b>5.</b> Written confirmation from your customs broker in {{ $destination_country_name }} stating that your vehicle can be imported.<br>
+    <p><b>Your Quote ID #: {{ $quotation->id }}</b></p>
+
+    <p>If you agree with our estimated offer, we kindly ask that you provide the following details to <a href="mailto:quote-form@lacship.com">quote-form@lacship.com</a>:<br>
+        <b>1.</b> LAC Quote ID#<br>
+        <b>2.</b> Signed shipping quote<br>
+        <b>3.</b> Scanned copy of vehicle ownership title<br>
+        <b>4.</b> Scanned copy of the vehicle bill of sale<br>
+        <b>4.</b> Pictures of your vehicle (if not already sent in the form)<br>
+        <b>6.</b> Written confirmation from your customs broker in {{ $destination_country_name }} stating that your vehicle can be imported
     </p>
 
-    <p>After obtaining all the required documentation, a sales representative will organize a phone discussion to determine the next course of action.</p>
+    <p>After receiving all the required documentation, a sales representative will arrange a phone discussion to determine the next steps.</p>
 
-    <p>We are looking forward to hearing back from you.</p>
-
-    <p>
-        <b>Note:</b> To learn more about how to ship your vehicle overseas, as well as answers to frequently asked questions, please visit our <a href="https://www.latinamericancargo.com/faq-personal-vehicle-shipping/">FAQ for International Personal Vehicle Shipping</a>.
-    </p>
-
-    <p>Your Quote ID #: <b>{{ $quotation->id }}</b></p>
+    <p>We look forward to hearing back from you.</p>
 
     @if($quotation_documents)
-    <p style="margin-bottom: 0px;">The following files were attached:</p>
+    <p style="margin-bottom: 0px;"><b>The following files were attached:</b></p>
     <ul style="margin-top: 2px;padding-left: 0px;list-style: none;">
         @foreach($quotation_documents as $document)
         <li style="margin-left: 0px;">├ <a href="{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}">{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}</a></li>
         @endforeach
     </ul>
     @endif
+
+    <p style="background-color: #f8f8f8;font-size: 12px;padding: 9px;border-radius: 10px;">
+        <b>Please note:</b><br>
+        • Be sure to indicate your Quote ID# when communicating with our sales team.<br>
+        • To learn more about how to ship your vehicle overseas and find answers to frequently asked questions, please visit our <a href="https://www.latinamericancargo.com/faq-personal-vehicle-shipping/">FAQ for International Personal Vehicle Shipping</a>.<br>
+        • Any communication from us will come exclusively from our authorized domains: <b>lacship.com</b> or <b>latinamericancargo.com</b>.
+    </p>
 
     <p>Best regards,<br>
     Latin American Cargo</p>
