@@ -12,7 +12,9 @@
 
     <p>Please be informed, due to the embargo imposed on Cuba, we are unable to offer quotations without a proof of license/exemption from the Bureau of Industry and Security (BIS). For more information please visit <a href="https://www.bis.doc.gov">www.bis.doc.gov</a>.</p>
 
-    <p>If you already have a license from the BIS, please send the following information to <a href="mailto:quote-form@lacship.com">quote-form@lacship.com</a> and one of our sales representatives will contact you for further assistance:<br>
+    <p>If you already have a license from the BIS, please send the following information to <a href="mailto:quote-form@lacship.com">quote-form@lacship.com</a> and one of our sales representatives will contact you for further assistance:</p>
+
+    <p>
         • LAC Quote ID#<br>
         • Proof of license/exemption from BIS<br>
         • Cuban Importer Information (Consignee), including:<br>

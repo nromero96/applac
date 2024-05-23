@@ -10,7 +10,9 @@
     
     <p><b>Your Quote ID #: {{ $quotation->id }}</b></p>
 
-    <p>we are pleased to assist you with your shipping request. To help us serve you more efficiently, please provide the following details to <a href="mailto:quote-form@lacship.com">quote-form@lacship.com</a> and one of our sales representatives will contact you for further assistance:<br>
+    <p>We are pleased to assist you with your shipping request. To help us serve you more efficiently, please provide the following details to <a href="mailto:quote-form@lacship.com">quote-form@lacship.com</a> and one of our sales representatives will contact you for further assistance:</p>
+    
+    <p>
         • LAC Quote ID#<br>
         • Proof of license/exemption from BIS<br>
         • Cuban Importer Information (Consignee), including:<br>
