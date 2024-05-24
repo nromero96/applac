@@ -113,7 +113,7 @@
 
                                     <div class="col-12">
                                         <div class="text-center">
-                                            <p class="mb-0">{{ __("Dont't have an account?") }} <a href="{{ route('register') }}" class="text-warning">{{ __("Register") }}</a></p>
+                                            <p class="mb-0">{{ __("Don't have an account?") }} <a href="{{ route('register') }}" class="text-warning">{{ __("Register") }}</a></p>
                                         </div>
                                     </div>
 

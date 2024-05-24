@@ -755,6 +755,13 @@ span {
   background-size: 60% 60%;
 }
 
+.qtrating .star {
+  display: inline-block;
+  width: 15px;
+  margin-left: -2px;
+  margin-right: -2px;
+}
+
 /*      Custom Select       */
 
 .form-select {

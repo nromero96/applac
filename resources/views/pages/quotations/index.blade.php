@@ -130,29 +130,35 @@
 
                                             @if($quotation->quotation_assigned_user_id == null)
 
-                                                <a class="badge badge-primary text-start me-2 action-edit" href="{{ route('assignQuoteForMe', $quotation->quotation_id) }}">
+                                                {{-- <a class="badge badge-primary text-start me-2 action-edit" href="{{ route('assignQuoteForMe', $quotation->quotation_id) }}">
                                                     {{ __('Make') }}
-                                                </a>
+                                                </a> --}}
+
+                                                {{ __('No asigned') }}
                                                 
                                             @else
                                                 @if ($quotation->quotation_assigned_user_id == Auth::user()->id)
-                                                    <span class="badge badge-light-success">{{ __('You') }}</span>
+                                                    <span class="badge badge-light-success">{{ __('You were assigned') }}</span>
                                                 @else
-                                                    <span class="badge badge-light-danger">{{ __('Other') }}</span>
+                                                    <span class="badge badge-light-danger">{{ __('Other user assigned') }}</span>
                                                 @endif
                                             @endif
 
                                         @endif
 
                                     </td>
-                                    <td>
+                                    <td class="p-1 text-center">
                                         {{-- Rating aleatorio --}}
-                                        @php
-                                            $rating = rand(1, 5);
-                                        @endphp
-                                        @for ($i = 0; $i < $rating; $i++)
-                                                <span class="star">*</span>
-                                        @endfor
+                                        <div class="qtrating">
+                                            @for ($i = 0; $i < $quotation->quotation_rating; $i++)
+                                                    <span class="star">
+                                                        <svg width="17" height="17" fill="#edb10c" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                        </svg>
+                                                    </span>
+                                            @endfor
+                                        </div>
+
                                     </td>
                                     @endif
 

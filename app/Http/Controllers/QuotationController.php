@@ -50,6 +50,7 @@ class QuotationController extends Controller
                 DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
                 'quotations.status as quotation_status',
                 'quotations.service_type as quotation_service_type',
+                'quotations.rating as quotation_rating',
                 'oc.name as origin_country',
                 'dc.name as destination_country',
                 'quotations.assigned_user_id as quotation_assigned_user_id',
@@ -81,6 +82,7 @@ class QuotationController extends Controller
                 DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
                 'quotations.status as quotation_status',
                 'quotations.service_type as quotation_service_type',
+                'quotations.rating as quotation_rating',
                 'oc.name as origin_country',
                 'dc.name as destination_country',
                 'quotations.assigned_user_id as quotation_assigned_user_id',
@@ -638,6 +640,14 @@ class QuotationController extends Controller
                     }
                     
                 }
+            }
+
+            // Calificar la cotización
+            try {
+                $rating = rateQuotation($quotation_id);
+                Log::info('Quote ' . $quotation_id . ' rated with ' . $rating . ' stars.');
+            } catch (\Exception $e) {
+                Log::error('Quote rating error ' . $quotation_id . ' - ' . $e->getMessage());
             }
 
             return response()->json(['success' => true]);
