@@ -51,7 +51,7 @@
     </style>
 </head>
 <body style="background-color: #E0E0E0;">
-    <div>&nbsp;</div>
+    <br>
     <table class="container" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 8px;">
         <tr class="header" style="text-align: center; padding: 0;">
             <td>

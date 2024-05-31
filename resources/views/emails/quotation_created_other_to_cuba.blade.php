@@ -394,5 +394,5 @@
             </tr>
         </table>
     </div>
-
+    <br>
 @endsection

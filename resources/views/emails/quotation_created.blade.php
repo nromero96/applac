@@ -53,8 +53,7 @@
                 </td>
             </tr>
             <tr>
-
-                @if ($quotation->service_type === 'Door-to-Door')
+                @if($quotation->service_type === 'Door-to-Door')
                     <td>
                         <b>Origin Country:</b> {{ $origin_country_name }}<br>
                         <b>Origin Address:</b> {{ $quotation->origin_address }}<br>
@@ -82,92 +81,92 @@
                         <b>Destination Airport:</b> {{ $quotation->destination_airportorport }}<br>
                     </td>
                 @elseif ($quotation->service_type === 'Airport-to-Door')
-                <td>
-                    <b>Origin Country:</b> {{ $origin_country_name }}<br>
-                    <b>Origin Airport:</b> {{ $quotation->origin_airportorport }}<br>
-                </td>
-                <td>
-                    <b>Destination Country:</b> {{ $destination_country_name }}<br>
-                    <b>Destination Address:</b> {{ $quotation->destination_address }}<br>
-                    <b>Destination City:</b> {{ $quotation->destination_city }}<br>
-                    <b>Destination State/Province:</b> {{ $destination_state_name }}<br>
-                    <b>Destination Zip Code:</b> {{ $quotation->destination_zip_code }}<br>
-                </td>
+                    <td>
+                        <b>Origin Country:</b> {{ $origin_country_name }}<br>
+                        <b>Origin Airport:</b> {{ $quotation->origin_airportorport }}<br>
+                    </td>
+                    <td>
+                        <b>Destination Country:</b> {{ $destination_country_name }}<br>
+                        <b>Destination Address:</b> {{ $quotation->destination_address }}<br>
+                        <b>Destination City:</b> {{ $quotation->destination_city }}<br>
+                        <b>Destination State/Province:</b> {{ $destination_state_name }}<br>
+                        <b>Destination Zip Code:</b> {{ $quotation->destination_zip_code }}<br>
+                    </td>
                 @elseif ($quotation->service_type === 'Airport-to-Airport')
-                <td>
-                    <b>Origin Country:</b> {{ $origin_country_name }}<br>
-                    <b>Origin Airport:</b> {{ $quotation->origin_airportorport }}<br>
-                </td>
-                <td>
-                    <b>Destination Country:</b> {{ $destination_country_name }}<br>
-                    <b>Destination Airport:</b> {{ $quotation->destination_airportorport }}<br>
-                </td>
+                    <td>
+                        <b>Origin Country:</b> {{ $origin_country_name }}<br>
+                        <b>Origin Airport:</b> {{ $quotation->origin_airportorport }}<br>
+                    </td>
+                    <td>
+                        <b>Destination Country:</b> {{ $destination_country_name }}<br>
+                        <b>Destination Airport:</b> {{ $quotation->destination_airportorport }}<br>
+                    </td>
                 @elseif ($quotation->service_type === 'Door-to-CFS/Port')
-                <td>
-                    <b>Origin Country:</b> {{ $origin_country_name }}<br>
-                    <b>Origin Address:</b> {{ $quotation->origin_address }}<br>
-                    <b>Origin City:</b> {{ $quotation->origin_city }}<br>
-                    <b>Origin State/Province:</b> {{ $origin_state_name }}<br>
-                    <b>Origin Zip Code:</b> {{ $quotation->origin_zip_code }}<br>
-                </td>
-                <td>
-                    <b>Destination Country:</b> {{ $destination_country_name }}<br>
-                    <b>Destination CFS/Port:</b> {{ $quotation->destination_airportorport }}<br>
-                </td>
+                    <td>
+                        <b>Origin Country:</b> {{ $origin_country_name }}<br>
+                        <b>Origin Address:</b> {{ $quotation->origin_address }}<br>
+                        <b>Origin City:</b> {{ $quotation->origin_city }}<br>
+                        <b>Origin State/Province:</b> {{ $origin_state_name }}<br>
+                        <b>Origin Zip Code:</b> {{ $quotation->origin_zip_code }}<br>
+                    </td>
+                    <td>
+                        <b>Destination Country:</b> {{ $destination_country_name }}<br>
+                        <b>Destination CFS/Port:</b> {{ $quotation->destination_airportorport }}<br>
+                    </td>
                 @elseif ($quotation->service_type === 'CFS/Port-to-Door')
-                <td>
-                    <b>Origin Country:</b> {{ $origin_country_name }}<br>
-                    <b>Origin CFS/Port:</b> {{ $quotation->origin_airportorport }}<br>
-                </td>
-                <td>
-                    <b>Destination Country:</b> {{ $destination_country_name }}<br>
-                    <b>Destination Address:</b> {{ $quotation->destination_address }}<br>
-                    <b>Destination City:</b> {{ $quotation->destination_city }}<br>
-                    <b>Destination State/Province:</b> {{ $destination_state_name }}<br>
-                    <b>Destination Zip Code:</b> {{ $quotation->destination_zip_code }}<br>
-                </td>
+                    <td>
+                        <b>Origin Country:</b> {{ $origin_country_name }}<br>
+                        <b>Origin CFS/Port:</b> {{ $quotation->origin_airportorport }}<br>
+                    </td>
+                    <td>
+                        <b>Destination Country:</b> {{ $destination_country_name }}<br>
+                        <b>Destination Address:</b> {{ $quotation->destination_address }}<br>
+                        <b>Destination City:</b> {{ $quotation->destination_city }}<br>
+                        <b>Destination State/Province:</b> {{ $destination_state_name }}<br>
+                        <b>Destination Zip Code:</b> {{ $quotation->destination_zip_code }}<br>
+                    </td>
                 @elseif ($quotation->service_type === 'CFS/Port-to-CFS/Port')
-                <td>
-                    <b>Origin Country:</b> {{ $origin_country_name }}<br>
-                    <b>Origin CFS/Port:</b> {{ $quotation->origin_airportorport }}<br>
-                </td>
-                <td>
-                    <b>Destination Country:</b> {{ $destination_country_name }}<br>
-                    <b>Destination CFS/Port:</b> {{ $quotation->destination_airportorport }}<br>
-                </td>
+                    <td>
+                        <b>Origin Country:</b> {{ $origin_country_name }}<br>
+                        <b>Origin CFS/Port:</b> {{ $quotation->origin_airportorport }}<br>
+                    </td>
+                    <td>
+                        <b>Destination Country:</b> {{ $destination_country_name }}<br>
+                        <b>Destination CFS/Port:</b> {{ $quotation->destination_airportorport }}<br>
+                    </td>
                 @elseif ($quotation->service_type === 'Door-to-Port')
-                <td>
-                    <b>Origin Country:</b> {{ $origin_country_name }}<br>
-                    <b>Origin Address:</b> {{ $quotation->origin_address }}<br>
-                    <b>Origin City:</b> {{ $quotation->origin_city }}<br>
-                    <b>Origin State/Province:</b> {{ $origin_state_name }}<br>
-                    <b>Origin Zip Code:</b> {{ $quotation->origin_zip_code }}<br>
-                </td>
-                <td>
-                    <b>Destination Country:</b> {{ $destination_country_name }}<br>
-                    <b>Destination Port:</b> {{ $quotation->destination_airportorport }}<br>
-                </td>
+                    <td>
+                        <b>Origin Country:</b> {{ $origin_country_name }}<br>
+                        <b>Origin Address:</b> {{ $quotation->origin_address }}<br>
+                        <b>Origin City:</b> {{ $quotation->origin_city }}<br>
+                        <b>Origin State/Province:</b> {{ $origin_state_name }}<br>
+                        <b>Origin Zip Code:</b> {{ $quotation->origin_zip_code }}<br>
+                    </td>
+                    <td>
+                        <b>Destination Country:</b> {{ $destination_country_name }}<br>
+                        <b>Destination Port:</b> {{ $quotation->destination_airportorport }}<br>
+                    </td>
                 @elseif ($quotation->service_type === 'Port-to-Door')
-                <td>
-                    <b>Origin Country:</b> {{ $origin_country_name }}<br>
-                    <b>Origin Port:</b> {{ $quotation->origin_airportorport }}<br>
-                </td>
-                <td>
-                    <b>Destination Country:</b> {{ $destination_country_name }}<br>
-                    <b>Destination Address:</b> {{ $quotation->destination_address }}<br>
-                    <b>Destination City:</b> {{ $quotation->destination_city }}<br>
-                    <b>Destination State/Province:</b> {{ $destination_state_name }}<br>
-                    <b>Destination Zip Code:</b> {{ $quotation->destination_zip_code }}<br>
-                </td>
+                    <td>
+                        <b>Origin Country:</b> {{ $origin_country_name }}<br>
+                        <b>Origin Port:</b> {{ $quotation->origin_airportorport }}<br>
+                    </td>
+                    <td>
+                        <b>Destination Country:</b> {{ $destination_country_name }}<br>
+                        <b>Destination Address:</b> {{ $quotation->destination_address }}<br>
+                        <b>Destination City:</b> {{ $quotation->destination_city }}<br>
+                        <b>Destination State/Province:</b> {{ $destination_state_name }}<br>
+                        <b>Destination Zip Code:</b> {{ $quotation->destination_zip_code }}<br>
+                    </td>
                 @elseif ($quotation->service_type === 'Port-to-Port')
-                <td>
-                    <b>Origin Country:</b> {{ $origin_country_name }}<br>
-                    <b>Origin Port:</b> {{ $quotation->origin_airportorport }}<br>
-                </td>
-                <td>
-                    <b>Destination Country:</b> {{ $destination_country_name }}<br>
-                    <b>Destination Port:</b> {{ $quotation->destination_airportorport }}<br>
-                </td>
+                    <td>
+                        <b>Origin Country:</b> {{ $origin_country_name }}<br>
+                        <b>Origin Port:</b> {{ $quotation->origin_airportorport }}<br>
+                    </td>
+                    <td>
+                        <b>Destination Country:</b> {{ $destination_country_name }}<br>
+                        <b>Destination Port:</b> {{ $quotation->destination_airportorport }}<br>
+                    </td>
                 @endif
             </tr>
             <tr>
@@ -182,14 +181,17 @@
                         <tr>
                             <td style="background: #b80000;color: white; text-align: center;"><b>#</b></td>
                             <td colspan="2"><b>Package</b></td>
-                            <td colspan="4"><b>
+                            <td colspan="4">
+                                <b>
                                 @unless ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL')
                                     Dimensions
                                 @endunless
-                            </b></td>
+                                </b>
+                            </td>
                             <td colspan="3"><b>Weight</b></td>
                             @unless ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL')
-                            <td><b>
+                            <td>
+                                <b>
                                     @if($quotation->mode_of_transport == 'Air')
                                     Total
                                     @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container')
@@ -199,7 +201,8 @@
                                     @elseif ($quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
                                     Total CBM
                                     @endif
-                            </b></td>
+                                </b>
+                            </td>
                             @endunless
                         </tr>
 
@@ -277,13 +280,16 @@
                                     <td><span style="color:#808080;font-weight:bold;">Per piece:</span><br>{{ $cargo_detail['per_piece'] }}</td>
                                     <td><span style="color:#808080;font-weight:bold;">Total:</span><br>{{ $cargo_detail['item_total_weight'] }}</td>
                                     <td><span style="color:#808080;font-weight:bold;">Unit:</span><br>{{ $cargo_detail['weight_unit'] }}</td>
-                                    <td><span style="color:#808080;font-weight:bold;">
-                                        @if ($quotation->mode_of_transport == 'Air')
-                                        Kgs:
-                                        @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
-                                        m³:
-                                        @endif
-                                    </span><br>{{ $cargo_detail['item_total_volume_weight_cubic_meter'] }}</td>
+                                    <td>
+                                        <span style="color:#808080;font-weight:bold;">
+                                            @if ($quotation->mode_of_transport == 'Air')
+                                            Kgs:
+                                            @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
+                                            m³:
+                                            @endif
+                                        </span><br>
+                                        {{ $cargo_detail['item_total_volume_weight_cubic_meter'] }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="5"><span style="color:#808080;font-weight:bold;">Cargo Description:</span> 
