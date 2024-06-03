@@ -35,7 +35,7 @@
     </p>
 
     @if($quotation_documents)
-    <p style="margin-bottom: 0px;"><b>The following files were attached:</b></p>
+    <p style="margin-bottom: 0px; font-size: 15px;font-weight: bold; color: #b80000;"><b>Attached files:</b></p>
     <ul style="margin-top: 2px;padding-left: 0px;list-style: none;">
         @foreach($quotation_documents as $document)
         <li style="margin-left: 0px;">• <a href="{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}">{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}</a></li>
