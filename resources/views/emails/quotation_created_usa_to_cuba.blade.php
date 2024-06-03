@@ -16,8 +16,7 @@
 
     <p style="font-size: 14px; line-height: 1.4;">If you already have a license from the BIS, please send the following information to <a href="mailto:quote-form@lacship.com" style="color: #161515; text-decoration: underline;">quote-form@lacship.com</a> and one of our sales representatives will contact you for further assistance:</p>
 
-    <p style="font-size: 14px; line-height: 1.4;">
-        <ul style="list-style-type: none; padding-left: 0; margin: 0;">
+    <ul style="font-size: 14px; line-height: 1.4; list-style-type: none; padding-left: 0; margin: 0;">
             <li style="margin-left: 0;">• LAC Quote ID #</li>
             <li style="margin-left: 0;">• Proof of license/exemption from BIS</li>
             <li style="margin-left: 0;">• Cuban Importer Information (Consignee), including:</li>
@@ -27,8 +26,7 @@
                 <li style="margin-left: 0;">- Contact</li>
                 <li style="margin-left: 0;">- Telephone Number</li>
             </ul>
-        </ul>
-    </p>
+    </ul>
 
     <p style="background-color: #f8f8f8;padding: 16px;border-radius: 8px;">
         <b>Please note:</b><br>
@@ -384,7 +382,7 @@
                     <b>Declared value: </b> {{ $quotation->declared_value }}<br>
                     <b>Insurance required: </b> {{ $quotation->insurance_required }}<br>
                     <b>Currency: </b> {{ $quotation->currency }}<br>
-                    @if($quotation_documents)
+                    @if(count($quotation_documents) > 0)
                     <p style="margin-bottom: 0px; font-size: 15px;font-weight: bold; color: #b80000;">Attached files:</p>
                         <ul style="margin-top: 2px;padding-left: 0px;list-style: none;">
                             @foreach($quotation_documents as $document)

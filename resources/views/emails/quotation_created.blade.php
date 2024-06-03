@@ -381,7 +381,7 @@
                     <b>Insurance required: </b> {{ $quotation->insurance_required }}<br>
                     <b>Currency: </b> {{ $quotation->currency }}<br>
 
-                    @if($quotation_documents)
+                    @if(count($quotation_documents) > 0)
                     <p style="margin-bottom: 0px; font-size: 15px;font-weight: bold; color: #b80000;">Attached files:</p>
                         <ul style="margin-top: 2px;padding-left: 0px;list-style: none;">
                             @foreach($quotation_documents as $document)

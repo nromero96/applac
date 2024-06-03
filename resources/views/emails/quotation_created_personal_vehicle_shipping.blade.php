@@ -34,8 +34,8 @@
         • Any communication from us will come exclusively from our authorized domains: <a href="https://lacship.com/" style="color: #CC0000; text-decoration: underline;">lacship.com</a> or <a href="https://www.latinamericancargo.com/" style="color: #CC0000; text-decoration: underline;">latinamericancargo.com</a>.
     </p>
 
-    @if($quotation_documents)
-    <p style="margin-bottom: 0px; font-size: 15px;font-weight: bold; color: #b80000;"><b>Attached files:</b></p>
+    @if(count($quotation_documents) > 0)
+    <p style="margin-bottom: 0px; font-size: 15px;font-weight: bold; color: #b80000;">Attached files:</p>
     <ul style="margin-top: 2px;padding-left: 0px;list-style: none;">
         @foreach($quotation_documents as $document)
         <li style="margin-left: 0px;">• <a href="{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}">{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}</a></li>
