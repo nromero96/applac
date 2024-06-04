@@ -48,16 +48,31 @@
         th {
             background-color: #fff;
         }
+
+        /* Reglas específicas para Outlook */
+        @media only screen and (max-width: 600px) {
+            .header img {
+                width: 100% !important;
+                height: auto !important;
+                display: block !important;
+                margin: 0 auto !important;
+            }
+            .header td {
+                text-align: center !important;
+            }
+        }
+
     </style>
 </head>
 <body style="background-color: #E0E0E0;">
     <br>
     <table class="container" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 8px;">
         <tr class="header" style="text-align: center; padding: 0;">
-            <td>
-                <img src="@yield('header_image')" alt="LAC" style="max-width: 600px; width: 100%; height: auto;">
+            <td style="padding: 0; text-align: center;">
+                <img src="@yield('header_image')" alt="LAC" style="display: block; width: 100%; max-width: 600px; height: auto; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
             </td>
         </tr>
+        
         <tr class="content">
             <td style="padding: 0 15px; color: #161515">
                 @yield('content')

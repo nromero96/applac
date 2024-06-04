@@ -28,7 +28,7 @@
             </ul>
     </ul>
 
-    <p style="background-color: #f8f8f8;padding: 16px;border-radius: 8px;">
+    <p style="background-color: #f8f8f8;padding: 16px;border-radius: 8px; font-size: 14px; line-height: 1.4;">
         <b>Please note:</b><br>
         • Be sure to indicate your <b>Quote ID #</b> when communicating with our sales team.<br>
         • To confirm if your request falls under our service scope, please review the following information: <a href="https://www.latinamericancargo.com/service-scope" style="color: #CC0000; text-decoration: underline;">www.latinamericancargo.com/service-scope</a><br>
@@ -363,6 +363,8 @@
                                     Chargeable Weight (Kgs)
                                 </span><br>
                                 {{ $quotation->tota_chargeable_weight }}
+                                @else
+                                    <span style="color:#FFF;font-weight:bold;">N/A</span>
                                 @endif
                             </td>
                         </tr>

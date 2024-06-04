@@ -361,6 +361,8 @@
                                     Chargeable Weight (Kgs)
                                 </span><br>
                                 {{ $quotation->tota_chargeable_weight }}
+                                @else
+                                    <span style="color:#FFF;font-weight:bold;">N/A</span>
                                 @endif
                             </td>
                         </tr>

@@ -27,7 +27,7 @@
 
     <p style="font-size: 14px; line-height: 1.4;">We look forward to hearing back from you.</p>
 
-    <p style="background-color: #f8f8f8;padding: 16px;border-radius: 8px;">
+    <p style="background-color: #f8f8f8;padding: 16px;border-radius: 8px; font-size: 14px; line-height: 1.4;">
         <b>Please note:</b><br>
         • Be sure to indicate your <b>Quote ID #</b> when communicating with our sales team.<br>
         • To learn more about how to ship your vehicle overseas and find answers to frequently asked questions, please visit our <a href="https://www.latinamericancargo.com/faq-personal-vehicle-shipping/" style="color: #CC0000; text-decoration: underline;">FAQ for International Personal Vehicle Shipping</a>.<br>

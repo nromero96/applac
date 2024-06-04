@@ -61,7 +61,6 @@
                 </td>
             </tr>
             <tr>
-
                 @if ($quotation->service_type === 'Door-to-Door')
                     <td>
                         <b>Origin Country:</b> {{ $origin_country_name }}<br>
@@ -222,14 +221,14 @@
                             <tr>
                                 <td width="33px" rowspan="@if($cargo_detail['details_shipment'] != '') 2 @else 1 @endif" style="background: #b80000;color: white; text-align: center;">#{{ $numerations }}</td>
                                 @if ($quotation->cargo_type == 'FTL')
-                                    <td>
-                                        <span style="color:#808080;font-weight:bold;">Trailer Type:</span><br>
-                                        {{ $cargo_detail['package_type'] }}
-                                    </td>
-                                    <td><span style="color:#808080;font-weight:bold;"># of Trailers:</span><br>{{ $cargo_detail['qty'] }}</td>
+                                <td>
+                                    <span style="color:#808080;font-weight:bold;">Trailer Type:</span><br>
+                                    {{ $cargo_detail['package_type'] }}
+                                </td>
+                                <td><span style="color:#808080;font-weight:bold;"># of Trailers:</span><br>{{ $cargo_detail['qty'] }}</td>
                                 @elseif ($quotation->cargo_type == 'FCL')
-                                    <td><span style="color:#808080;font-weight:bold;">Container Type:</span><br>{{ $cargo_detail['package_type'] }}</td>
-                                    <td><span style="color:#808080;font-weight:bold;"># of Containers:</span><br>{{ $cargo_detail['qty'] }}</td>
+                                <td><span style="color:#808080;font-weight:bold;">Container Type:</span><br>{{ $cargo_detail['package_type'] }}</td>
+                                <td><span style="color:#808080;font-weight:bold;"># of Containers:</span><br>{{ $cargo_detail['qty'] }}</td>
                                 @endif
                                 <td colspan="4">
 
@@ -291,7 +290,8 @@
                                         @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
                                         m³:
                                         @endif
-                                    </span><br>{{ $cargo_detail['item_total_volume_weight_cubic_meter'] }}</td>
+                                    </span><br>{{ $cargo_detail['item_total_volume_weight_cubic_meter'] }}
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="5"><span style="color:#808080;font-weight:bold;">Cargo Description:</span> 
@@ -363,6 +363,8 @@
                                     Chargeable Weight (Kgs)
                                 </span><br>
                                 {{ $quotation->tota_chargeable_weight }}
+                                @else
+                                    <span style="color:#FFF;font-weight:bold;">N/A</span>
                                 @endif
                             </td>
                         </tr>
