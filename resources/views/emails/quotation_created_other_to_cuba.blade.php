@@ -38,7 +38,7 @@
 
     <p style="font-size: 14px; line-height: 1.4;"><b>Your request details:</b></p>
 
-    <div style="background: #f8f8f8;padding: 16px;border: 1px solid gainsboro;border-radius: 8px;">
+    <div class="contdetail" style="background: #f8f8f8;padding: 16px;border: 1px solid gainsboro;border-radius: 8px;">
         <table style="width: 100%;font-size: 14px;">
             <tr>
                 <td colspan="2">
@@ -386,12 +386,12 @@
                     <b>Currency: </b> {{ $quotation->currency }}<br>
 
                     @if(count($quotation_documents) > 0)
-                    <p style="margin-bottom: 0px; font-size: 15px;font-weight: bold; color: #b80000;">Attached files:</p>
-                    <ul style="margin-top: 2px;padding-left: 0px;list-style: none;">
-                        @foreach($quotation_documents as $document)
-                        <li style="margin-left: 0px;">• <a href="{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}">{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}</a></li>
-                        @endforeach
-                    </ul>
+                        <p style="margin-bottom: 0px; font-size: 15px; font-weight: bold; color: #b80000;">Attached files:</p>
+                        <ul style="font-size: 14px; line-height: 1.4; margin-top: 2px; padding-left: 0px; list-style: none;">
+                            @foreach($quotation_documents as $index => $document)
+                                <li style="margin-left: 0px;">• <a href="{{ asset('storage/uploads/quotation_documents').'/'. $document['document_path'] }}">Attachment {{ $index + 1 }}</a></li>
+                            @endforeach
+                        </ul>
                     @endif
 
                 </td>

@@ -13,11 +13,10 @@
         }
         .container {
             width: 100%;
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
             background-color: #E0E0E0;
             padding: 0;
-            border-radius: 8px;
         }
         .header {
             text-align: center;
@@ -29,15 +28,7 @@
             color: #fff;
             padding: 20px;
         }
-        .button {
-            background-color: #3490dc;
-            color: #fff;
-            padding: 10px 20px;
-            text-decoration: none;
-            border-radius: 5px;
-            display: inline-block;
-            margin: 20px 0;
-        }
+
         table {
             border-collapse: collapse;
             width: 100%;
@@ -49,30 +40,35 @@
             background-color: #fff;
         }
 
-        /* Reglas específicas para Outlook */
         @media only screen and (max-width: 600px) {
-            .header img {
+            body{
+                background-color: #fff !important;
+            }
+            .spacehdr{
+                display: none !important;
+            }
+            .imgbannerdesk{
+                display: none !important;
+            }
+
+            .imgbannermobil{
                 width: 100% !important;
-                height: auto !important;
                 display: block !important;
                 margin: 0 auto !important;
-            }
-            .header td {
-                text-align: center !important;
             }
         }
 
     </style>
 </head>
 <body style="background-color: #E0E0E0;">
-    <br>
-    <table class="container" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 8px;">
+    <br class="spacehdr">
+    <img class="imgbannermobil" src="@yield('header_image')" alt="LAC" style="display: none; max-width: 650px; height: auto; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+    <table class="container" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 650px; margin: 0 auto; background-color: #fff; padding: 20px;">
         <tr class="header" style="text-align: center; padding: 0;">
-            <td style="padding: 0; text-align: center;">
-                <img src="@yield('header_image')" alt="LAC" style="display: block; width: 100%; max-width: 600px; height: auto; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+            <td style="text-align: center; padding: 0;">
+                <img class="imgbannerdesk" src="@yield('header_image')" alt="LAC" style="display: block; max-width: 650px; height: auto; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
             </td>
         </tr>
-        
         <tr class="content">
             <td style="padding: 0 15px; color: #161515">
                 @yield('content')
