@@ -13,7 +13,7 @@
         }
         .container {
             width: 100%;
-            max-width: 650px;
+            max-width: 630px;
             margin: 0 auto;
             background-color: #E0E0E0;
             padding: 0;
@@ -41,7 +41,7 @@
         }
 
         @media only screen and (max-width: 600px) {
-            body{
+            body, .container{
                 background-color: #fff !important;
             }
             .spacehdr{
@@ -62,11 +62,11 @@
 </head>
 <body style="background-color: #E0E0E0;">
     <br class="spacehdr">
-    <img class="imgbannermobil" src="@yield('header_image')" alt="LAC" style="display: none; max-width: 650px; height: auto; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
-    <table class="container" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 650px; margin: 0 auto; background-color: #fff; padding: 20px;">
+    <img class="imgbannermobil" src="@yield('header_image')" alt="LAC" style="display: none; max-width: 630px; height: auto; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+    <table class="container" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 630px; margin: 0 auto; background-color: #fff; padding: 20px;">
         <tr class="header" style="text-align: center; padding: 0;">
             <td style="text-align: center; padding: 0;">
-                <img class="imgbannerdesk" src="@yield('header_image')" alt="LAC" style="display: block; max-width: 650px; height: auto; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
+                <img class="imgbannerdesk" src="@yield('header_image')" alt="LAC" style="display: block; max-width: 630px; height: auto; border: 0; outline: none; text-decoration: none; -ms-interpolation-mode: bicubic;">
             </td>
         </tr>
         <tr class="content">
