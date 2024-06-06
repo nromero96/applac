@@ -7,18 +7,18 @@
 @section('content')
     <p style="font-size: 14px; line-height: 1.4;">Dear {{$name}} {{$lastname}},</p>
 
-    <p style="font-size: 14px; line-height: 1.4;">Thank you for your interest in shipping with LAC. Having the right partner for your logistics needs is essential to your transportation strategy.</p>
+    <p style="font-size: 14px; line-height: 1.4;">Thank you for your interest in shipping with LAC. Partnering with the right logistics provider is essential to your transportation strategy.</p>
     
-    <p style="font-size: 14px; line-height: 1.4;"><b>Your quote request is currently under review.</b> Our sales team aims to respond within two business days.</p>
+    <p style="font-size: 14px; line-height: 1.4;"><b>Your quote request is under review, and our sales team will aim to respond within two business days.</p>
 
     <p style="font-size: 14px; line-height: 1.4;"><b style="color: #CC0000;">Your Quote ID #: {{ $quotation->id }}</b></p>
 
     <p style="font-size: 14px; line-height: 1.4;">
-        At <b>LAC</b>, we believe in the power of specialization to drive success. With more than 25 years connecting the world with Latin America, we simplify your logistics, allowing you to focus on growing your business and thrive.
+        At <b>LAC</b>, we believe in the power of specialization to drive success. With over 25 years of experience in connecting the world with Latin America, we streamline your logistics, allowing you to focus on growing your business.
     </p>
 
     <p style="font-size: 14px; line-height: 1.4;">
-        To know more about the LAC advantage, visit <a href="https://www.latinamericancargo.com/" style="color: #CC0000; text-decoration: underline;">latinamericancargo.com</a>
+        Learn more about the LAC advantage by visiting <a href="https://www.latinamericancargo.com/" style="color: #CC0000; text-decoration: underline;">latinamericancargo.com</a>
     </p>
 
     <p style="background-color: #F8F8F8;padding: 16px;border-radius: 8px; font-size: 14px; line-height: 1.4;">

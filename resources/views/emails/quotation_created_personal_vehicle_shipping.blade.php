@@ -8,7 +8,7 @@
 
     <p style="font-size: 14px; line-height: 1.4;">Dear {{$name}} {{$lastname}},</p>
 
-    <p style="font-size: 14px; line-height: 1.4;">Thank you for your interest in shipping with LAC. Having the right partner for your logistics needs is essential to your transportation strategy.</p>
+    <p style="font-size: 14px; line-height: 1.4;">Thank you for your interest in shipping with LAC. Partnering with the right logistics provider is essential to your transportation strategy.</p>
     
     <p style="font-size: 14px; line-height: 1.4;"><b>Please find attached our estimated quote to ship your Automobile/Motorcycle/ATV to {{ $destination_country_name }} - {{ $quotation->destination_airportorport }}.</b></p>
 
