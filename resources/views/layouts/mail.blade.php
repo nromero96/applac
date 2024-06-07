@@ -100,7 +100,7 @@
             </td>
         </tr>
         <tr class="content">
-            <td style="padding: 0 15px; color: #161515">
+            <td style="padding: 7px 15px; color: #161515">
                 @yield('content')
             </td>
         </tr>
@@ -117,13 +117,13 @@
                     </tr>
                     <tr>
                         <td style="padding: 0px 14px; text-align: left;">
-                            <b><a href="https://www.latinamericancargo.com/request-shipping-quote/" class="getaquote" style="color:#D2CDC5; font-size: 14px; line-height: 1.5;text-decoration: underline;margin-right: 10px;">Get a Quote</a> <a href="https://quemtr.webtracker.wisegrid.net/Login/Login.aspx?ReturnUrl=%2fDefault.aspx" class="trackcarg" style="color:#D2CDC5; font-size: 14px; line-height: 1.5; text-decoration: underline;">Track your Shipment</a></b>
+                            <b><a href="https://www.latinamericancargo.com/request-shipping-quote/" class="getaquote" style="color:#D2CDC5; font-size: 14px; line-height: 1.5;text-decoration: underline;margin-right: 10px;">Get a Quote</a> <a href="https://quemtr.webtracker.wisegrid.net/Login/Login.aspx?ReturnUrl=%2fDefault.aspx" class="trackcarg" style="color:#D2CDC5; font-size: 14px; line-height: 1.5; text-decoration: underline;">Track a Shipment</a></b>
                         </td>
                         <td style="padding: 0px 14px; text-align: right;">
                             <table>
                                 <tr>
                                     <td style="padding: 0px 3px 4px;">
-                                        <b class="coneus" style="color:#D2CDC5; font-size: 14px; line-height: 1.5;">Connect with us</b>
+                                        <b class="coneus" style="color:#D2CDC5; font-size: 14px; line-height: 1.5;">Follow us</b>
                                     </td>
                                     <td class="redsocia" style="width: 95px;">
                                         <a href="https://www.linkedin.com/company/latin-american-cargo/" style="color:#D2CDC5; font-size: 14px; line-height: 1.5; text-decoration: none; margin: 0px 2px 0px;"><img src="https://app.latinamericancargo.com/assets/img/mlg_linkedIn_white.png" alt="LinkedIn" style="width: 24px; height: 24px;"></a>

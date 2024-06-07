@@ -9,7 +9,7 @@
 
     <p style="font-size: 14px; line-height: 1.4;">Thank you for your interest in shipping with LAC. Partnering with the right logistics provider is essential to your transportation strategy.</p>
     
-    <p style="font-size: 14px; line-height: 1.4;"><b>Your quote request is under review, and our sales team will aim to respond within two business days.</p>
+    <p style="font-size: 14px; line-height: 1.4;"><b>Your quote request is under review, and our sales team will aim to respond within two business days.</b></p>
 
     <p style="font-size: 14px; line-height: 1.4;"><b style="color: #CC0000;">Your Quote ID #: {{ $quotation->id }}</b></p>
 
