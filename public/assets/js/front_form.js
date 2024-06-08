@@ -82,6 +82,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const destination_country_id = document.getElementById('destination_country_id');
         const destination_country_id_error = document.getElementById('destination_country_id_error');
     
+        //data cargo details
+        const shipping_date = document.getElementById('shipping_date');
+        const no_shipping_date = document.getElementById('no_shipping_date');
+        const shipping_date_error = document.getElementById('shipping_date_error');
+
+        const declared_value = document.getElementById('declared_value');
+        const declared_value_error = document.getElementById('declared_value_error');
 
         //data contact
         const contact_name = document.getElementById('name');
@@ -143,7 +150,19 @@ document.addEventListener('DOMContentLoaded', function () {
     
         } else if (step === '#defaultStep-three') {
 
-            stepperWizardDefault.querySelector('[data-target="#defaultStep-three"]').classList.add('st-complete');
+            if (shipping_date.value === '' && no_shipping_date.checked === false) {
+                shipping_date.focus();
+                shipping_date_error.textContent = 'Required shipping date.';
+                return false;
+            }
+
+            if (declared_value.value === '') {
+                declared_value.focus();
+                declared_value_error.textContent = 'Required declared value.';
+                return false;
+            }else {
+                stepperWizardDefault.querySelector('[data-target="#defaultStep-three"]').classList.add('st-complete');
+            }
 
         } else if (step === '#defaultStep-four') {
 

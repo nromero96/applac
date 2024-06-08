@@ -636,12 +636,12 @@
 
                                         <div class="row">
                                             <div class="col-md-6 mb-2">
-                                                <label for="email" class="form-label mb-0">{{ __('Company email') }} <span class="text-danger">*</span></label>
+                                                <label for="email" class="form-label mb-0" id="labelemail">{{ __('Company email') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="email" id="email" class="form-control" @auth value="{{ Auth::user()->email }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="email_error"></div>
                                             </div>
                                             <div class="col-md-6 mb-2">
-                                                <label for="confirm_email" class="form-label mb-0">{{ __('Confirm company email') }} <span class="text-danger">*</span></label>
+                                                <label for="confirm_email" class="form-label mb-0" id="labelconfirm_email">{{ __('Confirm company email') }} <span class="text-danger">*</span></label>
                                                 <input type="text" name="confirm_email" id="confirm_email" class="form-control" @auth value="{{ Auth::user()->email }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="confirm_email_error"></div>
                                             </div>
@@ -1862,7 +1862,7 @@
         //if click in no_shipping_date checkbox readonly shipping_date and delete value
         $(document).on('click', 'input[name="no_shipping_date"]', function() {
             var $shippingDateInput = $('#shipping_date');
-            
+            var shipping_date_error = document.getElementById('shipping_date_error').innerHTML = '';
             if ($(this).is(':checked')) {
                 //f3.clear();
                 //f3.destroy();
@@ -1907,13 +1907,19 @@
 
         var cargoTypeRadios = document.querySelectorAll('input[name="cargo_type"]');
         var infoCompany = document.getElementById('info_company');
+        var labelemail = document.getElementById('labelemail');
+        var labelconfirm_email = document.getElementById('labelconfirm_email');
 
         cargoTypeRadios.forEach(function(radio) {
             radio.addEventListener('click', function() {
                 if (this.value === 'Personal Vehicle') {
                     infoCompany.classList.add('d-none'); // Agrega la clase 'tu-clase' a info_company
+                    labelemail.innerHTML = 'Email';
+                    labelconfirm_email.innerHTML = 'Confirm email';
                 } else {
                     infoCompany.classList.remove('d-none'); // Elimina la clase 'tu-clase' de info_company
+                    labelemail.innerHTML = 'Company email';
+                    labelconfirm_email.innerHTML = 'Confirm company email';
                 }
 
                 infoCompany.querySelectorAll('input').forEach(function(input) {
