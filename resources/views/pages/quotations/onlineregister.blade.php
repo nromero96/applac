@@ -1060,7 +1060,7 @@
                                     '<select class="form-select" name="package_type[]">' +
                                         listpackage +
                                     '</select>' +
-                                    '<small class="text-danger msg_pcktype"></small>'+
+                                    '<small class="msg_pcktype"></small>'+
                                 '</div>' +
                                 '<div class="col-md-3 ps-sm-1 mb-2">' +
                                     '<label class="form-label mb-0">Qty</label>' +
@@ -1629,13 +1629,13 @@
             const selectedValue = $(this).val();
             if(selectedValue === 'Boat / Jet Ski (loaded on trailer)'){
                 //add text in class msg_pcktype
-                $(this).closest('.itemdetail').find('.msg_pcktype').text('Only boats/jet skis on trailers accepted');
+                $(this).closest('.itemdetail').find('.msg_pcktype').html('Only boats/jet skis on trailers accepted');
             }else if(selectedValue === 'Motorcycle (crated or palletized) / ATV'){
                 //add text in class msg_pcktype
-                $(this).closest('.itemdetail').find('.msg_pcktype').text('Only crated or palletized motorcycles accepted');
+                $(this).closest('.itemdetail').find('.msg_pcktype').html('Please note we only accept crated or palletized motorcyles. <a href="https://www.latinamericancargo.com/faq-personal-vehicle-shipping/" target="_blank">More info in our FAQ</a>');
             }else{
                 //remove text in class msg_pcktype
-                $(this).closest('.itemdetail').find('.msg_pcktype').text('');
+                $(this).closest('.itemdetail').find('.msg_pcktype').html('');
             }
 
             //if cargo_type selected is FTL or FCL
