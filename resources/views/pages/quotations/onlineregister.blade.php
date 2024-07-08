@@ -4,32 +4,97 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    
+    {{-- CSRF Token --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Commercial Cargo | Quotation | LAC</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon.ico') }}"/>
+    
+    <title>Get a Freight Shipping Quote | LAC - Latin American Cargo</title>
+
+    <!-- SEO -->
+    <meta name="title" content="Get a Freight Shipping Quote | LAC - Latin American Cargo">
+    <meta name="description" content="Get competitive freight shipping quotes for LTL, FTL, ocean, air, breakbulk, and RORO. Ship your cargo worldwide with ease. Request your free quote today!">
+    <meta name="keywords" content="freight shipping, freight quote, shipping quote, cargo shipping, international shipping, LTL, FTL, ocean shipping, air shipping, breakbulk shipping, RORO shipping">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="author" content="LAC - Latin American Cargo">
+    <meta name="publisher" content="LAC - Latin American Cargo">
+    <meta name="url" content="https://www.latinamericancargo.com/">
+    <meta name="canonical" content="https://www.latinamericancargo.com/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:title" content="Get a Freight Shipping Quote | LAC - Latin American Cargo">
+    <meta property="og:description" content="Get competitive freight shipping quotes for LTL, FTL, ocean, air, breakbulk, and RORO. Ship your cargo worldwide with ease. Request your free quote today!">
+    <meta property="og:image" content="{{ asset('assets/img/Get-a-Freight-Shipping-Quote-LAC-LatinAmericanCargo.jpg') }}">
+    <meta property="og:url" content="https://www.latinamericancargo.com/">
+    <meta property="og:site_name" content="LAC - Latin American Cargo">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://www.latinamericancargo.com/">
+    <meta property="twitter:title" content="Get a Freight Shipping Quote | LAC - Latin American Cargo">
+    <meta property="twitter:description" content="Get competitive freight shipping quotes for LTL, FTL, ocean, air, breakbulk, and RORO. Ship your cargo worldwide with ease. Request your free quote today!">
+    <meta property="twitter:image" content="{{ asset('assets/img/Get-a-Freight-Shipping-Quote-LAC-LatinAmericanCargo.jpg') }}">
+
+    <!-- Icons -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('assets/img/android-chrome-192x192.png') }}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('assets/img/android-chrome-512x512.png') }}">
+    <link rel="manifest" href="{{ asset('assets/img/site.webmanifest') }}">
+
+    <!-- Color Theme -->
+    <meta name="theme-color" content="#B80000">
+    <meta name="msapplication-navbutton-color" content="#B80000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  
     
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap" rel="stylesheet">
+
+    <!--
     <link href="https://fonts.googleapis.com/css2?family=Kanit&amp;family=Nunito:wght@400;600;700&amp;display=swap" rel="stylesheet">
-
+    -->
     <link href="{{ asset('assets/css/light/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
-    
     <link href="{{ asset('assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css">
-    
     <link href="{{ asset('plugins/src/flatpickr/flatpickr.css') }}" rel="stylesheet" type="text/css" />
-    
     <link href="{{ asset('plugins/src/stepper/bsStepper.min.css') }}" rel="stylesheet" type="text/css" />
-    
     <link href="{{ asset('plugins/src/filepond/filepond.min.css') }}" rel="stylesheet" type="text/css" >
-    
     <link href="{{ asset('plugins/src/filepond/FilePondPluginImagePreview.min.css') }}" rel="stylesheet" type="text/css">
-    
     <link href="{{ asset('plugins/src/intl-tel-input/css/intlTelInput.min.css') }}" rel="stylesheet" type="text/css">
-
     <link href="{{ asset('assets/css/light/front_form.css') }}" rel="stylesheet" type="text/css" />
+
+
+    @if(app()->environment('production'))
+        <!-- Google Tag Manager -->
+            <script>
+                (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+                new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+                j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+                'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window,document,'script','dataLayer','GTM-WZZNWFDJ');
+            </script>
+        <!-- End Google Tag Manager -->
+    @endif
+
+
 
 </head>
 <body class="form">
+
+    @if(app()->environment('production'))
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WZZNWFDJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+    @endif
+
 
     <header class="bg-primary py-2 py-sm-3">
         <div class="container">
@@ -52,12 +117,12 @@
                             <a href="{{ route('quotations.index') }}"><img src="{{ asset('storage/uploads/profile_images').'/'. Auth::user()->photo}}" class="rounded-circle"></a>
                         </div>
                     @else
-                        <a href="{{ route('quotations.index') }}" class="btn btn-login rounded-pill bg-white py-2">
-                            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                <path d="M12 3a4 4 0 1 0 0 8 4 4 0 1 0 0-8z"></path>
+                        <a href="{{ route('quotations.index') }}" class="btn btn-login rounded-pill py-2">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M16.6668 17.5V15.8333C16.6668 14.9493 16.3156 14.1014 15.6905 13.4763C15.0654 12.8512 14.2176 12.5 13.3335 12.5H6.66683C5.78277 12.5 4.93493 12.8512 4.30981 13.4763C3.68469 14.1014 3.3335 14.9493 3.3335 15.8333V17.5" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M9.99984 9.16667C11.8408 9.16667 13.3332 7.67428 13.3332 5.83333C13.3332 3.99238 11.8408 2.5 9.99984 2.5C8.15889 2.5 6.6665 3.99238 6.6665 5.83333C6.6665 7.67428 8.15889 9.16667 9.99984 9.16667Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <b>Log In</b>
+                            <b class="text-white">Log In</b>
                         </a>
                     @endauth
 
@@ -165,7 +230,7 @@
                         <div class="widget-header">
                             <div class="row">
                                 <div class="col-xl-12 col-md-12 col-sm-12 col-12 text-center pt-5">
-                                    <h2 class="tit-form">{{ __('Get a Shipping Quote') }}</h2>
+                                    <h2 class="tit-form pb-1 mb-4">{{ __('Get a Shipping Quote') }}</h2>
                                     <p class="tit-form-descrip">{{ __('Fill out the form below to get your international freight quote!') }}</p>
                                     @auth
                                         {{-- No show data --}}
@@ -222,19 +287,19 @@
                                             <div class="col-md-12">
                                                 <div class="row align-items-center justify-content-center radio-options">
                                                     <div class="col text-center">
-                                                        <div class="radio-card p-2">
+                                                        <div class="radio-card py-4 px-2">
                                                             <input type="radio" value="Air" id="option1" name="mode_of_transport" checked />
                                                             <label for="option1" class="mb-0">
                                                                 <div class="radio-icon">
                                                                     <img src="{{ asset('assets/img/60a35f0d358aaa2332423e.png') }}" alt="Opción 1" />
                                                                 </div>
                                                                 <div class="radio-text">Air</div>
-                                                                <div class="radio-sub-text text-white">~</div>
+                                                                <div class="radio-sub-text">Standard/Charter</div>
                                                             </label>
                                                         </div>
                                                     </div>
                                                     <div class="col text-center">
-                                                        <div class="radio-card p-2">
+                                                        <div class="radio-card py-4 px-2">
                                                             <input type="radio" value="Ground" id="option2" name="mode_of_transport" />
                                                             <label for="option2" class="mb-0">
                                                                 <div class="radio-icon">
@@ -246,7 +311,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col text-center">
-                                                        <div class="radio-card p-2">
+                                                        <div class="radio-card py-4 px-2">
                                                             <input type="radio" value="Container" id="option3" name="mode_of_transport" />
                                                             <label for="option3" class="mb-0">
                                                                 <div class="radio-icon">
@@ -258,7 +323,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col text-center">
-                                                        <div class="radio-card p-2">
+                                                        <div class="radio-card py-4 px-2">
                                                             <input type="radio" value="RoRo" id="option4" name="mode_of_transport" />
                                                             <label for="option4" class="mb-0">
                                                                 <div class="radio-icon">
@@ -270,14 +335,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="col text-center">
-                                                        <div class="radio-card p-2">
+                                                        <div class="radio-card py-4 px-2">
                                                             <input type="radio" value="Breakbulk" id="option5" name="mode_of_transport" />
                                                             <label for="option5" class="mb-0">
                                                                 <div class="radio-icon">
                                                                     <img src="{{ asset('assets/img/lac_breakbulk_icon.png') }}" alt="Opción 5" />
                                                                 </div>
                                                                 <div class="radio-text">Breakbulk</div>
-                                                                <div class="radio-sub-text text-white">~</div>
+                                                                <div class="radio-sub-text">OOG/Project Cargo</div>
                                                             </label>
                                                         </div>
                                                     </div>

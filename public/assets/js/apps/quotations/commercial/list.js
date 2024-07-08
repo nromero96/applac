@@ -8,7 +8,7 @@ var invoiceList = $('#invoice-list').DataTable({
         "ordering": false,
     buttons: [
         {
-            text: 'Add New',
+            text: 'New Quote',
             className: 'btn btn-primary',
             action: function(e, dt, node, config ) {
                 window.open(baseurl+'/quotations-onlineregister', '_blank');

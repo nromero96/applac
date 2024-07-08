@@ -252,3 +252,14 @@ getNoteDescriptionInput.addEventListener('input', function() {
   }
 
 })
+
+//on keyup id n-description
+const nDescription = document.getElementById('n-description');
+nDescription.addEventListener('keyup', function() {
+  const nDescriptionLength = document.getElementById('n-description').value.length;
+  if (nDescriptionLength == 1000) {
+    document.getElementById('textmaxlen').classList.remove('d-none');
+  } else {
+    document.getElementById('textmaxlen').classList.add('d-none');
+  }
+});

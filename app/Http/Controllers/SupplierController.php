@@ -104,17 +104,19 @@ class SupplierController extends Controller implements HasMedia
                         $query->where('supplierserviceroutes.destination_city', '=', $destination_city);
                     }
     
-                    // Añade la lógica para la búsqueda de origen y destino
-                    $query->orWhere(function ($query) use ($origin_country_id, $origin_state_id, $origin_city, $destination_country_id, $destination_state_id, $destination_city) {
-                        $query->where('supplierserviceroutes.origin_country', '=', $origin_country_id)
-                            ->where('supplierserviceroutes.destination_country', '=', $destination_country_id)
-                            ->where('supplierserviceroutes.return_route', '=', '1');
-                    })
-                    ->orWhere(function ($query) use ($origin_country_id, $origin_state_id, $origin_city, $destination_country_id, $destination_state_id, $destination_city) {
-                        $query->where('supplierserviceroutes.origin_country', '=', $destination_country_id)
-                            ->where('supplierserviceroutes.destination_country', '=', $origin_country_id)
-                            ->where('supplierserviceroutes.return_route', '=', '1');
-                    });
+                    //Logica para buscar rutas de retorno
+                    if ($return_route == '1') {
+                        $query->orWhere(function ($query) use ($origin_country_id, $origin_state_id, $origin_city, $destination_country_id, $destination_state_id, $destination_city) {
+                            $query->where('supplierserviceroutes.origin_country', '=', $origin_country_id)
+                                ->where('supplierserviceroutes.destination_country', '=', $destination_country_id)
+                                ->where('supplierserviceroutes.return_route', '=', '1');
+                        })
+                        ->orWhere(function ($query) use ($origin_country_id, $origin_state_id, $origin_city, $destination_country_id, $destination_state_id, $destination_city) {
+                            $query->where('supplierserviceroutes.origin_country', '=', $destination_country_id)
+                                ->where('supplierserviceroutes.destination_country', '=', $origin_country_id)
+                                ->where('supplierserviceroutes.return_route', '=', '1');
+                        });
+                    }
                 });
 
                 if ($crossing != '') {

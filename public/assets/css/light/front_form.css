@@ -4,11 +4,11 @@ html {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: "Kanit";
+  font-family: "Kanit", sans-serif;
 }
 
 p {
-  font-family: "Nunito";
+  font-family: "Nunito Sans", sans-serif;
 }
 
 .bg-primary {
@@ -54,8 +54,16 @@ p {
   margin-top: -3px;
 }
 
+.btn-login {
+  transition: all 0.3s ease;
+  color: #ffffff !important;
+}
 .btn-login svg {
   margin-top: -3px;
+  margin-right: 3px;
+}
+.btn-login:hover {
+  text-decoration: underline;
 }
 
 #shipping_date {
@@ -68,7 +76,7 @@ p {
 .ft-form-quote .ft-text-cr {
   color: #909090;
   font-size: 14px;
-  font-family: "Nunito";
+  font-family: "Nunito Sans", sans-serif;
   margin-bottom: 0px;
 }
 
@@ -136,7 +144,7 @@ p {
 }
 
 .msg-info {
-  font-family: "Nunito";
+  font-family: "Nunito Sans", sans-serif;
   font-size: 14px;
 }
 
@@ -188,12 +196,14 @@ p {
 .radio-card {
   background: #ffffff;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 4px;
+  border-radius: 8px;
+  border: 1px solid transparent;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  font-family: "Nunito";
+  font-family: "Nunito Sans", sans-serif;
+  transition: border-color 0.5s, opacity 0.5s;
 }
 .radio-card .radio-icon img {
   width: 32px;
@@ -204,10 +214,15 @@ p {
   margin: 0 auto;
   width: 20px;
   height: 20px;
-  border: 1px solid #D8D8D8;
   margin-bottom: 10px;
   accent-color: #B80000;
+  border-radius: 50%;
   cursor: pointer;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  box-shadow: 0 0 0 1px #D8D8D8;
+  transition: 0.1s;
 }
 .radio-card .radio-text {
   font-style: normal;
@@ -229,6 +244,41 @@ p {
   cursor: pointer;
 }
 
+.radio-card.active {
+  border-color: #B80000;
+  opacity: 1;
+}
+
+.radio-card input[type=radio]:before {
+  content: "";
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.radio-card:hover input[type=radio] {
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  box-shadow: 0 0 0 1px #B80000;
+  border-radius: 50%;
+}
+
+.radio-card.active input[type=radio] {
+  -webkit-appearance: auto !important;
+     -moz-appearance: auto !important;
+          appearance: auto !important;
+  box-shadow: 0 0 0 1px transparent;
+}
+
+.radio-card:hover input[type=radio]:before {
+  box-shadow: 0px 0px 0px 7px rgba(184, 0, 0, 0.07);
+  border-radius: 50%;
+  opacity: 1;
+}
+
 .form-control:disabled:not(.flatpickr-input), .form-control[readonly]:not(.flatpickr-input) {
   color: #7c7c7c;
 }
@@ -239,7 +289,7 @@ p {
 
 .form-label {
   font-style: normal;
-  font-family: "Nunito";
+  font-family: "Nunito Sans", sans-serif;
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
@@ -292,7 +342,7 @@ p {
 
 span.form-label {
   color: #999999;
-  font-family: "Nunito";
+  font-family: "Nunito Sans", sans-serif;
 }
 
 .infototi {
@@ -317,7 +367,7 @@ span.form-label {
   padding: 8px 12px 8px 12px;
   border-radius: 4px;
   border: #D8D8D8 1px solid;
-  font-family: "Nunito";
+  font-family: "Nunito Sans", sans-serif;
 }
 .form-control:focus {
   border-color: #B80000;
@@ -331,7 +381,7 @@ span.form-label {
   padding: 8px 12px 8px 12px;
   border-radius: 4px;
   border: #D8D8D8 1px solid;
-  font-family: "Nunito";
+  font-family: "Nunito Sans", sans-serif;
 }
 .form-select:focus {
   border-color: #B80000;
@@ -354,7 +404,7 @@ span.form-label {
 .btn {
   padding: 12px 24px;
   line-height: 21px;
-  font-family: "Nunito";
+  font-family: "Nunito Sans", sans-serif;
 }
 
 .btn-primary {
@@ -467,7 +517,7 @@ span.form-label {
 }
 
 .bs-stepper .line, .bs-stepper-line {
-  background-color: #e0e6ed;
+  background-color: rgba(255, 255, 255, 0);
 }
 
 .bs-stepper-circle {
@@ -500,10 +550,14 @@ span.form-label {
   font-weight: 400;
   height: 1em;
   width: 4.8em;
-  font-family: "Kanit";
+  font-family: "Kanit", sans-serif;
 }
 .bs-stepper .step-trigger:focus {
   color: #595959;
+}
+
+.active .bs-stepper-label {
+  color: #161515;
 }
 
 .active .step-trigger {
@@ -513,7 +567,7 @@ span.form-label {
 .active .bs-stepper-circle {
   background-color: rgba(255, 255, 255, 0);
   color: #B80000;
-  font-family: "Kanit";
+  font-family: "Kanit", sans-serif;
   font-size: 41px;
   font-weight: 400;
   height: 1em;
@@ -522,7 +576,7 @@ span.form-label {
 
 .bs-stepper-label {
   font-weight: bold;
-  font-family: "Nunito";
+  font-family: "Nunito Sans", sans-serif;
 }
 .bs-stepper-label:focus {
   color: #B80000;
@@ -699,7 +753,7 @@ span.form-label {
 .text-info-filedata {
   font-size: 15px;
   color: #999999;
-  font-family: "Nunito";
+  font-family: "Nunito Sans", sans-serif;
   font-weight: 400;
 }
 

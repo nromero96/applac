@@ -399,4 +399,23 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+    const radioCards = document.querySelectorAll('.radio-card input[type="radio"]');
+    const updateCheckedState = () => {
+        radioCards.forEach(radio => {
+            if (radio.checked) {
+                radio.parentNode.classList.add('active');
+            } else {
+                radio.parentNode.classList.remove('active');
+            }
+        });
+    };
+
+    radioCards.forEach(radio => {
+        radio.addEventListener('change', updateCheckedState);
+    });
+
+    // Inicializa el estado al cargar la página
+    updateCheckedState();
+
+
 });

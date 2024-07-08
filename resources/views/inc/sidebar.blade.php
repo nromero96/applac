@@ -6,7 +6,7 @@
             <div class="nav-logo">
                 <div class="nav-item theme-logo">
                     <a href="{{ route('dashboard.index') }}">
-                        <img src="{{ asset('assets/img/logo.svg') }}" class="navbar-logo" alt="logo">
+                        <img src="{{ asset('assets/img/LAC_Latin-American-Cargo_Logo.png') }}" class="navbar-logo" alt="logo">
                     </a>
                 </div>
                 <div class="nav-item theme-text text-center">

@@ -48,6 +48,11 @@
                                     <img src="{{asset('assets/img/logo_white_lac.svg')}}" alt="Latin American Cargo">
                                 </a>
                                 <h2 class="mt-5 text-white font-weight-bolder px-2">{{__('Your best international freight shipping partner to & from Latin America')}}</h2>
+
+                                <div class="mt-5">
+                                    <a href="{{ route('quotations.onlineregister') }}" class="btn-reqoute">{{__('Request a Quote')}}</a>
+                                </div>
+
                             </div>
                         </div>
 

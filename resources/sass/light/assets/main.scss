@@ -11,7 +11,7 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   letter-spacing: 0.0312rem;
-  font-family: 'Nunito', sans-serif;
+  font-family: 'Nunito Sans', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -64,12 +64,59 @@ body.dark .light-element {
 
 }
 
+.btn-reqoute {
+  color: $white;
+  padding: 10px 25px;
+  font-size: 17px;
+  font-weight: 700;
+  border-radius: 40px;
+  border: 2px solid $white;
+  transition: color 0.5s, background 0.5s;
+}
+
+.btn-reqoute:hover {
+  color: #161515;
+  background: $white;
+}
+
 .notelist li{
   line-height: 15px;
     background: #f6ebeb;
     border-radius: 0px 5px 20px 5px;
     padding: 5px 5px;
     margin-bottom: 5px;
+}
+
+.usr-link{
+  display: block;
+  background: #ffffff;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border: 1px solid transparent;
+  padding: 30px 20px;
+  text-align: center;
+  transition: all 0.3s;
+
+  &:hover{
+    border: 1px solid #CC0000;
+  }
+
+  img{
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+
+  span{
+    font-family: 'Kanit', sans-serif;
+    font-size: 19px;
+    line-height: 20px;
+    font-weight: 500;
+    color: #161515;
+  }
+
+
+
 }
 
 .rend-16{

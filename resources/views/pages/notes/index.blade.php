@@ -118,17 +118,17 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="d-flex note-title">
-                                                        <input type="text" name="ntitle" id="n-title" class="form-control" maxlength="25" placeholder="{{__('Title')}}">
+                                                        <input type="text" name="ntitle" id="n-title" class="form-control" maxlength="250" placeholder="{{__('Title')}}">
                                                     </div>
                                                     <span class="validation-text"></span>
                                                 </div>
 
                                                 <div class="col-md-12">
                                                     <div class="d-flex note-description">
-                                                        <textarea name="ndescription" id="n-description" class="form-control" maxlength="60" placeholder="{{__('Description')}}" rows="3"></textarea>
+                                                        <textarea name="ndescription" id="n-description" class="form-control" maxlength="1000" placeholder="{{__('Description')}}" rows="3"></textarea>
                                                     </div>
                                                     <span class="validation-text"></span>
-                                                    <span class="d-inline-block mt-1 text-danger">{{__('Maximum Limit 60 characters')}}</span>
+                                                    <span class="d-inline-block mt-1 text-danger d-none" id="textmaxlen">{{__('Maximum Limit 1000 characters')}}</span>
                                                 </div>
                                             </div>
 

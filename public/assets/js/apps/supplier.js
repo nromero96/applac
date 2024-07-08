@@ -222,7 +222,7 @@ function tagTemplate(tagData) {
         <x title='' class='tagify__tag__removeBtn' role='button' aria-label='remove tag'></x>
         <div>
             <div class='tagify__tag__avatar-wrap'>
-                <img onerror="this.style.visibility='hidden'" src="https://www.latinamericancargo.com/wp-content/themes/lac_tema_2023/assets/res/img/icons/icon-hand.svg">
+                <img onerror="this.style.visibility='hidden'" src="https://www.latinamericancargo.com/wp-content/themes/lac_tema_2023/assets/img/icons/icon-hand.svg">
             </div>
             <span class='tagify__tag-text'>${tagData.name}</span>
         </div>
@@ -237,7 +237,7 @@ function suggestionItemTemplate(tagData) {
         tabindex="0"
         role="option">
         <div class='tagify__dropdown__item__avatar-wrap'>
-            <img onerror="this.style.visibility='hidden'" src="https://www.latinamericancargo.com/wp-content/themes/lac_tema_2023/assets/res/img/icons/icon-hand.svg">
+            <img onerror="this.style.visibility='hidden'" src="https://www.latinamericancargo.com/wp-content/themes/lac_tema_2023/assets/img/icons/icon-hand.svg">
         </div>
         <strong>${tagData.name}</strong>
         <span>${tagData.servicecategory}</span>
