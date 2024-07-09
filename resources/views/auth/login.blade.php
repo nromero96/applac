@@ -171,6 +171,25 @@
     <script src="{{asset('bootstrap/js/bootstrap.bundle.min.js')}}"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
+    <script>
+        (function() {
+            // La versión actual de la aplicación
+            var appVersion = '{{ config('app.version') }}';
+            
+            // La versión almacenada en localStorage
+            var storedVersion = localStorage.getItem('app_version');
+            
+            // Si no hay versión almacenada o la versión almacenada es diferente a la actual
+            if (!storedVersion || storedVersion !== appVersion) {
+                // Borrar solo la clave 'theme' del localStorage
+                localStorage.removeItem('theme');
+                
+                // Almacenar la nueva versión en localStorage
+                localStorage.setItem('app_version', appVersion);
+            }
+        })();
+    </script>
+
 
 </body>
 </html>
