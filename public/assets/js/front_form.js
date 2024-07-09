@@ -7,6 +7,39 @@ document.addEventListener('DOMContentLoaded', function () {
     var dv_options_best = document.getElementById('options_best');
     var dv_options_best_personal = document.getElementById('options_best_personal');
 
+    // Función para cambiar la URL y enviar evento a GTM
+    function changeURLAndSendEvent(stepId) {
+        var stepName = '';
+        switch (stepId) {
+            case '#defaultStep-one':
+                stepName = 'transport';
+                break;
+            case '#defaultStep-two':
+                stepName = 'location';
+                break;
+            case '#defaultStep-three':
+                stepName = 'cargo';
+                break;
+            case '#defaultStep-four':
+                stepName = 'contact';
+                break;
+            default:
+                stepName = 'unknown';
+                break;
+        }
+
+        // Cambiar la URL sin recargar la página
+        var newURL = window.location.origin + window.location.pathname + '#' + stepName;
+        history.pushState(null, null, newURL);
+
+        // Enviar evento a GTM
+        dataLayer.push({
+            'event': 'stepCompleted',
+            'stepName': stepName
+        });
+    }
+
+
     //if click radio name options_best
     var options_best = document.getElementsByName('options_best');
 
@@ -211,6 +244,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Avanza al siguiente paso
             stepperDefault.next();
+
+            // Obtener el siguiente paso activo
+            var nextStep = stepperWizardDefault.querySelector('.bs-stepper-header .step.active');
+            if (nextStep) {
+                var nextStepId = nextStep.getAttribute('data-target');
+                changeURLAndSendEvent(nextStepId);
+            }
+
         });
     });
 
@@ -227,6 +268,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Retrocede al paso anterior
             stepperDefault.previous();
+
+            // Obtener el paso anterior activo
+            var prevStep = stepperWizardDefault.querySelector('.bs-stepper-header .step.active');
+            if (prevStep) {
+                var prevStepId = prevStep.getAttribute('data-target');
+                changeURLAndSendEvent(prevStepId);
+            }
 
 
         });
@@ -416,6 +464,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Inicializa el estado al cargar la página
     updateCheckedState();
+
+
+
+    // Función para inicializar la URL al cargar la página
+    function initializeURL() {
+        var activeStep = stepperWizardDefault.querySelector('.bs-stepper-header .step.active');
+        if (activeStep) {
+            var currentStepId = activeStep.getAttribute('data-target');
+            changeURLAndSendEvent(currentStepId);
+        }
+    }
+
+    // Llamada inicial para configurar la URL al cargar la página
+    initializeURL(); 
 
 
 });
