@@ -27,5 +27,7 @@
     "/assets/css/light/authentication/auth-boxed.css": "/assets/css/light/authentication/auth-boxed.css",
     "/assets/css/dark/authentication/auth-cover.css": "/assets/css/dark/authentication/auth-cover.css",
     "/assets/css/light/authentication/auth-cover.css": "/assets/css/light/authentication/auth-cover.css",
+    "/assets/css/dark/apps/invoice-list.css": "/assets/css/dark/apps/invoice-list.css",
+    "/assets/css/light/apps/invoice-list.css": "/assets/css/light/apps/invoice-list.css",
     "/layouts/vertical-light-menu/css/dark/structure.css": "/layouts/vertical-light-menu/css/dark/structure.css"
 }

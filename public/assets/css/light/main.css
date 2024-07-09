@@ -20,7 +20,6 @@ body {
   background: #f1f2f3;
   overflow-x: hidden;
   overflow-y: auto;
-  letter-spacing: 0.0312rem;
   font-family: "Nunito Sans", sans-serif;
 }
 
@@ -279,7 +278,6 @@ blockquote.media-object .media .usr-img img {
   font-size: 14px;
   font-weight: 600;
   color: #515365;
-  letter-spacing: 1px;
 }
 
 a {
@@ -558,7 +556,6 @@ span.red {
 .form-group label, label {
   font-size: 15px;
   color: #0e1726;
-  letter-spacing: 1px;
   display: inline-block;
   margin-bottom: 0.5rem;
 }
@@ -594,7 +591,6 @@ span.red {
   color: #3b3f5c;
   font-size: 15px;
   padding: 8px 10px;
-  letter-spacing: 1px;
   padding: 0.5rem 0.5rem;
   border-radius: 4px;
   background: #fff;
@@ -690,7 +686,6 @@ span.red {
   height: auto;
   font-size: 15px;
   padding: 0.5rem 0.5rem;
-  letter-spacing: 1px;
   border: 1px solid #bfc9d4;
   color: #3b3f5c;
   background-color: #fff;
@@ -719,7 +714,6 @@ span.red {
   color: #ffcc00;
 }
 .form-control-file::-webkit-file-upload-button {
-  letter-spacing: 1px;
   padding: 9px 20px;
   text-shadow: none;
   font-size: 12px;
@@ -741,7 +735,6 @@ span.red {
   outline: none;
 }
 .form-control-file::-ms-file-upload-button {
-  letter-spacing: 1px;
   padding: 9px 20px;
   text-shadow: none;
   font-size: 14px;
@@ -861,13 +854,11 @@ select.form-control.form-custom {
 .invalid-feedback {
   color: #e7515a;
   font-size: 13px;
-  letter-spacing: 1px;
 }
 
 .valid-feedback {
   color: #009688;
   font-size: 13px;
-  letter-spacing: 1px;
 }
 
 .valid-tooltip {
@@ -3038,7 +3029,6 @@ fieldset:disabled .btn {
 }
 .table thead {
   color: #515365;
-  letter-spacing: 1px;
 }
 .table thead tr th {
   border: none;
@@ -3071,7 +3061,6 @@ fieldset:disabled .btn {
   border: none;
   padding: 10px 21px 10px 21px;
   vertical-align: middle;
-  letter-spacing: normal;
   white-space: nowrap;
   font-weight: 400;
 }
@@ -3414,7 +3403,6 @@ fieldset:disabled .btn {
   font-weight: 700;
   box-shadow: 0 2px 4px rgba(0, 69, 255, 0.15), 0 8px 16px rgba(0, 69, 255, 0.2);
   font-size: 12px;
-  letter-spacing: 1px;
   font-weight: 100;
 }
 .progress:not(.progress-bar-stack) .progress-bar {
@@ -3489,7 +3477,6 @@ fieldset:disabled .btn {
 .page-meta .breadcrumb .breadcrumb-item {
   font-size: 17px;
   font-weight: 500;
-  letter-spacing: 1px;
 }
 .page-meta .breadcrumb .breadcrumb-item a {
   vertical-align: inherit;

@@ -10,13 +10,35 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ setTitle($page_name) }}</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon.ico') }}"/>
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon.ico') }}">
+    <link rel="apple-touch-icon" href="{{ asset('assets/img/apple-touch-icon.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/img/favicon-16x16.png') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('assets/img/favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('assets/img/android-chrome-192x192.png') }}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ asset('assets/img/android-chrome-512x512.png') }}">
+    <link rel="manifest" href="{{ asset('assets/img/site.webmanifest') }}">
+
+    <!-- Color Theme -->
+    <meta name="theme-color" content="#B80000">
+    <meta name="msapplication-navbutton-color" content="#B80000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- Styles -->
     @include('inc.styles')  
+
+    @if(app()->environment('production'))
+        @include('partials.gtm_head')
+    @endif
+
 </head>
 <body class="layout-boxed">
     
+    @if(app()->environment('production'))
+        @include('partials.gtm_body')
+    @endif
+
     <!-- BEGIN LOADER -->
     <div id="load_screen"> <div class="loader"> <div class="loader-content">
         <div class="spinner-grow align-self-center"></div>

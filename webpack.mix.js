@@ -32,6 +32,10 @@ mix.sass('resources/sass/light/assets/main.scss', 'public/assets/css/light')
     .sass('resources/sass/layouts/vertical-light-menu/light/structure.scss', 'public/layouts/vertical-light-menu/css/light')
     .sass('resources/sass/layouts/vertical-light-menu/dark/structure.scss', 'public/layouts/vertical-light-menu/css/dark')
 
+    // Invoice List
+    .sass('resources/sass/light/assets/apps/invoice-list.scss', 'public/assets/css/light/apps')
+    .sass('resources/sass/dark/assets/apps/invoice-list.scss', 'public/assets/css/dark/apps')
+
     // Authentication
     .sass('resources/sass/light/assets/authentication/auth-cover.scss', 'public/assets/css/light/authentication')
     .sass('resources/sass/dark/assets/authentication/auth-cover.scss', 'public/assets/css/dark/authentication')

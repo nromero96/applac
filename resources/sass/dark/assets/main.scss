@@ -11,7 +11,6 @@ body.dark {
   background: #f1f2f3;
   overflow-x: hidden;
   overflow-y: auto;
-  letter-spacing: 0.0312rem;
   font-family: 'Nunito', sans-serif;
 
   h1, h2, h3, h4, h5, h6 {
@@ -233,7 +232,6 @@ body.dark {
       font-size: 14px;
       font-weight: 600;
       color: #bfc9d4;
-      letter-spacing: 1px;
     }
   }
 
@@ -568,7 +566,6 @@ body.dark {
   .form-group label {
     font-size: 15px;
     color: #d3d3d3;
-    letter-spacing: 1px;
     display: inline-block;
     margin-bottom: 0.5rem;
   }
@@ -614,7 +611,6 @@ body.dark {
   label {
     font-size: 15px;
     color: #888ea8;
-    letter-spacing: 1px;
     display: inline-block;
     margin-bottom: 0.5rem;
   }
@@ -654,7 +650,6 @@ body.dark {
     color: #009688;
     font-size: 15px;
     padding: 8px 10px;
-    letter-spacing: 1px;
     padding: .5rem .5rem;
     border-radius: 4px;
     background: #1b2e4b;
@@ -773,7 +768,6 @@ body.dark {
     height: auto;
     font-size: 15px;
     padding: .5rem .5rem;
-    letter-spacing: 1px;
     border: 1px solid #1b2e4b;
     color: #009688;
     background-color: #1b2e4b;
@@ -804,7 +798,6 @@ body.dark {
     color: $secondary;
 
     &::-webkit-file-upload-button {
-      letter-spacing: 1px;
       padding: 9px 20px;
       text-shadow: none;
       font-size: 12px;
@@ -826,7 +819,6 @@ body.dark {
     }
 
     &::-ms-file-upload-button {
-      letter-spacing: 1px;
       padding: 9px 20px;
       text-shadow: none;
       font-size: 14px;
@@ -872,7 +864,6 @@ body.dark {
     padding: .375rem 0.75rem;
 
     &::-webkit-file-upload-button {
-      letter-spacing: 1px;
       padding: 9px 20px;
       text-shadow: none;
       font-size: 12px;
@@ -997,13 +988,11 @@ body.dark {
   .invalid-feedback {
     color: $danger;
     font-size: 13px;
-    letter-spacing: 1px;
   }
 
   .valid-feedback {
     color: #009688;
     font-size: 13px;
-    letter-spacing: 1px;
   }
 
   .valid-tooltip {
@@ -3716,7 +3705,6 @@ body.dark {
   
   thead {
     color: #bfc9d4;
-    letter-spacing: 1px;
 
     tr {
       th {
@@ -3761,7 +3749,6 @@ body.dark {
         border: none;
         padding: 10px 21px 10px 21px;
         vertical-align: middle;
-        letter-spacing: normal;
         white-space: nowrap;
         font-weight: 400;
       }
@@ -4161,7 +4148,6 @@ body.dark {
       font-weight: 700;
       box-shadow: 0 2px 4px rgba(0, 69, 255, 0.15), 0 8px 16px rgba(0, 69, 255, 0.2);
       font-size: 12px;
-      letter-spacing: 1px;
       font-weight: 100;
     }
 
@@ -4249,7 +4235,6 @@ body.dark {
     .breadcrumb .breadcrumb-item {
       font-size: 17px;
       font-weight: 500;
-      letter-spacing: 1px;
 
       a {
         vertical-align: inherit;

@@ -72,7 +72,6 @@ body.dark {
         padding: 10px 21px 10px 21px;
         font-weight: 600;
         font-size: 14px;
-        letter-spacing: 1px;
         white-space: nowrap;
 
         &:first-child {
@@ -102,7 +101,6 @@ body.dark {
 
           padding: 0;
           padding: 10px 21px 10px 21px;
-          letter-spacing: normal;
           white-space: nowrap;
 
           .inv-number {
@@ -115,7 +113,6 @@ body.dark {
           .user-name {
             color: #d3d3d3;
             font-size: 14px;
-            letter-spacing: .14px;
             margin-bottom: 0;
             overflow: hidden;
             text-align: left;
@@ -127,7 +124,6 @@ body.dark {
           .inv-email {
             color: #888ea8;
             font-size: 14px;
-            letter-spacing: .14px;
             margin-bottom: 0;
             margin-top: 0;
             overflow: hidden;

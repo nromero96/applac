@@ -20,8 +20,7 @@ body {
   background: #fafafa;
   overflow-x: hidden;
   overflow-y: auto;
-  letter-spacing: 0.0312rem;
-  font-family: "Nunito", sans-serif;
+  font-family: "Nunito Sans", sans-serif;
 }
 body:before {
   content: "";
@@ -181,7 +180,6 @@ code {
   padding: 5px 8px;
   font-size: 15px;
   border-radius: 4px;
-  letter-spacing: 1px;
   display: inline-block;
   background: rgba(0, 150, 136, 0.26);
   color: #009688;
@@ -425,7 +423,6 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
 .navbar .navbar-item .nav-item.dropdown.notification-dropdown .dropdown-menu .drodpown-title h6 {
   margin-bottom: 0;
   font-size: 14px;
-  letter-spacing: 1px;
   font-weight: 200;
   color: #0e1726;
 }
@@ -510,7 +507,6 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
 }
 .navbar form.form-inline input.search-form-control::-webkit-input-placeholder, .navbar form.form-inline input.search-form-control::-ms-input-placeholder, .navbar form.form-inline input.search-form-control::-moz-placeholder {
   color: #888ea8;
-  letter-spacing: 1px;
 }
 .navbar .form-inline.search {
   display: inline-block;
@@ -531,7 +527,6 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   right: 6px;
   top: 6.5px;
   font-size: 11px;
-  letter-spacing: 1px;
   transform: none;
   background-color: #bfc9d4;
   color: #000;
@@ -933,7 +928,6 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   font-weight: 600;
   color: #888ea8;
   padding: 32px 0 10px 36px;
-  letter-spacing: 1px;
 }
 
 .sidebar-closed > .sidebar-wrapper ul.menu-categories li.menu.menu-heading > .heading span {
@@ -975,7 +969,6 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   padding: 10.2px 16px;
   font-weight: 400;
   transition: 0.6s;
-  letter-spacing: 1px;
   margin-bottom: 2px;
   margin: 0 16px 0 16px;
   border-radius: 8px;
@@ -1176,7 +1169,6 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   margin-left: 72px;
   font-size: 15px;
   color: #515365;
-  letter-spacing: 1px;
 }
 #sidebar ul.menu-categories ul.submenu > li ul.sub-submenu > li.active a {
   color: #fff;
@@ -1274,7 +1266,6 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   margin-bottom: 0;
   color: #888ea8;
   font-size: 14px;
-  letter-spacing: 1px;
 }
 .footer-wrapper .footer-section p a {
   color: #888ea8;

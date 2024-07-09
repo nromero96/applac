@@ -70,7 +70,6 @@ table.dataTable {
       padding: 10px 21px 10px 21px;
       font-weight: 600;
       font-size: 14px;
-      letter-spacing: 1px;
       white-space: nowrap;
 
       &:first-child {
@@ -100,7 +99,6 @@ table.dataTable {
 
         padding: 0;
         padding: 10px 21px 10px 21px;
-        letter-spacing: normal;
         white-space: nowrap;
 
         .inv-number {
@@ -113,7 +111,6 @@ table.dataTable {
         .user-name {
           color: $dark;
           font-size: 14px;
-          letter-spacing: .14px;
           margin-bottom: 0;
           overflow: hidden;
           text-align: left;
@@ -125,7 +122,6 @@ table.dataTable {
         .inv-email {
           color: #506690;
           font-size: 14px;
-          letter-spacing: .14px;
           margin-bottom: 0;
           margin-top: 0;
           overflow: hidden;
