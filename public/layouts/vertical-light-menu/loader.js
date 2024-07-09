@@ -7,7 +7,7 @@ window.addEventListener("load", function(){
     var layoutName = 'Vertical Light Menu';
 
     var settingsObject = {
-        admin: 'Cork Admin Template',
+        admin: 'LAC Admin Template',
         settings: {
             layout: {
                 name: layoutName,
@@ -38,7 +38,7 @@ window.addEventListener("load", function(){
 
         if (getcorkThemeObject !== null) {
                
-            if (ParsedObject.admin === 'Cork Admin Template') {
+            if (ParsedObject.admin === 'LAC Admin Template') {
 
                 if (ParsedObject.settings.layout.name === layoutName) {
 
