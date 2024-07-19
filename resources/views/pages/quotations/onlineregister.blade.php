@@ -692,12 +692,12 @@
                                         <div class="row">
                                             <div class="col-md-6 mb-2">
                                                 <label for="email" class="form-label mb-0" id="labelemail">{{ __('Company email') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="email" id="email" class="form-control" @auth value="{{ Auth::user()->email }}" readonly @endauth>
+                                                <input type="text" name="email" id="email" class="form-control email-input" @auth value="{{ Auth::user()->email }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="email_error"></div>
                                             </div>
                                             <div class="col-md-6 mb-2">
                                                 <label for="confirm_email" class="form-label mb-0" id="labelconfirm_email">{{ __('Confirm company email') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="confirm_email" id="confirm_email" class="form-control" @auth value="{{ Auth::user()->email }}" readonly @endauth>
+                                                <input type="text" name="confirm_email" id="confirm_email" class="form-control email-input" @auth value="{{ Auth::user()->email }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="confirm_email_error"></div>
                                             </div>
                                         </div>
@@ -2139,6 +2139,14 @@
         // Llamar a las funciones al cargar la página para asegurarse de que los campos se actualicen correctamente.
         updateOriginPortField();
         updateDestinationPortField();
+
+
+        document.querySelectorAll('.email-input').forEach(function(emailInput) {
+            emailInput.addEventListener('input', function(event) {
+                event.target.value = event.target.value.toLowerCase();
+            });
+        });
+
     </script>
     
 
