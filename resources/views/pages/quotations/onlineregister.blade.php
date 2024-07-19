@@ -2143,7 +2143,7 @@
 
         document.querySelectorAll('.email-input').forEach(function(emailInput) {
             emailInput.addEventListener('input', function(event) {
-                event.target.value = event.target.value.toLowerCase();
+                event.target.value = event.target.value.toLowerCase().replace(/\s+/g, '').replace(/,/g, '');
             });
         });
 
