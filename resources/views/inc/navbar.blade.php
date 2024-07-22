@@ -25,7 +25,7 @@
                 </a>
                 <div class="dropdown-menu position-absolute" aria-labelledby="language-dropdown">
                     <a class="dropdown-item d-flex" href="{{ url('') }}/locale/en"><img src="{{ asset('assets/img/1x1/us.svg') }}" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;English</span></a>
-                    <a class="dropdown-item d-flex" href="{{ url('') }}/locale/es"><img src="{{ asset('assets/img/1x1/es.svg') }}" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;Spanish</span></a>
+                    <a class="dropdown-item d-flex opacity-25 disabled" href="{{ url('') }}/locale/es"><img src="{{ asset('assets/img/1x1/es.svg') }}" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;Spanish</span></a>
                 </div>
             </li>
 

@@ -14,6 +14,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\CountryStateController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\UsefullinkController;
 
 use App\Mail\PruebaCorreo;
 
@@ -131,6 +132,7 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
     //notes
     Route::get('notes', [NoteController::class,'index'])->name('notes.index');
     Route::post('store-notes', [NoteController::class,'store'])->name('notes.store');
+    Route::post('update-notes', [NoteController::class,'update_note'])->name('notes.update');
     Route::get('changefavourite-note', [NoteController::class, 'changeFavourite'])->name('notes.changefavourite');
     Route::get('changetag-note', [NoteController::class, 'changeTag'])->name('notes.changetag');
     Route::get('destroy-note', [NoteController::class, 'destroy'])->name('notes.destroy');
@@ -139,6 +141,9 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
     //settings
     Route::get('settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('settings-update', [SettingController::class, 'update'])->name('settings.update');
+
+    //usefullinks
+    Route::get('usefullinks', [UsefullinkController::class, 'index'])->name('usefullinks.index');
 
 });
 

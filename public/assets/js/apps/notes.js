@@ -6,6 +6,30 @@ $(document).ready(function() {
       }
     });
 
+    function editNote() {
+      $(".edit-note").off('click').on('click', function(event) {
+        event.stopPropagation();
+
+        $('#notesMailModalTitle').attr('action', baseurl+'/update-notes');
+
+        //title modal
+        $('#notesMailModalTitleeLabel').text('Edit Note');
+
+        var note_id = $(this).data('noteid');
+        var note_title = $(this).parents('.note-item').find('.note-title').data('notetitle');
+        var note_description = $(this).parents('.note-item').find('.note-description').data('notedescription');
+
+        $('#notesMailModal').modal('show');
+        $('#btn-n-add').hide();
+        $('#btn-n-save').show();
+
+        document.getElementById('n-title').value = note_title;
+        document.getElementById('n-description').value = note_description;
+        document.getElementById('note_id').value = note_id;
+
+      });
+    }
+
     function deleteNote() {
         $(".delete-note").off('click').on('click', function(event) {
           event.stopPropagation();
@@ -135,10 +159,14 @@ $(document).ready(function() {
         $('#notesMailModal').modal('show');
         $('#btn-n-save').hide();
         $('#btn-n-add').show();
+        $('#notesMailModalTitleeLabel').text('Add Note');
+
+        //form url
+        $('#notesMailModalTitle').attr('action', baseurl+'/store-notes');
     })
 
     // Button add
-    $("#btn-n-add").on('click', function(event) {
+    $("#btn-n-add, #btn-n-save").on('click', function(event) {
         event.preventDefault();
         /* Act on the event */
         var today = new Date();
@@ -150,11 +178,12 @@ $(document).ready(function() {
         var $_noteTitle = document.getElementById('n-title').value;
         var $_noteDescription = document.getElementById('n-description').value;
 
+        url = $('#notesMailModalTitle').attr('action');
 
       // Save in database
       $.ajax({
         data: $('#notesMailModalTitle').serialize(),
-        url: baseurl+"/store-notes",
+        url: url,
         type: "POST",
         dataType: 'json',
         success: function (data) {
@@ -167,9 +196,10 @@ $(document).ready(function() {
                           '<p class="note-description" data-noteDescription="'+$_noteDescription+'">'+$_noteDescription+'</p>' +
                       '</div>' +
                   '</div>' +
-                  '<div class="note-action">' +
+                  '<div class="note-action" data-noteid="'+data.noteid+'">' +
                       '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fav-note" data-noteid="'+data.noteid+'"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg> ' +
                       '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 delete-note" data-noteid="'+data.noteid+'"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>' +
+                      '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3 edit-note" data-noteid="'+data.noteid+'" ><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>'+
                   '</div>' +
                   '<div class="note-footer">' +
                       '<div class="tags-selector btn-group">' +
@@ -193,12 +223,20 @@ $(document).ready(function() {
               '</div>' +
             '</div> ';
 
-          $("#ct").prepend($html);
+          if(data.noteid == 0){
+            $("#ct").prepend($html);
+          }else{
+            location.reload();
+          }
+
+
+
           $('#notesMailModal').modal('hide');
 
           deleteNote();
           favNote();
           addLabelGroups();
+          editNote();
 
         },
         error: function (data) {
@@ -218,6 +256,7 @@ $(document).ready(function() {
     deleteNote();
     favNote();
     addLabelGroups();
+    editNote();
 })
 
 // Validation Process

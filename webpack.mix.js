@@ -52,6 +52,19 @@ mix.sass('resources/sass/light/assets/main.scss', 'public/assets/css/light')
     .sass('resources/sass/light/assets/users/users-list.scss','public/assets/css/light/users')
     .sass('resources/sass/dark/assets/users/users-list.scss','public/assets/css/dark/users')
 
+    // Notes
+    .sass('resources/sass/light/assets/apps/notes.scss','public/assets/css/light/apps')
+    .sass('resources/sass/dark/assets/apps/notes.scss','public/assets/css/dark/apps')
+
+    // Dashboard
+    .sass('resources/sass/light/assets/dashboard/dash_1.scss','public/assets/css/light/dashboard')
+    .sass('resources/sass/dark/assets/dashboard/dash_1.scss','public/assets/css/dark/dashboard')
+    .sass('resources/sass/light/assets/dashboard/dash_2.scss','public/assets/css/light/dashboard')
+    .sass('resources/sass/dark/assets/dashboard/dash_2.scss','public/assets/css/dark/dashboard')
+
+
+
+
 
     /*
         ========================

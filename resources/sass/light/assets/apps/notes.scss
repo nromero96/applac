@@ -283,7 +283,7 @@
     .note-action {
       display: inline-block;
 
-      .fav-note, .delete-note {
+      .fav-note, .delete-note, .edit-note {
         padding: 4px;
         border-radius: 5px;
         cursor: pointer;
@@ -308,6 +308,10 @@
 
       .delete-note:hover {
         color: $danger;
+      }
+
+      .edit-note:hover {
+        color: $secondary;
       }
     }
 

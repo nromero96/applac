@@ -89,9 +89,23 @@ class NoteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update_note(Request $request)
     {
-        //
+        //verificar si el usuario es el dueño de la nota
+        $userid = \Auth::user()->id;
+        $ismynote = Note::where('userid', $userid)->where('id', $request->note_id)->first();
+
+        if(!$ismynote){
+            return response()->json(['error'=>'No puedes editar esta nota.']);
+        }
+
+        //actualizar y retornar $note_id
+        $note = Note::find($request->note_id);
+        $note->title = $request->ntitle;
+        $note->description = $request->ndescription;
+        $note->save();
+
+        return response()->json(['success'=>'Nota actualizada.','noteid'=>$request->note_id]);
     }
 
     /**

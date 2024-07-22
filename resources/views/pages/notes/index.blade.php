@@ -62,15 +62,17 @@
                             <div class="note-item all-notes {{$note->tag}} {{$note->favourites}}">
                                 <div class="note-inner-content">
                                     <div class="note-content">
+
                                         <p class="note-title" data-noteTitle="{{$note->title}}">{{$note->title}}</p>
                                         <p class="meta-time">{{ \Carbon\Carbon::parse($note->created_at)->format('d/m/Y') }}</p>
                                         <div class="note-description-content">
-                                            <p class="note-description" data-noteDescription="Curabitur facilisis vel elit sed dapibus sodales purus rhoncus.">Curabitur facilisis vel elit sed dapibus sodales purus rhoncus.</p>
+                                            <p class="note-description" data-noteDescription="{{$note->description}}">{{ \Illuminate\Support\Str::limit($note->description, 60) }} </p>
                                         </div>
                                     </div>
-                                    <div class="note-action">
+                                    <div class="note-action" data-noteid="{{$note->id}}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star fav-note" data-noteid="{{$note->id}}"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 delete-note" data-noteid="{{$note->id}}"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3 edit-note" data-noteid="{{$note->id}}" ><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
                                     </div>
                                     <div class="note-footer">
                                         <div class="tags-selector btn-group">
@@ -115,6 +117,7 @@
                                     <div class="notes-content">  
 
                                         <form action="javascript:void(0);" id="notesMailModalTitle">
+                                            <input type="hidden" name="note_id" id="note_id" value="">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="d-flex note-title">
@@ -125,7 +128,7 @@
 
                                                 <div class="col-md-12">
                                                     <div class="d-flex note-description">
-                                                        <textarea name="ndescription" id="n-description" class="form-control" maxlength="1000" placeholder="{{__('Description')}}" rows="3"></textarea>
+                                                        <textarea name="ndescription" id="n-description" class="form-control" maxlength="1000" placeholder="{{__('Description')}}" rows="6"></textarea>
                                                     </div>
                                                     <span class="validation-text"></span>
                                                     <span class="d-inline-block mt-1 text-danger d-none" id="textmaxlen">{{__('Maximum Limit 1000 characters')}}</span>
@@ -137,8 +140,9 @@
                                 </div>
                             </div>
                             <div class="modal-footer">
-                                <button id="btn-n-save" class="float-left btn">{{__('Save')}}</button>
+                                
                                 <button class="btn" data-bs-dismiss="modal">{{__('Discard')}}</button>
+                                <button id="btn-n-save" class="float-left btn btn-primary">{{__('Save')}}</button>
                                 <button id="btn-n-add" class="btn btn-primary">{{__('Add')}}</button>
                             </div>
                         </div>

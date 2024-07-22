@@ -1,4 +1,4 @@
-@import '../../base/base';
+@import '../../../base/base';
 /*
       ====================
           Visitors by Browser
@@ -58,26 +58,42 @@
     
         .browser-list {
           &:nth-child(1) .w-icon {
-            background: #eceffe;
+            background: #fcf5e9;
           }
     
           &:nth-child(2) .w-icon {
-            background: #fbeced;
+            background: #fcf5e9;
           }
     
           &:nth-child(3) .w-icon {
             background: #fcf5e9;
           }
+
+          &:nth-child(4) .w-icon {
+            background: #fcf5e9;
+          }
+
+          &:nth-child(5) .w-icon {
+            background: #fcf5e9;
+          }
     
           &:nth-child(1) .w-icon svg {
-            color: $primary;
+            color: $warning;
           }
     
           &:nth-child(2) .w-icon svg {
-            color: $danger;
+            color: $warning;
           }
     
           &:nth-child(3) .w-icon svg {
+            color: $warning;
+          }
+
+          &:nth-child(4) .w-icon svg {
+            color: $warning;
+          }
+
+          &:nth-child(5) .w-icon svg {
             color: $warning;
           }
         }

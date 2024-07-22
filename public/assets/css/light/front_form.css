@@ -106,12 +106,16 @@ p {
 .confirm-percomp-modal .modal-body h2 {
   width: 60%;
   margin: 0 auto;
+  font-weight: 400;
 }
 .confirm-percomp-modal .modal-body p {
   color: #42403E;
   font-size: 15px;
   line-height: 25px;
   letter-spacing: 0;
+}
+.confirm-percomp-modal .modal-body h4 {
+  font-weight: 400;
 }
 
 .txtnumcarspac {
