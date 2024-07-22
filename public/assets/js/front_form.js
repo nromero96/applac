@@ -116,6 +116,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const destination_country_id_error = document.getElementById('destination_country_id_error');
     
         //data cargo details
+
+        const package_types = document.querySelectorAll('select[name="package_type[]"]');
+        const package_type_error = document.getElementById('package_type_error');
+
         const shipping_date = document.getElementById('shipping_date');
         const no_shipping_date = document.getElementById('no_shipping_date');
         const shipping_date_error = document.getElementById('shipping_date_error');
@@ -182,6 +186,20 @@ document.addEventListener('DOMContentLoaded', function () {
             }
     
         } else if (step === '#defaultStep-three') {
+
+            //package_type[] es un selectoption debe estar seleccionado al menos uno
+            let allSelected_pt = true;
+            package_types.forEach(function(package_type) {
+                if (package_type.value === '' || package_type.value === null) {
+                    allSelected_pt = false;
+                    package_type.focus();
+                }
+            });
+
+            if (!allSelected_pt) {
+                package_type_error.textContent = 'Required Package/Cargo Type selected.';
+                return false;
+            }
 
             if (shipping_date.value === '' && no_shipping_date.checked === false) {
                 shipping_date.focus();

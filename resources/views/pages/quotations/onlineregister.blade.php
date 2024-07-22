@@ -646,6 +646,8 @@
                                                         </span>
                                                     </div>
 
+                                                    <span class="text-danger msg-info" id="package_type_error"></span>
+
                                                 </div>
                                             </div>
                                         </div>
