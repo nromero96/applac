@@ -711,7 +711,7 @@
                                                 <select name="location" id="location" class="form-select" @auth disabled @endauth>
                                                     <option value="">{{ __('Select...') }}</option>
                                                     @foreach ($countries as $country)
-                                                        <option value="{{ $country->id }}" @if(Auth::user()->location == $country->id) selected @endif>{{ $country->name }}</option>
+                                                        <option value="{{ $country->id }}" @auth @if(Auth::user()->location == $country->id) selected @endif @endauth>{{ $country->name }}</option>
                                                     @endforeach
                                                 </select>
 
