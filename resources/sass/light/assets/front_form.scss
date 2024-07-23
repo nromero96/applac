@@ -449,6 +449,10 @@ span.form-label{
         border-color: $primary;
         box-shadow: 0 0 0 0.1rem rgba(184, 0, 0, 0.25);
     }
+
+    &:disabled{
+        background-color: #f8f8f8;
+    }
 }
 
 .form-check-input{

@@ -21,11 +21,10 @@ class QuotationCreated extends Mailable{
     public $quotation;
 
 
-    public function __construct($quotation, $name, $lastname, $email, $cargoDetails, $quotation_documents){
+    public function __construct($quotation, $reguser, $email, $cargoDetails, $quotation_documents){
         $this->quotation = $quotation;
-        $this->name = $name;
-        $this->lastname = $lastname;
-        $this->email = $email;
+        $this->reguser = $reguser;
+        $this->email = $email; // Pasamos el email del usuario
         $this->cargoDetails = $cargoDetails; // Pasamos el array de detalles de carga
         $this->quotation_documents = $quotation_documents; // Pasamos el array de documentos de la cotización
     }
@@ -35,9 +34,14 @@ class QuotationCreated extends Mailable{
         $origin_country = Country::find($this->quotation->origin_country_id);
         // Buscar el nombre del país de destino
         $destination_country = Country::find($this->quotation->destination_country_id);
+
+        // Buscar el nombre del location reguser
+        $reguser_location = Country::find($this->reguser->location);
+
         // Obtener el nombre del país, suponiendo que tengas un campo "name" en tu modelo Country
         $origin_country_name = $origin_country ? $origin_country->name : 'Unknown Country';
         $destination_country_name = $destination_country ? $destination_country->name : 'Unknown Country';
+        $reguser_location_name = $reguser_location ? $reguser_location->name : 'Unknown Country';
 
         $origin_state_name = '';
         $destination_state_name = '';
@@ -116,9 +120,9 @@ class QuotationCreated extends Mailable{
             'destination_country_name' => $destination_country_name,
             'origin_state_name' => $origin_state_name,
             'destination_state_name' => $destination_state_name,
-            'name' => $this->name,
-            'lastname' => $this->lastname,
+            'reguser_location_name' => $reguser_location_name,
             'quotation' => $this->quotation,
+            'reguser' => $this->reguser,
             'cargoDetails' => $this->cargoDetails,
             'quotation_documents' => $this->quotation_documents,
         ])->render();

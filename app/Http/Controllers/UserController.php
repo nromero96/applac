@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
+use App\Models\Country;
 
 use Image;
 
@@ -66,9 +67,10 @@ class UserController extends Controller
         ];
 
         $roles = Role::all();
+        $contries = Country::all();
 
         // $pageName = 'analytics';
-        return view('pages.user.create')->with($data)->with('roles',$roles);
+        return view('pages.user.create')->with($data)->with('roles',$roles)->with('contries',$contries);
     }
 
     public function store(Request $request)
@@ -82,6 +84,7 @@ class UserController extends Controller
                 'company_name'      =>      'nullable|string',
                 'company_website'   =>      'nullable|string',
                 'email'             =>      'required|email|unique:users,email',
+                'location'          =>      'nullable',
                 'phone_code'        =>      'required|string',
                 'phone'             =>      'nullable|string',
                 'source'            =>      'nullable|string',
@@ -106,6 +109,7 @@ class UserController extends Controller
         $users->company_name = $request->company_name;
         $users->company_website = $request->company_website;
         $users->email = $request->email;
+        $users->location = $request->location;
         $users->phone_code = $request->phone_code;
         $users->phone = $request->phone;
         $users->source = $request->source;
@@ -138,9 +142,10 @@ class UserController extends Controller
 
         $user = User::find($id);
         $roles = Role::all();
+        $contries = Country::all();
 
         // $pageName = 'analytics';
-        return view('pages.user.edit')->with($data)->with('user',$user)->with('roles',$roles);
+        return view('pages.user.edit')->with($data)->with('user',$user)->with('roles',$roles)->with('contries',$contries);
     }
 
     public function update(Request $request, $id)
@@ -170,6 +175,7 @@ class UserController extends Controller
             'lastname' => $request['lastname'],
             'company_name' => $request['company_name'],
             'company_website' => $request['company_website'],
+            'location' => $request['location'],
             'password' => $pass,
             'phone_code' => $request['phone_code'],
             'phone' => $request['phone'],
@@ -207,9 +213,10 @@ class UserController extends Controller
 
         $user = User::find($id);
         $roles = Role::all();
+        $contries = Country::all();
 
         // $pageName = 'analytics';
-        return view('pages.user.myprofile')->with($data)->with('user',$user)->with('roles',$roles);
+        return view('pages.user.myprofile')->with($data)->with('user',$user)->with('roles',$roles)->with('contries',$contries);
     }
 
     public function updatemyprofile(Request $request){
@@ -240,6 +247,7 @@ class UserController extends Controller
             'lastname' => $request['lastname'],
             'company_name' => $request['company_name'],
             'company_website' => $request['company_website'],
+            'location' => $request['location'],
             'phone_code' => $request['phone_code'],
             'phone' => $request['phone'],
             'source' => $request['source'],

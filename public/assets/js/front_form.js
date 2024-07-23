@@ -120,6 +120,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const package_types = document.querySelectorAll('select[name="package_type[]"]');
         const package_type_error = document.getElementById('package_type_error');
 
+        const package_qtys = document.querySelectorAll('input[name="qty[]"]');
+        const package_qty_error = document.getElementById('package_qty_error');
+
         const shipping_date = document.getElementById('shipping_date');
         const no_shipping_date = document.getElementById('no_shipping_date');
         const shipping_date_error = document.getElementById('shipping_date_error');
@@ -133,6 +136,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const contact_lastname = document.getElementById('lastname');
         const contact_lastname_error = document.getElementById('lastname_error');
+
+        const contact_location = document.getElementById('location');
+        const contact_location_error = document.getElementById('location_error');
 
         const contact_email = document.getElementById('email');
         const contact_email_error = document.getElementById('email_error');
@@ -201,6 +207,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 return false;
             }
 
+            let allContent_pq = true;
+            package_qtys.forEach(function(package_qty) {
+                if (package_qty.value === '' || package_qty.value === null) {
+                    allContent_pq = false;
+                    package_qty.focus();
+                }
+            });
+
+            if (!allContent_pq) {
+                package_qty_error.textContent = 'Required Package/Quantity.';
+                return false;
+            }
+
+
             if (shipping_date.value === '' && no_shipping_date.checked === false) {
                 shipping_date.focus();
                 shipping_date_error.textContent = 'Required shipping date.';
@@ -226,6 +246,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if(contact_lastname.value === ''){
                 contact_lastname.focus();
                 contact_lastname_error.textContent = 'Required lastname.';
+                return false;
+            }
+
+            if(contact_location.value === ''){
+                contact_location.focus();
+                contact_location_error.textContent = 'Required location.';
                 return false;
             }
 

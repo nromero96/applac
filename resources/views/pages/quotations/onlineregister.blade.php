@@ -227,6 +227,7 @@
                                     @else
                                         <p class="tit-form-descrip mt-3">{{ __('Already have an account?') }} <a href="{{ route('quotations.index') }}" class="text-primary">{{ __('Log In here') }}</a></p>
                                     @endauth
+
                                 </div>
                             </div>
                         </div>
@@ -646,7 +647,8 @@
                                                         </span>
                                                     </div>
 
-                                                    <span class="text-danger msg-info" id="package_type_error"></span>
+                                                    <span class="text-danger msg-info" id="package_type_error"></span> <span class="text-danger msg-info" id="package_qty_error"></span>
+
 
                                                 </div>
                                             </div>
@@ -692,16 +694,30 @@
                                         </div>
 
                                         <div class="row">
-                                            <div class="col-md-6 mb-2">
+                                            <div class="col-md-3 mb-2">
                                                 <label for="email" class="form-label mb-0" id="labelemail">{{ __('Company email') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="email" id="email" class="form-control email-input" @auth value="{{ Auth::user()->email }}" readonly @endauth>
+                                                <input type="email" name="email" id="email" class="form-control email-input" @auth value="{{ Auth::user()->email }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="email_error"></div>
                                             </div>
-                                            <div class="col-md-6 mb-2">
+                                            <div class="col-md-3 mb-2">
                                                 <label for="confirm_email" class="form-label mb-0" id="labelconfirm_email">{{ __('Confirm company email') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="confirm_email" id="confirm_email" class="form-control email-input" @auth value="{{ Auth::user()->email }}" readonly @endauth>
+                                                <input type="email" name="confirm_email" id="confirm_email" class="form-control email-input" @auth value="{{ Auth::user()->email }}" readonly @endauth>
                                                 <div class="text-danger msg-info" id="confirm_email_error"></div>
                                             </div>
+
+                                            <div class="col-md-6 mb-2">
+                                                <label for="location" class="form-label mb-0" id="labellocation">{{ __('Location') }} <span class="text-danger">*</span></label>
+        
+                                                <select name="location" id="location" class="form-select" @auth disabled @endauth>
+                                                    <option value="">{{ __('Select...') }}</option>
+                                                    @foreach ($countries as $country)
+                                                        <option value="{{ $country->id }}" @if(Auth::user()->location == $country->id) selected @endif>{{ $country->name }}</option>
+                                                    @endforeach
+                                                </select>
+
+                                                <div class="text-danger msg-info" id="location_error"></div>
+                                            </div>
+
                                         </div>
 
                                         <div class="row">
@@ -753,6 +769,19 @@
                                                 </div>
                                             </div>
                                         </div>
+
+                                        @auth
+                                        <div class="row">
+                                            <div class="col-md-12 text-center">
+                                                {{-- Message if requiere update Contact Information  --}}
+                                                <p class="text-small text-center mt-0 mb-0">
+                                                    <span class="text d-inline-block w-75 txtinfoquote">
+                                                        If you need to update your contact information, please go to your <a href="{{ route('users.myprofile') }}" class="text-primary" target="_blank">profile</a> page and update your information.
+                                                    </span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        @endauth
 
                                         <div class="button-action text-center mb-3 d-flex flex-column flex-sm-row justify-content-center">
                                             <a class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Return') }} </a>

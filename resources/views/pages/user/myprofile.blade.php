@@ -22,32 +22,42 @@
                         <form class="row g-3" action="{{ route('users.updatemyprofile') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="col-md-6">
-                                <label for="inputName" class="form-label fw-bold">{{__("Name")}}</label>
+                                <label for="inputName" class="form-label mb-0 fw-bold">{{__("Name")}}</label>
                                 <input type="text" name="name" class="form-control" id="inputName" value="{{$user->name}}" required>
                                 {!!$errors->first("name", "<span class='text-danger'>:message</span>")!!}
                             </div>
                             <div class="col-md-6">
-                                <label for="inputLastName" class="form-label fw-bold">{{__("Last name")}} <span class="text-danger">*</span></label>
+                                <label for="inputLastName" class="form-label mb-0 fw-bold">{{__("Last name")}} <span class="text-danger">*</span></label>
                                 <input type="text" name="lastname" class="form-control" id="inputLastName" value="{{$user->lastname}}" required>
                                 {!!$errors->first("lastname", "<span class='text-danger'>:message</span>")!!}
                             </div>
                             <div class="col-md-6">
-                                <label for="inputCompanyName" class="form-label fw-bold">{{__("Company Name")}}</label>
+                                <label for="inputCompanyName" class="form-label mb-0 fw-bold">{{__("Company Name")}}</label>
                                 <input type="text" name="company_name" class="form-control" id="inputCompanyName" value="{{$user->company_name}}">
                                 {!!$errors->first("company_name", "<span class='text-danger'>:message</span>")!!}
                             </div>
                             <div class="col-md-6">
-                                <label for="inputCompanyWebsite" class="form-label fw-bold">{{__("Company Website")}}</label>
+                                <label for="inputCompanyWebsite" class="form-label mb-0 fw-bold">{{__("Company Website")}}</label>
                                 <input type="text" name="company_website" class="form-control" id="inputCompanyWebsite" value="{{$user->company_website}}">
                                 {!!$errors->first("company_website", "<span class='text-danger'>:message</span>")!!}
                             </div>
                             <div class="col-md-6">
-                                <label for="inputEmail" class="form-label fw-bold">{{__("Email")}}</label>
+                                <label for="inputEmail" class="form-label mb-0 fw-bold">{{__("Email")}}</label>
                                 <input type="email" name="email" class="form-control" id="inputEmail" value="{{$user->email}}" readonly>
                                 {!!$errors->first("email", "<span class='text-danger'>:message</span>")!!}
                             </div>
                             <div class="col-md-6">
-                                <label for="inputPhone" class="form-label fw-bold">{{__("Phone")}} <span class="text-danger">*</span></label>
+                                <label for="location" class="form-label mb-0 fw-bold">{{__("Location")}}</label>
+                                <select name="location" id="location" class="form-select">
+                                    <option value="" @php if($user->location == ''){ echo 'selected'; } @endphp >{{ __('Select...') }}</option>
+                                    @foreach ($contries as $item)
+                                        <option value="{{$item->id}}" @if ($item->id == $user->location) selected @endif>{{$item->name}}</option>
+                                    @endforeach
+                                </select>
+                                {!!$errors->first("location", "<span class='text-danger'>:message</span>")!!}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputPhone" class="form-label mb-0 fw-bold">{{__("Phone")}} <span class="text-danger">*</span></label>
                                 <div class="row">
                                     <div class="col-3 col-md-2 pe-0">
                                         <input type="text" name="phone_code" class="form-control text-center" id="phone_code" value="{{$user->phone_code}}" required>
@@ -59,7 +69,7 @@
                                 {!!$errors->first("phone", "<span class='text-danger'>:message</span>")!!}
                             </div>
                             <div class="col-md-6">
-                                <label for="source" class="form-label fw-bold">{{__("How do you know about us?")}}</label>
+                                <label for="source" class="form-label mb-0 fw-bold">{{__("How do you know about us?")}}</label>
                                 <select name="source" id="source" class="form-select">
                                     <option value="" @php if($user->source == ''){ echo 'selected'; } @endphp >{{ __('Select...') }}</option>
                                     <option value="I am an existing customer" @php if($user->source == 'I am an existing customer'){ echo 'selected'; } @endphp>{{ __('I am an existing customer') }}</option>
@@ -72,7 +82,7 @@
                                 {!!$errors->first("source", "<span class='text-danger'>:message</span>")!!}
                             </div>
                             <div class="col-md-6">
-                                <label for="inputPassword" class="form-label fw-bold">{{__("Password")}}</label>
+                                <label for="inputPassword" class="form-label mb-0 fw-bold">{{__("Password")}}</label>
                                 <input type="password" name="password" class="form-control" id="inputPassword" placeholder="●●●●●●" autocomplete="new-password">
                                 {!!$errors->first("password", "<span class='text-danger'>:message</span>")!!}
                             </div>

@@ -6,7 +6,7 @@
 
 @section('content')
 
-    <p style="font-size: 14px; line-height: 1.4;">Dear {{$name}} {{$lastname}},</p>
+    <p style="font-size: 14px; line-height: 1.4;">Dear {{$reguser->name}} {{$reguser->lastname}},</p>
 
     <p style="font-size: 14px; line-height: 1.4;">Thank you for your interest in shipping with LAC. Partnering with the right logistics provider is essential to your transportation strategy.</p>
     
@@ -393,6 +393,24 @@
                             @endforeach
                         </ul>
                     @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <hr style="opacity: 0.3;">
+                    <span style="font-size: 15px;font-weight: bold; color: #b80000;">Contact Information</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <b>First Name:</b>  {{ $reguser->name }}<br>
+                    <b>Last Name: </b> {{ $reguser->lastname }}<br>
+                    <b>Company name: </b> {{ $reguser->company_name }}<br>
+                    <b>Company website: </b> {{ $reguser->company_website }}<br>
+                    <b>Company email: </b> {{ $reguser->email }}<br>
+                    <b>Location: </b> {{ $reguser_location_name }}<br>
+                    <b>Phone: </b> +{{ $reguser->phone_code }} {{ $reguser->phone }}<br>
                 </td>
             </tr>
         </table>

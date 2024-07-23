@@ -15,6 +15,7 @@ class GuestUser extends Model
         'company_name',
         'company_website',
         'email',
+        'location',
         'phone_code',
         'phone',
         'source',

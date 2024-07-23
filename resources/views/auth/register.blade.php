@@ -166,6 +166,18 @@
                                             <span id="confirm_emailtext" class="form-text text-danger"></span>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-12 mb-2">
+                                        <label for="location" class="form-label mb-0" id="labellocation">{{ __('Location') }} <span class="text-danger">*</span></label>
+                                        <select name="location" id="location" class="form-select" required>
+                                            <option value="">{{ __('Select...') }}</option>
+                                            @foreach ($countries as $country)
+                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <div class="text-danger msg-info" id="location_error"></div>
+                                    </div>
+
                                     <div class="col-md-6">
                                         <div class="mb-2">
                                             <label class="form-label mb-0">{{ __('Phone') }} <span class="text-danger">*</span></label>

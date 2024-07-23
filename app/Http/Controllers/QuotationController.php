@@ -147,6 +147,7 @@ class QuotationController extends Controller
             DB::raw('COALESCE(users.company_name, guest_users.company_name) as customer_company_name'),
             DB::raw('COALESCE(users.company_website, guest_users.company_website) as customer_company_website'),
             DB::raw('COALESCE(users.email, guest_users.email) as customer_email'),
+            DB::raw('COALESCE(users.location, guest_users.location) as customer_location'),
             DB::raw('COALESCE(users.phone_code, guest_users.phone_code) as customer_phone_code'),
             DB::raw('COALESCE(users.phone, guest_users.phone) as customer_phone'),
             DB::raw('COALESCE(users.source, guest_users.source) as customer_source'),
@@ -158,6 +159,7 @@ class QuotationController extends Controller
             'dc.name as destination_country',
             'os.name as origin_state',
             'ds.name as destination_state',
+            DB::raw('COALESCE(loc_users.name, loc_guest_users.name) as customer_country_name')
         )
 
         ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
@@ -166,6 +168,10 @@ class QuotationController extends Controller
         ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
         ->leftJoin('states as os', 'quotations.origin_state_id', '=', 'os.id')
         ->leftJoin('states as ds', 'quotations.destination_state_id', '=', 'ds.id')
+        ->leftJoin('countries as loc_users', 'users.location', '=', 'loc_users.id')
+        ->leftJoin('countries as loc_guest_users', 'guest_users.location', '=', 'loc_guest_users.id')
+
+
 
 
         ->where('quotations.id', $id)
@@ -290,6 +296,7 @@ class QuotationController extends Controller
                 'company_name' => 'nullable|max:250',
                 'company_website' => 'nullable|max:250',
                 'email' => 'required|email|max:250',
+                'location' => 'nullable',
                 'confirm_email' => 'required|email|max:250|same:email',
                 'phone' => 'required|max:50',
                 'source' => 'required|max:250',
@@ -299,12 +306,14 @@ class QuotationController extends Controller
             $create_account = $request->input('create_account');
             
             if($create_account == 'no' && !Auth::check()){
-                $guest_user = GuestUser::create([
+                //create guest user
+                $reguser = GuestUser::create([
                     'name' => $request->input('name'),
                     'lastname' => $request->input('lastname'),
                     'company_name' => $request->input('company_name'),
                     'company_website' => $request->input('company_website'),
                     'email' => $request->input('email'),
+                    'location' => $request->input('location'),
                     'phone_code' => $request->input('phone_code'),
                     'phone' => $request->input('phone'),
                     'source' => $request->input('source'),
@@ -312,7 +321,7 @@ class QuotationController extends Controller
                 ]);
 
                 //get guest user id recently created
-                $guest_user_id = $guest_user->id;
+                $guest_user_id = $reguser->id;
                 //create quotation with guest user id
                 $quotation = Quotation::create([
                     'guest_user_id' => $guest_user_id,
@@ -443,7 +452,7 @@ class QuotationController extends Controller
                     $quotation_documents = QuotationDocument::where('quotation_id', $quotation_id)->get();
 
                     // Envía el correo electrónico con los detalles de carga y archivos adjuntos
-                    Mail::send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'), $request->input('email'), $cargoDetails, $quotation_documents));
+                    Mail::send(new QuotationCreated($quotation, $reguser, $request->input('email'), $cargoDetails, $quotation_documents));
                 
                     // Si no se lanzó una excepción, asumimos que el correo se envió correctamente
                     Log::info('Correo electrónico enviado correctamente de la cotización: ' . $quotation_id);
@@ -457,6 +466,9 @@ class QuotationController extends Controller
                 if(Auth::check() && $create_account == 'no'){
                     //get user is with user logged
                     $newuser_id = auth()->id();
+
+                    //get user logged data
+                    $reguser = User::find($newuser_id);
                 } else {
                 
                     //verificate if existing email in users table, generate password for send mail and assign role customer
@@ -467,12 +479,13 @@ class QuotationController extends Controller
                     } else {
                         $password = Str::random(8);
 
-                        $newuser = User::create([
+                        $reguser = User::create([
                             'name' => $request->input('name'),
                             'lastname' => $request->input('lastname'),
                             'company_name' => $request->input('company_name'),
                             'company_website' => $request->input('company_website'),
                             'email' => $request->input('email'),
+                            'location' => $request->input('location'),
                             'phone_code' => $request->input('phone_code'),
                             'phone' => $request->input('phone'),
                             'source' => $request->input('source'),
@@ -482,9 +495,9 @@ class QuotationController extends Controller
                             'subscribed_to_newsletter' => $request->input('subscribed_to_newsletter'),
                         ]);
 
-                        $newuser->assignRole('Customer');
+                        $reguser->assignRole('Customer');
                         //get user id recently created
-                        $newuser_id = $newuser->id;
+                        $newuser_id = $reguser->id;
                     }
                 }
 
@@ -615,7 +628,7 @@ class QuotationController extends Controller
                         $quotation_documents = QuotationDocument::where('quotation_id', $quotation_id)->get();
 
                         // Envía el correo electrónico con los detalles de carga
-                        Mail::send(new QuotationCreated($quotation, $request->input('name'), $request->input('lastname'),$request->input('email'), $cargoDetails, $quotation_documents));
+                        Mail::send(new QuotationCreated($quotation, $reguser, $request->input('email'), $cargoDetails, $quotation_documents));
 
                         //log email sent
                         Log::info('Correo electrónico enviado correctamente de la cotización: ' . $quotation_id);

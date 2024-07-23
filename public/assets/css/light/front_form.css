@@ -391,6 +391,9 @@ span.form-label {
   border-color: #B80000;
   box-shadow: 0 0 0 0.1rem rgba(184, 0, 0, 0.25);
 }
+.form-select:disabled {
+  background-color: #f8f8f8;
+}
 
 .form-check-input {
   width: 18px;

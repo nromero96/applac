@@ -429,6 +429,9 @@
                                 <label class="fw-bold mb-0">{{__("Company email")}}:</label> {{ $quotation->customer_email }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
+                                <label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }}<br>
+                            </div>
+                            <div class="col-md-6 mt-0">
                                 <label class="fw-bold mb-0">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
