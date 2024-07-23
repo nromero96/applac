@@ -31,48 +31,60 @@ var invoiceList = $('#invoice-list').DataTable({
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    // Inicializar TomSelect
-    document.querySelectorAll('.user-select').forEach(function (select) {
-        var cotizacionId = select.dataset.cotizacionId;
 
-        var tomSelect = new TomSelect(select, {
-            valueField: 'id',
-            labelField: 'name',
-            searchField: 'name',
-            load: function (query, callback) {
-                if (!query.length) return callback();
-                fetch('/searchuserstoassign?q=' + encodeURIComponent(query))
-                    .then(response => response.json())
-                    .then(data => callback(data));
-            },
-            preload: true,
-            items: [select.value],
-            onChange: function (values) {
-                // Capturar el ID del usuario seleccionado
-                var userId = values[0];
 
-                alert('Asignar la cotización #' + cotizacionId + ' al usuario #' + userId);
-
-                // Realizar una solicitud AJAX para asignar el usuario
-                fetch("/quotations/" + cotizacionId + "/assignuser", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
-                    body: JSON.stringify({ user_id: userId })
+    //onchange event for slect user-select-assigned
+    document.addEventListener('change', function(event) {
+        if (event.target.classList.contains('user-select-assigned')) {
+            var user_id = event.target.value;
+            var quotation_id = event.target.getAttribute('data-quotation-id');
+            var url = baseurl + '/quotations/' + quotation_id + '/assignuser';
+            
+            var data = {
+                user_id: user_id,
+                quotation_id: quotation_id
+            };
+    
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok ' + response.statusText);
+                }
+                return response.text(); // Si esperas JSON, usa response.json() aquí
+            })
+            .then(data => {
+                
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'bottom-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
                 })
-                .then(response => response.json())
-                .then(data => {
-                    // Puedes manejar la respuesta si es necesario
-                    console.log(data);
+                    
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Assigned successfully'
                 })
-                .catch(error => {
-                    // Puedes manejar el error si es necesario
-                    console.error(error);
-                });
-            }
-        });
+
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error); // Muestra un mensaje de error
+                // Aquí podrías mostrar un mensaje de error en la interfaz de usuario si es necesario
+            });
+        }
     });
+
 });
 

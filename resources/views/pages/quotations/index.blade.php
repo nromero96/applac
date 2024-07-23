@@ -117,13 +117,10 @@
 
                                         {{-- Select if user logged is admin spatie --}}
                                         @if (Auth::user()->hasRole('Administrator'))
-                                            <select class="user-select" data-cotizacion-id="{{ $quotation->quotation_id }}">
+                                            <select class="user-select-assigned" data-quotation-id="{{ $quotation->quotation_id }}">
+                                                <option value="">{{ __('No asigned') }}</option>
                                                 @foreach ($users as $user)
-                                                    @if ($user->id == $quotation->quotation_assigned_user_id)
-                                                        <option value="{{ $user->id }}" selected>{{ $user->name }}</option>
-                                                    @else
-                                                        <option value="">{{ __('No asigned') }}</option>
-                                                    @endif
+                                                    <option value="{{ $user->id }}" @if($user->id == $quotation->quotation_assigned_user_id) selected @endif>{{ $user->name }}</option>
                                                 @endforeach
                                             </select>
                                         @else

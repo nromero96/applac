@@ -31,10 +31,9 @@
             <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
 
             <script src="{{asset('plugins/src/table/datatable/button-ext/dataTables.buttons.min.js')}}"></script>
-            {{-- tomSelect --}}
-            <script src="{{asset('plugins/src/tomSelect/tom-select.base.js')}}"></script>
             
-            <script src="{{asset('plugins/src/tomSelect/custom-tom-select.js')}}"></script>
+            {{-- swal --}}
+            <script src="{{asset('plugins/src/sweetalerts2/sweetalerts2.min.js')}}"></script>
 
             <script src="{{asset('assets/js/apps/quotations/commercial/list.js')}}"></script>
             @break

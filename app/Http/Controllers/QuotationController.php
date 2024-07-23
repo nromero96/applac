@@ -22,6 +22,7 @@ use App\Models\CargoDetail;
 
 use App\Models\GuestUser;
 use App\Models\User;
+use App\Models\Setting;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -106,7 +107,19 @@ class QuotationController extends Controller
 
         }
 
-        $users = User::all();
+        //$users = User::all();
+
+        $users_selected_dropdown_quotes = Setting::where('key', 'users_selected_dropdown_quotes')->first();
+        $users_selected_dropdown_quotes = json_decode($users_selected_dropdown_quotes);
+        //get column value
+        $users_selected_dropdown_quotes_value = $users_selected_dropdown_quotes->value;
+        $users_selected_dropdown_quotes_value = preg_replace('/["\[\]]/', '', $users_selected_dropdown_quotes->value);
+        $dropdownUserIds = explode(",", $users_selected_dropdown_quotes_value);
+
+        //obtener los usuarios seleccionados en el dropdown
+        $users = User::whereIn('id', $dropdownUserIds)->get();
+
+
 
         return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users);
     }

@@ -27,14 +27,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     {{ session('success') }}
                 </div>
-            @endif
+                @endif
 
-            @if(session('error'))
-                <div class="alert alert-danger alert-dismissible fade show border-0 mb-2" role="alert">
-                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    {{ session('error') }}
-                </div>
-            @endif
+                @if(session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show border-0 mb-2" role="alert">
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        {{ session('error') }}
+                    </div>
+                @endif
 
                 <div class="statbox widget box box-shadow">
                     <div class="widget-header">
@@ -73,11 +73,39 @@
                                 {!!$errors->first("users_auto_assigned_quotes", "<span class='text-danger'>:message</span>")!!}
                             </div>
 
+                            <hr class="mt-2 mb-0">
+
+                            <div class="col-md-12">
+                                <label for="users_auto_assigned_quotes" class="form-label fw-bold">{{__("Users for dropdown in quotes")}} <span class="text-danger">*</span></label>
+                                <div class="row">
+
+                                    @php
+                                        $users_selected_dropdown_quotes = json_decode($users_selected_dropdown_quotes);
+                                        //get column value
+                                        $users_selected_dropdown_quotes_value = $users_selected_dropdown_quotes->value;
+                                        $users_selected_dropdown_quotes_value = preg_replace('/["\[\]]/', '', $users_selected_dropdown_quotes->value);
+                                        $dropdownUserIds = explode(",", $users_selected_dropdown_quotes_value);
+
+                                    @endphp
+
+                                    @foreach ($users as $user)
+                                        <div class="col-md-6">
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" name="users_selected_dropdown_quotes[]" value="{{$user->id}}" id="users_selected_dropdown_quotes{{$user->id}}" @if(in_array($user->id, $dropdownUserIds)) checked @endif>
+                                                <label class="form-check-label" for="users_selected_dropdown_quotes{{$user->id}}">{{$user->name}} {{ $user->last_name }}</label>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                                {!!$errors->first("users_selected_dropdown_quotes", "<span class='text-danger'>:message</span>")!!}
+                            </div>
+
                             <div class="col-12">
                                 <button type="submit" class="btn btn-primary">{{__("Update")}}</button>
                             </div>
                         </form>
                     </div>
+
                 </div>
             </div>
         </div>
