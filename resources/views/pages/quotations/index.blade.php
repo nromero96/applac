@@ -25,16 +25,17 @@
                     <table id="invoice-list" class="table dt-table-hover" style="width:100%">
                         <thead>
                             <tr>
-                                <th>{{ __('Quote ID') }}</th>
+                                <th class="pe-1">{{ __('ID') }}</th>
                                 <th>{{ __('Name') }}</th>
                                 <th>{{ __('Email') }}</th>
                                 <th>{{ __('Status') }}</th>
+                                <th>{{ __('Transport') }}</th>
                                 <th>{{ __('Service Type') }}</th>
                                 <th>{{ __('Route') }}</th>
 
                                 @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
                                 <th>{{ __('Assigned') }}</th>
-                                <th>{{ __('Rating') }}</th>
+                                <th class="p-1">{{ __('Rating') }}</th>
                                 @endif
                         
                                 <th>{{ __('Requested') }}</th>
@@ -45,7 +46,7 @@
 
                             @foreach ($quotations as $quotation)
                                 <tr>
-                                    <td>
+                                    <td class="pe-1">
                                         
                                         @if ($quotation->quotation_assigned_user_id == Auth::user()->id || Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Customer'))
                                             <a href="{{ route('quotations.show', $quotation->quotation_id) }}"><span class="inv-number">#{{ $quotation->quotation_id }}</span></a>
@@ -102,6 +103,9 @@
 
                                     </td>
                                     <td>
+                                        {{ $quotation->quotation_mode_of_transport }}
+                                    </td>
+                                    <td>
                                         {{ $quotation->quotation_service_type }}
                                     </td>
                                     <td>
@@ -144,7 +148,7 @@
                                         @endif
 
                                     </td>
-                                    <td class="p-1 text-center">
+                                    <td class="p-1 text-start">
                                         {{-- Rating aleatorio --}}
                                         <div class="qtrating">
                                             @for ($i = 0; $i < $quotation->quotation_rating; $i++)
@@ -159,11 +163,16 @@
                                     </td>
                                     @endif
 
-                                    <td>
-                                        <span class="inv-date" data-toggle="tooltip" data-placement="top" title="" data-bs-original-title="{{ $quotation->quotation_created_at }}">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> 
-                                            {{ date('d/m/Y : H:i', strtotime($quotation->quotation_created_at)) }}
-                                        </span>
+                                    <td class="py-1 align-middle">
+                                        <div class="inv-date d-flex">
+                                            <span class="align-self-center">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg> 
+                                            </span>
+                                            <small class="align-self-center ps-1 lh-1">
+                                                {{ date('d/m/Y', strtotime($quotation->quotation_created_at)) }}
+                                                <small class="d-block text-muted">{{ date('H:i:s', strtotime($quotation->quotation_created_at)) }}</small>
+                                            </small>
+                                        </div>
                                     </td>
                                     <td>
                                         @if ($quotation->quotation_assigned_user_id == Auth::user()->id || Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Customer'))

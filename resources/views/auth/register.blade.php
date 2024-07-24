@@ -170,7 +170,7 @@
                                     <div class="col-md-12 mb-2">
                                         <label for="location" class="form-label mb-0" id="labellocation">{{ __('Location') }} <span class="text-danger">*</span></label>
                                         <select name="location" id="location" class="form-select" required>
-                                            <option value="">{{ __('Select...') }}</option>
+                                            <option value="">{{ __('Select country...') }}</option>
                                             @foreach ($countries as $country)
                                                 <option value="{{ $country->id }}">{{ $country->name }}</option>
                                             @endforeach
