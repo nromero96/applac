@@ -3619,6 +3619,12 @@ fieldset:disabled .btn {
   font-size: 12px;
 }
 
+.badge.infattended {
+  border-radius: 2px;
+  padding: 0px 2px;
+  font-size: 8px;
+}
+
 /*-------text-colors------*/
 .text-primary {
   color: #B80000 !important;

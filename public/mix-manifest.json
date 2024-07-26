@@ -5,6 +5,8 @@
     "/assets/css/light/front_form.css": "/assets/css/light/front_form.css",
     "/assets/css/dark/main.css": "/assets/css/dark/main.css",
     "/assets/css/light/main.css": "/assets/css/light/main.css",
+    "/plugins/css/dark/table/datatable/dt-global_style.css": "/plugins/css/dark/table/datatable/dt-global_style.css",
+    "/plugins/css/light/table/datatable/dt-global_style.css": "/plugins/css/light/table/datatable/dt-global_style.css",
     "/plugins/css/dark/stepper/custom-bsStepper.css": "/plugins/css/dark/stepper/custom-bsStepper.css",
     "/plugins/css/light/stepper/custom-bsStepper.css": "/plugins/css/light/stepper/custom-bsStepper.css",
     "/plugins/css/dark/tagify/custom-tagify.css": "/plugins/css/dark/tagify/custom-tagify.css",
