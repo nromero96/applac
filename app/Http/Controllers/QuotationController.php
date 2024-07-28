@@ -484,6 +484,21 @@ class QuotationController extends Controller
 
                     //get user logged data
                     $reguser = User::find($newuser_id);
+
+
+                    //update company_name if is not '' or null
+                    if($request->input('company_name') != '' && $request->input('company_name') != null){
+                        $reguser->company_name = $request->input('company_name');
+                        $reguser->save();
+                    }
+
+                    //update company_website if is not '' or null
+                    if($request->input('company_website') != '' && $request->input('company_website') != null){
+                        $reguser->company_website = $request->input('company_website');
+                        $reguser->save();
+                    }
+
+
                 } else {
                 
                     //verificate if existing email in users table, generate password for send mail and assign role customer
