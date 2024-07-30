@@ -439,7 +439,7 @@
                                                             <div class="text-danger msg-info" id="origin_state_id_error"></div>
                                                         </div>
                                                         <div class="col-md-6 mb-2">
-                                                            <label class="form-label mb-0">{{ __('Zip Code') }} <span class="text-danger">*</span></label>
+                                                            <label class="form-label mb-0">{{ __('Zip Code') }} </label>
                                                             <input type="text" class="form-control" name="origin_zip_code" id="origin_zip_code" placeholder="{{ __('Enter Zip Code') }}">
                                                             <div class="text-danger msg-info" id="origin_zip_code_error"></div>
                                                         </div>
@@ -493,7 +493,7 @@
                                                             <div class="text-danger msg-info" id="destination_state_id_error"></div>
                                                         </div>
                                                         <div class="col-md-6 mb-2">
-                                                            <label class="form-label mb-0">{{ __('Zip Code') }} <span class="text-danger">*</span></label>
+                                                            <label class="form-label mb-0">{{ __('Zip Code') }} </label>
                                                             <input type="text" class="form-control" name="destination_zip_code" id="destination_zip_code" placeholder="{{ __('Enter Zip Code') }}">
                                                             <div class="text-danger msg-info" id="destination_zip_code_error"></div>
                                                         </div>
@@ -1171,15 +1171,15 @@
                             '<div class="row">' +
                                 '<h6 class="list-tit-item d-block d-sm-none mb-0">Dimensions</h6>'+
                                 '<div class="col-md-3 pe-2 pe-sm-1 mb-2">' +
-                                    '<span class="form-label">Length</span>' +
+                                    '<span class="form-label">Length <span class="text-danger">*</span></span>' +
                                     '<input type="text" name="length[]" class="form-control px-2">' +
                                 '</div>' +
                                 '<div class="col-md-3 px-sm-1 mb-2">' +
-                                    '<span class="form-label">Width</span>' +
+                                    '<span class="form-label">Width <span class="text-danger">*</span></span>' +
                                     '<input type="text" name="width[]" class="form-control px-2">' +
                                 '</div>' +
                                 '<div class="col-md-3 px-sm-1 mb-2">' +
-                                    '<span class="form-label">Height</span>' +
+                                    '<span class="form-label">Height <span class="text-danger">*</span></span>' +
                                     '<input type="text" name="height[]" class="form-control px-2">' +
                                 '</div>' +
                                 '<div class="col-md-3 ps-sm-1 mb-2">' +
@@ -1197,7 +1197,7 @@
                             '<div class="row">' +
                                 '<h6 class="list-tit-item d-block d-sm-none mb-0">Weight</h6>'+
                                 '<div class="col-md-4 pe-2 pe-sm-1 mb-2">' +
-                                    '<span class="form-label">Per piece</span>' +
+                                    '<span class="form-label">Per piece <span class="text-danger">*</span></span>' +
                                     '<input type="text" name="per_piece[]" class="form-control">' +
                                 '</div>' +
                                 '<div class="col-md-4 ps-sm-0 pe-2 pe-sm-1 mb-2">' +
@@ -1411,7 +1411,7 @@
                                 '</div>' +
                             '</div>' +
                             '<div class="mt-1 mt-sm-0 position-relative dvdetailship d-none">'+
-                                '<label class="form-label mb-0">Additional Shipment Details <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter the details for your shipment, including quantities, dimensions (length, width, height), and weights in the format: [quantity] x [dimensions] x [weight]. Example: 10 x 12x10x8 inches x 5 lbs." ></span></label>'+
+                                '<label class="form-label mb-0">Additional Shipment Details <span class="text-danger">*</span> <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="Please enter the details for your shipment, including quantities, dimensions (length, width, height), and weights in the format: [quantity] x [dimensions] x [weight]. Example: 10 x 12x10x8 inches x 5 lbs." ></span></label>'+
                                 '<textarea name="details_shipment[]" class="form-control details_shipment" placeholder="Please enter the details for your shipment..."></textarea>'+
                             '</div>' +
                         '</div>' +
@@ -1426,7 +1426,7 @@
                                 '<div class="col-md-7 ps-sm-2 pe-sm-0">'+
                                     '<div class="row">'+
                                         '<div class="col-md-7 ps-sm-2 pe-sm-0">' +
-                                            '<label class="form-label mb-0">Cargo Weight</label>' +
+                                            '<label class="form-label mb-0">Cargo Weight <span class="text-danger">*</span></label>' +
                                             '<input type="text" name="item_total_weight[]" class="form-control px-2">' +
                                         '</div>' +
                                         '<div class="col-md-5">' +

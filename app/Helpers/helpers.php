@@ -1,5 +1,6 @@
 <?php
 use GuzzleHttp\Client;
+use Carbon\Carbon;
 
 function sendMailApiLac($toEmail, $subject, $content, $attachments, $ccEmails = [], $bccEmails = [])
 {
@@ -71,6 +72,7 @@ function sendMailApiLac($toEmail, $subject, $content, $attachments, $ccEmails = 
 if (!function_exists('rateQuotation')) {
 
     function rateQuotation($quotation_id) {
+
         // Recupera la cotización usando el ID
         $quotation = \App\Models\Quotation::find($quotation_id);
         if (!$quotation) {
@@ -79,95 +81,159 @@ if (!function_exists('rateQuotation')) {
 
         $rating = 0;
 
-        // Fecha de envío
-        $fecha_envio = new \Carbon\Carbon(explode(' to ', $quotation->shipping_date)[0]);
-        $fecha_solicitud = new \Carbon\Carbon($quotation->created_at);
-        $dos_semanas_despues = $fecha_solicitud->copy()->addWeeks(2);
-        if ($fecha_envio->between($fecha_solicitud, $dos_semanas_despues)) {
-            $rating += 1;
+        $quotationmodeoftransport = $quotation->mode_of_transport;
+        $cargotype = $quotation->cargo_type;
+
+        $fecha_solicitud = Carbon::parse($quotation->created_at)->startOfDay();
+
+        $unasemanadespues = $fecha_solicitud->copy()->addWeeks(1);
+        $dossemanasdespues = $fecha_solicitud->copy()->addWeeks(2);
+        $tressemanasdespues = $fecha_solicitud->copy()->addWeeks(3);
+
+        // Fecha de envío :::::::::::
+        $fecha_envio = Carbon::parse(explode(' to ', $quotation->shipping_date)[0]);
+        if(in_array($quotationmodeoftransport, ['Air', 'Ground'])){
+            if($fecha_envio->between($fecha_solicitud, $unasemanadespues)){
+                $rating += 1;
+            } else if($fecha_envio->between($unasemanadespues, $dossemanasdespues)){
+                $rating += 0.5;
+            }
+        } else if(in_array($quotationmodeoftransport, ['Container', 'RoRo', 'Breakbulk'])){
+            if($fecha_envio->between($fecha_solicitud, $tressemanasdespues)){
+                $rating += 1;
+            } 
         }
 
-        // Correo electrónico
+        // Correo electrónico :::::::::::
         $email = $quotation->customer_user_id ? \App\Models\User::find($quotation->customer_user_id)->email : \App\Models\GuestUser::find($quotation->guest_user_id)->email;
         $domain = substr(strrchr($email, "@"), 1);
-        $personal_domains = ['gmail.com', 'yahoo.com', 'hotmail.com'];
-        if (!in_array($domain, $personal_domains)) {
+
+        $personal_domains = [
+            'gmail.com',
+            'yahoo.com', 'ymail.com', 'yahoo.es', 'yahoo.co.uk', 'yahoo.fr', 'yahoo.de', 'yahoo.it', 'yahoo.ca', 'yahoo.com.mx',
+            'outlook.com', 'hotmail.com', 'live.com',
+        ];
+
+        // Verificar si el dominio está en la lista de dominios permitidos o si termina en .edu
+        if (!in_array($domain, $personal_domains) && !preg_match('/\.edu$/', $domain)) {
             $rating += 1;
         }
 
-        // Ubicación origen Canada o United States
-        if (in_array($quotation->origin_country_id, ['38', '231'])) {
+        // Origen/Destino: Canada o United States. Location User or Guest: Canada o United States
+        $location = $quotation->customer_user_id ? \App\Models\User::find($quotation->customer_user_id)->location : \App\Models\GuestUser::find($quotation->guest_user_id)->location;
+        
+        if (in_array($quotation->origin_country_id, ['38', '231']) || in_array($quotation->destination_country_id, ['38', '231']) || in_array($location, ['38', '231'])) {
             $rating += 1;
         }
 
-        // Valor
-        if ($quotation->declared_value > 30000) {
-            $rating += 1;
+        // Valor ::::::::::::
+        if($cargotype == 'LCL' || $cargotype == 'LTL' || $quotationmodeoftransport == 'Air'){
+            if ($quotation->declared_value > 2500) {
+                $rating += 1;
+            }
+        } else if($cargotype == 'FCL' || $cargotype == 'FTL' || $quotationmodeoftransport == 'RoRo'){
+            if ($quotation->declared_value > 25000) {
+                $rating += 1;
+            }
+        } else if($quotationmodeoftransport == 'Breakbulk'){
+            if ($quotation->declared_value > 60000) {
+                $rating += 1;
+            }
         }
-
+        
         // Cantidades
-        switch ($quotation->mode_of_transport) {
-            case 'Air':
-                if ($quotation->tota_chargeable_weight > 500) {
-                    $rating += 1;
-                }
-            break;
-            case 'Ground':
-                //cargo_type LTL: Si el volumen en metros cúbicos es superior a 3 
-                if($quotation->cargo_type == 'LTL' && $quotation->total_volum_weight > 3){
-                    $rating += 1;
-                }
-            break;
-            case 'Container':
-                //cargo_type LCL: Si el volumen en metros cúbicos es superior a 3 
-                if($quotation->cargo_type == 'LCL' && $quotation->total_volum_weight > 3){
-                    $rating += 1;
-                    
-                }
-            break;
-            case 'RoRo':
-                if ($quotation->total_volum_weight > 3) {
-                    $rating += 1;
-                    
-                }
-            break;
-            case 'Breakbulk':
-                if ($quotation->total_volum_weight > 50) {
-                    $rating += 1;
-                }
-            break;
+        if($quotationmodeoftransport == 'Air'){
+            if ($quotation->tota_chargeable_weight > 200) {
+                $rating += 1;
+            }
+        } else if($cargotype == 'LTL' ){
+            if ($quotation->total_volum_weight > 1.50) {
+                $rating += 1;
+            }
+        } else if($cargotype == 'LCL'){
+            if ($quotation->total_volum_weight > 1.50) {
+                $rating += 1;
+            }
+        } else if($quotationmodeoftransport == 'RoRo'){
+            if ($quotation->total_volum_weight > 30) {
+                $rating += 1;
+            }
+        } else if($quotationmodeoftransport == 'Breakbulk'){
+            if ($quotation->total_volum_weight > 30) {
+                $rating += 1;
+            }
         }
 
         // Guarda la calificación en la cotización
         $quotation->rating = $rating;
+        $quotation->save();
 
         //si asignar a usuario si el rating es menor o igual a 4
         if($rating <= 4){
-
             // Obtener el valor de users_auto_assigned_quotes de la tabla settings
-            $users_auto_assigned_quotes = \App\Models\Setting::where('key', 'users_auto_assigned_quotes')->first()->value;
-            // Convertir el valor de JSON a array
+            $users_auto_assigned_quotes = \App\Models\Setting::where('key', 'users_auto_assigned_quotes')->first()->value; 
             $userIds = json_decode($users_auto_assigned_quotes);
-            // Inicializar un array para almacenar las cuentas de cotizaciones
+
+            // Buscar email en la tabla users el ultimo usuario registrado con el email
+            $customerwithemail = \App\Models\User::where('email', $email)->first();
+            if ($customerwithemail) {
+                $quotationwithemail = \App\Models\Quotation::where('customer_user_id', $customerwithemail->id)->orderBy('id', 'desc')->first();
+                if ($quotationwithemail) {
+                    $quotationwithemailassigned = \App\Models\User::find($quotationwithemail->assigned_user_id);
+                    if ($quotationwithemailassigned) {
+                        $quotation->assigned_user_id = $quotationwithemailassigned->id;
+                        $quotation->save();
+                        return $rating;
+                    }
+                }
+            }
+
+            // Buscar email en la tabla users_guest
+            $guestuserwithemail = \App\Models\GuestUser::where('email', $email)->first();
+            if ($guestuserwithemail) {
+                $quotationwithemailguest = \App\Models\Quotation::where('guest_user_id', $guestuserwithemail->id)->orderBy('id', 'desc')->first();
+                if ($quotationwithemailguest) {
+                    $quotationwithemailguestassigned = \App\Models\User::find($quotationwithemailguest->assigned_user_id);
+                    if ($quotationwithemailguestassigned) {
+                        $quotation->assigned_user_id = $quotationwithemailguestassigned->id;
+                        
+                        $quotation->save();
+                        return $rating;
+                    }
+                }
+            }
+
+            //ver si la cotización cumple con 4 rating
+            if($rating == 4){
+                $userQuotationFourRatingCounts = [];
+                foreach ($userIds as $userId) {
+                    $userQuotationFourRatingCounts[$userId] = \App\Models\Quotation::where('assigned_user_id', $userId)->where('rating', 4)->count();
+                }
+                $minCountFourRating = min($userQuotationFourRatingCounts);
+                $usersWithMinCountFourRating = array_filter($userQuotationFourRatingCounts, function($count) use ($minCountFourRating) {
+                    return $count == $minCountFourRating;
+                });
+                $minUserIdFourRating = array_rand($usersWithMinCountFourRating);
+                $quotation->assigned_user_id = $minUserIdFourRating;
+
+                $quotation->save();
+                return $rating;
+            }
+
             $userQuotationCounts = [];
-            // Contar cuántas cotizaciones tiene asignadas cada usuario
             foreach ($userIds as $userId) {
                 $userQuotationCounts[$userId] = \App\Models\Quotation::where('assigned_user_id', $userId)->count();
             }
-            // Encontrar la cantidad mínima de cotizaciones
+
             $minCount = min($userQuotationCounts);
-            // Filtrar los usuarios que tienen la cantidad mínima de cotizaciones
             $usersWithMinCount = array_filter($userQuotationCounts, function($count) use ($minCount) {
                 return $count == $minCount;
             });
-            // Seleccionar un usuario al azar entre los que tienen la cantidad mínima de cotizaciones
             $minUserId = array_rand($usersWithMinCount);
-            // Asignar la cotización al usuario seleccionado
             $quotation->assigned_user_id = $minUserId;
+            
         }
-
         $quotation->save();
-
         return $rating;
     }
 }

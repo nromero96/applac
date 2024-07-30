@@ -145,6 +145,10 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
     //usefullinks
     Route::get('usefullinks', [UsefullinkController::class, 'index'])->name('usefullinks.index');
 
+
+    //Test Logic (Internal)
+    Route::get('test-logic', [App\Http\Controllers\LogicTestController::class, 'assignedQuote'])->name('test-logic');
+
 });
 
 
