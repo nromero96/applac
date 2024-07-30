@@ -91,18 +91,21 @@ if (!function_exists('rateQuotation')) {
         $tressemanasdespues = $fecha_solicitud->copy()->addWeeks(3);
 
         // Fecha de envío :::::::::::
-        $fecha_envio = Carbon::parse(explode(' to ', $quotation->shipping_date)[0]);
-        if(in_array($quotationmodeoftransport, ['Air', 'Ground'])){
-            if($fecha_envio->between($fecha_solicitud, $unasemanadespues)){
-                $rating += 1;
-            } else if($fecha_envio->between($unasemanadespues, $dossemanasdespues)){
-                $rating += 0.5;
+        if ($quotation->shipping_date) {
+            $fecha_envio = Carbon::parse(explode(' to ', $quotation->shipping_date)[0]);
+            if (in_array($quotationmodeoftransport, ['Air', 'Ground'])) {
+                if ($fecha_envio->between($fecha_solicitud, $unasemanadespues)) {
+                    $rating += 1;
+                } else if ($fecha_envio->between($unasemanadespues, $dossemanasdespues)) {
+                    $rating += 0.5;
+                }
+            } else if (in_array($quotationmodeoftransport, ['Container', 'RoRo', 'Breakbulk'])) {
+                if ($fecha_envio->between($fecha_solicitud, $tressemanasdespues)) {
+                    $rating += 1;
+                } 
             }
-        } else if(in_array($quotationmodeoftransport, ['Container', 'RoRo', 'Breakbulk'])){
-            if($fecha_envio->between($fecha_solicitud, $tressemanasdespues)){
-                $rating += 1;
-            } 
         }
+
 
         // Correo electrónico :::::::::::
         $email = $quotation->customer_user_id ? \App\Models\User::find($quotation->customer_user_id)->email : \App\Models\GuestUser::find($quotation->guest_user_id)->email;

@@ -10,14 +10,15 @@ class LogicTestController extends Controller
 
     public function assignedQuote()
     {
-        $quotation_id = 13;
+        $quotation_id = 0;
 
         echo "Quotation ID: " . $quotation_id . "<br>";
         echo "--------------------------<br>";
 
-        //$rating = rateQuotation($quotation_id);
-
-        //return $rating;
+        if($quotation_id > 0 ){
+            $rating = rateQuotation($quotation_id);
+            return $rating;
+        }
 
     }
 
