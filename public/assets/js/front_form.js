@@ -136,6 +136,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const package_temperatures = document.querySelectorAll('input[name="temperature[]"]');
         const package_temperatures_error = document.getElementById('package_temperatures_error');
 
+        const package_cargo_descriptions = document.querySelectorAll('input[name="cargo_description[]"]');
+        const package_cargo_descriptions_error = document.getElementById('package_cargo_description_error');
+
         const shipping_date = document.getElementById('shipping_date');
         const no_shipping_date = document.getElementById('no_shipping_date');
         const shipping_date_error = document.getElementById('shipping_date_error');
@@ -315,7 +318,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 'package_item_total_weight_error',
                 'package_details_shipments_error',
                 'package_temperatures_error'
-
             ];
 
             errorFields.forEach(field => document.getElementById(field).textContent = '');
@@ -457,12 +459,29 @@ document.addEventListener('DOMContentLoaded', function () {
                 return false;
             }
 
+            // cargo_description[] es un input debe tener un valor
+            let allContent_pcd = true;
+            package_cargo_descriptions.forEach(function(package_cargo_description, index) {
+                //no hay requerimientos solo verificar si tiene valor
+                if (package_cargo_description.value === '' || package_cargo_description.value === null) {
+                    allContent_pcd = false;
+                    package_cargo_description.focus();
+                }
+            });
+
+            if (!allContent_pcd) {
+                package_cargo_descriptions_error.textContent = 'Required Package/Cargo Description.';
+                return false;
+            }
+
+            //shipping_date es un input debe tener un valor
             if (shipping_date.value === '' && no_shipping_date.checked === false) {
                 shipping_date.focus();
                 shipping_date_error.textContent = 'Required shipping date.';
                 return false;
             }
 
+            //declared_value es un input debe tener un valor
             if (declared_value.value === '') {
                 declared_value.focus();
                 declared_value_error.textContent = 'Required declared value.';

@@ -46,8 +46,7 @@ class QuotationController extends Controller
         if(auth()->user()->hasRole('Customer')){
             $quotations = Quotation::select(
                 'quotations.id as quotation_id',
-                DB::raw('COALESCE(users.name, guest_users.name) as user_name'),
-                DB::raw('COALESCE(users.lastname, guest_users.lastname) as user_lastname'),
+                DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),
                 DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
                 'quotations.status as quotation_status',
                 'quotations.mode_of_transport as quotation_mode_of_transport',
@@ -79,8 +78,7 @@ class QuotationController extends Controller
 
             $quotations = Quotation::select(
                 'quotations.id as quotation_id',
-                DB::raw('COALESCE(users.name, guest_users.name) as user_name'),
-                DB::raw('COALESCE(users.lastname, guest_users.lastname) as user_lastname'),
+                DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),
                 DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
                 'quotations.status as quotation_status',
                 'quotations.mode_of_transport as quotation_mode_of_transport',

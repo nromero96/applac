@@ -654,7 +654,7 @@
                                                     <span class="text-danger msg-info" id="package_item_total_weight_error"></span>
                                                     <span class="text-danger msg-info" id="package_details_shipments_error"></span>
                                                     <span class="text-danger msg-info" id="package_temperatures_error"></span>
-
+                                                    <span class="text-danger msg-info" id="package_cargo_description_error"></span>
 
                                                 </div>
                                             </div>
@@ -1147,18 +1147,19 @@
                         '<div class="col-md-4">' +
                             '<div class="row">' +
                                 '<h6 class="list-tit-item d-block d-sm-none mb-0">Package</h6>'+
-                                '<div class="col-md-9 mb-2">' +
+                                '<div class="col-md-9 mb-1">' +
                                     '<label class="form-label mb-0">'+titlelistpackage+' <span class="text-danger">*</span></label>' +
                                     '<select class="form-select" name="package_type[]">' +
                                         listpackage +
                                     '</select>' +
                                     '<small class="msg_pcktype"></small>'+
                                 '</div>' +
-                                '<div class="col-md-3 ps-sm-1 mb-2">' +
+                                '<div class="col-md-3 ps-sm-1 mb-1">' +
                                     '<label class="form-label mb-0">Qty <span class="text-danger">*</span></label>' +
                                     '<input type="text" name="qty[]" class="form-control px-2">' +
                                 '</div>' +
                                 '<div class="col-md-12 my-2 my-sm-0">' +
+                                    '<label class="form-label mb-0">Cargo Description <span class="text-danger">*</span></label>' +
                                     '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="Cargo Description '+cargodescrcommodity+'">' +
                                 '</div>' +
                                 '<div class="col-md-12">'+
@@ -1406,8 +1407,8 @@
                                     '<input type="text" name="qty[]" class="form-control px-2">' +
                                 '</div>' +
                                 '<div class="col-md-6 mt-0 mt-sm-0">' +
-                                    '<label class="form-label mb-0">Cargo Description (Commodity)</label>' +
-                                    '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="">' +
+                                    '<label class="form-label mb-0">Cargo Description <span class="text-danger">*</span></label>' +
+                                    '<input type="text" name="cargo_description[]" class="form-control px-2" placeholder="Cargo Description (Commodity)">' +
                                 '</div>' +
                             '</div>' +
                             '<div class="mt-1 mt-sm-0 position-relative dvdetailship d-none">'+
