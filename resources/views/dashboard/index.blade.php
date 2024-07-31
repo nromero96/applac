@@ -15,6 +15,46 @@
                 </div>
             </div>
 
+            @if($usersQuotes)
+            
+                <div class="row layout top-spacing">
+                    <div class="col-md-12">
+                        <h5>{{__("Users Quotes")}}</h5>
+
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>User</th>
+                                        <th>Processing</th>
+                                        <th>Attended</th>
+                                        <th>Quote Sent</th>
+                                        <th>Total</th>
+                                        <th class="text-center py-0 px-0">4 stars<small class="d-block">(total)</small></th>
+                                        <th class="text-center py-0 px-0">4 stars<small class="d-block">(assigned 24h)</small></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($usersQuotes as $userQuote)
+                                        <tr>
+                                            <td>{{ $userQuote['name'] }} {{ $userQuote['lastname'] }}</td>
+                                            <td>{{ $userQuote['quotes']['Processing'] }}</td>
+                                            <td>{{ $userQuote['quotes']['Attended'] }}</td>
+                                            <td>{{ $userQuote['quotes']['Quote Sent'] }}</td>
+                                            <td>{{ $userQuote['quotes']['Total'] }}</td>
+                                            <td class="text-center py-0 px-0">{{ $userQuote['quotes']['4 stars'] }}</td>
+                                            <td class="text-center py-0 px-0">{{ $userQuote['quotes']['4 stars last day'] }}</td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+
+            @endif
+
             <div class="row">
 
                 <div class="col-xl-6 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">

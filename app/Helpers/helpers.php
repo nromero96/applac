@@ -115,6 +115,8 @@ if (!function_exists('rateQuotation')) {
             'gmail.com',
             'yahoo.com', 'ymail.com', 'yahoo.es', 'yahoo.co.uk', 'yahoo.fr', 'yahoo.de', 'yahoo.it', 'yahoo.ca', 'yahoo.com.mx',
             'outlook.com', 'hotmail.com', 'live.com',
+            'aol.com',
+            'msn.com',
         ];
 
         // Verificar si el dominio está en la lista de dominios permitidos o si termina en .edu
@@ -209,8 +211,16 @@ if (!function_exists('rateQuotation')) {
             //ver si la cotización cumple con 4 rating
             if($rating == 4){
                 $userQuotationFourRatingCounts = [];
+
+                $now = Carbon::now();
+                $yesterday = $now->copy()->subDay();
+                
+
                 foreach ($userIds as $userId) {
-                    $userQuotationFourRatingCounts[$userId] = \App\Models\Quotation::where('assigned_user_id', $userId)->where('rating', 4)->count();
+                    $userQuotationFourRatingCounts[$userId] = \App\Models\Quotation::where('assigned_user_id', $userId)
+                    ->where('rating', 4)
+                    ->whereBetween('created_at', [$yesterday, $now])
+                    ->count();
                 }
                 $minCountFourRating = min($userQuotationFourRatingCounts);
                 $usersWithMinCountFourRating = array_filter($userQuotationFourRatingCounts, function($count) use ($minCountFourRating) {
