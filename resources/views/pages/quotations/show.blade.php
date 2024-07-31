@@ -242,7 +242,7 @@
                                                     <td colspan="4" class="px-1 py-1">
 
                                                         @if($item->temperature != '')
-                                                            <span style="color:#808080;font-weight:bold;">Temperature:</span> {{ $item->temperature }} {{ $item->temperature }}
+                                                            <span style="color:#808080;font-weight:bold;">Temperature:</span> {{ $item->temperature }} {{ $item->temperature_type }}
                                                             <br>
                                                         @endif
 
