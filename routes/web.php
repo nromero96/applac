@@ -45,7 +45,13 @@ use App\Mail\PruebaCorreo;
 
 
 //home
-Route::get('/', function () { return view('auth.login');});
+Route::get('/', function () { 
+    if (Auth::check()) {
+        return redirect()->route('dashboard.index');
+    } else {
+        return view('auth.login');
+    }
+});
 
 
 //Country and State

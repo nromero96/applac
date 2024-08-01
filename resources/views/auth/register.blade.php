@@ -38,6 +38,9 @@
     <link href="{{asset('assets/css/dark/authentication/auth-cover.css')}}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
     <link href="{{ asset('plugins/src/intl-tel-input/css/intlTelInput.min.css') }}" rel="stylesheet" type="text/css">
+
+    <!-- RECAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     
     @if(app()->environment('production'))
         @include('partials.gtm_head')
@@ -172,7 +175,7 @@
                                         <select name="location" id="location" class="form-select" required>
                                             <option value="">{{ __('Select country...') }}</option>
                                             @foreach ($countries as $country)
-                                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                                                <option value="{{ $country->id }}" {{ old('location') == $country->id ? 'selected' : '' }}>{{ $country->name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="text-danger msg-info" id="location_error"></div>
@@ -181,7 +184,7 @@
                                     <div class="col-md-6">
                                         <div class="mb-2">
                                             <label class="form-label mb-0">{{ __('Phone') }} <span class="text-danger">*</span></label>
-                                            <input type="hidden" name="phone_code" id="phone_code" value="1">
+                                            <input type="hidden" name="phone_code" id="phone_code" value="{{ old('phone_code') ?? '1' }}">
                                             <input id="phone" type="tel" class="form-control @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone">
                                             @error('phone')
                                                 <span class="invalid-feedback" role="alert">
@@ -194,14 +197,14 @@
                                     <div class="col-md-6">
                                         <div class="mb-2">
                                             <label class="form-label mb-0">{{ __('How do you know about us?') }} </label>
-                                            <select class="form-select @error('phone') is-invalid @enderror" name="source" id="source" 
+                                            <select class="form-select @error('phone') is-invalid @enderror" name="source" id="source">
                                                 <option value="">Select...</option>
-                                                <option value="I am an existing customer">I am an existing customer</option>
-                                                <option value="Google Search">Google Search</option>
-                                                <option value="Linkedin">Linkedin</option>
-                                                <option value="Social Media">Social Media</option>
-                                                <option value="Referral">Referral</option>
-                                                <option value="Other">Other</option>
+                                                <option value="I am an existing customer" {{ old('source') == 'I am an existing customer' ? 'selected' : '' }}>I am an existing customer</option>
+                                                <option value="Google Search" {{ old('source') == 'Google Search' ? 'selected' : '' }}>Google Search</option>
+                                                <option value="Linkedin" {{ old('source') == 'Linkedin' ? 'selected' : '' }}>Linkedin</option>
+                                                <option value="Social Media" {{ old('source') == 'Social Media' ? 'selected' : '' }}>Social Media</option>
+                                                <option value="Referral" {{ old('source') == 'Referral' ? 'selected' : '' }}>Referral</option>
+                                                <option value="Other" {{ old('source') == 'Other' ? 'selected' : '' }}>Other</option>
                                             </select>
                                             @error('source')
                                                 <span class="invalid-feedback" role="alert">
@@ -228,6 +231,15 @@
                                             <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                                             <span id="password-confirmtext" class="form-text text-danger"></span>
                                         </div>
+                                    </div>
+
+                                    <div class="col-12 mt-2 mb-2">
+                                        <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                                        @error('g-recaptcha-response')
+                                            <span class="invalid-feedback d-block" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
 
                                     <div class="col-12 mt-2 mt-sm-2">

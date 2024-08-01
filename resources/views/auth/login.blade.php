@@ -38,6 +38,9 @@
     <link href="{{asset('assets/css/dark/authentication/auth-cover.css')}}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
 
+    <!-- RECAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
     @if(app()->environment('production'))
         @include('partials.gtm_head')
     @endif
@@ -122,7 +125,7 @@
                                         </div>
                                     </div>
                                     <div class="col-12">
-                                        <div class="mb-3">
+                                        <div class="mb-1">
                                             <div class="form-check form-check-primary form-check-inline">
                                                 <input class="form-check-input me-3" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="remember">
@@ -130,6 +133,15 @@
                                                 </label>
                                             </div>
                                         </div>
+                                    </div>
+
+                                    <div class="col-12 mb-3">
+                                        <div class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.site_key') }}"></div>
+                                        @error('g-recaptcha-response')
+                                            <span class="invalid-feedback d-block" role="alert">
+                                                <strong>{{ $message }}</strong>
+                                            </span>
+                                        @enderror
                                     </div>
 
                                     <div class="col-12">

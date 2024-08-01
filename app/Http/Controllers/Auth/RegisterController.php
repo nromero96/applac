@@ -9,6 +9,9 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Country;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Validation\ValidationException;
 
 class RegisterController extends Controller
 {
@@ -70,7 +73,21 @@ class RegisterController extends Controller
             'phone' => ['nullable', 'string', 'max:255'],
             'source' => ['nullable', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'g-recaptcha-response' => ['required'],
         ]);
+    }
+
+    public function register(Request $request)
+    {
+        $this->validateCaptcha($request);
+        $this->validator($request->all())->validate();
+
+        $user = $this->create($request->all());
+
+        $this->guard()->login($user);
+
+        return $this->registered($request, $user)
+                        ?: redirect($this->redirectPath());
     }
 
     /**
@@ -102,4 +119,28 @@ class RegisterController extends Controller
         return $user;
 
     }
+
+    protected function validateCaptcha(Request $request)
+    {
+        $request->validate([
+            'g-recaptcha-response' => 'required',
+        ]);
+
+        $recaptchaResponse = $request->input('g-recaptcha-response');
+        $remoteIp = $request->ip();
+        $secretKey = config('services.recaptcha.secret');
+
+        $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
+            'secret' => $secretKey,
+            'response' => $recaptchaResponse,
+            'remoteip' => $remoteIp,
+        ]);
+
+        $responseBody = json_decode($response->getBody());
+
+        if (!$responseBody->success) {
+            throw ValidationException::withMessages(['g-recaptcha-response' => 'Failed to validate reCAPTCHA.']);
+        }
+    }
+
 }
