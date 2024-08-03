@@ -62,11 +62,15 @@
                             <div class="note-item all-notes {{$note->tag}} {{$note->favourites}}">
                                 <div class="note-inner-content">
                                     <div class="note-content">
-
                                         <p class="note-title" data-noteTitle="{{$note->title}}">{{$note->title}}</p>
                                         <p class="meta-time">{{ \Carbon\Carbon::parse($note->created_at)->format('d/m/Y') }}</p>
                                         <div class="note-description-content">
-                                            <p class="note-description" data-noteDescription="{{$note->description}}">{{ \Illuminate\Support\Str::limit($note->description, 60) }} </p>
+                                            <p class="note-description" data-noteDescription="{{$note->description}}">
+                                                {{ \Illuminate\Support\Str::limit($note->description, 50) }}
+                                                @if(strlen($note->description) > 50)
+                                                    <small class="read-more-link"><a href="#" class="read-more text-primary">Read more ></a></small>
+                                                @endif
+                                            </p>
                                         </div>
                                     </div>
                                     <div class="note-action" data-noteid="{{$note->id}}">
@@ -144,6 +148,29 @@
                                 <button class="btn" data-bs-dismiss="modal">{{__('Discard')}}</button>
                                 <button id="btn-n-save" class="float-left btn btn-primary">{{__('Save')}}</button>
                                 <button id="btn-n-add" class="btn btn-primary">{{__('Add')}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal View -->
+                <div class="modal fade" id="notesViewModal" tabindex="-1" role="dialog" aria-labelledby="notesViewModalTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title add-title" id="notesViewModalTitleeLabel">{{__('...')}}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                  <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                </button>
+                            </div>
+                            
+                            <div class="modal-body pt-3">
+                                <div class="notes-box">
+                                    <div class="notes-content">  
+                                        <p class="note-description-view" id="note-description-view">...</p>
+                                        <small class="note-created-at-view mt-2 d-block" id="note-created-at-view">...</small>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

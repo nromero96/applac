@@ -73,7 +73,6 @@ if (!function_exists('rateQuotation')) {
 
     function rateQuotation($quotation_id) {
 
-        // Recupera la cotización usando el ID
         $quotation = \App\Models\Quotation::find($quotation_id);
         if (!$quotation) {
             throw new \Exception("Quotation not found");
@@ -90,7 +89,7 @@ if (!function_exists('rateQuotation')) {
         $dossemanasdespues = $fecha_solicitud->copy()->addWeeks(2);
         $tressemanasdespues = $fecha_solicitud->copy()->addWeeks(3);
 
-        // Fecha de envío :::::::::::
+        //######## Fecha de envío :::::::::::
         if ($quotation->shipping_date) {
             $fecha_envio = Carbon::parse(explode(' to ', $quotation->shipping_date)[0]);
             if (in_array($quotationmodeoftransport, ['Air', 'Ground'])) {
@@ -107,7 +106,7 @@ if (!function_exists('rateQuotation')) {
         }
 
 
-        // Correo electrónico :::::::::::
+        //######## Correo electrónico :::::::::::
         $email = $quotation->customer_user_id ? \App\Models\User::find($quotation->customer_user_id)->email : \App\Models\GuestUser::find($quotation->guest_user_id)->email;
         $domain = substr(strrchr($email, "@"), 1);
 
@@ -124,14 +123,28 @@ if (!function_exists('rateQuotation')) {
             $rating += 1;
         }
 
-        // Origen/Destino: Canada o United States. Location User or Guest: Canada o United States
+        //######## Origen/Destino y Ubicación :::::::::::
+        $scopeCountries = ['10', '22', '26', '30', '38', '43', '47', '52', '55', '61', '63', '65', '90', '95', '97', '142', '158', '169', '171', '172', '177', '208', '231', '233', '237'];  // Países en el scope
+        $specialCountries = ['38', '231']; // Países especiales (Canadá y EE. UU.)
+
         $location = $quotation->customer_user_id ? \App\Models\User::find($quotation->customer_user_id)->location : \App\Models\GuestUser::find($quotation->guest_user_id)->location;
-        
-        if (in_array($quotation->origin_country_id, ['38', '231']) || in_array($quotation->destination_country_id, ['38', '231']) || in_array($location, ['38', '231'])) {
-            $rating += 1;
+
+        $isLocationInSpecialCountries = in_array($location, $specialCountries); 
+
+        $isOriginInScope = in_array($quotation->origin_country_id, $scopeCountries);
+        $isDestinationInScope = in_array($quotation->destination_country_id, $scopeCountries);
+
+        if ($isLocationInSpecialCountries) {
+            if ($isOriginInScope && $isDestinationInScope) {
+                $rating += 2; // Tanto origen como destino están en el scope
+            } elseif ($isOriginInScope || $isDestinationInScope) {
+                $rating += 1; // Origen o destino están en el scope
+            } else {
+                $rating += 0.5; // Cualquier país fuera del scope
+            }
         }
 
-        // Valor ::::::::::::
+        //######## Valor ::::::::::::
         if($cargotype == 'LCL' || $cargotype == 'LTL' || $quotationmodeoftransport == 'Air'){
             if ($quotation->declared_value > 2500) {
                 $rating += 1;
@@ -147,27 +160,27 @@ if (!function_exists('rateQuotation')) {
         }
         
         // Cantidades
-        if($quotationmodeoftransport == 'Air'){
-            if ($quotation->tota_chargeable_weight > 200) {
-                $rating += 1;
-            }
-        } else if($cargotype == 'LTL' ){
-            if ($quotation->total_volum_weight > 1.50) {
-                $rating += 1;
-            }
-        } else if($cargotype == 'LCL'){
-            if ($quotation->total_volum_weight > 1.50) {
-                $rating += 1;
-            }
-        } else if($quotationmodeoftransport == 'RoRo'){
-            if ($quotation->total_volum_weight > 30) {
-                $rating += 1;
-            }
-        } else if($quotationmodeoftransport == 'Breakbulk'){
-            if ($quotation->total_volum_weight > 30) {
-                $rating += 1;
-            }
-        }
+        // if($quotationmodeoftransport == 'Air'){
+        //     if ($quotation->tota_chargeable_weight > 200) {
+        //         $rating += 1;
+        //     }
+        // } else if($cargotype == 'LTL' ){
+        //     if ($quotation->total_volum_weight > 1.50) {
+        //         $rating += 1;
+        //     }
+        // } else if($cargotype == 'LCL'){
+        //     if ($quotation->total_volum_weight > 1.50) {
+        //         $rating += 1;
+        //     }
+        // } else if($quotationmodeoftransport == 'RoRo'){
+        //     if ($quotation->total_volum_weight > 30) {
+        //         $rating += 1;
+        //     }
+        // } else if($quotationmodeoftransport == 'Breakbulk'){
+        //     if ($quotation->total_volum_weight > 30) {
+        //         $rating += 1;
+        //     }
+        // }
 
         // Guarda la calificación en la cotización
         $quotation->rating = $rating;
@@ -179,34 +192,39 @@ if (!function_exists('rateQuotation')) {
             $users_auto_assigned_quotes = \App\Models\Setting::where('key', 'users_auto_assigned_quotes')->first()->value; 
             $userIds = json_decode($users_auto_assigned_quotes);
 
-            // Buscar email en la tabla users el ultimo usuario registrado con el email
-            $customerwithemail = \App\Models\User::where('email', $email)->first();
-            if ($customerwithemail) {
-                $quotationwithemail = \App\Models\Quotation::where('customer_user_id', $customerwithemail->id)->orderBy('id', 'desc')->first();
-                if ($quotationwithemail) {
-                    $quotationwithemailassigned = \App\Models\User::find($quotationwithemail->assigned_user_id);
-                    if ($quotationwithemailassigned) {
-                        $quotation->assigned_user_id = $quotationwithemailassigned->id;
-                        $quotation->save();
-                        return $rating;
-                    }
-                }
-            }
 
-            // Buscar email en la tabla users_guest
-            $guestuserwithemail = \App\Models\GuestUser::where('email', $email)->first();
-            if ($guestuserwithemail) {
-                $quotationwithemailguest = \App\Models\Quotation::where('guest_user_id', $guestuserwithemail->id)->orderBy('id', 'desc')->first();
-                if ($quotationwithemailguest) {
-                    $quotationwithemailguestassigned = \App\Models\User::find($quotationwithemailguest->assigned_user_id);
-                    if ($quotationwithemailguestassigned) {
-                        $quotation->assigned_user_id = $quotationwithemailguestassigned->id;
-                        
-                        $quotation->save();
-                        return $rating;
+
+            // Buscar email en la tabla users el ultimo usuario registrado con el email
+            if (!in_array($domain, $personal_domains)){
+                // Buscar el último usuario registrado con el mismo dominio en la tabla users
+                $customerwithemail = \App\Models\User::where('email', 'like', "%@$domain")->orderBy('id', 'desc')->first();
+                if ($customerwithemail) {
+                    $quotationwithemail = \App\Models\Quotation::where('customer_user_id', $customerwithemail->id)->orderBy('id', 'desc')->first();
+                    if ($quotationwithemail) {
+                        $quotationwithemailassigned = \App\Models\User::find($quotationwithemail->assigned_user_id);
+                        if ($quotationwithemailassigned) {
+                            $quotation->assigned_user_id = $quotationwithemailassigned->id;
+                            $quotation->save();
+                            return $rating;
+                        }
+                    }
+                }
+
+                // Buscar el último invitado registrado con el mismo dominio en la tabla guest_users
+                $guestuserwithemail = \App\Models\GuestUser::where('email', 'like', "%@$domain")->orderBy('id', 'desc')->first();
+                if ($guestuserwithemail) {
+                    $quotationwithemailguest = \App\Models\Quotation::where('guest_user_id', $guestuserwithemail->id)->orderBy('id', 'desc')->first();
+                    if ($quotationwithemailguest) {
+                        $quotationwithemailguestassigned = \App\Models\User::find($quotationwithemailguest->assigned_user_id);
+                        if ($quotationwithemailguestassigned) {
+                            $quotation->assigned_user_id = $quotationwithemailguestassigned->id;
+                            $quotation->save();
+                            return $rating;
+                        }
                     }
                 }
             }
+            
 
             //ver si la cotización cumple con 4 rating
             if($rating == 4){

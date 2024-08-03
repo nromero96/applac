@@ -439,7 +439,7 @@
                                                             <div class="text-danger msg-info" id="origin_state_id_error"></div>
                                                         </div>
                                                         <div class="col-md-6 mb-2">
-                                                            <label class="form-label mb-0">{{ __('Zip Code') }} </label>
+                                                            <label class="form-label mb-0">{{ __('Zip Code') }} <span class="text-danger d-none" id="reqzipcode_origin">*</span></label>
                                                             <input type="text" class="form-control" name="origin_zip_code" id="origin_zip_code" placeholder="{{ __('Enter Zip Code') }}">
                                                             <div class="text-danger msg-info" id="origin_zip_code_error"></div>
                                                         </div>
@@ -493,7 +493,7 @@
                                                             <div class="text-danger msg-info" id="destination_state_id_error"></div>
                                                         </div>
                                                         <div class="col-md-6 mb-2">
-                                                            <label class="form-label mb-0">{{ __('Zip Code') }} </label>
+                                                            <label class="form-label mb-0">{{ __('Zip Code') }} <span class="text-danger d-none" id="reqzipcode_destination">*</span></label>
                                                             <input type="text" class="form-control" name="destination_zip_code" id="destination_zip_code" placeholder="{{ __('Enter Zip Code') }}">
                                                             <div class="text-danger msg-info" id="destination_zip_code_error"></div>
                                                         </div>
@@ -1912,39 +1912,53 @@
 
     <script>
         //click in origin_country_id select add state select by ajax
-        $(document).on('change', 'select[name="origin_country_id"]', function(){
-            var country_id = $(this).val();
-            $.ajax({
-                url: baseurl + '/getstates/' + country_id,
-                type: 'GET',
-                success: function(data) {
+        document.querySelector('select[name="origin_country_id"]').addEventListener('change', function() {
+            var countryId = this.value;
+            fetch(baseurl + '/getstates/' + countryId)
+                .then(response => response.json())
+                .then(data => {
+                    var select = document.querySelector('select[name="origin_state_id"]');
                     if (data.length > 0) {
                         var html = '<option value="">State/Province...</option>';
-                        $.each(data, function(index, value) {
-                            html += '<option value="'+value.id+'">'+value.name+'</option>';
+                        data.forEach(function(state) {
+                            html += '<option value="' + state.id + '">' + state.name + '</option>';
                         });
-                        $('select[name="origin_state_id"]').html(html);
+                        select.innerHTML = html;
                     }
-                }
-            });
+                })
+                .catch(error => console.error('Error:', error));
+
+            var reqZipcodeOrigin = document.getElementById('reqzipcode_origin');
+            if (countryId === '38' || countryId === '231') {
+                reqZipcodeOrigin.classList.remove('d-none');
+            } else {
+                reqZipcodeOrigin.classList.add('d-none');
+            }
         });
 
         //click in destination_country_id select add state select by ajax
-        $(document).on('change', 'select[name="destination_country_id"]', function(){
-            var country_id = $(this).val();
-            $.ajax({
-                url: baseurl + '/getstates/' + country_id,
-                type: 'GET',
-                success: function(data) {
+        document.querySelector('select[name="destination_country_id"]').addEventListener('change', function() {
+            var countryId = this.value;
+            fetch(baseurl + '/getstates/' + countryId)
+                .then(response => response.json())
+                .then(data => {
+                    var select = document.querySelector('select[name="destination_state_id"]');
                     if (data.length > 0) {
                         var html = '<option value="">State/Province...</option>';
-                        $.each(data, function(index, value) {
-                            html += '<option value="'+value.id+'">'+value.name+'</option>';
+                        data.forEach(function(state) {
+                            html += '<option value="' + state.id + '">' + state.name + '</option>';
                         });
-                        $('select[name="destination_state_id"]').html(html);
+                        select.innerHTML = html;
                     }
-                }
-            });
+                })
+                .catch(error => console.error('Error:', error));
+
+            var reqZipcodeDestination = document.getElementById('reqzipcode_destination');
+            if (countryId === '38' || countryId === '231') {
+                reqZipcodeDestination.classList.remove('d-none');
+            } else {
+                reqZipcodeDestination.classList.add('d-none');
+            }
         });
 
         var f3 = flatpickr(document.getElementById('shipping_date'), {
@@ -1957,8 +1971,6 @@
             var $shippingDateInput = $('#shipping_date');
             var shipping_date_error = document.getElementById('shipping_date_error').innerHTML = '';
             if ($(this).is(':checked')) {
-                //f3.clear();
-                //f3.destroy();
                 $shippingDateInput.val('');
                 $shippingDateInput.prop('readonly', true);
             } else {

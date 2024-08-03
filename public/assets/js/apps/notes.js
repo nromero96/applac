@@ -30,6 +30,23 @@ $(document).ready(function() {
       });
     }
 
+    function viewNote() {
+      $(".read-more, .note-title").off('click').on('click', function(event) {
+        event.stopPropagation();
+
+        var note_title = $(this).parents('.note-item').find('.note-title').data('notetitle');
+        var note_description = $(this).parents('.note-item').find('.note-description').data('notedescription');
+        var note_created_at_view = $(this).parents('.note-item').find('.meta-time').text();
+
+        $('#notesViewModal').modal('show');
+
+        document.getElementById('notesViewModalTitleeLabel').textContent = note_title;
+        document.getElementById('note-description-view').textContent = note_description;
+        document.getElementById('note-created-at-view').textContent = 'Created at: '+note_created_at_view;
+
+      });
+    }
+
     function deleteNote() {
         $(".delete-note").off('click').on('click', function(event) {
           event.stopPropagation();
@@ -257,6 +274,7 @@ $(document).ready(function() {
     favNote();
     addLabelGroups();
     editNote();
+    viewNote();
 })
 
 // Validation Process

@@ -19,13 +19,13 @@
 
         <ul class="navbar-item flex-row ms-lg-auto ms-0">
 
-            <li class="nav-item dropdown language-dropdown">
+            <li class="nav-item dropdown language-dropdown d-none">
                 <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="language-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <img src="@if(app()->getLocale() == 'es') {{ asset('assets/img/1x1/es.svg') }} @else {{ asset('assets/img/1x1/us.svg') }} @endif" class="flag-width" alt="flag">
                 </a>
                 <div class="dropdown-menu position-absolute" aria-labelledby="language-dropdown">
                     <a class="dropdown-item d-flex" href="{{ url('') }}/locale/en"><img src="{{ asset('assets/img/1x1/us.svg') }}" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;English</span></a>
-                    {{-- <a class="dropdown-item d-flex opacity-25 disabled" href="{{ url('') }}/locale/es"><img src="{{ asset('assets/img/1x1/es.svg') }}" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;Spanish</span></a> --}}
+                    <a class="dropdown-item d-flex opacity-25 disabled" href="{{ url('') }}/locale/es"><img src="{{ asset('assets/img/1x1/es.svg') }}" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;Spanish</span></a>
                 </div>
             </li>
 
