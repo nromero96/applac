@@ -119,12 +119,12 @@ if (!function_exists('rateQuotation')) {
         ];
 
         // Verificar si el dominio está en la lista de dominios permitidos o si termina en .edu
-        if (!in_array($domain, $personal_domains) && !preg_match('/\.edu$/', $domain)) {
+        if (!in_array($domain, $personal_domains) && !preg_match('/\.edu(\.[a-z]{2,})?$/', $domain)) {
             $rating += 1;
         }
 
         //######## Origen/Destino y Ubicación :::::::::::
-        $scopeCountries = ['10', '22', '26', '30', '38', '43', '47', '52', '55', '61', '63', '65', '90', '95', '97', '142', '158', '169', '171', '172', '177', '208', '231', '233', '237'];  // Países en el scope
+        $scopeCountries = ['7', '9', '10', '12', '16', '19', '22', '24', '26', '30', '38', '40', '43', '47', '52', '55', '60', '61', '63', '65', '76', '87', '88', '90', '94', '95', '97', '108', '138', '142', '147', '154', '158', '169', '171', '172', '177', '184', '185', '187', '208', '221', '225', '231', '233', '237', '239', '240'];  // Países en el scope
         $specialCountries = ['38', '231']; // Países especiales (Canadá y EE. UU.)
 
         $location = $quotation->customer_user_id ? \App\Models\User::find($quotation->customer_user_id)->location : \App\Models\GuestUser::find($quotation->guest_user_id)->location;
