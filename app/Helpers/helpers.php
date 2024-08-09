@@ -101,7 +101,7 @@ if (!function_exists('rateQuotation')) {
             } else if (in_array($quotationmodeoftransport, ['Container', 'RoRo', 'Breakbulk'])) {
                 if ($fecha_envio->between($fecha_solicitud, $tressemanasdespues)) {
                     $rating += 1;
-                } 
+                }
             }
         }
 
@@ -129,7 +129,7 @@ if (!function_exists('rateQuotation')) {
 
         $location = $quotation->customer_user_id ? \App\Models\User::find($quotation->customer_user_id)->location : \App\Models\GuestUser::find($quotation->guest_user_id)->location;
 
-        $isLocationInSpecialCountries = in_array($location, $specialCountries); 
+        $isLocationInSpecialCountries = in_array($location, $specialCountries);
 
         $isOriginInScope = in_array($quotation->origin_country_id, $scopeCountries);
         $isDestinationInScope = in_array($quotation->destination_country_id, $scopeCountries);
@@ -158,7 +158,7 @@ if (!function_exists('rateQuotation')) {
                 $rating += 1;
             }
         }
-        
+
         // Cantidades
         // if($quotationmodeoftransport == 'Air'){
         //     if ($quotation->tota_chargeable_weight > 200) {
@@ -189,7 +189,7 @@ if (!function_exists('rateQuotation')) {
         //si asignar a usuario si el rating es menor o igual a 4
         if($rating <= 4){
             // Obtener el valor de users_auto_assigned_quotes de la tabla settings
-            $users_auto_assigned_quotes = \App\Models\Setting::where('key', 'users_auto_assigned_quotes')->first()->value; 
+            $users_auto_assigned_quotes = \App\Models\Setting::where('key', 'users_auto_assigned_quotes')->first()->value;
             $userIds = json_decode($users_auto_assigned_quotes);
 
 
@@ -224,7 +224,7 @@ if (!function_exists('rateQuotation')) {
                     }
                 }
             }
-            
+
 
             //ver si la cotización cumple con 4 rating
             if($rating == 4){
@@ -232,7 +232,7 @@ if (!function_exists('rateQuotation')) {
 
                 $now = Carbon::now();
                 $yesterday = $now->copy()->subDay();
-                
+
 
                 foreach ($userIds as $userId) {
                     $userQuotationFourRatingCounts[$userId] = \App\Models\Quotation::where('assigned_user_id', $userId)
@@ -249,22 +249,26 @@ if (!function_exists('rateQuotation')) {
 
                 $quotation->save();
                 return $rating;
+            } else if($rating < 4){
+
+                $indexFile = 'current_index.txt';
+                $currentIndex = (int)Storage::get($indexFile);
+                if ($currentIndex >= count($userIds)) {
+                    $currentIndex = 0;
+                }
+
+                // Obtén el usuario en el índice actual
+                $selectedUserId = $userIds[$currentIndex];
+
+                $quotation->assigned_user_id = $selectedUserId;
+
+                $currentIndex++;
+                Storage::put($indexFile, $currentIndex);
             }
 
-            $userQuotationCounts = [];
-            foreach ($userIds as $userId) {
-                $userQuotationCounts[$userId] = \App\Models\Quotation::where('assigned_user_id', $userId)->count();
-            }
+            $quotation->save();
 
-            $minCount = min($userQuotationCounts);
-            $usersWithMinCount = array_filter($userQuotationCounts, function($count) use ($minCount) {
-                return $count == $minCount;
-            });
-            $minUserId = array_rand($usersWithMinCount);
-            $quotation->assigned_user_id = $minUserId;
-            
         }
-        $quotation->save();
         return $rating;
     }
 }

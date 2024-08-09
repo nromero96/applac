@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Log;
 
 class QuotationController extends Controller
 {
-    
+
     public function index(){
         // $category_name = '';
         $data = [
@@ -57,23 +57,23 @@ class QuotationController extends Controller
                 'quotations.assigned_user_id as quotation_assigned_user_id',
                 'quotations.created_at as quotation_created_at',
                 'quotation_notes.created_at as quotation_note_created_at',
-    
+
             )
             ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
             ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
             ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
             ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
-    
+
             //get created_at last Quotation Notes
             ->leftJoin('quotation_notes', function($join){
                 $join->on('quotations.id', '=', 'quotation_notes.quotation_id')
                 ->where('quotation_notes.id', '=', DB::raw("(select max(id) from quotation_notes WHERE quotation_id = quotations.id)"));
             })
-    
+
             ->where('quotations.customer_user_id', auth()->id())
             ->orderBy('quotations.id', 'desc')
             ->get();
-    
+
         } else {
 
             $quotations = Quotation::select(
@@ -165,7 +165,7 @@ class QuotationController extends Controller
             DB::raw('COALESCE(users.phone, guest_users.phone) as customer_phone'),
             DB::raw('COALESCE(users.source, guest_users.source) as customer_source'),
 
-            //is user or guest user 
+            //is user or guest user
             DB::raw('CASE WHEN users.id IS NOT NULL THEN "Customer" ELSE "Guest" END AS customer_type'),
 
             'oc.name as origin_country',
@@ -213,13 +213,13 @@ class QuotationController extends Controller
         //
     }
 
-    
+
     public function update(Request $request, $id)
     {
         //
     }
 
-    
+
     public function destroy($id)
     {
         //
@@ -317,7 +317,7 @@ class QuotationController extends Controller
             ]);
 
             $create_account = $request->input('create_account');
-            
+
             if($create_account == 'no' && !Auth::check()){
                 //create guest user
                 $reguser = GuestUser::create([
@@ -466,7 +466,7 @@ class QuotationController extends Controller
 
                     // Envía el correo electrónico con los detalles de carga y archivos adjuntos
                     Mail::send(new QuotationCreated($quotation, $reguser, $request->input('email'), $cargoDetails, $quotation_documents));
-                
+
                     // Si no se lanzó una excepción, asumimos que el correo se envió correctamente
                     Log::info('Correo electrónico enviado correctamente de la cotización: ' . $quotation_id);
                 } catch (\Exception $e) {
@@ -475,7 +475,7 @@ class QuotationController extends Controller
                 }
 
             } else if ($create_account == 'yes' || (Auth::check() && $create_account == 'no')){
-                
+
                 if(Auth::check() && $create_account == 'no'){
                     //get user is with user logged
                     $newuser_id = auth()->id();
@@ -498,7 +498,7 @@ class QuotationController extends Controller
 
 
                 } else {
-                
+
                     //verificate if existing email in users table, generate password for send mail and assign role customer
                     $user = User::where('email', $request->input('email'))->first();
                     if($user){
@@ -609,7 +609,7 @@ class QuotationController extends Controller
                             'dc_imoclassification_5' => $dc_imoclassification_5[$i] ?? null,
                             'dc_unnumber_5' => $dc_unnumber_5[$i] ?? null,
                     ];
-        
+
                     if ($cargo_type !== 'FTL' && $cargo_type !== 'FCL') {
                         $cargoDetail['length'] = $request->input('length')[$i] ?? null;
                         $cargoDetail['width'] = $request->input('width')[$i] ?? null;
@@ -625,7 +625,7 @@ class QuotationController extends Controller
                         $cargoDetail['temperature_type'] = $request->input('temperature_type')[$i] ?? null;
                         $cargoDetail['details_shipment'] = $request->input('details_shipment')[$i] ?? null;
                     }
-        
+
                     $cargoDetails[] = $cargoDetail;
                     $cargo_detail = CargoDetail::create($cargoDetail);
 
@@ -679,7 +679,7 @@ class QuotationController extends Controller
                             Log::error('Error al enviar el correo electrónico de su cuenta creada a: ' . $request->input('email') . ' - ' . $e->getMessage());
                         }
                     }
-                    
+
                 }
             }
 
@@ -692,7 +692,7 @@ class QuotationController extends Controller
             }
 
             return response()->json(['success' => true]);
-    
+
         } catch (ValidationException $e) {
             return response()->json(['success' => false, 'errors' => $e->errors()], 422);
         } catch (\Exception $e) {

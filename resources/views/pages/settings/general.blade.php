@@ -21,7 +21,7 @@
 
         <div class="row layout-spacing">
             <div class="col-lg-12 layout-top-spacing mt-2">
-                
+
                 @if(session('success'))
                 <div class="alert alert-success alert-dismissible fade show border-0 mb-2" role="alert">
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -48,7 +48,8 @@
                         <form class="row g-3" action="{{ route('settings.update') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="col-md-12">
-                                <label for="users_auto_assigned_quotes" class="form-label fw-bold">{{__("Users Auto assigned quotes with less than 4 stars")}} <span class="text-danger">*</span></label>
+                                <label for="users_auto_assigned_quotes" class="form-label fw-bold mb-0">{{__("Users Auto assigned quotes with less than 4 stars")}} <span class="text-danger">*</span></label>
+                                <p class="text-muted d-block">{{__("Select users who will be auto assigned quotes with less than 4 stars, if no user is selected, no user will be auto assigned.") }}</p>
                                 <div class="row">
 
                                     @php

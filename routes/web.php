@@ -45,7 +45,7 @@ use App\Mail\PruebaCorreo;
 
 
 //home
-Route::get('/', function () { 
+Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('dashboard.index');
     } else {
@@ -116,7 +116,7 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
     Route::post('quotations/{id}/assignuser/', [QuotationController::class, 'assignUsertoQuote'])->name('assignUsertoQuote');
     //assignQuoteForMe
     Route::get('quotations/{id}/assignquotetome/', [QuotationController::class, 'assignQuoteForMe'])->name('assignQuoteForMe');
-    
+
 
     //suppliers
     Route::resource('suppliers', SupplierController::class)->names('suppliers');
@@ -153,7 +153,7 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
 
 
     //Test Logic (Internal)
-    Route::get('test-logic', [App\Http\Controllers\LogicTestController::class, 'assignedQuote'])->name('test-logic');
+    Route::get('test-logic/{id}', [App\Http\Controllers\LogicTestController::class, 'assignedQuote'])->name('test-logic');
 
 });
 

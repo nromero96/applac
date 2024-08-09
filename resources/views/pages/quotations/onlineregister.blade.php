@@ -4,10 +4,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
-    
+
     {{-- CSRF Token --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    
+
     <title>Get a Freight Shipping Quote | LAC - Latin American Cargo</title>
 
     <!-- SEO -->
@@ -50,8 +50,8 @@
     <meta name="theme-color" content="#B80000">
     <meta name="msapplication-navbutton-color" content="#B80000">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  
-    
+
+
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
 
@@ -173,7 +173,7 @@
                                         <div class="form-check-inline mt-2 mb-4">
                                             <input type="checkbox" class="form-check-input" id="accept_terms_personal" name="accept_terms_personal" value="yes">
                                             <label class="form-check-label" for="accept_terms_personal">
-                                                {{ __('I understand') }} 
+                                                {{ __('I understand') }}
                                             </label>
                                         </div>
                                     </div>
@@ -268,13 +268,13 @@
                                 </div>
                                 <div class="bs-stepper-content" id="cargoinfodata">
                                     <div id="defaultStep-one" class="content" role="tabpanel">
-                                        
+
                                         {{-- Mode of transport --}}
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
                                                 <h5 class="subtit-steep">{{ __('Mode of transport') }}</h5>
                                             </div>
-                
+
                                             <div class="col-md-12">
                                                 <div class="row align-items-center justify-content-center radio-options">
                                                     <div class="col text-center">
@@ -389,17 +389,17 @@
                                                 <div class="text-danger msg-info" id="service_type_error"></div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="button-action text-center mb-3">
                                             <a class="btn btn-outline-primary btn-prev me-3 d-none" disabled> ← Prev</a>
                                             <a class="btn btn-primary btn-nxt">{{ __('Continue to Location') }} →</a>
                                         </div>
                                     </div>
                                     <div id="defaultStep-two" class="content" role="tabpanel">
-                                        
+
                                         {{-- Location Details --}}
                                         <div class="row">
-                                            
+
 
                                             <div class="col-md-5">
                                                 <h5 class="subtit-steep">{{ __('Origin Details') }} </h5>
@@ -501,14 +501,14 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <div class="button-action text-center mb-3 d-flex flex-column flex-sm-row justify-content-center">
                                             <a class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Return') }} </a>
                                             <a class="btn btn-primary btn-nxt order-0 order-sm-1 mb-2 mb-sm-0"> {{ __('Continue to Cargo') }} → </a>
                                         </div>
                                     </div>
                                     <div id="defaultStep-three" class="content" role="tabpanel" >
-                                        
+
                                         {{-- Cargo Details --}}
                                         <div class="row">
                                             <div class="col-md-12 mb-1 mb-sm-3">
@@ -545,7 +545,7 @@
                                                       </svg>
                                                     <span class="btn-text-inner">{{ __('Add item') }}</span>
                                                 </a>
-                                            
+
                                             </div>
 
                                             <div class="col-md-12" id="dv_totsummary">
@@ -562,7 +562,7 @@
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <div class="row results-cd">
-                                                                        
+
                                                                         <div class="col align-self-end">
                                                                             <label class="form-label mb-0">{{ __('Quantity') }}</label>
                                                                             <input type="text" name="total_qty" class="form-control" placeholder="0" readonly>
@@ -612,7 +612,7 @@
                                                         <label class="form-label mb-0">{{ __('Declared value') }} <span class="text-danger">*</span></label>
                                                         <input type="text" name="declared_value" id="declared_value" class="form-control" placeholder="">
                                                         <div class="text-danger msg-info" id="declared_value_error"></div>
-                                                        
+
                                                         <div class="form-check form-check-primary form-check-inline mt-1">
                                                             <input type="hidden" name="insurance_required" value="no">
                                                             <input class="form-check-input" type="checkbox" name="insurance_required" id="insurance_required" value="yes">
@@ -633,13 +633,13 @@
                                                     <div class="col-md-12 mb-2">
                                                         <label class="form-label mb-0">{{ __('Documentation') }} <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="(Max. 10mb - Allowed files: jpg, jpeg, png, gif, doc, docx, ppt, pptx, pdf, xls, xlsx)" ></span></label>
                                                         <div class="multiple-file-upload">
-                                                            <input 
-                                                                type="file" 
+                                                            <input
+                                                                type="file"
                                                                 name="quotation_documents[]"
-                                                                class="quotation_documents" 
-                                                                multiple 
-                                                                data-allow-reorder="true" 
-                                                                data-max-file-size="3MB" 
+                                                                class="quotation_documents"
+                                                                multiple
+                                                                data-allow-reorder="true"
+                                                                data-max-file-size="3MB"
                                                                 data-max-files="6">
                                                         </div>
                                                         <span class="text-info-filedata">
@@ -647,8 +647,8 @@
                                                         </span>
                                                     </div>
 
-                                                    <span class="text-danger msg-info" id="package_type_error"></span> 
-                                                    <span class="text-danger msg-info" id="package_qty_error"></span> 
+                                                    <span class="text-danger msg-info" id="package_type_error"></span>
+                                                    <span class="text-danger msg-info" id="package_qty_error"></span>
                                                     <span class="text-danger msg-info" id="package_dimensions_error"></span>
                                                     <span class="text-danger msg-info" id="package_per_piece_error"></span>
                                                     <span class="text-danger msg-info" id="package_item_total_weight_error"></span>
@@ -666,7 +666,7 @@
                                         </div>
                                     </div>
                                     <div id="defaultStep-four" class="content" role="tabpanel" >
-                                        
+
                                         {{-- Contact Details --}}
                                         <div class="row">
                                             <div class="col-md-12 mb-3">
@@ -713,7 +713,7 @@
 
                                             <div class="col-md-6 mb-2">
                                                 <label for="location" class="form-label mb-0" id="labellocation">{{ __('Location') }} <span class="text-danger">*</span></label>
-        
+
                                                 <select name="location" id="location" class="form-select" @auth disabled @endauth>
                                                     <option value="">{{ __('Select...') }}</option>
                                                     @foreach ($countries as $country)
@@ -792,7 +792,7 @@
                                         <div class="button-action text-center mb-3 d-flex flex-column flex-sm-row justify-content-center">
                                             <a class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Return') }} </a>
                                             <button type="submit" class="btn btn-primary send_rq order-0 order-sm-1 mb-2 mb-sm-0" id="submitBtn">{{ __('Complete my Quote Request') }}</button>
-                                            
+
                                             <div class="mx-5 mt-2 mb-1 text-center" id="loadingSpinner" style="display: none;">
                                                 <div class="spinner-border text-warning align-self-center"></div>
                                             </div>
@@ -843,7 +843,7 @@
     <script src="{{ asset('plugins/src/filepond/FilePondPluginImageResize.min.js') }}"></script>
     <script src="{{ asset('plugins/src/filepond/FilePondPluginImageTransform.min.js') }}"></script>
     <script src="{{ asset('plugins/src/filepond/filepondPluginFileValidateSize.min.js') }}"></script>
-    
+
     <script src="{{ asset('plugins/src/flatpickr/flatpickr.js') }}"></script>
     <script src="{{ asset('plugins/src/intl-tel-input/js/intlTelInput.min.js') }}"></script>
 
@@ -865,14 +865,14 @@
                 var $dv_cargotype_roro = $('#dv_cargotype_roro');
                 var $service_type = $('#service_type');
 
-                
+
                 $dv_cargotype.addClass('d-none');
                 $dv_cargotype_ground.addClass('d-none');
                 $dv_cargotype_container.addClass('d-none');
                 $dv_cargotype_roro.addClass('d-none');
                 $dv_cargotype.find('input[type="radio"]').prop('checked', false);
                 $('#info_company').removeClass('d-none');
-                
+
                 $service_type.html('<option value="">Select...</option><option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Airport">Door-to-Airport</option><option value="Airport-to-Door">Airport-to-Door</option><option value="Airport-to-Airport">Airport-to-Airport</option>');
 
                 switch (mode_of_transport) {
@@ -915,7 +915,7 @@
 
             });
 
-    
+
             // Cambiar el select por el nombre "service_type"
             function handleServiceTypeChange() {
                 var service_type = $('select[name="service_type"]').val();
@@ -1156,7 +1156,7 @@
                                 '</div>' +
                                 '<div class="col-md-3 ps-sm-1 mb-1">' +
                                     '<label class="form-label mb-0">Qty <span class="text-danger">*</span></label>' +
-                                    '<input type="text" name="qty[]" class="form-control px-2">' +
+                                    '<input type="text" name="qty[]" class="form-control solo-numeros px-2">' +
                                 '</div>' +
                                 '<div class="col-md-12 my-2 my-sm-0">' +
                                     '<label class="form-label mb-0">Cargo Description <span class="text-danger">*</span></label>' +
@@ -1173,15 +1173,15 @@
                                 '<h6 class="list-tit-item d-block d-sm-none mb-0">Dimensions</h6>'+
                                 '<div class="col-md-3 pe-2 pe-sm-1 mb-2">' +
                                     '<span class="form-label">Length <span class="text-danger">*</span></span>' +
-                                    '<input type="text" name="length[]" class="form-control px-2">' +
+                                    '<input type="text" name="length[]" class="form-control numeros-decimales px-2">' +
                                 '</div>' +
                                 '<div class="col-md-3 px-sm-1 mb-2">' +
                                     '<span class="form-label">Width <span class="text-danger">*</span></span>' +
-                                    '<input type="text" name="width[]" class="form-control px-2">' +
+                                    '<input type="text" name="width[]" class="form-control numeros-decimales px-2">' +
                                 '</div>' +
                                 '<div class="col-md-3 px-sm-1 mb-2">' +
                                     '<span class="form-label">Height <span class="text-danger">*</span></span>' +
-                                    '<input type="text" name="height[]" class="form-control px-2">' +
+                                    '<input type="text" name="height[]" class="form-control numeros-decimales px-2">' +
                                 '</div>' +
                                 '<div class="col-md-3 ps-sm-1 mb-2">' +
                                     '<span class="form-label">Unit</span>' +
@@ -1199,7 +1199,7 @@
                                 '<h6 class="list-tit-item d-block d-sm-none mb-0">Weight</h6>'+
                                 '<div class="col-md-4 pe-2 pe-sm-1 mb-2">' +
                                     '<span class="form-label">Per piece <span class="text-danger">*</span></span>' +
-                                    '<input type="text" name="per_piece[]" class="form-control">' +
+                                    '<input type="text" name="per_piece[]" class="form-control numeros-decimales">' +
                                 '</div>' +
                                 '<div class="col-md-4 ps-sm-0 pe-2 pe-sm-1 mb-2">' +
                                     '<span class="form-label">Total Weight</span>' +
@@ -1232,6 +1232,7 @@
                 initializeDangerousCargoModal();
                 initializeTooltips();
                 updateItemIndexes();
+                inicializarValidacionesInputs();
             }
 
             function updateItemIndexes() {
@@ -1337,7 +1338,7 @@
                     list_countries('all', 'all');
                 } else if (cargoType === 'Personal Vehicle'){
                     $service_type.html('<option value="">Select...</option><option value="Port-to-Port">Port-to-Port</option>');
-                    
+
                     list_countries('231', '47,52,61,90,97,169');
                 }
             }
@@ -1404,7 +1405,7 @@
                                 '</div>' +
                                 '<div class="col-md-2 ps-sm-0 pe-sm-0 mb-2">' +
                                     '<label class="form-label txtnumcarspac mb-0">'+$qtylabel+' <span class="text-danger">*</span></label>' +
-                                    '<input type="text" name="qty[]" class="form-control px-2">' +
+                                    '<input type="text" name="qty[]" class="form-control solo-numeros px-2">' +
                                 '</div>' +
                                 '<div class="col-md-6 mt-0 mt-sm-0">' +
                                     '<label class="form-label mb-0">Cargo Description <span class="text-danger">*</span></label>' +
@@ -1428,7 +1429,7 @@
                                     '<div class="row">'+
                                         '<div class="col-md-7 ps-sm-2 pe-sm-0">' +
                                             '<label class="form-label mb-0">Cargo Weight <span class="text-danger">*</span></label>' +
-                                            '<input type="text" name="item_total_weight[]" class="form-control px-2">' +
+                                            '<input type="text" name="item_total_weight[]" class="form-control numeros-decimales px-2">' +
                                         '</div>' +
                                         '<div class="col-md-5">' +
                                             '<label class="form-label mb-0">Unit</label>' +
@@ -1439,7 +1440,7 @@
                                         '</div>' +
                                         '<div class="col-md-7 ps-sm-2 pe-sm-0">' +
                                             '<div class="mt-2 dvtemperature d-none">' +
-                                                '<input type="text" name="temperature[]" class="form-control px-2" placeholder="Temperature">'+
+                                                '<input type="text" name="temperature[]" class="form-control numeros-decimales px-2" placeholder="Temperature">'+
                                             '</div>'+
                                         '</div>' +
                                         '<div class="col-md-5">' +
@@ -1464,6 +1465,7 @@
                 initializeDangerousCargoModal();
                 initializeTooltips();
                 updateItemIndexes();
+                inicializarValidacionesInputs();
             }
 
 
@@ -1646,7 +1648,7 @@
                 $(this).closest('.itemdetail').remove();
 
                 updateTotals(); // Actualiza los totales u otras funcionalidades después de eliminar
-            
+
                 updateItemIndexes();
 
             });
@@ -2036,14 +2038,14 @@
 
 
     </script>
-    
+
     <script>
         // Obtener todos los elementos radio con name="cargo_type"
         const originCountrySelect = document.getElementById('origin_country_id');
         const destinationCountrySelect = document.getElementById('destination_country_id');
         const originPortDiv = document.getElementById('origin_div_airportorport');
         const destinationPortDiv = document.getElementById('destination_div_airportorport');
-    
+
         const puertosPorPais = {
             "231": ["Newark, NJ", "Baltimore, MD", "Jacksonville, FL", "Freeport, TX"], // Estados Unidos
             "10": ["Zarate"], // Argentina
@@ -2059,7 +2061,7 @@
             "172": ["Callao"] // Peru
             // Agrega más opciones según tus necesidades
         };
-    
+
         const portPairs = [
             'Newark, NJ|Santo Domingo',
             'Newark, NJ|Manzanillo',
@@ -2084,7 +2086,7 @@
             'Jacksonville, FL|Puerto Limon',
             'Jacksonville, FL|Santo Tomas de Castilla',
         ];
-    
+
         function list_countries_destination_forport(ports) {
             const availableCountries = [];
             for (const country in puertosPorPais) {
@@ -2098,30 +2100,30 @@
             }
             return availableCountries;
         }
-    
+
         function updateDestinationCountries() {
             const originPortSelect = document.getElementById('origin_airportorport');
             // Obtener el puerto de origen seleccionado
             const selectedOriginPort = originPortSelect.value;
-    
+
             // Obtener los pares de puertos que contienen el puerto de origen seleccionado
             const validPairs = portPairs.filter(pair => pair.startsWith(selectedOriginPort));
-    
+
             // Extraer los puertos de destino de los pares válidos
             const validDestinationPorts = validPairs.map(pair => pair.split('|')[1]);
-    
+
             // Obtener los países disponibles para los puertos de destino válidos
             const validDestinationCountries = list_countries_destination_forport(validDestinationPorts);
-            
+
             list_countries_destination(validDestinationCountries.join(','));
 
         }
-    
+
         function updateOriginPortField() {
             // Obtener el valor del cargo_type seleccionado
             const cargoTypeRadios = document.querySelectorAll('input[name="cargo_type"]');
             const selectedCargoType = Array.from(cargoTypeRadios).find(radio => radio.checked)?.value;
-    
+
             if (selectedCargoType === "Personal Vehicle") {
                 // Si se selecciona "Personal Vehicle," mostrar el campo select en origen
                 const selectedOriginCountry = originCountrySelect.value;
@@ -2146,14 +2148,14 @@
             }
 
         }
-    
+
         function updateDestinationPortField() {
             const cargoTypeRadios = document.querySelectorAll('input[name="cargo_type"]');
             const selectedCargoType = Array.from(cargoTypeRadios).find(radio => radio.checked)?.value;
-    
+
             // Obtener el valor del país de destino seleccionado
             const selectedDestinationCountry = destinationCountrySelect.value;
-    
+
             if (selectedCargoType === "Personal Vehicle") {
                 // Si se selecciona "Personal Vehicle," mostrar el campo de entrada en destino
                 destinationPortDiv.innerHTML = `
@@ -2171,17 +2173,17 @@
                 `;
             }
         }
-    
+
         // Agregar event listeners para cambios en las selecciones de país de origen y destino
         originCountrySelect.addEventListener('change', updateOriginPortField);
         destinationCountrySelect.addEventListener('change', updateDestinationPortField);
-    
+
         // Agregar event listeners para cambios en los radio buttons
         for (const radio of document.querySelectorAll('input[name="cargo_type"], input[name="mode_of_transport"]')) {
             radio.addEventListener('change', () => updateOriginPortField());
             radio.addEventListener('change', () => updateDestinationPortField());
         }
-    
+
         // Llamar a las funciones al cargar la página para asegurarse de que los campos se actualicen correctamente.
         updateOriginPortField();
         updateDestinationPortField();
@@ -2193,8 +2195,54 @@
             });
         });
 
+
+        function inicializarValidacionesInputs() {
+            document.querySelectorAll('.solo-numeros').forEach(function(input) {
+                input.removeEventListener('input', validarSoloNumeros); // Remover listener existente para evitar duplicados
+                input.addEventListener('input', function(event) {
+                    validarSoloNumeros(event.target);
+                });
+            });
+
+            document.querySelectorAll('.numeros-decimales').forEach(function(input) {
+                input.removeEventListener('input', validarNumerosDecimales); // Remover listener existente para evitar duplicados
+                input.addEventListener('input', function(event) {
+                    validarNumerosDecimales(event.target);
+                });
+            });
+        }
+
+        function validarSoloNumeros(input) {
+            if (input && input.value !== undefined) {
+                // Eliminar cualquier carácter que no sea un número
+                input.value = input.value.replace(/[^0-9]/g, '');
+
+                // Si el número es menor que 1, establecer el valor a 1
+                if (input.value !== '' && parseInt(input.value) < 1) {
+                    input.value = 1;
+                }
+            }
+        }
+
+        function validarNumerosDecimales(input) {
+            if (input && input.value !== undefined) {
+                // Reemplazar comas con puntos
+                input.value = input.value.replace(',', '.');
+
+                // Permitir solo números y puntos, eliminando cualquier otro carácter
+                input.value = input.value.replace(/[^0-9.]/g, '');
+
+                // Asegurarse de que solo haya un punto decimal
+                let partes = input.value.split('.');
+                if (partes.length > 2) {
+                    input.value = partes[0] + '.' + partes.slice(1).join('');
+                }
+            }
+        }
+
+
     </script>
-    
+
 
 
 </body>
