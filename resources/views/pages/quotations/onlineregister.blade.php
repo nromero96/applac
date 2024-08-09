@@ -221,7 +221,7 @@
                             <div class="row">
                                 <div class="col-xl-12 col-md-12 col-sm-12 col-12 text-center pt-5">
                                     <h2 class="tit-form pb-1 mb-4">{{ __('Get a Shipping Quote') }}</h2>
-                                    <p class="tit-form-descrip">{{ __('Fill out the form below to get your international freight quote!') }}</p>
+                                    <p class="tit-form-descrip">Share your shipping details below, and we'll be in touch soon with a tailored quote.<br> Our team is committed to finding the most efficient and cost-effective solution for your cargo.</p>
                                     @auth
                                         {{-- No show data --}}
                                     @else
