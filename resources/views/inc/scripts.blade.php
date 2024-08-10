@@ -25,25 +25,12 @@
             @break
         @case('quotations')
             {{-- All quotes --}}
-            <script src="{{asset('plugins/src/table/datatable/datatables.js')}}"></script>
 
-            {{-- colvis --}}
-            <script src="https://cdn.datatables.net/buttons/2.0.0/js/buttons.colVis.min.js"></script>
-
-            <script src="{{asset('plugins/src/table/datatable/button-ext/dataTables.buttons.min.js')}}"></script>
-            
             {{-- swal --}}
             <script src="{{asset('plugins/src/sweetalerts2/sweetalerts2.min.js')}}"></script>
 
             <script src="{{asset('assets/js/apps/quotations/commercial/list.js')}}"></script>
             @break
-        @case('quotationspersonal')
-            {{-- All quotes --}}
-            <script src="{{asset('plugins/src/table/datatable/datatables.js')}}"></script>
-            <script src="{{asset('plugins/src/table/datatable/button-ext/dataTables.buttons.min.js')}}"></script>
-            <script src="{{asset('assets/js/apps/quotations/personal/list.js')}}"></script>
-            @break
-
         @case('suppliers')
             <script src="{{ asset('plugins/src/jquery-ui/jquery-ui.min.js') }}"></script>
             <script src="{{ asset('plugins/src/tagify/tagify.min.js') }}"></script>
@@ -61,7 +48,7 @@
             <script src="{{ asset('plugins/src/filepond/filepondPluginFileValidateSize.min.js') }}"></script>
             <script src="{{ asset('assets/js/apps/supplier-create.js') }}"></script>
             @break
-        
+
         @case('supplieredit')
             <script src="{{ asset('plugins/src/filepond/filepond.min.js') }}"></script>
             <script src="{{ asset('plugins/src/filepond/FilePondPluginFileValidateType.min.js') }}"></script>

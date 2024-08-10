@@ -55,6 +55,14 @@ table.dataTable {
   margin: 0 !important;
 }
 
+table tr td {
+  border-bottom: 1px solid #e0e6ed !important;
+}
+
+.table-hover > tbody > tr:hover td {
+  background-color: #fff5f5 !important;
+}
+
 .table > thead {
   border-top: none;
   border-bottom: none;
@@ -155,7 +163,7 @@ table.dataTable {
   vertical-align: text-top;
 }
 
-/* 
+/*
     Inv List Bottom Section
 */
 .inv-list-bottom-section {
@@ -169,4 +177,86 @@ table.dataTable {
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1215686275);
   padding: 2px 1px;
   cursor: pointer;
+}
+
+.page-item .page-link:hover {
+  background: #191e3a;
+  color: #bfc9d4;
+}
+
+.page-link {
+  margin-right: 5px;
+  border-radius: 8px;
+  background: rgba(0, 23, 55, 0.08);
+  border: none;
+  color: #888ea8;
+  height: 33px;
+  width: 33px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.page-link:focus {
+  box-shadow: none;
+}
+
+.page-item.disabled .page-link {
+  background: transparent;
+}
+.page-item.disabled .page-link svg {
+  color: #888ea8;
+}
+.page-item:first-child .page-link {
+  border-radius: 8px;
+  padding: 0;
+  height: 33px;
+  width: 33px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.page-item:first-child .page-link svg {
+  width: 17px;
+}
+.page-item:last-child .page-link {
+  border-radius: 8px;
+  padding: 0;
+  height: 33px;
+  width: 33px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.page-item.next:not(.disabled) .page-link, .page-item.previous:not(.disabled) .page-link {
+  background: #1b2e4b;
+}
+.page-item.next:not(.disabled) .page-link svg, .page-item.previous:not(.disabled) .page-link svg {
+  color: #fff;
+}
+.page-item:last-child .page-link svg {
+  width: 17px;
+}
+.page-item.active .page-link {
+  background-color: #c00000;
+}
+
+.infotable {
+  padding-top: 0.85em;
+  white-space: normal;
+  color: #c00000;
+  font-weight: 600;
+  border: 1px solid #e0e6ed;
+  display: inline-block;
+  padding: 10px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.listpagination .pagination {
+  float: right;
+  margin-bottom: 0px;
+}
+
+.daterequest {
+  max-width: 120px;
 }

@@ -42,70 +42,72 @@ class QuotationController extends Controller
             'scrollspy_offset' => '',
         ];
 
-        //lista de cotizaciones para el usuario logueado si es customer
-        if(auth()->user()->hasRole('Customer')){
-            $quotations = Quotation::select(
-                'quotations.id as quotation_id',
-                DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),
-                DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
-                'quotations.status as quotation_status',
-                'quotations.mode_of_transport as quotation_mode_of_transport',
-                'quotations.service_type as quotation_service_type',
-                'quotations.rating as quotation_rating',
-                'oc.name as origin_country',
-                'dc.name as destination_country',
-                'quotations.assigned_user_id as quotation_assigned_user_id',
-                'quotations.created_at as quotation_created_at',
-                'quotation_notes.created_at as quotation_note_created_at',
+        $listforpage = request()->query('listforpage') ?? 20;
+        $daterequest = request()->query('daterequest');
+        $search = request()->query('search');
 
-            )
-            ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
-            ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
-            ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
-            ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
+        // lista de cotizaciones para el usuario logueado si es Customer
+        $quotations = Quotation::select(
+            'quotations.id as quotation_id',
+            DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),
+            DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
+            'quotations.status as quotation_status',
+            'quotations.mode_of_transport as quotation_mode_of_transport',
+            'quotations.service_type as quotation_service_type',
+            'quotations.rating as quotation_rating',
+            'oc.name as origin_country',
+            'dc.name as destination_country',
+            'quotations.assigned_user_id as quotation_assigned_user_id',
+            'quotations.created_at as quotation_created_at',
+            'quotation_notes.created_at as quotation_note_created_at'
+        )
+        ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
+        ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
+        ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
+        ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
 
-            //get created_at last Quotation Notes
-            ->leftJoin('quotation_notes', function($join){
-                $join->on('quotations.id', '=', 'quotation_notes.quotation_id')
+        // obtener created_at de la última nota de cotización
+        ->leftJoin('quotation_notes', function($join) {
+            $join->on('quotations.id', '=', 'quotation_notes.quotation_id')
                 ->where('quotation_notes.id', '=', DB::raw("(select max(id) from quotation_notes WHERE quotation_id = quotations.id)"));
-            })
+        });
 
-            ->where('quotations.customer_user_id', auth()->id())
-            ->orderBy('quotations.id', 'desc')
-            ->get();
-
-        } else {
-
-            $quotations = Quotation::select(
-                'quotations.id as quotation_id',
-                DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),
-                DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
-                'quotations.status as quotation_status',
-                'quotations.mode_of_transport as quotation_mode_of_transport',
-                'quotations.service_type as quotation_service_type',
-                'quotations.rating as quotation_rating',
-                'oc.name as origin_country',
-                'dc.name as destination_country',
-                'quotations.assigned_user_id as quotation_assigned_user_id',
-                'quotations.created_at as quotation_created_at',
-                'quotation_notes.created_at as quotation_note_created_at',
-
-            )
-            ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
-            ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
-            ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
-            ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
-
-            //get created_at last Quotation Notes
-            ->leftJoin('quotation_notes', function($join){
-                $join->on('quotations.id', '=', 'quotation_notes.quotation_id')
-                ->where('quotation_notes.id', '=', DB::raw("(select max(id) from quotation_notes WHERE quotation_id = quotations.id)"));
-            })
-
-            ->orderBy('quotations.id', 'desc')
-            ->get();
-
+        if(auth()->user()->hasRole('Customer')) {
+            $quotations->where('quotations.customer_user_id', auth()->id());
         }
+
+        // Aplicar filtros de búsqueda y fecha si hay términos de búsqueda y/o fecha solicitada
+        $quotations->where(function($query) use ($search, $daterequest) {
+            // Aplicar la fecha si está presente
+            if (!empty($daterequest)) {
+                $query->whereDate('quotations.created_at', $daterequest);
+            }
+
+            // Aplicar la búsqueda si hay un término de búsqueda
+            if (!empty($search)) {
+                $query->where(function($query) use ($search) {
+                    // Verificar si el término de búsqueda comienza con '#'
+                    if (strpos($search, '#') === 0) {
+                        $id = ltrim($search, '#'); // Eliminar el prefijo '#'
+                        $query->where('quotations.id', $id);
+                    } else {
+                        // Realizar la búsqueda en los otros campos
+                        $query->where('users.company_name', 'LIKE', "%$search%")
+                            ->orWhere('guest_users.company_name', 'LIKE', "%$search%")
+                            ->orWhere('users.email', 'LIKE', "%$search%")
+                            ->orWhere('guest_users.email', 'LIKE', "%$search%")
+                            ->orWhere('oc.name', 'LIKE', "%$search%")
+                            ->orWhere('dc.name', 'LIKE', "%$search%")
+                            ->orWhere('quotations.mode_of_transport', 'LIKE', "%$search%")
+                            ->orWhere('quotations.status', 'LIKE', "%$search%")
+                            ->orWhere('quotations.service_type', 'LIKE', "%$search%");
+                    }
+                });
+            }
+        });
+
+        $quotations = $quotations->orderBy('quotations.id', 'desc')
+                                ->paginate($listforpage);
 
         //$users = User::all();
 

@@ -69,7 +69,7 @@
             <link href="{{ asset('assets/css/dark/forms/switches.css') }}" rel="stylesheet" type="text/css" />
 
             @break
-        
+
         @case('roleedit')
             {{-- Users Create --}}
             <link href="{{ asset('assets/css/light/forms/switches.css') }}" rel="stylesheet" type="text/css" />
@@ -82,31 +82,13 @@
 
         @case('quotations')
             {{-- All quotes --}}
-            <link rel="stylesheet" type="text/css" href="{{asset('plugins/src/table/datatable/datatables.css')}}">
 
-            <link rel="stylesheet" type="text/css" href="{{asset('plugins/css/light/table/datatable/dt-global_style.css')}}">
-
-            <link rel="stylesheet" type="text/css" href="{{asset('plugins/css/light/table/datatable/custom_dt_custom.css')}}">
             <link rel="stylesheet" type="text/css" href="{{asset('assets/css/light/apps/invoice-list.css')}}">
 
-            <link rel="stylesheet" type="text/css" href="{{asset('plugins/css/dark/table/datatable/dt-global_style.css')}}">
             <link rel="stylesheet" type="text/css" href="{{asset('assets/css/dark/apps/invoice-list.css')}}">
 
             {{-- swal --}}
             <link rel="stylesheet" type="text/css" href="{{asset('plugins/src/sweetalerts2/sweetalerts2.css')}}">
-
-            @break
-
-        @case('quotationspersonal')
-            {{-- All quotes --}}
-            <link rel="stylesheet" type="text/css" href="{{asset('plugins/src/table/datatable/datatables.css')}}">
-
-            <link rel="stylesheet" type="text/css" href="{{asset('plugins/css/light/table/datatable/dt-global_style.css')}}">
-            <link rel="stylesheet" type="text/css" href="{{asset('plugins/css/light/table/datatable/custom_dt_custom.css')}}">
-            <link rel="stylesheet" type="text/css" href="{{asset('assets/css/light/apps/invoice-list.css')}}">
-
-            <link rel="stylesheet" type="text/css" href="{{asset('plugins/css/dark/table/datatable/dt-global_style.css')}}">
-            <link rel="stylesheet" type="text/css" href="{{asset('assets/css/dark/apps/invoice-list.css')}}">
 
             @break
 
@@ -117,7 +99,7 @@
             <link href="{{ asset('plugins/css/light/tagify/custom-tagify.css') }}" rel="stylesheet" type="text/css" />
             <link href="{{ asset('assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css">
             <link href="{{ asset('assets/css/light/apps/suppliers.css') }}" rel="stylesheet" type="text/css" />
-    
+
             <link href="{{ asset('assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css">
             <link href="{{ asset('assets/css/dark/apps/suppliers.css') }}" rel="stylesheet" type="text/css" />
 
@@ -165,7 +147,7 @@
         @case('customers')
             <link href="{{ asset('assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css">
             <link href="{{ asset('assets/css/light/apps/contacts.css') }}" rel="stylesheet" type="text/css" />
-    
+
             <link href="{{ asset('assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css">
             <link href="{{ asset('assets/css/dark/apps/contacts.css') }}" rel="stylesheet" type="text/css" />
             @break
@@ -185,12 +167,12 @@
             {{-- All quotes --}}
             <link href="{{ asset('assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css">
             <link href="{{ asset('assets/css/light/apps/notes.css') }}" rel="stylesheet" type="text/css" />
-    
+
             <link href="{{ asset('assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css">
             <link href="{{ asset('assets/css/dark/apps/notes.css') }}" rel="stylesheet" type="text/css" />
             @break
 
-    
+
         @default
             <script>console.log('No custom Styles available.')</script>
     @endswitch
