@@ -196,8 +196,9 @@ if (!function_exists('rateQuotation')) {
 
             // Buscar email en la tabla users el ultimo usuario registrado con el email
             if (!in_array($domain, $personal_domains)){
-                // Buscar el último usuario registrado con el mismo dominio en la tabla users
-                $customerwithemail = \App\Models\User::where('email', 'like', "%@$domain")->orderBy('id', 'desc')->first();
+
+                // Buscar el antipenúltimo usuario registrado con el mismo dominio en la tabla users
+                $customerwithemail = \App\Models\User::where('email', 'like', "%@$domain")->orderBy('id', 'desc')->skip(1)->first();
                 if ($customerwithemail) {
                     $quotationwithemail = \App\Models\Quotation::where('customer_user_id', $customerwithemail->id)->orderBy('id', 'desc')->first();
                     if ($quotationwithemail) {
@@ -210,8 +211,8 @@ if (!function_exists('rateQuotation')) {
                     }
                 }
 
-                // Buscar el último invitado registrado con el mismo dominio en la tabla guest_users
-                $guestuserwithemail = \App\Models\GuestUser::where('email', 'like', "%@$domain")->orderBy('id', 'desc')->first();
+                // Buscar el antipenúltimo invitado registrado con el mismo dominio en la tabla guest_users
+                $guestuserwithemail = \App\Models\GuestUser::where('email', 'like', "%@$domain")->orderBy('id', 'desc')->skip(1)->first();
                 if ($guestuserwithemail) {
                     $quotationwithemailguest = \App\Models\Quotation::where('guest_user_id', $guestuserwithemail->id)->orderBy('id', 'desc')->first();
                     if ($quotationwithemailguest) {
