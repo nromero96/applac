@@ -43,6 +43,7 @@ class QuotationController extends Controller
         ];
 
         $listforpage = request()->query('listforpage') ?? 20;
+        $assignedto = request()->query('assignedto');
         $daterequest = request()->query('daterequest');
         $search = request()->query('search');
 
@@ -77,7 +78,13 @@ class QuotationController extends Controller
         }
 
         // Aplicar filtros de búsqueda y fecha si hay términos de búsqueda y/o fecha solicitada
-        $quotations->where(function($query) use ($search, $daterequest) {
+        $quotations->where(function($query) use ($search, $assignedto, $daterequest) {
+
+            // Aplicar assigned-to si está presente
+            if (!empty($assignedto) && !auth()->user()->hasRole('Customer')) {
+                $query->where('quotations.assigned_user_id', $assignedto);
+            }
+
             // Aplicar la fecha si está presente
             if (!empty($daterequest)) {
                 $query->whereDate('quotations.created_at', $daterequest);

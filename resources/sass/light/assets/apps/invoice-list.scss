@@ -299,3 +299,12 @@ table tr td{
 .daterequest{
     max-width: 120px;
 }
+
+.assigned-to{
+    max-width: 130px;
+
+    .as-to{
+        color: $primary;
+        font-weight: 600;
+    }
+}

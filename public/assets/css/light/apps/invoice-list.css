@@ -260,3 +260,11 @@ table tr td {
 .daterequest {
   max-width: 120px;
 }
+
+.assigned-to {
+  max-width: 130px;
+}
+.assigned-to .as-to {
+  color: #c00000;
+  font-weight: 600;
+}

@@ -36,18 +36,24 @@
                                         <option value="10" {{ request('listforpage') == 10 ? 'selected' : '' }}>10</option>
                                     </select>
                                 </div>
-                                <div class="col-5 col-md-5 align-self-center">
+                                <div class="col-5 col-md-6 d-flex align-self-center align-items-center justify-content-end">
 
                                     @if(\Auth::user()->hasRole('Customer'))
                                         <a href="{{ route('quotations.create') }}" class="btn btn-primary">New Quote</a>
                                     @endif
 
                                     @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Employee'))
+                                        <select class="form-control me-1 assigned-to" name="assignedto" onchange="this.form.submit()">
+                                            <option value="">{{ __('Assigned to all...') }}</option>
+                                            @foreach ($users as $user)
+                                                <option value="{{ $user->id }}" class="@if(Auth::user()->id == $user->id) as-to @endif" @if($user->id == request('assignedto')) selected @endif>{{ $user->name }}@if(Auth::user()->id == $user->id) (Me) @endif</option>
+                                            @endforeach
+                                        </select>
                                         <input type="date" name="daterequest" class="form-control float-end daterequest" value="{{ request('daterequest') }}" onchange="this.form.submit()">
                                     @endif
 
                                 </div>
-                                <div class="col-md-4 align-self-center text-end">
+                                <div class="col-md-3 align-self-center text-end">
                                     <div class="input-group">
                                         <input type="text" class="form-control mb-0 mb-sm-2 mb-md-0" name="search" placeholder="#ID, Email, Transport...." value="{{ request('search') }}">
                                         @if(request('search') != '')
