@@ -656,40 +656,38 @@ class QuotationController extends Controller
                             }
                         }
                     }
+                }
 
+                try {
 
+                    //si hay archivos adjuntos obtenemos los links
+                    $quotation_documents = QuotationDocument::where('quotation_id', $quotation_id)->get();
+
+                    // Envía el correo electrónico con los detalles de carga
+                    Mail::send(new QuotationCreated($quotation, $reguser, $request->input('email'), $cargoDetails, $quotation_documents));
+
+                    //log email sent
+                    Log::info('Correo electrónico enviado correctamente de la cotización: ' . $quotation_id);
+                } catch (\Exception $e) {
+                    // Captura cualquier excepción que pueda ocurrir durante el envío del correo
+                    Log::error('Error al enviar el correo electrónico de la cotización: ' . $quotation_id . ' - ' . $e->getMessage());
+                }
+
+                if(Auth::check()){
+                    //no send mail to user email with password
+                }else{
 
                     try {
-
-                        //si hay archivos adjuntos obtenemos los links
-                        $quotation_documents = QuotationDocument::where('quotation_id', $quotation_id)->get();
-
-                        // Envía el correo electrónico con los detalles de carga
-                        Mail::send(new QuotationCreated($quotation, $reguser, $request->input('email'), $cargoDetails, $quotation_documents));
-
+                        //sen mail to user email with password
+                        Mail::send(new UserCreated($request->input('name'), $request->input('lastname'), $request->input('email'), $password));
                         //log email sent
-                        Log::info('Correo electrónico enviado correctamente de la cotización: ' . $quotation_id);
+                        Log::info('Correo electrónico enviado de su cuenta creada correctamente a: ' . $request->input('email'));
                     } catch (\Exception $e) {
                         // Captura cualquier excepción que pueda ocurrir durante el envío del correo
-                        Log::error('Error al enviar el correo electrónico de la cotización: ' . $quotation_id . ' - ' . $e->getMessage());
+                        Log::error('Error al enviar el correo electrónico de su cuenta creada a: ' . $request->input('email') . ' - ' . $e->getMessage());
                     }
-
-                    if(Auth::check()){
-                        //no send mail to user email with password
-                    }else{
-
-                        try {
-                            //sen mail to user email with password
-                            Mail::send(new UserCreated($request->input('name'), $request->input('lastname'), $request->input('email'), $password));
-                            //log email sent
-                            Log::info('Correo electrónico enviado de su cuenta creada correctamente a: ' . $request->input('email'));
-                        } catch (\Exception $e) {
-                            // Captura cualquier excepción que pueda ocurrir durante el envío del correo
-                            Log::error('Error al enviar el correo electrónico de su cuenta creada a: ' . $request->input('email') . ' - ' . $e->getMessage());
-                        }
-                    }
-
                 }
+
             }
 
             // Calificar la cotización
