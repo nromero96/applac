@@ -116,6 +116,7 @@ if (!function_exists('rateQuotation')) {
             'outlook.com', 'hotmail.com', 'live.com',
             'aol.com',
             'msn.com',
+            'icloud.com',
         ];
 
         // Verificar si el dominio está en la lista de dominios permitidos o si termina en .edu

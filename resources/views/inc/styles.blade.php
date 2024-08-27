@@ -92,6 +92,15 @@
 
             @break
 
+        @case('quotations_show')
+            {{-- All quotes --}}
+            <style>
+                .table tbody tr td {
+                    white-space: normal;
+                }
+            </style>
+            @break
+
         @case('suppliers')
 
             <link href="{{ asset('plugins/src/tagify/tagify.css') }}" rel="stylesheet" type="text/css" />

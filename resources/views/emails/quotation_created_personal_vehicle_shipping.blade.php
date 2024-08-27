@@ -9,7 +9,7 @@
     <p style="font-size: 14px; line-height: 1.4;">Dear {{$reguser->name}} {{$reguser->lastname}},</p>
 
     <p style="font-size: 14px; line-height: 1.4;">Thank you for your interest in shipping with LAC. Partnering with the right logistics provider is essential to your transportation strategy.</p>
-    
+
     <p style="font-size: 14px; line-height: 1.4;"><b>Please find attached our estimated quote to ship your Automobile/Motorcycle/ATV to {{ $destination_country_name }} - {{ $quotation->destination_airportorport }}.</b></p>
 
     <p style="font-size: 14px; line-height: 1.4;"><b style="color: #CC0000;">Your Quote ID #: {{ $quotation->id }}</b></p>
@@ -19,7 +19,7 @@
         <b>2.</b> Signed shipping quote<br>
         <b>3.</b> Scanned copy of vehicle ownership title<br>
         <b>4.</b> Scanned copy of the vehicle bill of sale<br>
-        <b>4.</b> Pictures of your vehicle (if not already sent in the form)<br>
+        <b>5.</b> Scanned copy of passport<br>
         <b>6.</b> Written confirmation from your customs broker in {{ $destination_country_name }} stating that your vehicle can be imported
     </p>
 

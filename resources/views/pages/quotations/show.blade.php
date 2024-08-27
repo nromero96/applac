@@ -88,11 +88,11 @@
                                         </a>
                                         <div class="dropdown-menu">
                                             {{-- <a class="dropdown-item" href="">
-                                                <span>{{ __('Edit') }}</span> 
+                                                <span>{{ __('Edit') }}</span>
                                                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                             </a> --}}
                                             <a class="dropdown-item" id="print_supplier" href="javascript:void(0);">
-                                                <span>{{ __('Print') }}</span> 
+                                                <span>{{ __('Print') }}</span>
                                                 <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                                             </a>
                                         </div>
@@ -120,7 +120,7 @@
                                 <h6 class="text-primary mb-1">{{ __('Location Details') }}</h6>
                             </div>
 
-                            @php 
+                            @php
                                 if($quotation->service_type === 'Airport-to-Door' || $quotation->service_type === 'Door-to-Airport' || $quotation->service_type === 'Airport-to-Airport' ){
                                     $originAirportorPortLabel = __('Origin Airport');
                                     $destinationAirportorPortLabel = __('Destination Airport');
@@ -208,7 +208,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        
+
                                             @php
                                                 $numcont = 1;
                                             @endphp
@@ -285,7 +285,7 @@
 
 
                                             @else
-                                               
+
                                                 @foreach ($cargo_details as $item)
                                                 {{-- Item --}}
                                                 <tr>
@@ -300,15 +300,15 @@
                                                     </td>
                                                     <td class="px-1 py-1">
                                                         {{ __('Length') }}:<br>
-                                                        <b>{{ $item->length }}</b>
+                                                        <b>{{ $item->length }} {{ $item->dimensions_unit }}</b>
                                                     </td>
                                                     <td class="px-1 py-1">
                                                         {{ __('Width') }}:<br>
-                                                        <b>{{ $item->width }}</b>
+                                                        <b>{{ $item->width }} {{ $item->dimensions_unit }}</b>
                                                     </td>
                                                     <td class="px-1 py-1">
                                                         {{ __('Height') }}:<br>
-                                                        <b>{{ $item->height }}</b>
+                                                        <b>{{ $item->height }} {{ $item->dimensions_unit }}</b>
                                                     </td>
                                                     <td class="px-1 py-1">
                                                         {{ __('Unit') }}:<br>
@@ -495,7 +495,7 @@
                                                             <label for="servicecategory_id" class="form-label fw-bold mb-0">{{ __('Service') }}</label>
                                                             <select class="form-control" name="servicecategory_id" id="servicecategory_id" required="">
                                                                 <option value="">{{ __('Select...') }}</option>
-                                                                
+
                                                             </select>
                                                         </div>
                                                         <div class="col-md-12 mb-3" id="services">
@@ -527,7 +527,7 @@
                                                     <div class="row" id="listroutes">
 
                                                     </div>
-                                        
+
                                         </div>
                                         <div class="modal-footer">
                                             <a class="btn discard_btn" data-bs-dismiss="modal"> <i class="flaticon-delete-1"></i>{{ __('Discard') }}</a>
@@ -551,7 +551,7 @@
                             <div class="widget-header px-2 pt-2 pb-0">
                                 <h6 class="mb-0">
                                     {{ __('Status') }}:
-                                    <span class="badge 
+                                    <span class="badge
                                                     @if ($quotation->status == 'Processing')
                                                         badge-light-warning
                                                     @elseif ($quotation->status == 'Attended')
@@ -591,6 +591,21 @@
                     </div>
                     <div class="col-md-5">
                         <div class="mt-2">
+
+                        @if(Auth::user()->hasRole('Customer'))
+                            {{ __('Status') }}:
+                            <span class="badge
+                                @if ($quotation->status == 'Processing')
+                                badge-light-warning
+                                @elseif ($quotation->status == 'Attended')
+                                badge-light-info
+                                @elseif ($quotation->status == 'Quote Sent')status
+                                badge-light-success
+                                @endif
+                                inv-status">
+                                {{ $quotation->status }}
+                            </span>
+                        @else
                             <h6 class="mb-1">{{ __('History') }}:</h6>
                             @if ($quotation_notes->count() > 0)
                                 <ul class="my-0 ps-3 notelist">
@@ -605,6 +620,7 @@
                             @else
                                 <span class="mb-1 d-block">N/A</span>
                             @endif
+                        @endif
                         </div>
                     </div>
                 </div>

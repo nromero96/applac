@@ -9,14 +9,13 @@
     <p style="font-size: 14px; line-height: 1.4;">Dear {{$reguser->name}} {{$reguser->lastname}},</p>
 
     <p style="font-size: 14px; line-height: 1.4;">Thank you for your interest in shipping with LAC. Partnering with the right logistics provider is essential to your transportation strategy.</p>
-    
+
     <p style="font-size: 14px; line-height: 1.4;"><b style="color: #CC0000;">Your Quote ID #: {{ $quotation->id }}</b></p>
 
     <p style="font-size: 14px; line-height: 1.4;">We are pleased to assist you with your shipping request. <b>To help us serve you more efficiently, please provide the following details</b> to <a href="mailto:quote-form@lacship.com" style="color: #161515; text-decoration: underline;">quote-form@lacship.com</a> and one of our sales representatives will contact you for further assistance:</p>
 
     <ul style="font-size: 14px; line-height: 1.4; list-style-type: none; padding-left: 0; margin: 0;">
             <li style="margin-left: 0;">• LAC Quote ID #</li>
-            <li style="margin-left: 0;">• Proof of license/exemption from BIS</li>
             <li style="margin-left: 0;">• Cuban Importer Information (Consignee), including:</li>
             <ul style="list-style-type: none; padding-left: 15px; margin: 0;">
                 <li style="margin-left: 0;">- Company Name</li>
@@ -237,7 +236,7 @@
                                         <br>
                                     @endif
 
-                                    <span style="color:#808080;font-weight:bold;">Cargo Description:</span> 
+                                    <span style="color:#808080;font-weight:bold;">Cargo Description:</span>
                                     {{ $cargo_detail['cargo_description'] }}
                                     @if ($cargo_detail['dangerous_cargo'] == 'yes')
                                     <br>
@@ -294,7 +293,7 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5"><span style="color:#808080;font-weight:bold;">Cargo Description:</span> 
+                                    <td colspan="5"><span style="color:#808080;font-weight:bold;">Cargo Description:</span>
                                         {{ $cargo_detail['cargo_description'] }}
                                     </td>
                                     <td colspan="5">
@@ -323,7 +322,7 @@
 
                     </table>
                     <br>
-                    
+
                     <table style="border-collapse:collapse;width:100%;background: #ffffff;border-color: #a7a3a3; @if ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL') display:none; @else display:inline-table; @endif" border="1" cellpadding="1" cellspacing="1">
                         <tr>
                             <td colspan="4">
