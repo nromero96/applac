@@ -79,13 +79,19 @@
 
                     <div class="widget-content widget-content-area br-8 pb-2">
                         <div class="table-responsive">
+                            @php
+                                $adminoremployee = Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee');
+                            @endphp
+
                             <table id="invoice-list" class="table table-hover" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th class="pe-1">{{ __('ID') }}</th>
+                                        @if($adminoremployee)
                                         <th class="pe-1">{{ __('Source') }}</th>
+                                        @endif
                                         <th>{{ __('Requested') }}</th>
-                                        @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
+                                        @if($adminoremployee)
                                         <th class="p-1">{{ __('Rating') }}</th>
                                         @endif
                                         <th>{{ __('Status') }}</th>
@@ -94,7 +100,7 @@
                                         <th>{{ __('Service Type') }}</th>
                                         <th>{{ __('Company Name') }}</th>
                                         <th>{{ __('Email') }}</th>
-                                        @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
+                                        @if($adminoremployee)
                                         <th>{{ __('Assigned') }}</th>
                                         @endif
                                         <th></th>
@@ -126,6 +132,7 @@
                                                         #{{ $quotation->quotation_id }}
                                                     @endif
                                                 </td>
+                                                @if($adminoremployee)
                                                 <td class="py-1 align-middle pe-1">
                                                     @if($quotation->user_source)
                                                         @php
@@ -143,6 +150,7 @@
                                                         <span>-</span>
                                                     @endif
                                                 </td>
+                                                @endif
                                                 <td class="py-1 align-middle">
                                                     <div class="inv-date d-flex">
                                                         <span class="align-self-center">
@@ -155,7 +163,7 @@
                                                     </div>
                                                 </td>
 
-                                                @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
+                                                @if($adminoremployee)
                                                     <td class="p-1 text-start">
                                                         {{-- Rating aleatorio --}}
                                                         <div class="qtrating">
@@ -260,7 +268,7 @@
 
 
 
-                                                @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
+                                                @if($adminoremployee)
 
                                                 <td>
 
