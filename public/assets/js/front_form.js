@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function () {
-    
+
     //modal confirm-percomp-modal auto open javascript puro
     var confirm_percomp_modal = new bootstrap.Modal(document.getElementById('confirm-percomp-modal'));
     confirm_percomp_modal.show();
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
             confirm_terms_personal.setAttribute('disabled', 'disabled');
         }
     });
-    
+
     var stepperWizardDefault = document.querySelector('.stepper-form-one');
     var stepperDefault = new Stepper(stepperWizardDefault, {
         animation: true
@@ -102,16 +102,16 @@ document.addEventListener('DOMContentLoaded', function () {
     function validateStep(step) {
         /* Data mode of transport */
         const mode_of_transport = document.querySelector('input[name="mode_of_transport"]:checked').value;
-    
+
         const serviceType = document.getElementById('service_type');
         const service_type_error = document.getElementById('service_type_error');
-            
+
         const cargo_type = document.querySelector('input[name="cargo_type"]:checked');
         const cargo_type_error = document.getElementById('cargo_type_error');
 
         /* Data location */
-       
-    
+
+
         /* Data cargo details */
         const package_types = document.querySelectorAll('select[name="package_type[]"]');
         const package_type_error = document.getElementById('package_type_error');
@@ -168,17 +168,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Lógica de validación para cada paso
         if (step === '#defaultStep-one') {
-    
+
             service_type_error.textContent = '';
             cargo_type_error.textContent = '';
-    
+
             if(mode_of_transport == 'Ground' || mode_of_transport == 'Container' || mode_of_transport == 'RoRo'){
                 if(cargo_type === null){
                     cargo_type_error.textContent = 'Required cargo type.';
                     return false;
                 }
             }
-    
+
             if (serviceType.value === '') {
                 serviceType.focus();
                 service_type_error.textContent = 'Required service type.';
@@ -186,9 +186,9 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 stepperWizardDefault.querySelector('[data-target="#defaultStep-one"]').classList.add('st-complete');
             }
-    
+
         } else if (step === '#defaultStep-two') {
-            
+
             // Limpiar mensajes de error
             const errorFields = [
                 'origin_country_id_error',
@@ -358,7 +358,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     package_length.focus();
                 }
             });
-            
+
             package_widths.forEach(function(package_width) {
                 if (package_width.value === '' || package_width.value === null) {
                     allContent_pd = false;
@@ -377,7 +377,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 package_dimensions_error.textContent = 'Required Package/Dimensions.';
                 return false;
             }
-            
+
             //package_per_pieces[] es un input debe tener un valor
             let allContent_pp = true;
             package_per_pieces.forEach(function(package_per_piece) {
@@ -412,18 +412,18 @@ document.addEventListener('DOMContentLoaded', function () {
             package_details_shipments.forEach(function(package_details_shipment, index) {
                 const package_type = package_types[index]; // Obtener el package_type correspondiente a esta fila
 
-                if (package_type.value === 'Flatbed' || 
-                    package_type.value === 'Double Drop' || 
-                    package_type.value === 'Step Deck' || 
-                    package_type.value === 'RGN/Lowboy' || 
-                    package_type.value === 'Other' || 
-                    package_type.value === '20\' Flat Rack' || 
-                    package_type.value === '40\' Flat Rack' || 
-                    package_type.value === '40\' Flat Rack High Cube' || 
-                    package_type.value === '20\' Open Top' || 
-                    package_type.value === '40\' Open Top' || 
+                if (package_type.value === 'Flatbed' ||
+                    package_type.value === 'Double Drop' ||
+                    package_type.value === 'Step Deck' ||
+                    package_type.value === 'RGN/Lowboy' ||
+                    package_type.value === 'Other' ||
+                    package_type.value === '20\' Flat Rack' ||
+                    package_type.value === '40\' Flat Rack' ||
+                    package_type.value === '40\' Flat Rack High Cube' ||
+                    package_type.value === '20\' Open Top' ||
+                    package_type.value === '40\' Open Top' ||
                     package_type.value === '40\' Open Top High Cube') {
-                    
+
                     if (package_details_shipment.value === '' || package_details_shipment.value === null) {
                         allContent_pds = false;
                         package_details_shipment.focus();
@@ -442,11 +442,11 @@ document.addEventListener('DOMContentLoaded', function () {
             package_temperatures.forEach(function(package_temperature, index) {
                 const package_type = package_types[index]; // Obtener el package_type correspondiente a esta fila
 
-                if (package_type.value === '48 / 53 Ft Reefer Trailer' || 
-                    package_type.value === '20\' Reefer Standard' || 
-                    package_type.value === '40\' Reefer Standard' || 
+                if (package_type.value === '48 / 53 Ft Reefer Trailer' ||
+                    package_type.value === '20\' Reefer Standard' ||
+                    package_type.value === '40\' Reefer Standard' ||
                     package_type.value === '40\' Reefer High Cube') {
-                    
+
                     if (package_temperature.value === '' || package_temperature.value === null) {
                         allContent_ptemp = false;
                         package_temperature.focus();
@@ -552,10 +552,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         }
         // Agrega más lógica de validación según sea necesario
-    
+
         return true;
     }
-    
+
 
     // Agrega eventos de clic para los botones de siguiente y anterior
     stepperNextButtonDefault.forEach(element => {
@@ -611,7 +611,7 @@ document.addEventListener('DOMContentLoaded', function () {
     stepperWizardDefault.querySelectorAll('.step').forEach(element => {
         element.addEventListener('click', function () {
             if (element.classList.contains('st-complete')) {
-                
+
                 const completedSteps = stepperWizardDefault.querySelectorAll('.st-complete');
 
                 if(completedSteps.length > 0){
@@ -694,33 +694,33 @@ document.addEventListener('DOMContentLoaded', function () {
             submitBtn.disabled = false;
         }
     });
-    
+
 
     document.getElementById('form_quotations').addEventListener('submit', function(event) {
         event.preventDefault();
-    
+
         const submitBtn = document.getElementById('submitBtn');
         const loadingSpinner = document.getElementById('loadingSpinner');
 
         if (!validateStep('#defaultStep-four')) {
             return;
         }
-    
+
         // Deshabilitar el botón y mostrar el mensaje de carga
         submitBtn.disabled = true;
         loadingSpinner.style.display = 'block';
-    
+
         const formData = new FormData(document.getElementById('form_quotations'));
         const xhr = new XMLHttpRequest();
-    
+
         xhr.open('POST', '/quotationsonlinestore');
         setCsrfToken(xhr);
-    
+
         xhr.onload = function() {
             // Restaurar el botón y ocultar el mensaje de carga
             submitBtn.disabled = false;
             loadingSpinner.style.display = 'none';
-    
+
             if (xhr.status === 200) {
                 const data = JSON.parse(xhr.responseText);
                 if (data.success) {
@@ -740,16 +740,16 @@ document.addEventListener('DOMContentLoaded', function () {
             } else {
                 console.error('...Error al enviar la solicitud:', xhr.statusText);
             }
-    
+
         };
-    
+
         xhr.onerror = function() {
             // Restaurar el botón y ocultar el mensaje de carga en caso de error
             submitBtn.disabled = false;
             loadingSpinner.style.display = 'none';
             console.error('Error al enviar la solicitud:', xhr.statusText);
         };
-    
+
         xhr.send(formData);
     });
 
@@ -758,7 +758,7 @@ document.addEventListener('DOMContentLoaded', function () {
     listcargodetails_electrvehi.addEventListener('change', function(event) {
         if (event.target.classList.contains('electric-vehicle-checkbox')) {
             var confirm_electricvehicle_modal = new bootstrap.Modal(document.getElementById('confirm-electricvehicle-modal'));
-    
+
             // Muestra u oculta el modal según si el checkbox está marcado o no
             if (event.target.checked) {
                 confirm_electricvehicle_modal.show();
@@ -803,7 +803,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Llamada inicial para configurar la URL al cargar la página
-    initializeURL(); 
+    initializeURL();
 
 
 });

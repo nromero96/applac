@@ -83,6 +83,7 @@
                                 <thead>
                                     <tr>
                                         <th class="pe-1">{{ __('ID') }}</th>
+                                        <th class="pe-1">{{ __('Source') }}</th>
                                         <th>{{ __('Requested') }}</th>
                                         @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
                                         <th class="p-1">{{ __('Rating') }}</th>
@@ -123,6 +124,23 @@
                                                         <a href="{{ route('quotations.show', $quotation->quotation_id) }}"><span class="inv-number text-decoration-underline">#{{ $quotation->quotation_id }}</span></a>
                                                     @else
                                                         #{{ $quotation->quotation_id }}
+                                                    @endif
+                                                </td>
+                                                <td class="py-1 align-middle pe-1">
+                                                    @if($quotation->user_source)
+                                                        @php
+                                                            //color
+                                                            if($quotation->user_source == 'ppc') {
+                                                                $class_sb = 'sb-color-ppc';
+                                                                $text_sb = $quotation->user_source;
+                                                            } else {
+                                                                $class_sb = 'sb-color-seo';
+                                                                $text_sb = 'seo';
+                                                            }
+                                                        @endphp
+                                                        <span class="source-badge {{$class_sb}}">{{ $text_sb }}</span>
+                                                    @else
+                                                        <span>-</span>
                                                     @endif
                                                 </td>
                                                 <td class="py-1 align-middle">

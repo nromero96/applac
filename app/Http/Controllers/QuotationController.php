@@ -50,6 +50,7 @@ class QuotationController extends Controller
         // lista de cotizaciones para el usuario logueado si es Customer
         $quotations = Quotation::select(
             'quotations.id as quotation_id',
+            DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
             DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),
             DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
             'quotations.status as quotation_status',
@@ -133,7 +134,12 @@ class QuotationController extends Controller
         return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users);
     }
 
-    public function onlineregister(){
+    public function onlineregister(Request $request){
+
+        if ($request->has('source')) {
+            session(['source' => $request->query('source')]);
+        }
+
         // $category_name = '';
         $data = [
             'category_name' => 'quotations',
@@ -696,6 +702,11 @@ class QuotationController extends Controller
                 Log::info('Quote ' . $quotation_id . ' rated with ' . $rating . ' stars.');
             } catch (\Exception $e) {
                 Log::error('Quote rating error ' . $quotation_id . ' - ' . $e->getMessage());
+            }
+
+            // Borrar la variable de sesión 'source' si existe
+            if ($request->session()->has('source')) {
+                $request->session()->forget('source');
             }
 
             return response()->json(['success' => true]);
