@@ -39,7 +39,7 @@
                                 <div class="col-5 col-md-6 d-flex align-self-center align-items-center justify-content-end">
 
                                     @if(\Auth::user()->hasRole('Customer'))
-                                        <a href="{{ route('quotations.create') }}" class="btn btn-primary">New Quote</a>
+                                        <a href="{{ route('quotations.onlineregister') }}" class="btn btn-primary">New Quote</a>
                                     @endif
 
                                     @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Employee'))

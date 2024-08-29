@@ -83,9 +83,9 @@
         @case('quotations')
             {{-- All quotes --}}
 
-            <link rel="stylesheet" type="text/css" href="{{asset('assets/css/light/apps/invoice-list.css')}}">
+            <link rel="stylesheet" type="text/css" href="{{asset('assets/css/light/apps/invoice-list.css')}}?v={{ config('app.version') }}">
 
-            <link rel="stylesheet" type="text/css" href="{{asset('assets/css/dark/apps/invoice-list.css')}}">
+            <link rel="stylesheet" type="text/css" href="{{asset('assets/css/dark/apps/invoice-list.css')}}?v={{ config('app.version') }}">
 
             {{-- swal --}}
             <link rel="stylesheet" type="text/css" href="{{asset('plugins/src/sweetalerts2/sweetalerts2.css')}}">
