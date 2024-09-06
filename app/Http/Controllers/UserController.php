@@ -161,7 +161,6 @@ class UserController extends Controller
 
         if($request->file('photo') != '') {
             $image = $request->file('photo');
-            $path = public_path() . '/assets/img';
             $photouser = rand(11111111, 99999999) . $image->getClientOriginalName();
             $image_resize = Image::make($image->getRealPath());
             $image_resize->resize(500, 500);
@@ -233,11 +232,10 @@ class UserController extends Controller
 
         if($request->file('photo') != '') {
             $image = $request->file('photo');
-            $path = public_path() . '/assets/img';
             $photouser = rand(11111111, 99999999) . $image->getClientOriginalName();
             $image_resize = Image::make($image->getRealPath());
             $image_resize->resize(500, 500);
-            $image_resize->save(public_path('/assets/img/' . $photouser));
+            $image_resize->save(storage_path('app/public/uploads/profile_images/' . $photouser));
         } else {
             $photouser = $currentImage;
         }

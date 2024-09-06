@@ -20,7 +20,8 @@
         <b>3.</b> Scanned copy of vehicle ownership title<br>
         <b>4.</b> Scanned copy of the vehicle bill of sale<br>
         <b>5.</b> Scanned copy of passport<br>
-        <b>6.</b> Written confirmation from your customs broker in {{ $destination_country_name }} stating that your vehicle can be imported
+        <b>6.</b> Pictures of your vehicle (if not already sent in the form)<br>
+        <b>7.</b> Written confirmation from your customs broker in {{ $destination_country_name }} stating that your vehicle can be imported
     </p>
 
     <p style="font-size: 14px; line-height: 1.4;"><b>After receiving all the required documentation, a sales representative will arrange a phone discussion to determine the next steps.</b></p>
