@@ -100,7 +100,7 @@ table tr td {
   border-top-left-radius: 8px;
 }
 .table > tbody > tr > td .inv-number {
-  color: #c00000;
+  color: #b80000;
   cursor: pointer;
   font-size: 16px;
   text-align: left;
@@ -137,7 +137,7 @@ table tr td {
   width: 17px;
   height: 17px;
   vertical-align: text-top;
-  color: #2196f3;
+  color: #0A6AB7;
   stroke-width: 1.5;
 }
 .table > tbody > tr > td .dropdown .dropdown-toggle svg {
@@ -237,13 +237,13 @@ table tr td {
   width: 17px;
 }
 .page-item.active .page-link {
-  background-color: #c00000;
+  background-color: #b80000;
 }
 
 .infotable {
   padding-top: 0.85em;
   white-space: normal;
-  color: #c00000;
+  color: #b80000;
   font-weight: 600;
   border: 1px solid #e0e6ed;
   display: inline-block;
@@ -265,7 +265,7 @@ table tr td {
   max-width: 130px;
 }
 .assigned-to .as-to {
-  color: #c00000;
+  color: #b80000;
   font-weight: 600;
 }
 

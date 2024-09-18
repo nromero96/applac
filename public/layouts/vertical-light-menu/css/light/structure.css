@@ -61,7 +61,7 @@ strong {
 }
 
 code {
-  color: #e7515a;
+  color: #b80000;
 }
 
 /*Page title*/
@@ -300,8 +300,8 @@ code {
 
 body .navbar .light-mode, body:not(.dark) .navbar .light-mode {
   display: inline-block;
-  color: #e2a03f;
-  fill: #e2a03f;
+  color: #B28600;
+  fill: #B28600;
 }
 body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   display: none;
@@ -445,11 +445,11 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   width: 23px;
   height: 23px;
   font-weight: 600;
-  color: #e2a03f;
+  color: #B28600;
   margin-right: 9px;
 }
 .navbar .navbar-item .nav-item.dropdown.notification-dropdown .dropdown-menu .media.file-upload svg {
-  color: #e7515a;
+  color: #b80000;
 }
 .navbar .navbar-item .nav-item.dropdown.notification-dropdown .dropdown-menu .media.server-log svg {
   color: #009688;
@@ -470,7 +470,7 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   color: #515365;
 }
 .navbar .navbar-item .nav-item.dropdown.notification-dropdown .dropdown-menu .dropdown-item:hover .data-info h6 {
-  color: #c00000;
+  color: #b80000;
 }
 .navbar .navbar-item .nav-item.dropdown.notification-dropdown .dropdown-menu .data-info p {
   margin-bottom: 0;
@@ -495,7 +495,7 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   cursor: pointer;
 }
 .navbar .navbar-item .nav-item.dropdown.notification-dropdown .dropdown-menu .icon-status svg.feather-x:hover {
-  color: #e7515a;
+  color: #b80000;
 }
 .navbar .navbar-item .nav-item.dropdown.notification-dropdown .dropdown-menu .icon-status svg.feather-check {
   color: #fff;
@@ -683,7 +683,7 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   font-size: 13px;
   font-weight: 500;
   margin-bottom: 0;
-  color: #c00000;
+  color: #b80000;
 }
 .navbar .navbar-item .nav-item.dropdown.user-profile-dropdown .nav-link:after {
   display: none;
@@ -708,7 +708,7 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   border-radius: 8px;
 }
 .navbar .navbar-item .nav-item.user-profile-dropdown .dropdown-menu .dropdown-item:hover a {
-  color: #c00000;
+  color: #b80000;
   background: #ebedf2;
 }
 .navbar .navbar-item .nav-item.user-profile-dropdown .dropdown-menu .dropdown-item.active, .navbar .navbar-item .nav-item.user-profile-dropdown .dropdown-menu .dropdown-item:active {
@@ -1013,7 +1013,7 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   stroke-width: 1.8;
 }
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle {
-  background-color: #c00000;
+  background-color: #b80000;
 }
 #sidebar ul.menu-categories li.menu.active > .dropdown-toggle svg, #sidebar ul.menu-categories li.menu.active > .dropdown-toggle span {
   color: #fff;
@@ -1055,10 +1055,10 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   fill: rgba(67, 97, 238, 0.0392156863);
 }
 #sidebar ul.menu-categories li.menu > .dropdown-toggle:hover {
-  color: #c00000;
+  color: #b80000;
 }
 #sidebar ul.menu-categories li.menu > .dropdown-toggle:hover svg:not(.badge-icon) {
-  color: #c00000;
+  color: #b80000;
   fill: rgba(67, 97, 238, 0.0392156863);
 }
 #sidebar ul.menu-categories li.menu > .dropdown-toggle svg.feather-chevron-right {
@@ -1089,10 +1089,10 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   border-radius: 50%;
 }
 #sidebar ul.menu-categories li.menu ul.submenu > li a:hover {
-  color: #c00000;
+  color: #b80000;
 }
 #sidebar ul.menu-categories li.menu ul.submenu > li a:hover:before {
-  background: #c00000 !important;
+  background: #b80000 !important;
   box-shadow: 0 0 0px 2px rgba(192, 0, 0, 0.431372549);
   border: 1.9px solid #ffffff;
 }
@@ -1134,10 +1134,10 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   top: 1px;
 }
 #sidebar ul.menu-categories ul.submenu > li a:hover {
-  color: #c00000;
+  color: #b80000;
 }
 #sidebar ul.menu-categories ul.submenu > li a:hover:before {
-  background-color: #c00000;
+  background-color: #b80000;
 }
 #sidebar ul.menu-categories ul.submenu > li a i {
   align-self: center;
@@ -1271,8 +1271,8 @@ body .navbar .dark-mode, body:not(.dark) .navbar .dark-mode {
   color: #888ea8;
 }
 .footer-wrapper .footer-section svg {
-  color: #e7515a;
-  fill: #e7515a;
+  color: #b80000;
+  fill: #b80000;
   width: 15px;
   height: 15px;
   vertical-align: sub;

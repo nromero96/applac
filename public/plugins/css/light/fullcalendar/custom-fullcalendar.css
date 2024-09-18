@@ -53,15 +53,15 @@
   text-transform: capitalize;
 }
 .fc .fc-addEventButton-button {
-  background-color: #c00000;
-  border-color: #c00000;
+  background-color: #b80000;
+  border-color: #b80000;
   color: #fff;
   font-weight: 700;
   box-shadow: 0 10px 20px -10px rgba(192, 0, 0, 0.59);
 }
 .fc .fc-addEventButton-button:hover, .fc .fc-addEventButton-button:not(:disabled):active {
-  background-color: #c00000;
-  border-color: #c00000;
+  background-color: #b80000;
+  border-color: #b80000;
   box-shadow: none;
   color: #fff;
 }
@@ -111,11 +111,11 @@
 }
 
 .fc-bg-primary {
-  color: #c00000;
+  color: #b80000;
   background-color: rgba(67, 97, 238, 0.15);
 }
 .fc-bg-primary.fc-h-event .fc-event-main {
-  color: #c00000;
+  color: #b80000;
 }
 
 .fc-bg-success {
@@ -127,23 +127,23 @@
 }
 
 .fc-bg-warning {
-  color: #e2a03f;
+  color: #B28600;
   background-color: rgba(226, 160, 63, 0.15);
 }
 .fc-bg-warning.fc-h-event .fc-event-main {
-  color: #e2a03f;
+  color: #B28600;
 }
 
 .fc-bg-danger {
-  color: #e7515a;
+  color: #b80000;
   background-color: rgba(231, 81, 90, 0.15);
 }
 .fc-bg-danger.fc-h-event .fc-event-main {
-  color: #e7515a;
+  color: #b80000;
 }
 
 .fc-bg-primary .fc-daygrid-event-dot {
-  border-color: #c00000;
+  border-color: #b80000;
 }
 
 .fc-bg-success .fc-daygrid-event-dot {
@@ -151,11 +151,11 @@
 }
 
 .fc-bg-warning .fc-daygrid-event-dot {
-  border-color: #e2a03f;
+  border-color: #B28600;
 }
 
 .fc-bg-danger .fc-daygrid-event-dot {
-  border-color: #e7515a;
+  border-color: #b80000;
 }
 
 .fc .fc-list-event:hover td {

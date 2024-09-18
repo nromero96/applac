@@ -199,24 +199,24 @@ class QuotationController extends Controller
         ->leftJoin('countries as loc_users', 'users.location', '=', 'loc_users.id')
         ->leftJoin('countries as loc_guest_users', 'guest_users.location', '=', 'loc_guest_users.id')
 
-
-
-
         ->where('quotations.id', $id)
+        ->first();
 
+        //Verificar si hay una nota de estado de cotización type rating
+        $is_ratinginnote = QuotationNote::where('quotation_id', $id)
+        ->where('type', 'rating')
+        ->join('users', 'quotation_notes.user_id', '=', 'users.id')
+        ->select('quotation_notes.*', 'users.name as user_name')
+        ->orderBy('quotation_notes.id', 'desc')
         ->first();
 
         $cargo_details = CargoDetail::where('quotation_id', $id)->get();
 
         $quotation_documents = QuotationDocument::where('quotation_id', $id)->get();
 
-        $quotation_notes = QuotationNote::where('quotation_id', $id)
-        ->orderBy('id', 'desc')
-        ->get();
-
         //verificate if quotation is assigned to user logged or is Administator
         if($quotation->assigned_user_id == auth()->id() || auth()->user()->hasRole('Administrator') || ($quotation->customer_user_id == auth()->id()  && auth()->user()->hasRole('Customer')) ){
-            return view('pages.quotations.show')->with($data)->with('quotation', $quotation)->with('cargo_details', $cargo_details)->with('quotation_documents', $quotation_documents)->with('quotation_notes', $quotation_notes);
+            return view('pages.quotations.show')->with($data)->with('quotation', $quotation)->with('is_ratinginnote', $is_ratinginnote)->with('cargo_details', $cargo_details)->with('quotation_documents', $quotation_documents);
         }else{
             return redirect()->route('quotations.index')->with('error', 'You do not have permission to view this quote.');
         }
@@ -240,25 +240,38 @@ class QuotationController extends Controller
         //
     }
 
+    public function listQuotationNotes($id)
+    {
+        $quotation_notes = QuotationNote::where('quotation_id', $id)
+        ->join('users', 'quotation_notes.user_id', '=', 'users.id')
+        ->select('quotation_notes.*', 'users.name as user_name')
+        ->orderBy('quotation_notes.id', 'desc')
+        ->get();
+
+        return response()->json($quotation_notes);
+    }
+
     public function updateStatus(Request $request, $id)
     {
+
         try {
             // Obtener la inscripción actual
             $quotation = Quotation::findOrFail($id);
 
             // Validación de datos (ajusta estas reglas según tus necesidades)
             $validatedData = $request->validate([
-                'type' => 'required|max:30', // 'Customer', 'Internal'
                 'action' => 'required',
+                'reason' => 'nullable|string',
                 'note' => 'nullable|string',
             ]);
 
             // Insertar la nota de estado
             QuotationNote::create([
                 'quotation_id' => $id,
-                'type' => $validatedData['type'],
-                'action' => "Changed from '{$quotation->status}' to '{$validatedData['action']}'",
-                'note' => $validatedData['note'] ?? 'No note',
+                'type' => 'inquiry_status',
+                'action' => "'{$quotation->status}' to '{$validatedData['action']}'",
+                'reason' => $validatedData['reason'] ?? '',
+                'note' => $validatedData['note'] ?? 'N/A',
                 'user_id' => auth()->id(),
             ]);
 
@@ -272,6 +285,76 @@ class QuotationController extends Controller
         } catch (\Exception $e) {
             // Manejo de errores
             return redirect()->back()->with('error', 'Error updating status quotation #'.$id);
+        }
+    }
+
+    public function updateResult(Request $request, $id)
+    {
+        try {
+            // Obtener la inscripción actual
+            $quotation = Quotation::findOrFail($id);
+
+            // Validación de datos (ajusta estas reglas según tus necesidades)
+            $validatedData = $request->validate([
+                'result_action' => 'required|max:100',
+                'result_note' => 'nullable|string',
+            ]);
+
+            // Insertar la nota de resultado
+            QuotationNote::create([
+                'quotation_id' => $id,
+                'type' => 'result_status',
+                'action' => "'{$quotation->result}' to '{$validatedData['result_action']}'",
+                'reason' => '',
+                'note' => $validatedData['result_note'] ?? 'N/A',
+                'user_id' => auth()->id(),
+            ]);
+
+            // Actualizar el resultado de la inscripción después de registrar la nota
+            $quotation->update([
+                'result' => $validatedData['result_action'],
+                'updated_at' => now(),
+            ]);
+
+            return redirect()->route('quotations.show', ['quotation' => $id])->with('success', 'Updated result successfully quotation #'.$id);
+        } catch (\Exception $e) {
+            // Manejo de errores
+            return redirect()->back()->with('error', 'Error updating result quotation #'.$id);
+        }
+    }
+
+    public function updateRating(Request $request, $id)
+    {
+        try {
+            // Obtener la inscripción actual
+            $quotation = Quotation::findOrFail($id);
+
+            // Validación de datos (ajusta estas reglas según tus necesidades)
+            $validatedData = $request->validate([
+                'new_rating' => 'required|integer|min:1|max:5',
+                'rating_comment' => 'nullable|string',
+            ]);
+
+            // Insertar la nota de cambio de rating
+            QuotationNote::create([
+                'quotation_id' => $id,
+                'type' => 'rating',
+                'action' => "'{$quotation->rating}' to '{$validatedData['new_rating']}'",
+                'reason' => '',
+                'note' => $validatedData['rating_comment'] ?? 'N/A',
+                'user_id' => auth()->id(),
+            ]);
+
+            // Actualizar la calificación de la inscripción
+            $quotation->update([
+                'rating' => $validatedData['new_rating'],
+                'updated_at' => now(),
+            ]);
+
+            return redirect()->route('quotations.show', ['quotation' => $id])->with('success', 'Updated rating successfully quotation #'.$id);
+        } catch (\Exception $e) {
+            // Manejo de errores
+            return redirect()->back()->with('error', 'Error updating rating quotation #'.$id);
         }
     }
 
@@ -739,7 +822,6 @@ class QuotationController extends Controller
 
         return response()->json($data);
     }
-
 
     public function assignUsertoQuote(Request $request, $cotizacionId)
     {

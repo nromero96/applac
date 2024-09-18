@@ -15,7 +15,7 @@
 }
 
 .bs-stepper .step.crossed + .line {
-  background-color: #c00000;
+  background-color: #b80000;
 }
 
 .step.crossed .step-trigger.disabled .bs-stepper-circle {
@@ -61,12 +61,12 @@
 }
 
 .active .step-trigger {
-  border-color: #c00000;
+  border-color: #b80000;
 }
 
 .active .bs-stepper-circle {
   background-color: rgba(255, 255, 255, 0);
-  color: #c00000;
+  color: #b80000;
   font-family: "Kanit";
   font-size: 41px;
   font-weight: 400;
@@ -78,7 +78,7 @@
   font-weight: bold;
 }
 .bs-stepper-label:focus {
-  color: #c00000;
+  color: #b80000;
 }
 
 /* 

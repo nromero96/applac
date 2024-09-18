@@ -38,6 +38,7 @@ class Quotation extends Model
         'currency',
         'rating',
         'status',
+        'result',
         'assigned_user_id',
     ];
 }

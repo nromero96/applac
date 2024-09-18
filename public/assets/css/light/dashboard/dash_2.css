@@ -108,7 +108,7 @@
 }
 .widget-two .w-numeric-value svg {
   display: block;
-  color: #e2a03f;
+  color: #B28600;
   width: 20px;
   height: 20px;
 }
@@ -293,7 +293,7 @@
   color: #009688;
 }
 .widget-three .widget-content .summary-list:nth-child(3) .w-icon svg {
-  color: #e2a03f;
+  color: #B28600;
 }
 .widget-three .widget-content .w-summary-details {
   width: 100%;
@@ -478,7 +478,7 @@
 }
 .widget-table-one .transactions-list .t-item .t-icon .avatar .avatar-title {
   background-color: #fbeced;
-  color: #e7515a;
+  color: #b80000;
   border-radius: 12px;
   position: relative;
   border-radius: 12px;
@@ -489,7 +489,7 @@
   width: 42px;
 }
 .widget-table-one .transactions-list.t-info .t-item .t-icon .avatar .avatar-title {
-  color: #2196f3;
+  color: #0A6AB7;
   background: #e6f4ff;
 }
 .widget-table-one .transactions-list.t-secondary .t-item .t-icon .icon {
@@ -515,7 +515,7 @@
   justify-content: center;
   width: 19px;
   height: 19px;
-  color: #e2a03f;
+  color: #B28600;
   stroke-width: 2;
 }
 .widget-table-one .transactions-list .t-item .t-name {
@@ -529,7 +529,7 @@
   color: #3b3f5c;
 }
 .widget-table-one .transactions-list:hover .t-item .t-name h4 {
-  color: #2196f3;
+  color: #0A6AB7;
 }
 .widget-table-one .transactions-list .t-item .t-name .meta-date {
   font-size: 12px;
@@ -555,7 +555,7 @@
   color: #009688;
 }
 .widget-table-one .transactions-list .t-item .t-rate.rate-dec p {
-  color: #e7515a;
+  color: #b80000;
 }
 
 /*
@@ -654,13 +654,13 @@
   border-radius: 0;
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-primary .t-dot:before {
-  background: #c00000;
+  background: #b80000;
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-success .t-dot:before {
   background-color: #009688;
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-danger .t-dot:before {
-  background-color: #e7515a;
+  background-color: #b80000;
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-dark .t-dot:before {
   background-color: #607d8b;
@@ -669,7 +669,7 @@
   background: #ffcc00;
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-warning .t-dot:before {
-  background-color: #e2a03f;
+  background-color: #B28600;
 }
 .widget-activity-four .timeline-line .item-timeline:last-child .t-dot:after {
   display: none;
@@ -718,8 +718,8 @@
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-primary .t-text span.badge {
   color: #fff;
-  border: 1px solid #c00000;
-  background-color: #c00000;
+  border: 1px solid #b80000;
+  background-color: #b80000;
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-secondary .t-text span.badge {
   color: #fff;
@@ -728,13 +728,13 @@
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-danger .t-text span.badge {
   color: #fff;
-  border: 1px solid #e7515a;
-  background-color: #e7515a;
+  border: 1px solid #b80000;
+  background-color: #b80000;
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-warning .t-text span.badge {
   color: #fff;
-  border: 1px solid #e2a03f;
-  background-color: #e2a03f;
+  border: 1px solid #B28600;
+  background-color: #B28600;
 }
 .widget-activity-four .timeline-line .item-timeline.timeline-success .t-text span.badge {
   color: #fff;
@@ -836,7 +836,7 @@
   font-size: 20px;
   letter-spacing: 1px;
   margin-bottom: 10px;
-  color: #c00000;
+  color: #b80000;
 }
 .widget-account-invoice-one .invoice-box .acc-amount {
   text-align: center;
@@ -920,7 +920,7 @@
   font-weight: 700;
 }
 .widget.widget-wallet-one .wallet-text:hover {
-  color: #c00000;
+  color: #b80000;
 }
 .widget.widget-wallet-one .wallet-text svg {
   width: 16px;
@@ -1231,8 +1231,8 @@
   border-radius: 6px;
 }
 .widget-table-three .table .td-content .tag-primary {
-  color: #c00000;
-  border: 1px dashed #c00000;
+  color: #b80000;
+  border: 1px dashed #b80000;
   background: #eceffe;
 }
 .widget-table-three .table .td-content .tag-success {
@@ -1241,8 +1241,8 @@
   background: #ddf5f0;
 }
 .widget-table-three .table .td-content .tag-danger {
-  color: #e7515a;
-  border: 1px dashed #e7515a;
+  color: #b80000;
+  border: 1px dashed #b80000;
   background: #fbeced;
 }
 .widget-table-three .table .td-content a {

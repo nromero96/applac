@@ -116,7 +116,7 @@
   padding: 4px 7px;
   height: 24px;
   width: 23px;
-  color: #c00000;
+  color: #b80000;
   font-weight: 600;
 }
 .tab-title .nav-pills.group-list .nav-item a {
@@ -138,7 +138,7 @@
 }
 .tab-title .nav-pills.group-list .nav-item a.g-dot-danger:before {
   background: #e7515b;
-  border-color: #e7515a;
+  border-color: #b80000;
 }
 .tab-title .nav-pills.group-list .nav-item a.g-dot-primary:before {
   background: #00ab55;
@@ -146,7 +146,7 @@
 }
 .tab-title .nav-pills.group-list .nav-item a.g-dot-warning:before {
   background: #e2a13f;
-  border-color: #e2a03f;
+  border-color: #B28600;
 }
 .tab-title .nav-pills.group-list .nav-item a.g-dot-success:before {
   background: #ffcc00;
@@ -164,7 +164,7 @@
 }
 .tab-title li.mail-labels a.dropdown-item:hover {
   background-color: #fff;
-  color: #c00000;
+  color: #b80000;
 }
 .tab-title li.mail-labels .label:after {
   position: absolute;
@@ -191,7 +191,7 @@
   margin-bottom: 43px;
 }
 .note-container .switch .active-view {
-  color: #c00000;
+  color: #b80000;
   fill: rgba(27, 85, 226, 0.2392156863);
 }
 .note-container .switch .view-list, .note-container .switch .view-grid {
@@ -215,7 +215,7 @@
 }
 
 #notesViewModal .modal-title {
-  color: #c00000;
+  color: #b80000;
 }
 #notesViewModal .notes-content p {
   color: #3b3f5c;
@@ -241,7 +241,7 @@
   cursor: pointer;
   font-size: 16px;
   font-weight: 500;
-  color: #c00000;
+  color: #b80000;
   margin-bottom: 0px;
   letter-spacing: 0px;
 }
@@ -278,10 +278,10 @@
   color: #ffbb44;
 }
 .note-container.note-grid .note-item .note-inner-content .note-action .fav-note:hover {
-  color: #e2a03f;
+  color: #B28600;
 }
 .note-container.note-grid .note-item .note-inner-content .note-action .delete-note:hover {
-  color: #e7515a;
+  color: #b80000;
 }
 .note-container.note-grid .note-item .note-inner-content .note-action .edit-note:hover {
   color: #ffcc00;
@@ -312,7 +312,7 @@
 }
 .note-container.note-grid .note-item .note-inner-content .note-footer .tags .g-dot-work {
   background: #e2a13f;
-  border-color: #e2a03f;
+  border-color: #B28600;
 }
 .note-container.note-grid .note-item .note-inner-content .note-footer .tags .g-dot-social {
   background: #ffcc00;
@@ -320,7 +320,7 @@
 }
 .note-container.note-grid .note-item .note-inner-content .note-footer .tags .g-dot-important {
   background: #e7515b;
-  border-color: #e7515a;
+  border-color: #b80000;
 }
 .note-container.note-grid .note-item.note-personal .note-inner-content .note-footer .tags .g-dot-personal, .note-container.note-grid .note-item.note-work .note-inner-content .note-footer .tags .g-dot-work, .note-container.note-grid .note-item.note-social .note-inner-content .note-footer .tags .g-dot-social, .note-container.note-grid .note-item.note-important .note-inner-content .note-footer .tags .g-dot-important {
   display: inline-block;
@@ -355,15 +355,15 @@
 }
 .note-container.note-grid .note-item .note-inner-content .note-footer .tags-selector .dropdown-menu a.g-dot-work:before {
   background: #e2a13f;
-  border: 1px solid #e2a03f;
+  border: 1px solid #B28600;
 }
 .note-container.note-grid .note-item .note-inner-content .note-footer .tags-selector .dropdown-menu a.g-dot-social:before {
   background: #ffcc00;
   border: 1px solid #ffcc00;
 }
 .note-container.note-grid .note-item .note-inner-content .note-footer .tags-selector .dropdown-menu a.g-dot-important:before {
-  background: #e7515a;
-  border: 1px solid #e7515a;
+  background: #b80000;
+  border: 1px solid #b80000;
 }
 .note-container.note-grid .note-item .note-inner-content .note-footer .nav-link {
   padding: 0;

@@ -77,8 +77,7 @@
                                 <small class="text-muted d-block mt-2 mb-1">{{__("The system assigns quotes based on the customer's rating and email domain, with priority given to users who have previously managed quotes from the same domain (excluding public email domains like Gmail, Outlook.com, Hotmail.com, Live.com, Aol.com, Msn.com or Yahoo).")}}</small>
 
                                 <ul class="text-muted ps-3 mt-0">
-                                    <li class=""><small>{{__("5-Star Quotes")}}: {{__("These are assigned manually by administrators.")}}</small></li>
-                                    <li class=""><small>{{__("4-Star Quotes")}}: {{__("These are distributed equally among selected users, considering the number of quotes each user has handled in the past 24 hours.")}}</small></li>
+                                    <li class=""><small>{{__("4-Star and 5-Star Quotes")}}: {{__("These are distributed equally among selected users, considering the number of quotes each user has handled in the past 24 hours.")}}</small></li>
                                     <li class=""><small>{{__("3-Star or Lower Quotes")}}: {{__("These are assigned in a rotating manner, following the predefined list order.")}}</small></li>
                                 </ul>
 

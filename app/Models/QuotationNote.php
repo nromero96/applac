@@ -13,6 +13,7 @@ class QuotationNote extends Model
         'quotation_id',
         'type',
         'action',
+        'reason',
         'note',
         'user_id',
     ];

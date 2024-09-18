@@ -115,7 +115,7 @@
   border: 1px solid #e0e6ed;
   width: 43px;
   height: 41px;
-  color: #c00000;
+  color: #b80000;
   fill: none;
 }
 .searchable-container #btn-add-contact:hover {
@@ -123,7 +123,7 @@
 }
 .searchable-container .add-contact-box .add-contact-content .contact-name .validation-text, .searchable-container .add-contact-box .add-contact-content .contact-email .validation-text, .searchable-container .add-contact-box .add-contact-content .contact-occupation .validation-text, .searchable-container .add-contact-box .add-contact-content .contact-phone .validation-text, .searchable-container .add-contact-box .add-contact-content .contact-location .validation-text {
   display: none;
-  color: #e7515a;
+  color: #b80000;
   font-weight: 600;
   text-align: left;
   margin-top: 6px;
@@ -134,7 +134,7 @@
   align-self: center;
   font-size: 19px;
   margin-right: 14px;
-  color: #2196f3;
+  color: #0A6AB7;
   font-weight: 600;
 }
 .searchable-container .add-contact-box .add-contact-content .contact-name #c-name::-webkit-input-placeholder, .searchable-container .add-contact-box .add-contact-content .contact-email #c-email::-webkit-input-placeholder, .searchable-container .add-contact-box .add-contact-content .contact-occupation #c-occupation::-webkit-input-placeholder, .searchable-container .add-contact-box .add-contact-content .contact-phone #c-phone::-webkit-input-placeholder, .searchable-container .add-contact-box .add-contact-content .contact-location #c-location::-webkit-input-placeholder, .searchable-container .add-contact-box .add-contact-content .contact-name #c-name::-ms-input-placeholder, .searchable-container .add-contact-box .add-contact-content .contact-email #c-email::-ms-input-placeholder, .searchable-container .add-contact-box .add-contact-content .contact-occupation #c-occupation::-ms-input-placeholder, .searchable-container .add-contact-box .add-contact-content .contact-phone #c-phone::-ms-input-placeholder, .searchable-container .add-contact-box .add-contact-content .contact-location #c-location::-ms-input-placeholder, .searchable-container .add-contact-box .add-contact-content .contact-name #c-name::-moz-input-placeholder, .searchable-container .add-contact-box .add-contact-content .contact-email #c-email::-moz-input-placeholder, .searchable-container .add-contact-box .add-contact-content .contact-occupation #c-occupation::-moz-input-placeholder, .searchable-container .add-contact-box .add-contact-content .contact-phone #c-phone::-moz-input-placeholder {
@@ -149,7 +149,7 @@
   font-weight: 600;
 }
 .searchable-container .switch .view-grid:hover, .searchable-container .switch .view-list:hover, .searchable-container .switch .active-view {
-  color: #c00000;
+  color: #b80000;
   fill: none;
 }
 .searchable-container .searchable-items.list .items.items-header-section h4 {
@@ -203,11 +203,11 @@
   fill: #fff;
 }
 .searchable-container .searchable-items.list .items .item-content:hover .action-btn .delete {
-  color: #e7515a;
+  color: #b80000;
   fill: #fff;
 }
 .searchable-container .searchable-items.list .items .item-content:hover .user-meta-info .user-name, .searchable-container .searchable-items.list .items .item-content:hover .user-email p, .searchable-container .searchable-items.list .items .item-content:hover .user-location p, .searchable-container .searchable-items.list .items .item-content:hover .user-phone p {
-  color: #c00000;
+  color: #b80000;
 }
 .searchable-container .searchable-items.list .items .user-profile {
   display: flex;
@@ -263,12 +263,12 @@
 .searchable-container .searchable-items.list .items .action-btn .delete-multiple {
   margin-right: 5px;
   cursor: pointer;
-  color: #e7515a;
+  color: #b80000;
   width: 20px;
   fill: none;
 }
 .searchable-container .searchable-items.list .items .action-btn .delete-multiple:hover {
-  color: #e7515a;
+  color: #b80000;
 }
 .searchable-container .searchable-items.list .items .action-btn .show, .searchable-container .searchable-items.list .items .action-btn .edit, .searchable-container .searchable-items.list .items .action-btn .delete {
   margin-right: 5px;
@@ -314,7 +314,7 @@
   fill: #fff;
 }
 .searchable-container .searchable-items.grid .items .item-content:hover .action-btn .delete {
-  color: #e7515a;
+  color: #b80000;
   fill: #fff;
 }
 .searchable-container .searchable-items.grid .items.items-header-section {

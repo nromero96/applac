@@ -24,11 +24,11 @@
   background: #fff;
   padding: 3px 8px;
   border-radius: 5px;
-  color: #c00000;
+  color: #b80000;
   border: 1px solid #e0e6ed;
 }
 .range-count .range-count-unit {
-  color: #c00000;
+  color: #b80000;
 }
 
 .custom-progress.top-right .range-count, .custom-progress.bottom-right .range-count {
@@ -38,7 +38,7 @@
 .progress-range-counter::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  background: #c00000;
+  background: #b80000;
   cursor: pointer;
   height: 16px;
   width: 16px;
@@ -50,7 +50,7 @@
   transform: scale(1.2);
 }
 .progress-range-counter:focus::-webkit-slider-thumb {
-  background: #c00000;
+  background: #b80000;
   cursor: pointer;
   height: 16px;
   width: 16px;
@@ -58,7 +58,7 @@
   box-shadow: none;
 }
 .progress-range-counter::-moz-range-thumb {
-  background: #c00000;
+  background: #b80000;
   cursor: pointer;
   height: 16px;
   width: 16px;

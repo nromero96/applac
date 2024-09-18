@@ -37,67 +37,139 @@
                     <div class="widget-header">
                         <div class="row">
                             <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                                <h4 class="d-flex justify-content-between pb-2">
-                                    <span>{{__("Quotation")}}: <span class="text-primary">#{{ $quotation->id }}</span></span>
-                                    <div>
-                                        @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
-                                            <span class="qtrating text-center">
-                                                @php
-                                                    $fullStars = floor($quotation->rating);
-                                                    $hasHalfStar = ($quotation->rating - $fullStars) >= 0.5;
-                                                @endphp
 
-                                                @for ($i = 0; $i < $fullStars; $i++)
-                                                    <span class="star">
-                                                        <svg width="17" height="17" fill="#edb10c" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
-                                                        </svg>
-                                                    </span>
-                                                @endfor
-
-                                                @if ($hasHalfStar)
-                                                    <span class="star">
-                                                        <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                            <defs>
-                                                                <clipPath id="halfStarClip">
-                                                                    <rect x="0" y="0" width="12" height="24" />
-                                                                </clipPath>
-                                                            </defs>
-                                                            <!-- Estrella completa en gris -->
-                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#e1e1e1" />
-                                                            <!-- Parte de la estrella en color original -->
-                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#edb10c" clip-path="url(#halfStarClip)" />
-                                                        </svg>
-                                                    </span>
-                                                @endif
-
-                                                @for ($i = $fullStars + ($hasHalfStar ? 1 : 0); $i < 5; $i++)
-                                                    <span class="star">
-                                                        <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
-                                                        </svg>
-                                                    </span>
-                                                @endfor
-                                            </span>
-                                        @endif
-
+                                <div class="d-flex pb-2">
+                                    <div class="flex-grow-1">
+                                        <h4 class="pt-3 pb-2">{{__("Quotation")}}: <span class="text-primary">#{{ $quotation->id }}</span></h4>
+                                        <input type="hidden" id="quotation_id" value="{{ $quotation->id }}">
                                     </div>
-                                    <div class="dropdown-list dropdown text-end" role="group">
-                                        <a href="javascript:void(0);" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                                        </a>
-                                        <div class="dropdown-menu">
-                                            {{-- <a class="dropdown-item" href="">
-                                                <span>{{ __('Edit') }}</span>
-                                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                                            </a> --}}
-                                            <a class="dropdown-item" id="print_supplier" href="javascript:void(0);">
-                                                <span>{{ __('Print') }}</span>
-                                                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                                    <div class="flex-grow-1">
+                                        @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
+
+                                            @php
+                                                if($is_ratinginnote){
+                                                    $class_rtg_rating_stars = "d-none";
+                                                    $class_rtg_modified_stars = "d-inline";
+                                                    $class_rtg_modified_by_name = "d-inline";
+                                                    $modified_by = $is_ratinginnote->user_name;
+                                                }else{
+                                                    $class_rtg_rating_stars = "d-inline";
+                                                    $class_rtg_modified_stars = "d-none";
+                                                    $class_rtg_modified_by_name = "d-none";
+                                                    $modified_by = "";
+                                                }
+                                            @endphp
+
+                                                <div class="mt-3 mb-1">
+                                                    {{-- Grupo de radios --}}
+                                                    <div class="rating-modify">
+                                                        <form action="{{ route('quotationupdaterating', ['id' => $quotation->id]) }}" method="POST">
+
+                                                            <span class="qtrating {{$class_rtg_rating_stars}}" id="rtg_rating_stars">
+                                                                @php
+                                                                    $fullStars = floor($quotation->rating);
+                                                                    $hasHalfStar = ($quotation->rating - $fullStars) >= 0.5;
+                                                                @endphp
+
+                                                                @for ($i = 0; $i < $fullStars; $i++)
+                                                                    <span class="star">
+                                                                        <svg width="17" height="17" fill="#edb10c" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                        </svg>
+                                                                    </span>
+                                                                @endfor
+
+                                                                @if ($hasHalfStar)
+                                                                    <span class="star">
+                                                                        <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                            <defs>
+                                                                                <clipPath id="halfStarClip">
+                                                                                    <rect x="0" y="0" width="12" height="24" />
+                                                                                </clipPath>
+                                                                            </defs>
+                                                                            <!-- Estrella completa en gris -->
+                                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#e1e1e1" />
+                                                                            <!-- Parte de la estrella en color original -->
+                                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#edb10c" clip-path="url(#halfStarClip)" />
+                                                                        </svg>
+                                                                    </span>
+                                                                @endif
+
+                                                                @for ($i = $fullStars + ($hasHalfStar ? 1 : 0); $i < 5; $i++)
+                                                                    <span class="star">
+                                                                        <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                        </svg>
+                                                                    </span>
+                                                                @endfor
+                                                            </span>
+
+                                                            <div class="{{$class_rtg_modified_stars}}" id="rtg_modified_stars">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                @php
+                                                                    $rating = $quotation->rating;
+                                                                    // verificar y agregar active class a los radio buttons
+                                                                    for ($i=1; $i <= 5; $i++) {
+                                                                        if($i <= $rating){
+                                                                            $classactive = "active";
+                                                                        }else{
+                                                                            $classactive = "";
+                                                                        }
+
+                                                                        if($i == $rating){
+                                                                            $checked = "checked";
+                                                                        }else{
+                                                                            $checked = "";
+                                                                        }
+
+                                                                        echo '<input type="radio" id="star'.$i.'" name="new_rating" value="'.$i.'" '.$checked.' disabled/>
+                                                                        <label for="star'.$i.'" class="'.$classactive.'">
+                                                                            <span class="star">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star">
+                                                                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                                                                </svg>
+                                                                            </span>
+                                                                        </label>';
+                                                                    }
+                                                                @endphp
+                                                            </div>
+
+                                                            <div class="ms-2 d-none" id="rtg_comment_input">
+                                                                <input type="text" name="rating_comment" class="rating_comment" placeholder="Comment">
+                                                                <button type="submit" class="btn-outline-primary ms-2 btn-rtg-update">Update</button>
+                                                            </div>
+
+                                                            <div class="d-inline" id="rtg_modified_by">
+                                                                <span class="ms-2 {{$class_rtg_modified_by_name}}">(Modified by {{$modified_by}})</span>
+                                                                <a href="javascript:void(0);" class="btn-outline-primary ms-2 btn-modify">Modify</a>
+                                                            </div>
+
+                                                        </form>
+                                                    </div>
+                                                </div>
+
+
+                                        @endif
+                                    </div>
+                                    <div class="flex-grow-1 text-end">
+                                        <div class="dropdown-list dropdown text-end mt-3 pe-2" role="group">
+                                            <a href="javascript:void(0);" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
                                             </a>
+                                            <div class="dropdown-menu">
+                                                {{-- <a class="dropdown-item" href="">
+                                                    <span>{{ __('Edit') }}</span>
+                                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                                </a> --}}
+                                                <a class="dropdown-item" id="print_supplier" href="javascript:void(0);">
+                                                    <span>{{ __('Print') }}</span>
+                                                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                </h4>
+                                </div>
                                 <hr class="my-0">
                             </div>
                         </div>
@@ -545,84 +617,153 @@
 
 
                 <div class="row mt-2">
-                    <div class="col-md-7">
-                        @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
-                            <div class="statbox widget box box-shadow mt-2">
+                    @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
+                    <div class="col-md-4">
+                        <div class="statbox widget box box-shadow mt-2">
                             <div class="widget-header px-2 pt-2 pb-0">
-                                <h6 class="mb-0">
-                                    {{ __('Status') }}:
-                                    <span class="badge
-                                                    @if ($quotation->status == 'Processing')
-                                                        badge-light-warning
-                                                    @elseif ($quotation->status == 'Attended')
-                                                        badge-light-info
-                                                    @elseif ($quotation->status == 'Quote Sent')status
-                                                        badge-light-success
-                                                    @endif
-                                                    inv-status">
-                                                    {{ $quotation->status }}
+                                <div class="mb-0 row">
+                                    <div class="col">
+                                        <span class="badge rounded-pill badge-primary badge-numstatus">1</span>
+                                        <span class="title-cd-status">{{ __('Inquiry Status') }}</span>
+                                    </div>
+                                    <div class="col text-end">
+                                        <span class="cret-txt align-middle">{{__('Current: ')}}</span>
+                                        <span class="cret-bge align-middle badge
+                                                @if ($quotation->status == 'Pending')
+                                                    badge-light-pending
+                                                @elseif ($quotation->status == 'Qualifying')
+                                                    badge-light-warning
+                                                @elseif ($quotation->status == 'Processing')
+                                                    badge-light-info
+                                                @elseif ($quotation->status == 'Attended')
+                                                    badge-light-info
+                                                @elseif ($quotation->status == 'Quote Sent')
+                                                    badge-light-success
+                                                @elseif ($quotation->status == 'Unqualified')
+                                                    badge-light-unqualified
+                                                @endif
+                                                inv-status">
+                                                {{ $quotation->status }}
                                         </span>
-                                </h6>
+                                    </div>
+                                </div>
                             </div>
                             <div class="widget-content widget-content-area px-2 pb-3 pt-1">
-                                <form class="row" action="{{ route('quotationupdatestatus', ['id' => $quotation->id]) }}" method="POST">
+                                <form action="{{ route('quotationupdatestatus', ['id' => $quotation->id]) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <div class="col-md-4">
-                                        <input type="hidden" name="type" value="Internal">
-                                        <select name="action" id="action" class="form-select">
-                                            <option value="Processing" @if($quotation->status == 'Processing') selected @endif>Processing</option>
-                                            <option value="Attended" @if($quotation->status == 'Attended') selected @endif>Attended</option>
-                                            <option value="Quote Sent" @if($quotation->status == 'Quote Sent') selected @endif>Quote Sent</option>
+                                    <div class="mb-2">
+                                        <label for="action" class="form-label mb-0">{{ __('Change status to') }}</label>
+                                        <select name="action" id="action" class="form-select" required>
+                                            <option value="" selected>{{ __('Select status') }}</option>
+                                            <option value="Pending" @if($quotation->status == 'Pending') disabled @endif>Pending</option>
+                                            <option value="Qualifying" @if($quotation->status == 'Qualifying') disabled @endif>Qualifying</option>
+                                            <option value="Processing" @if($quotation->status == 'Processing') disabled @endif>Processing</option>
+                                            <option value="Attended" @if($quotation->status == 'Attended') disabled @endif>Attended</option>
+                                            <option value="Quote Sent" @if($quotation->status == 'Quote Sent') disabled @endif>Quote Sent</option>
+                                            <option value="Unqualified" @if($quotation->status == 'Unqualified') disabled @endif>Unqualified</option>
                                         </select>
                                     </div>
-                                    <div class="col-md-5">
-                                        <input type="text" class="form-control" name="note" id="note" placeholder="{{ __('Note...') }}">
+                                    <div class="mb-2 d-none" id="dv_reason">
+                                        <label for="reason" class="form-label mb-0">{{ __('Reason to decline') }} <span class="text-danger">*</span></label>
+                                        <select name="reason" id="reason" class="form-select">
+                                            <option value="" selected>{{ __('Select and option') }}</option>
+                                            <option value="3PL located in CA / US quoting from CA / US" @if($quotation->reason == '3PL located in CA / US quoting from CA / US') selected @endif>3PL located in CA / US quoting from CA / US</option>
+                                            <option value="3PL located in foreign country quoting from foreign to CA / US" @if($quotation->reason == '3PL located in foreign country quoting from foreign to CA / US') selected @endif>3PL located in foreign country quoting from foreign to CA / US</option>
+                                            <option value="Business requesting a quote out-of-scope" @if($quotation->reason == 'Business requesting a quote out-of-scope') selected @endif>Business requesting a quote out-of-scope</option>
+                                            <option value="Foreign business quoting for triangular shipment" @if($quotation->reason == 'Foreign business quoting for triangular shipment') selected @endif>Foreign business quoting for triangular shipment</option>
+                                            <option value="CA/US business quoting from China to LATAM / NA (Small Qty)" @if($quotation->reason == 'CA/US business quoting from China to LATAM / NA (Small Qty)') selected @endif>CA/US business quoting from China to LATAM / NA (Small Qty)</option>
+                                            <option value="Personal effects / Household goods" @if($quotation->reason == 'Personal effects / Household goods') selected @endif>Personal effects / Household goods</option>
+                                            <option value="Business consulting" @if($quotation->reason == 'Business consulting') selected @endif>Business consulting</option>
+                                        </select>
                                     </div>
-                                    <div class="col-md-3">
-                                        <button type="submit" class="btn btn-secondary w-100 px-2 py-2">{{ __('Update') }}</button>
+                                    <div class="mb-3">
+                                        <label for="note" class="form-label mb-0">{{ __('Comment (Optional)') }}</label>
+                                        <input type="text" class="form-control" name="note" id="note">
                                     </div>
-
+                                    <div class="">
+                                        <button type="submit" class="btn btn-primary w-100 fw-bold px-2 py-2">{{ __('Update') }}</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="statbox widget box box-shadow mt-2">
+                            <div class="widget-header px-2 pt-2 pb-0">
+                                <div class="mb-0 row">
+                                    <div class="col">
+                                        <span class="badge rounded-pill badge-secondary badge-numstatus">2</span>
+                                        <span class="title-cd-status">{{ __('Result Status') }}</span>
+                                    </div>
+                                    <div class="col text-end">
+                                        <span class="cret-txt align-middle">{{__('Current: ')}}</span>
+                                        <span class="cret-bge align-middle badge
+                                                @if ($quotation->result == 'Under Review')
+                                                    badge-light-warning
+                                                @elseif ($quotation->result == 'Lost')
+                                                            badge-light-danger
+                                                @elseif ($quotation->result == 'Won')
+                                                            badge-light-success
+                                                @endif
+                                                inv-status">
+                                                {{$quotation->result}}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="widget-content widget-content-area px-2 pb-3 pt-1">
+                                <form action="{{ route('quotationupdateresult', ['id' => $quotation->id]) }}" method="POST">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="mb-2">
+                                        <label for="action" class="form-label mb-0">{{ __('Change status to') }}</label>
+                                        <select name="result_action" id="result_action" class="form-select">
+                                            <option value="" selected>{{ __('Select status') }}</option>
+                                            <option value="Won" @if($quotation->result == 'Won') disabled @endif>Won</option>
+                                            <option value="Lost" @if($quotation->result == 'Lost') disabled @endif>Lost</option>
+                                            <option value="Under Review" @if($quotation->result == 'Under Review') disabled @endif>Under Review</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="note" class="form-label mb-0">{{ __('Comment (Optional)') }}</label>
+                                        <input type="text" class="form-control" name="result_note" id="result_note">
+                                    </div>
+                                    <div class="">
+                                        <button type="submit" class="btn btn-secondary text-dark fw-bold w-100 px-2 py-2">{{ __('Update') }}</button>
+                                    </div>
                                 </form>
                             </div>
                             </div>
-                        @endif
-
                     </div>
-                    <div class="col-md-5">
-                        <div class="mt-2">
+                    @endif
+                    <div class="col-md-4">
+                        <div class="statbox widget box box-shadow mt-2">
 
-                        @if(Auth::user()->hasRole('Customer'))
-                            {{ __('Status') }}:
-                            <span class="badge
-                                @if ($quotation->status == 'Processing')
-                                badge-light-warning
-                                @elseif ($quotation->status == 'Attended')
-                                badge-light-info
-                                @elseif ($quotation->status == 'Quote Sent')status
-                                badge-light-success
-                                @endif
-                                inv-status">
-                                {{ $quotation->status }}
-                            </span>
-                        @else
-                            <h6 class="mb-1">{{ __('History') }}:</h6>
-                            @if ($quotation_notes->count() > 0)
-                                <ul class="my-0 ps-3 notelist">
-                                    @foreach ($quotation_notes as $note)
-                                        <li style="line-height: 14px;">
-                                            <b class="text-info">{{ $note->note }}</b><br>
-                                            {{ $note->action }}<br>
-                                            <small>{{ $note->created_at }}</small>
-                                        </li>
-                                    @endforeach
-                                </ul>
+                            <div class="widget-header px-2 pt-2 pb-0">
+                                <div class="mb-0 row">
+                                    <div class="col">
+                                        <svg width="16" height="16" fill="none" stroke="#0a6ab7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="margin-top: -3px;">
+                                            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20z"></path>
+                                            <path d="M12 6v6l4 2"></path>
+                                        </svg>
+                                        <span class="title-cd-status">{{ __('Activity Log') }}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if(Auth::user()->hasRole('Customer'))
+                            <div class="widget-content widget-content-area px-2 pb-3 pt-1">
+
+                            </div>
                             @else
-                                <span class="mb-1 d-block">N/A</span>
+                            <div class="widget-content widget-content-area px-2 pb-3 pt-1" id="quotation-notes">
+
+                            </div>
                             @endif
-                        @endif
                         </div>
                     </div>
+
                 </div>
 
             </div>

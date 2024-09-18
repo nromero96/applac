@@ -348,8 +348,8 @@
   width: 32px;
 }
 .widget.widget-activity-five .timeline-line .item-timeline .t-dot div.t-primary {
-  background-color: #c00000;
-  box-shadow: 0 10px 20px -8px #c00000;
+  background-color: #b80000;
+  box-shadow: 0 10px 20px -8px #b80000;
 }
 .widget.widget-activity-five .timeline-line .item-timeline .t-dot div.t-primary svg {
   color: #e0e6ed;
@@ -369,15 +369,15 @@
   color: #e0e6ed;
 }
 .widget.widget-activity-five .timeline-line .item-timeline .t-dot div.t-danger {
-  background-color: #e7515a;
-  box-shadow: 0 10px 20px -8px #e7515a;
+  background-color: #b80000;
+  box-shadow: 0 10px 20px -8px #b80000;
 }
 .widget.widget-activity-five .timeline-line .item-timeline .t-dot div.t-danger svg {
   color: #e0e6ed;
 }
 .widget.widget-activity-five .timeline-line .item-timeline .t-dot div.t-warning {
-  background-color: #e2a03f;
-  box-shadow: 0 10px 20px -8px #e2a03f;
+  background-color: #B28600;
+  box-shadow: 0 10px 20px -8px #B28600;
 }
 .widget.widget-activity-five .timeline-line .item-timeline .t-dot div.t-warning svg {
   color: #e0e6ed;
@@ -500,20 +500,20 @@
   border-bottom-right-radius: 8px;
 }
 .widget-one_hybrid.widget-followers .widget-heading .w-icon {
-  color: #c00000;
+  color: #b80000;
   background: #eceffe;
 }
 .widget-one_hybrid.widget-referral .widget-heading .w-icon {
-  color: #e7515a;
+  color: #b80000;
   background-color: #fbeced;
 }
 .widget-one_hybrid.widget-social {
   background: #e6f4ff;
-  background: #c00000;
+  background: #b80000;
 }
 .widget-one_hybrid.widget-social .widget-heading .w-icon {
-  color: #2196f3;
-  border: 1px solid #2196f3;
+  color: #0A6AB7;
+  border: 1px solid #0A6AB7;
 }
 .widget-one_hybrid.widget-engagement .widget-heading .w-icon {
   color: #009688;
@@ -677,7 +677,7 @@
   justify-content: space-between;
 }
 .widget-card-one .widget-content .w-action svg {
-  color: #2196f3;
+  color: #0A6AB7;
   margin-right: 8px;
   stroke-width: 1.5;
 }
@@ -786,19 +786,19 @@
   background: #fcf5e9;
 }
 .widget-four .widget-content .browser-list:nth-child(1) .w-icon svg {
-  color: #e2a03f;
+  color: #B28600;
 }
 .widget-four .widget-content .browser-list:nth-child(2) .w-icon svg {
-  color: #e2a03f;
+  color: #B28600;
 }
 .widget-four .widget-content .browser-list:nth-child(3) .w-icon svg {
-  color: #e2a03f;
+  color: #B28600;
 }
 .widget-four .widget-content .browser-list:nth-child(4) .w-icon svg {
-  color: #e2a03f;
+  color: #B28600;
 }
 .widget-four .widget-content .browser-list:nth-child(5) .w-icon svg {
-  color: #e2a03f;
+  color: #B28600;
 }
 .widget-four .widget-content .w-browser-details {
   width: 100%;
@@ -920,7 +920,7 @@
 .widget-card-two .card-bottom-section a {
   display: block;
   margin-top: 18px;
-  background: #c00000;
+  background: #b80000;
   color: #fff;
   padding: 10px 10px;
   transform: none;
@@ -1034,7 +1034,7 @@
 }
 .widget-five .widget-content .progress-data .progress-stats p {
   font-weight: 600;
-  color: #2196f3;
+  color: #0A6AB7;
   font-size: 15px;
 }
 .widget-five .widget-content .progress-data .progress {
@@ -1100,7 +1100,7 @@
   font-size: 11px;
   padding: 4px 6px 4px 6px;
   border-radius: 30px;
-  color: #e7515a;
+  color: #b80000;
   background-color: #fbeced;
 }
 .widget-five .widget-content .meta-info .due-time p svg {

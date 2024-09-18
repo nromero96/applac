@@ -503,7 +503,7 @@ span {
   }
 
   /* Card Style 2 */
-  
+
   &.style-2 {
     padding: 15px 18px;
     border-radius: 15px;
@@ -515,7 +515,7 @@ span {
   }
 
   /* Card Style 3 */
-  
+
   &.style-3 {
     padding: 10px 10px;
     border-radius: 15px;
@@ -568,9 +568,9 @@ span {
     }
   }
 
-  
+
 /* Card Style 5 */
-  
+
   &.style-5 {
     flex-direction: row;
 
@@ -591,7 +591,7 @@ span {
     right: 8px;
     top: 8px;
   }
-  
+
   /* Card Style 7 */
 
   &.style-7 {
@@ -670,8 +670,8 @@ span {
       cursor: no-drop;
       color: #d3d3d3;
     }
-    
-    
+
+
     &:focus {
       background-color: #f1f2f3;
     }
@@ -680,7 +680,7 @@ span {
       color: #888ea8;
       font-size: 15px;
     }
-    
+
   }
 }
 
@@ -771,7 +771,7 @@ span {
   height: 17px;
   margin-top: 0.21em;
   transition: background-color .15s ease-in-out,background-position .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-  
+
   &:focus {
     border-color: #e0e6ed;
     box-shadow: none;
@@ -2687,7 +2687,7 @@ fieldset:disabled .btn {
   }
 
   // &:active {
-    
+
   // }
 }
 
@@ -3366,26 +3366,32 @@ fieldset:disabled .btn {
 
 .badge-light-info {
   color: $info;
-  background-color: #e6f4ff;
-  border: 1px solid #e6f4ff;
+  background-color: #D3EAFD;
+  border: 1px solid #D3EAFD;
+}
+
+.badge-light-pending {
+    color: #EB6200;
+    background-color: #FFF2E8;
+    border: 1px solid #FFF2E8;
 }
 
 .badge-light-success {
-  color: #00ab55;
-  background-color: #ddf5f0;
-  border: 1px solid #ddf5f0;
+    color: #1D813A;
+    background-color: #E9F6ED;
+    border: 1px solid #E9F6ED;
 }
 
 .badge-light-danger {
   color: $danger;
-  background-color: #fbeced;
-  border: 1px solid #fbeced;
+  background-color: #FAE6E6;
+  border: 1px solid #FAE6E6;
 }
 
 .badge-light-warning {
   color: $warning;
-  background-color: #fcf5e9;
-  border: 1px solid #fcf5e9;
+  background-color: #FCF4D6;
+  border: 1px solid #FCF4D6;
 }
 
 .badge-light-dark {
@@ -3398,6 +3404,12 @@ fieldset:disabled .btn {
   color: $secondary;
   background-color: #f2eafa;
   border: 1px solid #f2eafa;
+}
+
+.badge-light-unqualified{
+    color: #686868;
+    background-color: #E8E8E8;
+    border: 1px solid #E8E8E8;
 }
 
 /*      Link     */
@@ -3533,12 +3545,12 @@ fieldset:disabled .btn {
           left: -14px;
           top: 0;
         }
-        
+
       }
 
     }
   }
-  
+
 }
 
 .avatar {
@@ -3750,7 +3762,7 @@ fieldset:disabled .btn {
 
 /* .search-form-control { border-radius: .25rem; } */
 
-/*  
+/*
     ====================
         Table
     ====================
@@ -3771,7 +3783,7 @@ fieldset:disabled .btn {
     background-color: #bfc9d4;
     border-color: #bfc9d4;
   }
-  
+
   thead {
     color: #515365;
 
@@ -3805,7 +3817,7 @@ fieldset:disabled .btn {
       width: 5%;
     }
   }
-  
+
   tbody {
     border: none;
 
@@ -3913,7 +3925,7 @@ fieldset:disabled .btn {
   }
 }
 
-/* 
+/*
     Hover and Striped
 */
 
@@ -3939,13 +3951,13 @@ fieldset:disabled .btn {
   }
 }
 
-/* 
+/*
 
     Striped
 
 */
 
-/* 
+/*
     Striped and Bordered
 */
 
@@ -3960,85 +3972,85 @@ fieldset:disabled .btn {
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
           }
-    
+
           &:last-child {
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
           }
         }
-    
+
         &:first-child td {
           &:first-child {
             border-top-left-radius: 0;
           }
-    
+
           &:last-child {
             border-top-right-radius: 0;
           }
         }
-    
+
         &:last-child td {
           &:first-child {
             border-bottom-left-radius: 10px;
           }
-    
+
           &:last-child {
             border-bottom-right-radius: 10px;
           }
         }
       }
-    
+
       thead tr th {
         border: 1px solid #ebedf2;
         background: transparent;
         border-bottom-right-radius: 0;
         border-bottom-left-radius: 0;
       }
-    
+
       > tbody > tr {
         td {
           border: 1px solid #ebedf2;
         }
-    
+
         &:last-child td {
           &:first-child {
             border-bottom-left-radius: 10px;
           }
-    
+
           &:last-child {
             border-bottom-right-radius: 10px;
           }
         }
       }
-    
+
       &.table-hover > tbody > tr:hover {
         td {
           &:first-child {
             border-top-left-radius: 0;
             border-bottom-left-radius: 0;
           }
-    
+
           &:last-child {
             border-top-right-radius: 0;
             border-bottom-right-radius: 0;
           }
         }
-    
+
         &:first-child td {
           &:first-child {
             border-top-left-radius: 0;
           }
-    
+
           &:last-child {
             border-top-right-radius: 0;
           }
         }
-    
+
         &:last-child td {
           &:first-child {
             border-bottom-left-radius: 10px;
           }
-    
+
           &:last-child {
             border-bottom-right-radius: 10px;
           }
@@ -4050,13 +4062,13 @@ fieldset:disabled .btn {
 
 }
 
-/* 
+/*
 
     Bordered
 
 */
 
-/* 
+/*
     Bordered and Hover
 */
 
@@ -4155,14 +4167,14 @@ fieldset:disabled .btn {
   color: #fff;
 }
 
-/*  
+/*
     ==========================
-        Background Colors  
+        Background Colors
     ==========================
 */
 
-/*  
-    Default  
+/*
+    Default
 */
 
 .bg-primary {
@@ -4207,8 +4219,8 @@ fieldset:disabled .btn {
   color: #fff;
 }
 
-/*  
-    Light Background  
+/*
+    Light Background
 */
 
 .bg-light-primary {
@@ -4253,7 +4265,7 @@ fieldset:disabled .btn {
   color: #fff;
 }
 
-/*  
+/*
     Progress Bar
 */
 
@@ -4357,7 +4369,7 @@ fieldset:disabled .btn {
   }
 }
 
-/* 
+/*
     =====================
         BreadCrumbs
     =====================
@@ -4532,6 +4544,153 @@ fieldset:disabled .btn {
     border-radius: 2px;
     padding: 0px 2px;
     font-size: 8px;
+}
+.badge-numstatus{
+    font-family: "Kanit";
+    font-weight: 600;
+    padding: 1px 6px;
+    font-size: 13px;
+    line-height: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.title-cd-status{
+    font-family: 'Kanit';
+    font-size: 16px;
+    font-weight: 400;
+    color: #161515;
+}
+
+.cret-txt{
+    font-family: 'Kanit';
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.cret-bge{
+    font-family: "Nunito Sans";
+    font-size: 11px;
+    padding: 2px 5px;
+    margin-left: 5px;
+}
+
+.btn-modify{
+    font-family: "Nunito Sans";
+    font-size: 13px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+}
+
+.btn-rtg-update{
+    font-family: "Nunito Sans";
+    font-size: 13px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+    background: $primary;
+    color: #fff !important;
+}
+
+.rating_comment{
+    font-family: "Nunito Sans";
+    font-size: 13px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 5px;
+    border: 1px solid #D8D8D8;
+}
+
+.rating-modify{
+
+    input[type=radio]{
+        display: none;
+    }
+
+    label{
+        display: inline-block;
+        cursor: pointer;
+        color: #ccc;
+        margin-bottom: 0px;
+
+        .star{
+            display: inline-block;
+            width: 15px;
+            margin-left: -2px;
+            margin-right: -2px;
+        }
+
+        svg{
+            stroke-width: 0px;
+            fill: #e1e1e1;
+        }
+
+        &.active{
+
+            svg{
+                fill: #2196F3;
+                stroke-width: 0px;
+            }
+        }
+    }
+}
+
+.activity-log{
+    border-bottom: 1px solid #d8d8d8;
+    .al-action{
+        .text-result{
+            font-family: 'Nunito Sans';
+            font-size: 12px;
+            color: #161515;
+        }
+
+        .badge{
+            padding: 2px 7px !important;
+            font-size: 11px;
+        }
+    }
+
+    .al-date{
+        margin-top: 2px;
+        .date{
+            font-family: 'Nunito Sans';
+            color:#515365;
+        }
+        .time{
+            font-family: 'Nunito Sans';
+            color:#888EA8;
+        }
+
+        .badge{
+            padding: 1px 7px !important;
+            font-size: 10px;
+        }
+    }
+
+    .al-info{
+        line-height: 11px;
+        margin-bottom: 5px;
+        margin-top: 3px;
+        .name{
+            font-family: 'Nunito Sans';
+            font-size: 12px;
+            font-weight: 600;
+            color: #161515;
+        }
+
+        .comment{
+            color: #999999;
+            font-size: 11px;
+        }
+
+
+        svg{
+            margin-top: -1px;
+        }
+
+    }
+
 }
 
 /*-------text-colors------*/

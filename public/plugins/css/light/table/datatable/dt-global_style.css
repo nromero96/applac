@@ -188,7 +188,7 @@ table.dataTable {
 div.dataTables_wrapper div.dataTables_info {
   padding-top: 0.85em;
   white-space: normal;
-  color: #c00000;
+  color: #b80000;
   font-weight: 600;
   border: 1px solid #e0e6ed;
   display: inline-block;
@@ -325,7 +325,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
   width: 17px;
 }
 .page-item.active .page-link {
-  background-color: #c00000;
+  background-color: #b80000;
 }
 
 #alter_pagination_next a, #alter_pagination_previous a {
@@ -345,7 +345,7 @@ div.dataTables_wrapper div.dataTables_paginate ul.pagination {
 }
 
 .table-hover:not(.table-dark) tbody tr:hover .table-cancel {
-  color: #e7515a;
+  color: #b80000;
 }
 
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {

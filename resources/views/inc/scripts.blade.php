@@ -31,6 +31,10 @@
 
             <script src="{{asset('assets/js/apps/quotations/commercial/list.js')}}"></script>
             @break
+        @case('quotations_show')
+            {{-- All quotes --}}
+            <script src="{{asset('assets/js/apps/quotations/commercial/show.js')}}"></script>
+            @break
         @case('suppliers')
             <script src="{{ asset('plugins/src/jquery-ui/jquery-ui.min.js') }}"></script>
             <script src="{{ asset('plugins/src/tagify/tagify.min.js') }}"></script>
