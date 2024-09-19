@@ -3517,6 +3517,31 @@ fieldset:disabled .btn {
   font-size: 1rem;
 }
 
+.drag-scroll {
+    cursor: grab;
+  }
+
+  .drag-scroll:active {
+    cursor: grabbing;
+  }
+
+  .sticky-column {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: rgba(250, 250, 250, 0.71);
+    -webkit-backdrop-filter: saturate(200%) blur(10px);
+    backdrop-filter: saturate(200%) blur(10px);
+  }
+
+  .has-shadow {
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1) !important;
+}
+
+  .table-responsive {
+    overflow-x: auto; /* Asegúrate de que el contenedor permita scroll horizontal */
+  }
+
 .avatar--group {
   display: inline-flex;
   margin-right: 15px;
@@ -3912,7 +3937,6 @@ fieldset:disabled .btn {
   --bs-table-accent-bg:transparent;
   color: #515365;
   background-color: #ebedf2;
-  cursor: pointer;
 
   &:first-child {
     border-top-left-radius: 10px;

@@ -54,5 +54,59 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+
+    const slider = document.querySelector('.drag-scroll');
+    let isDown = false;
+    let startX;
+    let scrollLeft;
+
+    slider.addEventListener('mousedown', (e) => {
+        // Verifica si el elemento clicado es un <select>, <a>, u otro interactivo
+        if (e.target.tagName === 'SELECT' || e.target.tagName === 'A' || e.target.tagName === 'BUTTON') {
+            return; // No hacer nada si es un elemento interactivo
+        }
+
+        isDown = true;
+        slider.classList.add('active');
+        startX = e.pageX - slider.offsetLeft;
+        scrollLeft = slider.scrollLeft;
+        e.preventDefault();  // Evita el comportamiento predeterminado
+    });
+
+    slider.addEventListener('mouseleave', () => {
+        isDown = false;
+        slider.classList.remove('active');
+    });
+
+    slider.addEventListener('mouseup', () => {
+        isDown = false;
+        slider.classList.remove('active');
+    });
+
+    slider.addEventListener('mousemove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();  // Evita el desplazamiento vertical
+
+        const x = e.pageX - slider.offsetLeft;
+        const walk = (x - startX) * 2; // Ajusta la velocidad si es necesario
+        slider.scrollLeft = scrollLeft - walk;
+    });
+
+    const tableContainer = document.querySelector('.drag-scroll');
+    const stickyColumn = document.querySelectorAll('.sticky-column');
+    tableContainer.addEventListener('scroll', () => {
+        if (tableContainer.scrollLeft > 0) {
+            stickyColumn.forEach(column => {
+                column.classList.add('has-shadow');
+            });
+        } else {
+            stickyColumn.forEach(column => {
+                column.classList.remove('has-shadow');
+            });
+        }
+    });
+
+
+
 });
 

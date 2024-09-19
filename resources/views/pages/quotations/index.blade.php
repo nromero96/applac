@@ -24,11 +24,11 @@
                     <div class="widget-header pb-2 pt-2">
                         <form action="{{ route('quotations.index') }}" method="GET" class="mb-0" >
                             <div class="row">
-                                <div class="col-4 col-md-2 align-self-center">
+                                <div class="col-3 col-md-2 align-self-center">
                                     <h4>{{__('Quotations')}}</h4>
                                 </div>
-                                <div class="col-3 col-md-1 align-self-center ps-0">
-                                    <select name="listforpage" class="form-select form-control-sm ms-0" id="listforpage" onchange="this.form.submit()">
+                                <div class="col-2 col-md-1 align-self-center ps-0">
+                                    <select name="listforpage" class="form-select rounded-pill form-control-sm ms-0" id="listforpage" onchange="this.form.submit()">
                                         <option value="20" {{ request('listforpage') == 20 ? 'selected' : '' }}>20</option>
                                         <option value="50" {{ request('listforpage') == 50 ? 'selected' : '' }}>50</option>
                                         <option value="100" {{ request('listforpage') == 100 ? 'selected' : '' }}>100</option>
@@ -36,28 +36,29 @@
                                         <option value="10" {{ request('listforpage') == 10 ? 'selected' : '' }}>10</option>
                                     </select>
                                 </div>
-                                <div class="col-5 col-md-6 d-flex align-self-center align-items-center justify-content-end">
+                                <div class="col-7 col-md-5 px-sm-0 d-flex align-self-center align-items-center justify-content-end">
 
                                     @if(\Auth::user()->hasRole('Customer'))
                                         <a href="{{ route('quotations.onlineregister') }}" class="btn btn-primary">New Quote</a>
                                     @endif
 
                                     @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Employee'))
-                                        <select class="form-control me-1 assigned-to" name="assignedto" onchange="this.form.submit()">
+                                        <select class="form-control rounded-pill me-1 assigned-to" name="assignedto" onchange="this.form.submit()">
                                             <option value="">{{ __('Assigned to all...') }}</option>
                                             @foreach ($users as $user)
                                                 <option value="{{ $user->id }}" class="@if(Auth::user()->id == $user->id) as-to @endif" @if($user->id == request('assignedto')) selected @endif>{{ $user->name }}@if(Auth::user()->id == $user->id) (Me) @endif</option>
                                             @endforeach
                                         </select>
-                                        <input type="date" name="daterequest" class="form-control float-end daterequest" value="{{ request('daterequest') }}" onchange="this.form.submit()">
+                                        <input type="date" name="daterequest" class="form-control rounded-pill float-end daterequest" value="{{ request('daterequest') }}" onchange="this.form.submit()">
                                     @endif
 
                                 </div>
-                                <div class="col-md-3 align-self-center text-end">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control mb-0 mb-sm-2 mb-md-0" name="search" placeholder="#ID, Email, Transport...." value="{{ request('search') }}">
+                                <div class="col-md-4 text-end align-self-center align-items-center d-flex">
+                                    <b class="me-1">Search</b>
+                                    <div class="input-group rounded-pill dv-search">
+                                        <input type="text" class="form-control rounded-pill border-0 mb-0 mb-sm-2 mb-md-0" name="search" placeholder="#ID, Email, Transport...." value="{{ request('search') }}">
                                         @if(request('search') != '')
-                                            <a href="{{ route('quotations.index') }}" class="btn btn-outline-light px-1" id="button-addon2" style="border-left: 0px;border-color: #bfc9d4;background: white;">
+                                            <a href="{{ route('quotations.index') }}" class="btn border-0 bg-white px-1" id="button-addon2">
                                                 <svg width="24" height="24" fill="none" stroke="#9e9e9e" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M12 2a10 10 0 1 0 0 20 10 10 0 1 0 0-20z"></path>
                                                     <path d="m15 9-6 6"></path>
@@ -65,11 +66,11 @@
                                                 </svg>
                                             </a>
                                         @endif
-                                        <button type="submit" class="btn btn-sm btn-primary px-2 py-0 py-sm-1" id="button-addon2">
-                                            <svg width="46" height="46" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <button type="submit" class="btn bg-white rounded-pill btn-sm px-2 py-0 py-sm-1" id="button-addon2">
+                                            <svg width="46" height="46" fill="none" stroke="#b80000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M11 3a8 8 0 1 0 0 16 8 8 0 1 0 0-16z"></path>
                                                 <path d="m21 21-4.35-4.35"></path>
-                                              </svg>
+                                            </svg>
                                         </button>
                                     </div>
                                 </div>
@@ -78,7 +79,7 @@
                     </div>
 
                     <div class="widget-content widget-content-area br-8 pb-2">
-                        <div class="table-responsive">
+                        <div class="table-responsive drag-scroll">
                             @php
                                 $adminoremployee = Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee');
                             @endphp
@@ -86,7 +87,7 @@
                             <table id="invoice-list" class="table table-hover" style="width:100%">
                                 <thead>
                                     <tr>
-                                        <th class="pe-1">{{ __('ID') }}</th>
+                                        <th class="ps-2 pe-2 sticky-column">{{ __('ID') }}</th>
                                         @if($adminoremployee)
                                         <th class="pe-1">{{ __('Source') }}</th>
                                         @endif
@@ -94,9 +95,10 @@
                                         @if($adminoremployee)
                                         <th class="p-1">{{ __('Rating') }}</th>
                                         @endif
-                                        <th>{{ __('Status') }}</th>
-                                        <th>{{ __('Route') }}</th>
+                                        <th class="px-2">{{ __('Status') }}</th>
+                                        <th class="px-2">{{ __('Last Update') }}</th>
                                         <th>{{ __('Transport') }}</th>
+                                        <th>{{ __('Route') }}</th>
                                         <th>{{ __('Service Type') }}</th>
                                         <th>{{ __('Company Name') }}</th>
                                         <th>{{ __('Email') }}</th>
@@ -125,7 +127,7 @@
                                         @foreach ($quotations as $quotation)
 
                                             <tr>
-                                                <td class="pe-1">
+                                                <td class="ps-2 pe-2 sticky-column">
                                                     @if ($quotation->quotation_assigned_user_id == Auth::user()->id || Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Customer'))
                                                         <a href="{{ route('quotations.show', $quotation->quotation_id) }}"><span class="inv-number text-decoration-underline">#{{ $quotation->quotation_id }}</span></a>
                                                     @else
@@ -168,13 +170,19 @@
                                                         {{-- Rating aleatorio --}}
                                                         <div class="qtrating">
                                                             @php
+                                                                if($quotation->rating_note) {
+                                                                    $starcolor = '#2196F3';
+                                                                } else {
+                                                                    $starcolor = '#edb10c';
+                                                                }
+
                                                                 $fullStars = floor($quotation->quotation_rating);
                                                                 $hasHalfStar = ($quotation->quotation_rating - $fullStars) >= 0.5;
                                                             @endphp
 
                                                             @for ($i = 0; $i < $fullStars; $i++)
                                                                 <span class="star">
-                                                                    <svg width="17" height="17" fill="#edb10c" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                    <svg width="17" height="17" fill="{{$starcolor}}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                                         <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
                                                                     </svg>
                                                                 </span>
@@ -205,19 +213,30 @@
                                                     </td>
                                                 @endif
 
+                                                <td class="px-2">
 
-                                                <td class="py-1">
+                                                    <span class="cret-bge ms-0 w-100 align-middle badge
+                                                            @if ($quotation->quotation_status == 'Pending')
+                                                                badge-light-pending
+                                                            @elseif ($quotation->quotation_status == 'Qualifying')
+                                                                badge-light-warning
+                                                            @elseif ($quotation->quotation_status == 'Processing')
+                                                                badge-light-info
+                                                            @elseif ($quotation->quotation_status == 'Attended')
+                                                                badge-light-info
+                                                            @elseif ($quotation->quotation_status == 'Quote Sent')
+                                                                badge-light-success
+                                                            @elseif ($quotation->quotation_status == 'Unqualified')
+                                                                badge-light-unqualified
+                                                            @endif
+                                                            inv-status">
+                                                            {{ $quotation->quotation_status }}
+                                                    </span>
+                                                </td>
 
-                                                    <div class="rounded-1 btn-sm py-0 px-0
-                                                        @if ($quotation->quotation_status == 'Processing')
-                                                            btn-light-warning
-                                                        @elseif ($quotation->quotation_status == 'Attended')
-                                                            btn-light-info
-                                                        @elseif ($quotation->quotation_status == 'Quote Sent')
-                                                            btn-light-success
-                                                        @endif ">
-                                                        <span class="btn-text-inner d-block text-center fw-bold">{{ $quotation->quotation_status }}</span>
-
+                                                <td class="py-0 px-2">
+                                                    <div class="rounded-1 btn-sm py-0 px-0">
+                                                        <span class="btn-text-inner text-center">{{ \Carbon\Carbon::parse($quotation->quotation_updated_at)->format('d-m-Y') }} </span> - <span class="btn-text-inner fw-light text-center">{{ \Carbon\Carbon::parse($quotation->quotation_updated_at)->format('H:i') }}</span>
                                                         @php
                                                             $date1 = new DateTime($quotation->quotation_created_at);
 
@@ -230,7 +249,7 @@
                                                         @endphp
 
                                                         @if($diff)
-                                                            <span class="badge badge-light-danger d-block infattended">
+                                                            <span class="badge badge-light-info rounded-pill d-block infattended">
                                                                 {{ __('in') }}
                                                                 @if($diff->d > 0)
                                                                     {{ $diff->d }} {{ __('days') }}
@@ -244,17 +263,19 @@
                                                             </span>
                                                         @endif
 
-                                                        </div>
-
+                                                    </div>
                                                 </td>
+
+                                                <td>
+                                                    {{ $quotation->quotation_mode_of_transport }}
+                                                </td>
+
                                                 <td>
                                                     <span class="inv-country">
                                                         {{ $quotation->origin_country }} - {{ $quotation->destination_country }}
                                                     </span>
                                                 </td>
-                                                <td>
-                                                    {{ $quotation->quotation_mode_of_transport }}
-                                                </td>
+
                                                 <td>
                                                     {{ $quotation->quotation_service_type }}
                                                 </td>

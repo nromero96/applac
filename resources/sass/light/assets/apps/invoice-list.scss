@@ -8,6 +8,10 @@ div.dataTables_wrapper button:hover {
   transform: none;
 }
 
+.form-control , .dv-search{
+  border: 1px solid #D8D8D8;
+}
+
 .inv-list-top-section {
   margin: 20px 21px 20px 21px;
 }
@@ -56,7 +60,8 @@ table tr td{
 }
 
 .table-hover > tbody > tr:hover td {
-    background-color: #fff5f5 !important;
+    background-color: #f4f6ff !important;
+    color: #515365;
 }
 
 .table > {
