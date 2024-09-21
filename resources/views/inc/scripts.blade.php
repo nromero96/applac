@@ -29,16 +29,16 @@
             {{-- swal --}}
             <script src="{{asset('plugins/src/sweetalerts2/sweetalerts2.min.js')}}"></script>
 
-            <script src="{{asset('assets/js/apps/quotations/commercial/list.js')}}"></script>
+            <script src="{{asset('assets/js/apps/quotations/commercial/list.js')}}?v={{ config('app.version') }}"></script>
             @break
         @case('quotations_show')
             {{-- All quotes --}}
-            <script src="{{asset('assets/js/apps/quotations/commercial/show.js')}}"></script>
+            <script src="{{asset('assets/js/apps/quotations/commercial/show.js')}}?v={{ config('app.version') }}"></script>
             @break
         @case('suppliers')
             <script src="{{ asset('plugins/src/jquery-ui/jquery-ui.min.js') }}"></script>
             <script src="{{ asset('plugins/src/tagify/tagify.min.js') }}"></script>
-            <script src="{{ asset('assets/js/apps/supplier.js') }}"></script>
+            <script src="{{ asset('assets/js/apps/supplier.js') }}?v={{ config('app.version') }}"></script>
             @break
 
         @case('suppliercreate')
@@ -75,7 +75,7 @@
 
         @case('customers')
             <script src="{{ asset('plugins/src/jquery-ui/jquery-ui.min.js') }}"></script>
-            <script src="{{ asset('assets/js/apps/contact.js') }}"></script>
+            <script src="{{ asset('assets/js/apps/contact.js') }}?v={{ config('app.version') }}"></script>
             @break
 
         @case('calendar')
@@ -88,7 +88,7 @@
 
         @case('notes')
             {{-- All notes --}}
-            <script src="{{asset('assets/js/apps/notes.js')}}"></script>
+            <script src="{{asset('assets/js/apps/notes.js')}}?v={{ config('app.version') }}"></script>
             @break
 
         @default

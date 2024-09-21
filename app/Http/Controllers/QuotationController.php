@@ -74,12 +74,11 @@ class QuotationController extends Controller
         ->leftJoin('quotation_notes', function($join) {
             $join->on('quotations.id', '=', 'quotation_notes.quotation_id')
                 ->where('quotation_notes.id', '=', DB::raw("(select max(id) from quotation_notes WHERE quotation_id = quotations.id)"));
-        });
-
+        })
         //obtener si hay type rating en quotation_notes para mostrar estilo de la rating
-        $quotations->leftJoin('quotation_notes as qn_rating', function($join) {
+        ->leftJoin('quotation_notes as qn_rating', function($join) {
             $join->on('quotations.id', '=', 'qn_rating.quotation_id')
-                ->where('qn_rating.type', '=', 'rating');
+                 ->where('qn_rating.type', '=', 'rating');
         });
 
 
