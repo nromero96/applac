@@ -87,6 +87,7 @@
                             <table id="invoice-list" class="table table-hover" style="width:100%">
                                 <thead>
                                     <tr>
+                                        <th class="ps-2 pe-2 text-center">Flag</th>
                                         <th class="ps-2 pe-2 sticky-column">{{ __('ID') }}</th>
                                         @if($adminoremployee)
                                         <th class="pe-1">{{ __('Source') }}</th>
@@ -127,6 +128,14 @@
                                         @foreach ($quotations as $quotation)
 
                                             <tr>
+                                                <td class="py-1 ps-2 pe-2 align-middle text-center">
+                                                    <label class="featured mb-0">
+                                                        <input type="checkbox" id="checkbox{{ $quotation->quotation_id }}">
+                                                        <svg id="icon{{ $quotation->quotation_id }}" class="svg-icon" width="46" height="46" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                                        </svg>
+                                                    </label>
+                                                </td>
                                                 <td class="ps-2 pe-2 sticky-column">
                                                     @if ($quotation->quotation_assigned_user_id == Auth::user()->id || Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Customer'))
                                                         <a href="{{ route('quotations.show', $quotation->quotation_id) }}"><span class="inv-number text-decoration-underline">#{{ $quotation->quotation_id }}</span></a>

@@ -16,6 +16,28 @@ div.dataTables_wrapper button:hover {
   margin: 20px 21px 20px 21px;
 }
 
+.featured{
+    svg {
+        width: 20px !important;
+        height: 20px !important;
+        transition: color 0.3s ease;
+        color: #D8D8D8 !important;
+        cursor: pointer;
+
+        &:hover{
+            color:#b80000 !important;
+        }
+
+    }
+    .checked {
+        color: #b80000 !important; /* Color cuando está marcado */
+        fill: #b80000 !important;
+    }
+    input[type="checkbox"] {
+        display: none; /* Ocultar el checkbox */
+    }
+}
+
 div.dataTables_wrapper div.dataTables_length {
   align-self: center;
 

@@ -107,6 +107,14 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', (event) => {
+            const svgIcon = document.getElementById('icon' + event.target.id.replace('checkbox', ''));
+            svgIcon.classList.toggle('checked', event.target.checked);
+        });
+    });
+
+
 
 });
 

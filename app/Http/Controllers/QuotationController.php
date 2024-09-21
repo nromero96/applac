@@ -63,7 +63,7 @@ class QuotationController extends Controller
             'quotations.created_at as quotation_created_at',
             'quotations.updated_at as quotation_updated_at',
             'quotation_notes.created_at as quotation_note_created_at',
-            'qn_rating.note as rating_note',
+            //'qn_rating.note as rating_note',
         )
         ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
         ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
@@ -74,12 +74,12 @@ class QuotationController extends Controller
         ->leftJoin('quotation_notes', function($join) {
             $join->on('quotations.id', '=', 'quotation_notes.quotation_id')
                 ->where('quotation_notes.id', '=', DB::raw("(select max(id) from quotation_notes WHERE quotation_id = quotations.id)"));
-        })
-        //obtener si hay type rating en quotation_notes para mostrar estilo de la rating
-        ->leftJoin('quotation_notes as qn_rating', function($join) {
-            $join->on('quotations.id', '=', 'qn_rating.quotation_id')
-                 ->where('qn_rating.type', '=', 'rating');
         });
+        //obtener si hay type rating en quotation_notes para mostrar estilo de la rating
+        // ->leftJoin('quotation_notes as qn_rating', function($join) {
+        //     $join->on('quotations.id', '=', 'qn_rating.quotation_id')
+        //          ->where('qn_rating.type', '=', 'rating');
+        // });
 
 
         if(auth()->user()->hasRole('Customer')) {
