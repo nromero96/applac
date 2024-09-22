@@ -111,9 +111,29 @@ document.addEventListener('DOMContentLoaded', function () {
         checkbox.addEventListener('change', (event) => {
             const svgIcon = document.getElementById('icon' + event.target.id.replace('checkbox', ''));
             svgIcon.classList.toggle('checked', event.target.checked);
+
+            // Enviar solicitud AJAX para guardar el estado
+            const quotationId = event.target.value; // Obtiene el ID de la cotización
+            const featured = event.target.checked ? 1 : 0; // 1 si está marcado, 0 si no
+
+            fetch(`/quotations/${quotationId}/featured`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                },
+                body: JSON.stringify({ featured }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Aquí puedes manejar la respuesta, por ejemplo, mostrar un mensaje
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         });
     });
-
 
 
 });

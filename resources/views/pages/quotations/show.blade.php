@@ -3,6 +3,9 @@
 
 @section('content')
 
+@php
+    $adminoremployee = Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee');
+@endphp
 
 <div class="layout-px-spacing">
 
@@ -44,7 +47,7 @@
                                         <input type="hidden" id="quotation_id" value="{{ $quotation->id }}">
                                     </div>
                                     <div class="flex-grow-1">
-                                        @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
+                                        @if($adminoremployee)
 
                                             @php
                                                 if($is_ratinginnote){
@@ -617,7 +620,7 @@
 
 
                 <div class="row mt-2">
-                    @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee'))
+                    @if($adminoremployee)
                     <div class="col-md-4">
                         <div class="statbox widget box box-shadow mt-2">
                             <div class="widget-header px-2 pt-2 pb-0">
@@ -643,7 +646,13 @@
                                                     badge-light-unqualified
                                                 @endif
                                                 inv-status">
-                                                {{ $quotation->status }}
+                                                @if($adminoremployee || in_array($quotation->status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
+                                                    {{ $quotation->status }}
+                                                @elseif ($quotation->status == 'Qualifying')
+                                                    Attending
+                                                @elseif ($quotation->status == 'Unqualified')
+                                                    Unable to fulfill
+                                                @endif
                                         </span>
                                     </div>
                                 </div>
@@ -753,13 +762,59 @@
                             </div>
 
                             @if(Auth::user()->hasRole('Customer'))
-                            <div class="widget-content widget-content-area px-2 pb-3 pt-1">
+                                <div class="widget-content widget-content-area px-2 pb-3 pt-1">
+                                    <div class="">
+                                        <span class="cret-txt align-middle">{{__('Inquiry Status Current: ')}}</span>
+                                        <span class="cret-bge align-middle badge
+                                                @if ($quotation->status == 'Pending')
+                                                    badge-light-pending
+                                                @elseif ($quotation->status == 'Qualifying')
+                                                    badge-light-warning
+                                                @elseif ($quotation->status == 'Processing')
+                                                    badge-light-info
+                                                @elseif ($quotation->status == 'Attended')
+                                                    badge-light-info
+                                                @elseif ($quotation->status == 'Quote Sent')
+                                                    badge-light-success
+                                                @elseif ($quotation->status == 'Unqualified')
+                                                    badge-light-unqualified
+                                                @endif
+                                                inv-status">
+                                                @if($adminoremployee || in_array($quotation->status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
+                                                    {{ $quotation->status }}
+                                                @elseif ($quotation->status == 'Qualifying')
+                                                    Attending
+                                                @elseif ($quotation->status == 'Unqualified')
+                                                    Unable to fulfill
+                                                @endif
+                                        </span>
+                                    </div>
 
-                            </div>
+                                    <div class="">
+                                        <span class="cret-txt align-middle">{{__('Result Status Current: ')}}</span>
+                                        <span class="cret-bge align-middle badge
+                                                @if ($quotation->result == 'Under Review')
+                                                    badge-light-warning
+                                                @elseif ($quotation->result == 'Lost')
+                                                            badge-light-danger
+                                                @elseif ($quotation->result == 'Won')
+                                                            badge-light-success
+                                                @endif
+                                                inv-status">
+                                                @if($adminoremployee || in_array($quotation->status, ['Under Review']))
+                                                    {{ $quotation->status }}
+                                                @elseif ($quotation->status == 'Lost')
+                                                    Approved
+                                                @elseif ($quotation->status == 'Won')
+                                                    Declined
+                                                @endif
+                                        </span>
+                                    </div>
+                                </div>
                             @else
-                            <div class="widget-content widget-content-area px-2 pb-3 pt-1" id="quotation-notes">
+                                <div class="widget-content widget-content-area px-2 pb-3 pt-1" id="quotation-notes">
 
-                            </div>
+                                </div>
                             @endif
                         </div>
                     </div>

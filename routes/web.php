@@ -113,6 +113,7 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
     Route::put('quotations/{id}/update-status', [QuotationController::class, 'updateStatus'])->name('quotationupdatestatus');
     Route::put('quotations/{id}/update-result', [QuotationController::class, 'updateResult'])->name('quotationupdateresult');
     Route::put('quotations/{id}/update-rating', [QuotationController::class, 'updateRating'])->name('quotationupdaterating');
+    Route::patch('quotations/{id}/featured', [QuotationController::class, 'updateFeatured'])->name('quotationupdatefeatured');
     Route::get('list-quotation-notes/{id}', [QuotationController::class, 'listQuotationNotes'])->name('listQuotationNotes');
     Route::get('searchuserstoassign', [QuotationController::class, 'searchUserstoAssign'])->name('searchUserstoAssign');
     //assignUsertoQuote

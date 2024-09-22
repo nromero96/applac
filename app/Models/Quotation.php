@@ -9,7 +9,10 @@ class Quotation extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
+        'featured',
         'customer_user_id',
         'guest_user_id',
         'mode_of_transport',
@@ -37,8 +40,11 @@ class Quotation extends Model
         'insurance_required',
         'currency',
         'rating',
+        'rating_modified',
         'status',
         'result',
         'assigned_user_id',
+        'created_at',
+        'updated_at',
     ];
 }

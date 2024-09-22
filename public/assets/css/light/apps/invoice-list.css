@@ -306,6 +306,26 @@ table tr td {
   color: #6200EE;
 }
 
+.sb-color-hou {
+  color: #CC0000;
+}
+
 .sb-color-seo {
   color: #4CBB17;
+}
+
+.sb-color-soc {
+  color: #1877F2;
+}
+
+.sb-color-ref {
+  color: #FFCC00;
+}
+
+.sb-color-oth {
+  color: #595959;
+}
+
+.sb-color-agt {
+  color: #FF5F1F;
 }

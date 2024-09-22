@@ -44,7 +44,7 @@
 
                                     @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Employee'))
                                         <select class="form-control rounded-pill me-1 assigned-to" name="assignedto" onchange="this.form.submit()">
-                                            <option value="">{{ __('Assigned to all...') }}</option>
+                                            <option value="">{{ __('All Team') }}</option>
                                             @foreach ($users as $user)
                                                 <option value="{{ $user->id }}" class="@if(Auth::user()->id == $user->id) as-to @endif" @if($user->id == request('assignedto')) selected @endif>{{ $user->name }}@if(Auth::user()->id == $user->id) (Me) @endif</option>
                                             @endforeach
@@ -87,7 +87,9 @@
                             <table id="invoice-list" class="table table-hover" style="width:100%">
                                 <thead>
                                     <tr>
+                                        @if($adminoremployee)
                                         <th class="ps-2 pe-2 text-center">Flag</th>
+                                        @endif
                                         <th class="ps-2 pe-2 sticky-column">{{ __('ID') }}</th>
                                         @if($adminoremployee)
                                         <th class="pe-1">{{ __('Source') }}</th>
@@ -98,10 +100,11 @@
                                         @endif
                                         <th class="px-2">{{ __('Status') }}</th>
                                         <th class="px-2">{{ __('Last Update') }}</th>
-                                        <th>{{ __('Transport') }}</th>
                                         <th>{{ __('Route') }}</th>
+                                        <th>{{ __('Transport') }}</th>
                                         <th>{{ __('Service Type') }}</th>
                                         <th>{{ __('Company Name') }}</th>
+                                        <th>{{ __('Location') }}</th>
                                         <th>{{ __('Email') }}</th>
                                         @if($adminoremployee)
                                         <th>{{ __('Assigned') }}</th>
@@ -127,15 +130,27 @@
 
                                         @foreach ($quotations as $quotation)
 
+                                            @php
+                                                if($quotation->quotation_featured == '1'){
+                                                    $feact_active = 'checked';
+                                                }else{
+                                                    $feact_active = '';
+                                                }
+
+
+                                            @endphp
+
                                             <tr>
+                                                @if($adminoremployee)
                                                 <td class="py-1 ps-2 pe-2 align-middle text-center">
                                                     <label class="featured mb-0">
-                                                        <input type="checkbox" id="checkbox{{ $quotation->quotation_id }}">
-                                                        <svg id="icon{{ $quotation->quotation_id }}" class="svg-icon" width="46" height="46" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                        <input type="checkbox" id="checkbox{{ $quotation->quotation_id }}" class="featured_check" value="{{ $quotation->quotation_id }}" {{$feact_active}}>
+                                                        <svg id="icon{{ $quotation->quotation_id }}" class="svg-icon {{$feact_active}}" width="46" height="46" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                             <path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                                                         </svg>
                                                     </label>
                                                 </td>
+                                                @endif
                                                 <td class="ps-2 pe-2 sticky-column">
                                                     @if ($quotation->quotation_assigned_user_id == Auth::user()->id || Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Customer'))
                                                         <a href="{{ route('quotations.show', $quotation->quotation_id) }}"><span class="inv-number text-decoration-underline">#{{ $quotation->quotation_id }}</span></a>
@@ -151,12 +166,27 @@
                                                             if($quotation->user_source == 'ppc') {
                                                                 $class_sb = 'sb-color-ppc';
                                                                 $text_sb = $quotation->user_source;
-                                                            } else {
+                                                            } elseif($quotation->user_source == 'I am an existing customer'){
+                                                                $class_sb = 'sb-color-hou';
+                                                                $text_sb = 'hou';
+                                                            } elseif($quotation->user_source == 'Google Search') {
                                                                 $class_sb = 'sb-color-seo';
                                                                 $text_sb = 'seo';
+                                                            } elseif($quotation->user_source == 'Linkedin' || $quotation->user_source == 'Social Media'){
+                                                                $class_sb = 'sb-color-soc';
+                                                                $text_sb = 'soc';
+                                                            } elseif($quotation->user_source == 'Referral'){
+                                                                $class_sb = 'sb-color-ref';
+                                                                $text_sb = 'ref';
+                                                            } elseif($quotation->user_source == 'Other'){
+                                                                $class_sb = 'sb-color-oth';
+                                                                $text_sb = 'oth';
+                                                            } elseif($quotation->user_source == 'agt'){
+                                                                $class_sb = 'sb-color-agt';
+                                                                $text_sb = 'agt';
                                                             }
                                                         @endphp
-                                                        <span class="source-badge {{$class_sb}}">{{ $text_sb }}</span>
+                                                        <span class="source-badge {{$class_sb}}" title="{{$quotation->user_source}}">{{ $text_sb }}</span>
                                                     @else
                                                         <span>-</span>
                                                     @endif
@@ -179,7 +209,7 @@
                                                         {{-- Rating aleatorio --}}
                                                         <div class="qtrating">
                                                             @php
-                                                                if($quotation->rating_note) {
+                                                                if($quotation->rating_modified) {
                                                                     $starcolor = '#2196F3';
                                                                 } else {
                                                                     $starcolor = '#edb10c';
@@ -239,13 +269,25 @@
                                                                 badge-light-unqualified
                                                             @endif
                                                             inv-status">
-                                                            {{ $quotation->quotation_status }}
+                                                            @if($adminoremployee || in_array($quotation->quotation_status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
+                                                                {{ $quotation->quotation_status }}
+                                                            @elseif ($quotation->quotation_status == 'Qualifying')
+                                                                Attending
+                                                            @elseif ($quotation->quotation_status == 'Unqualified')
+                                                                Unable to fulfill
+                                                            @endif
                                                     </span>
                                                 </td>
 
                                                 <td class="py-0 px-2">
                                                     <div class="rounded-1 btn-sm py-0 px-0">
+
+                                                        @if($quotation->quotation_updated_at)
                                                         <span class="btn-text-inner text-center">{{ \Carbon\Carbon::parse($quotation->quotation_updated_at)->format('d-m-Y') }} </span> - <span class="btn-text-inner fw-light text-center">{{ \Carbon\Carbon::parse($quotation->quotation_updated_at)->format('H:i') }}</span>
+                                                        @else
+                                                            NO UPDATE YET
+                                                        @endif
+
                                                         @php
                                                             $date1 = new DateTime($quotation->quotation_created_at);
 
@@ -276,13 +318,13 @@
                                                 </td>
 
                                                 <td>
-                                                    {{ $quotation->quotation_mode_of_transport }}
-                                                </td>
-
-                                                <td>
                                                     <span class="inv-country">
                                                         {{ $quotation->origin_country }} - {{ $quotation->destination_country }}
                                                     </span>
+                                                </td>
+
+                                                <td>
+                                                    {{ $quotation->quotation_mode_of_transport }}
                                                 </td>
 
                                                 <td>
@@ -294,7 +336,17 @@
                                                         <p class="align-self-center mb-0 user-name"> {{ $quotation->user_company_name ?? '-' }} </p>
                                                     </div>
                                                 </td>
-                                                <td><span class="inv-email"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg> {{ $quotation->user_email }}</span></td>
+
+                                                <td>
+                                                    {{$quotation->location_name}}
+                                                </td>
+
+                                                <td>
+                                                    <span class="inv-email">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                                        {{ $quotation->user_email }}
+                                                    </span>
+                                                </td>
 
 
 

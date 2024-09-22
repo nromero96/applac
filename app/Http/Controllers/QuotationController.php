@@ -50,6 +50,7 @@ class QuotationController extends Controller
         // lista de cotizaciones para el usuario logueado si es Customer
         $quotations = Quotation::select(
             'quotations.id as quotation_id',
+            'quotations.featured as quotation_featured',
             DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
             DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),
             DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
@@ -57,29 +58,26 @@ class QuotationController extends Controller
             'quotations.mode_of_transport as quotation_mode_of_transport',
             'quotations.service_type as quotation_service_type',
             'quotations.rating as quotation_rating',
+            'quotations.rating_modified as rating_modified',
             'oc.name as origin_country',
             'dc.name as destination_country',
+            'lc.name as location_name',
             'quotations.assigned_user_id as quotation_assigned_user_id',
             'quotations.created_at as quotation_created_at',
             'quotations.updated_at as quotation_updated_at',
             'quotation_notes.created_at as quotation_note_created_at',
-            //'qn_rating.note as rating_note',
         )
         ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
         ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
         ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
         ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
+        ->leftJoin('countries as lc', DB::raw('COALESCE(users.location, guest_users.location)'), '=', 'lc.id')
 
         // obtener created_at de la última nota de cotización
         ->leftJoin('quotation_notes', function($join) {
             $join->on('quotations.id', '=', 'quotation_notes.quotation_id')
                 ->where('quotation_notes.id', '=', DB::raw("(select max(id) from quotation_notes WHERE quotation_id = quotations.id)"));
         });
-        //obtener si hay type rating en quotation_notes para mostrar estilo de la rating
-        // ->leftJoin('quotation_notes as qn_rating', function($join) {
-        //     $join->on('quotations.id', '=', 'qn_rating.quotation_id')
-        //          ->where('qn_rating.type', '=', 'rating');
-        // });
 
 
         if(auth()->user()->hasRole('Customer')) {
@@ -122,7 +120,8 @@ class QuotationController extends Controller
             }
         });
 
-        $quotations = $quotations->orderBy('quotations.id', 'desc')
+        $quotations = $quotations->orderBy('quotations.featured', 'desc') // Ordenar primero por 'featured'
+                                ->orderBy('quotations.id', 'desc')    // Luego por 'id'
                                 ->paginate($listforpage);
 
         //$users = User::all();
@@ -356,6 +355,7 @@ class QuotationController extends Controller
             // Actualizar la calificación de la inscripción
             $quotation->update([
                 'rating' => $validatedData['new_rating'],
+                'rating_modified' => '1',
                 'updated_at' => now(),
             ]);
 
@@ -364,6 +364,19 @@ class QuotationController extends Controller
             // Manejo de errores
             return redirect()->back()->with('error', 'Error updating rating quotation #'.$id);
         }
+    }
+
+    public function updateFeatured(Request $request, $id)
+    {
+        $request->validate([
+            'featured' => 'required|boolean',
+        ]);
+
+        $quotation = Quotation::findOrFail($id);
+        $quotation->featured = $request->featured;
+        $quotation->save();
+
+        return response()->json(['success' => true, 'featured' => $quotation->featured]);
     }
 
 
@@ -468,6 +481,7 @@ class QuotationController extends Controller
                     'declared_value' => $request->input('declared_value'),
                     'insurance_required' => $request->input('insurance_required'),
                     'currency' => $request->input('currency'),
+                    'created_at' => now(),
                 ]);
 
                 $quotation_id = $quotation->id;
@@ -662,6 +676,7 @@ class QuotationController extends Controller
                     'declared_value' => $request->input('declared_value'),
                     'insurance_required' => $request->input('insurance_required'),
                     'currency' => $request->input('currency'),
+                    'created_at' => now(),
                 ]);
 
                 $quotation_id = $quotation->id;
