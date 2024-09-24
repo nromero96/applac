@@ -43,7 +43,20 @@
 
                                 <div class="d-flex pb-2">
                                     <div class="flex-grow-1">
-                                        <h4 class="pt-3 pb-2">{{__("Quotation")}}: <span class="text-primary">#{{ $quotation->id }}</span></h4>
+                                        <h4 class="pt-3 pb-2 d-inline-block">{{__("Quotation")}}: <span class="text-primary">#{{ $quotation->id }}</span></h4>
+
+                                        @if(Auth::user()->hasRole('Administrator'))
+                                        <b class="me-1">Assigned to</b>
+                                        <select class="form-select rounded-pill px-2 w-auto py-1 d-inline-block user-select-assigned @if($quotation->assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->id }}">
+                                            <option value="">{{ __('Unassigned') }}</option>
+                                            @foreach ($users as $user)
+                                                <option value="{{ $user->id }}" @if($user->id == $quotation->assigned_user_id) selected @endif>{{ $user->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        @else
+                                            <span class="badge bg-primary user-select-assigned d-none">Assigned to...</span>
+                                        @endif
+
                                         <input type="hidden" id="quotation_id" value="{{ $quotation->id }}">
                                     </div>
                                     <div class="flex-grow-1">
@@ -519,6 +532,9 @@
                                 <h6 class="text-primary mb-1">{{ __('Customers Information') }}</h6>
                             </div>
                             <div class="col-md-6 mt-0">
+                                <label class="fw-bold mb-0">{{__("Customer type")}}:</label> -<br>
+                            </div>
+                            <div class="col-md-6 mt-0">
                                 <label class="fw-bold mb-0">{{__("First Name")}}:</label> {{ $quotation->customer_name }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
@@ -543,7 +559,7 @@
                                 <label class="fw-bold mb-0">{{__("Source")}}:</label> {{ $quotation->customer_source }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
-                                <label class="fw-bold mb-0">{{__("Type User")}}:</label> {{ $quotation->customer_type }}<br>
+                                <label class="fw-bold mb-0">{{__("User type")}}:</label> {{ $quotation->customer_type }}<br>
                             </div>
                         </div>
 

@@ -279,8 +279,8 @@
                                                 <div class="row align-items-center justify-content-center radio-options">
                                                     <div class="col text-center">
                                                         <div class="radio-card py-4 px-2">
-                                                            <input type="radio" value="Air" id="option1" name="mode_of_transport" checked />
-                                                            <label for="option1" class="mb-0">
+                                                            <input type="radio" value="Air" id="option1" class="w-100" name="mode_of_transport" checked />
+                                                            <label for="option1" class="mb-0 w-100">
                                                                 <div class="radio-icon">
                                                                     <img src="{{ asset('assets/img/60a35f0d358aaa2332423e.png') }}" alt="Opción 1" />
                                                                 </div>
@@ -291,8 +291,8 @@
                                                     </div>
                                                     <div class="col text-center">
                                                         <div class="radio-card py-4 px-2">
-                                                            <input type="radio" value="Ground" id="option2" name="mode_of_transport" />
-                                                            <label for="option2" class="mb-0">
+                                                            <input type="radio" value="Ground" id="option2" class="w-100" name="mode_of_transport" />
+                                                            <label for="option2" class="mb-0 w-100">
                                                                 <div class="radio-icon">
                                                                     <img src="{{ asset('assets/img/52866310c621e0014627d90f78f04fce.png') }}" alt="Opción 2" />
                                                                 </div>
@@ -303,8 +303,8 @@
                                                     </div>
                                                     <div class="col text-center">
                                                         <div class="radio-card py-4 px-2">
-                                                            <input type="radio" value="Container" id="option3" name="mode_of_transport" />
-                                                            <label for="option3" class="mb-0">
+                                                            <input type="radio" value="Container" id="option3" class="w-100" name="mode_of_transport" />
+                                                            <label for="option3" class="mb-0 w-100">
                                                                 <div class="radio-icon">
                                                                     <img src="{{ asset('assets/img/067d8aadd24e98dbaedc18f9312c7f3a.png') }}" alt="Opción 3" />
                                                                 </div>
@@ -315,8 +315,8 @@
                                                     </div>
                                                     <div class="col text-center">
                                                         <div class="radio-card py-4 px-2">
-                                                            <input type="radio" value="RoRo" id="option4" name="mode_of_transport" />
-                                                            <label for="option4" class="mb-0">
+                                                            <input type="radio" value="RoRo" id="option4"  class="w-100" name="mode_of_transport" />
+                                                            <label for="option4" class="mb-0 w-100">
                                                                 <div class="radio-icon">
                                                                     <img src="{{ asset('assets/img/lac_roro_icon.png') }}" alt="Opción 4" />
                                                                 </div>
@@ -328,7 +328,7 @@
                                                     <div class="col text-center">
                                                         <div class="radio-card py-4 px-2">
                                                             <input type="radio" value="Breakbulk" id="option5" name="mode_of_transport" />
-                                                            <label for="option5" class="mb-0">
+                                                            <label for="option5" class="mb-0 w-100">
                                                                 <div class="radio-icon">
                                                                     <img src="{{ asset('assets/img/lac_breakbulk_icon.png') }}" alt="Opción 5" />
                                                                 </div>

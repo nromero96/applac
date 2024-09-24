@@ -124,16 +124,12 @@ class QuotationController extends Controller
                                 ->orderBy('quotations.id', 'desc')    // Luego por 'id'
                                 ->paginate($listforpage);
 
-        //$users = User::all();
-
+        //get users selected in dropdown
         $users_selected_dropdown_quotes = Setting::where('key', 'users_selected_dropdown_quotes')->first();
         $users_selected_dropdown_quotes = json_decode($users_selected_dropdown_quotes);
-        //get column value
         $users_selected_dropdown_quotes_value = $users_selected_dropdown_quotes->value;
         $users_selected_dropdown_quotes_value = preg_replace('/["\[\]]/', '', $users_selected_dropdown_quotes->value);
         $dropdownUserIds = explode(",", $users_selected_dropdown_quotes_value);
-
-        //obtener los usuarios seleccionados en el dropdown
         $users = User::whereIn('id', $dropdownUserIds)->get();
 
 
@@ -221,9 +217,17 @@ class QuotationController extends Controller
 
         $quotation_documents = QuotationDocument::where('quotation_id', $id)->get();
 
+        //get users selected in dropdown
+        $users_selected_dropdown_quotes = Setting::where('key', 'users_selected_dropdown_quotes')->first();
+        $users_selected_dropdown_quotes = json_decode($users_selected_dropdown_quotes);
+        $users_selected_dropdown_quotes_value = $users_selected_dropdown_quotes->value;
+        $users_selected_dropdown_quotes_value = preg_replace('/["\[\]]/', '', $users_selected_dropdown_quotes->value);
+        $dropdownUserIds = explode(",", $users_selected_dropdown_quotes_value);
+        $users = User::whereIn('id', $dropdownUserIds)->get();
+
         //verificate if quotation is assigned to user logged or is Administator
         if($quotation->assigned_user_id == auth()->id() || auth()->user()->hasRole('Administrator') || ($quotation->customer_user_id == auth()->id()  && auth()->user()->hasRole('Customer')) ){
-            return view('pages.quotations.show')->with($data)->with('quotation', $quotation)->with('is_ratinginnote', $is_ratinginnote)->with('cargo_details', $cargo_details)->with('quotation_documents', $quotation_documents);
+            return view('pages.quotations.show')->with($data)->with('quotation', $quotation)->with('is_ratinginnote', $is_ratinginnote)->with('cargo_details', $cargo_details)->with('quotation_documents', $quotation_documents)->with('users', $users);
         }else{
             return redirect()->route('quotations.index')->with('error', 'You do not have permission to view this quote.');
         }

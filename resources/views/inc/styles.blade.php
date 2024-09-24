@@ -99,6 +99,10 @@
                     white-space: normal;
                 }
             </style>
+
+            {{-- swal --}}
+            <link rel="stylesheet" type="text/css" href="{{asset('plugins/src/sweetalerts2/sweetalerts2.css')}}">
+
             @break
 
         @case('suppliers')

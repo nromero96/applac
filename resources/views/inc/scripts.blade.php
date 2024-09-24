@@ -33,6 +33,9 @@
             @break
         @case('quotations_show')
             {{-- All quotes --}}
+            {{-- swal --}}
+            <script src="{{asset('plugins/src/sweetalerts2/sweetalerts2.min.js')}}"></script>
+
             <script src="{{asset('assets/js/apps/quotations/commercial/show.js')}}?v={{ config('app.version') }}"></script>
             @break
         @case('suppliers')

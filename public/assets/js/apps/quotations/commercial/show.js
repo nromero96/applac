@@ -56,8 +56,6 @@ function listQuotationNotes(quotationId) {
     fetch(`/list-quotation-notes/${quotationId}`)  // Cambia la URL según la ruta de tu API
         .then(response => response.json())  // Convertimos la respuesta a JSON
         .then(data => {
-            console.log(data);  // Aquí puedes ver los datos que llegaron desde el servidor
-
             // Iterar sobre las notas de cotización y mostrarlas en el DOM
             let notesContainer = document.getElementById('quotation-notes');  // Suponiendo que tengas un contenedor en el DOM
             notesContainer.innerHTML = '';  // Limpiar contenido previo
@@ -213,3 +211,56 @@ function getBadge(status) {
     // Retornar el badge correspondiente o uno por defecto si no se encuentra el estado
     return `<span class="badge ${badgeClasses[status] || 'badge-light-default'}">${status}</span>`;
 }
+
+//onchange event for slect user-select-assigned
+document.addEventListener('change', function(event) {
+    if (event.target.classList.contains('user-select-assigned')) {
+        var user_id = event.target.value;
+        var quotation_id = event.target.getAttribute('data-quotation-id');
+        var url = baseurl + '/quotations/' + quotation_id + '/assignuser';
+
+        var data = {
+            user_id: user_id,
+            quotation_id: quotation_id
+        };
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok ' + response.statusText);
+            }
+            return response.text(); // Si esperas JSON, usa response.json() aquí
+        })
+        .then(data => {
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'bottom-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Assigned successfully'
+            })
+
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error); // Muestra un mensaje de error
+            // Aquí podrías mostrar un mensaje de error en la interfaz de usuario si es necesario
+        });
+    }
+});
