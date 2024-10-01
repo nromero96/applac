@@ -89,7 +89,7 @@
                                                             }
                                                         @endphp
                                                         <span class="source-badge {{$class_sb_sch}}" title="{{$source->user_source}}">{{ $text_sb_sch }}</span>
-                                                        <span class="float-end fw-light">({{ $source->total }})</span>
+                                                        <span class="float-end fw-light">({{ $source->total >= 1000 ? number_format($source->total / 1000, 1) . 'K' : $source->total }})</span>
                                                         </a>
                                                     </li>
                                                 @endforeach
@@ -104,39 +104,40 @@
                                             </button>
                                             <ul class="dropdown-menu mt-4 pt-2 ps-3 pb-0" aria-labelledby="ratingDropdown">
                                                 @foreach ($listratings as $rating)
-
                                                     @php
                                                         $fullStars = floor($rating->rating); // Redondeo hacia abajo para obtener estrellas completas
                                                     @endphp
 
-                                                    <li>
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" name="rating[]" value="{{ $rating->rating }}" id="rating{{ $rating->rating}} " {{ in_array($rating->rating, request('rating', [])) ? 'checked' : '' }} onchange="this.form.submit()">
-                                                            <label class="form-check-label qtrating" for="rating{{ $rating->rating }}">
-                                                                {{-- Generar estrellas llenas y vacías --}}
-                                                                @for ($i = 0; $i < 5; $i++)
-                                                                    @if ($i < $fullStars)
-                                                                        {{-- Estrella completa --}}
-                                                                        <span class="star">
-                                                                            <svg width="17" height="17" fill="#edb10c" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                                <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
-                                                                            </svg>
-                                                                        </span>
-                                                                    @else
-                                                                        {{-- Estrella vacía --}}
-                                                                        <span class="star">
-                                                                            <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                                <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
-                                                                            </svg>
-                                                                        </span>
-                                                                    @endif
-                                                                @endfor
+                                                    @if($fullStars >= 1 && $fullStars <= 5)
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="rating[]" value="{{ $rating->rating }}" id="rating{{ $rating->rating}} " {{ in_array($rating->rating, request('rating', [])) ? 'checked' : '' }} onchange="this.form.submit()">
+                                                                <label class="form-check-label qtrating" for="rating{{ $rating->rating }}">
+                                                                    {{-- Generar estrellas llenas y vacías --}}
+                                                                    @for ($i = 0; $i < 5; $i++)
+                                                                        @if ($i < $fullStars)
+                                                                            {{-- Estrella completa --}}
+                                                                            <span class="star">
+                                                                                <svg width="17" height="17" fill="#edb10c" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                                    <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                                </svg>
+                                                                            </span>
+                                                                        @else
+                                                                            {{-- Estrella vacía --}}
+                                                                            <span class="star">
+                                                                                <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                                    <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                                </svg>
+                                                                            </span>
+                                                                        @endif
+                                                                    @endfor
 
-                                                                {{-- Mostrar total de cotizaciones --}}
-                                                                 <span class="ms-1 fw-light">({{ $rating->total }})</span>
-                                                            </label>
-                                                        </div>
-                                                    </li>
+                                                                    {{-- Mostrar total de cotizaciones --}}
+                                                                    <span class="ms-1 fw-light">({{ $rating->total >= 1000 ? number_format($rating->total / 1000, 1) . 'K' : $rating->total }})</span>
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                    @endif
                                                 @endforeach
                                             </ul>
                                         </div>
