@@ -63,29 +63,32 @@
                                                             @php
                                                             //color
                                                             if($source->user_source == 'ppc') {
-                                                                $class_sb = 'sb-color-ppc';
-                                                                $text_sb = $source->user_source;
+                                                                $class_sb_sch = 'sb-color-ppc';
+                                                                $text_sb_sch = $source->user_source;
                                                             } elseif($source->user_source == 'I am an existing customer'){
-                                                                $class_sb = 'sb-color-hou';
-                                                                $text_sb = 'hou';
+                                                                $class_sb_sch = 'sb-color-hou';
+                                                                $text_sb_sch = 'hou';
                                                             } elseif($source->user_source == 'Google Search') {
-                                                                $class_sb = 'sb-color-seo';
-                                                                $text_sb = 'seo';
+                                                                $class_sb_sch = 'sb-color-seo';
+                                                                $text_sb_sch = 'seo';
                                                             } elseif($source->user_source == 'Linkedin' || $source->user_source == 'Social Media'){
-                                                                $class_sb = 'sb-color-soc';
-                                                                $text_sb = 'soc';
+                                                                $class_sb_sch = 'sb-color-soc';
+                                                                $text_sb_sch = 'soc';
                                                             } elseif($source->user_source == 'Referral'){
-                                                                $class_sb = 'sb-color-ref';
-                                                                $text_sb = 'ref';
+                                                                $class_sb_sch = 'sb-color-ref';
+                                                                $text_sb_sch = 'ref';
                                                             } elseif($source->user_source == 'Other'){
-                                                                $class_sb = 'sb-color-oth';
-                                                                $text_sb = 'oth';
+                                                                $class_sb_sch = 'sb-color-oth';
+                                                                $text_sb_sch = 'oth';
                                                             } elseif($source->user_source == 'agt'){
-                                                                $class_sb = 'sb-color-agt';
-                                                                $text_sb = 'agt';
+                                                                $class_sb_sch = 'sb-color-agt';
+                                                                $text_sb_sch = 'agt';
+                                                            } else {
+                                                                $class_sb_sch = 'sb-color-oth';
+                                                                $text_sb_sch = 'N/A';
                                                             }
                                                         @endphp
-                                                        <span class="source-badge {{$class_sb}}" title="{{$source->user_source}}">{{ $text_sb }}</span>
+                                                        <span class="source-badge {{$class_sb_sch}}" title="{{$source->user_source}}">{{ $text_sb_sch }}</span>
                                                         <span class="float-end fw-light">({{ $source->total }})</span>
                                                         </a>
                                                     </li>
@@ -279,6 +282,9 @@
                                                             } elseif($quotation->user_source == 'agt'){
                                                                 $class_sb = 'sb-color-agt';
                                                                 $text_sb = 'agt';
+                                                            } else {
+                                                                $class_sb = 'sb-color-oth';
+                                                                $text_sb = 'N/A';
                                                             }
                                                         @endphp
                                                         <span class="source-badge {{$class_sb}}" title="{{$quotation->user_source}}">{{ $text_sb }}</span>
