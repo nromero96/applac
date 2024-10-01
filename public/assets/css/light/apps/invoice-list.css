@@ -293,6 +293,24 @@ table tr td {
   font-weight: 600;
 }
 
+.form-search .dropdown-toggle {
+  padding: 4px 10px;
+  width: 88px;
+  text-align: start;
+}
+.form-search #listforpage {
+  padding: 4px 10px;
+  max-width: 64px;
+}
+.form-search .assigned-to {
+  padding: 4px 10px;
+  max-width: 91px;
+}
+.form-search .daterequest {
+  padding: 4px 10px;
+  max-width: 150px;
+}
+
 .source-badge {
   text-transform: uppercase;
   border-radius: 30px;

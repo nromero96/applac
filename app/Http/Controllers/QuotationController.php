@@ -43,7 +43,9 @@ class QuotationController extends Controller
         ];
 
         $listforpage = request()->query('listforpage') ?? 20;
+        $source = request()->query('source');
         $assignedto = request()->query('assignedto');
+        $rating = request()->query('rating');
         $daterequest = request()->query('daterequest');
         $search = request()->query('search');
 
@@ -85,7 +87,25 @@ class QuotationController extends Controller
         }
 
         // Aplicar filtros de búsqueda y fecha si hay términos de búsqueda y/o fecha solicitada
-        $quotations->where(function($query) use ($search, $assignedto, $daterequest) {
+        $quotations->where(function($query) use ($search, $source, $rating, $assignedto, $daterequest) {
+
+            // Aplicar source si está presente
+            if (!empty($source)) {
+                $query->where(function($query) use ($source) {
+                    $query->where('users.source', $source)
+                        ->orWhere('guest_users.source', $source);
+                });
+            }
+
+            // Aplicar rating si está presente http://127.0.0.1:8000/quotations?assignedto=&daterequest=&listforpage=20&rating%5B0%5D=4&search=
+            if (!empty($rating)) {
+                //la data puede venir en un array
+                if(is_array($rating)){
+                    $query->whereIn('quotations.rating', $rating);
+                } else {
+                    $query->where('quotations.rating', $rating);
+                }
+            }
 
             // Aplicar assigned-to si está presente
             if (!empty($assignedto) && !auth()->user()->hasRole('Customer')) {
@@ -132,9 +152,28 @@ class QuotationController extends Controller
         $dropdownUserIds = explode(",", $users_selected_dropdown_quotes_value);
         $users = User::whereIn('id', $dropdownUserIds)->get();
 
+        //Contar los sources de cotizaciones
+        $listsources = Quotation::select(
+            DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
+            DB::raw('COUNT(quotations.id) as total')
+        )
+        ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
+        ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
+        ->groupBy('user_source')
+        ->get();
+
+        //Contar los ratings de cotizaciones
+        $listratings = Quotation::select(
+            DB::raw('FLOOR(quotations.rating) as rating'),  // Redondear hacia abajo
+            DB::raw('COUNT(quotations.id) as total')
+        )
+        ->groupBy(DB::raw('FLOOR(quotations.rating)'))
+        ->orderBy('rating', 'desc')
+        ->get();
 
 
-        return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users);
+
+        return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users)->with('listsources', $listsources)->with('listratings', $listratings);
     }
 
     public function onlineregister(Request $request){

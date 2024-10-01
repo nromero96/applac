@@ -134,7 +134,15 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     });
-
-
 });
+
+function selectSource(source) {
+    var input = document.getElementById('inputsearchsource');
+    input.value = source;
+
+    const form = document.getElementById('form-search');
+
+    // Enviar el formulario
+    form.submit();
+}
 

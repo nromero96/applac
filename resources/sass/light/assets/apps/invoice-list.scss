@@ -336,6 +336,31 @@ table tr td{
     }
 }
 
+.form-search{
+
+    .dropdown-toggle{
+        padding: 4px 10px;
+        width: 88px;
+        text-align: start;
+    }
+
+    #listforpage{
+        padding: 4px 10px;
+        max-width: 64px;
+    }
+
+    .assigned-to{
+        padding: 4px 10px;
+        max-width: 91px;
+    }
+
+    .daterequest{
+        padding: 4px 10px;
+        max-width: 150px;
+    }
+
+}
+
 .source-badge{
     text-transform: uppercase;
     border-radius: 30px;

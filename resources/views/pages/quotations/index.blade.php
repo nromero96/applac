@@ -22,28 +22,123 @@
                 @endif
                 <div class="statbox widget box box-shadow">
                     <div class="widget-header pb-2 pt-2">
-                        <form action="{{ route('quotations.index') }}" method="GET" class="mb-0" >
+                        <form action="{{ route('quotations.index') }}" method="GET" class="mb-0 form-search" id="form-search">
                             <div class="row">
-                                <div class="col-3 col-md-2 align-self-center">
-                                    <h4>{{__('Quotations')}}</h4>
+                                <div class="col-2 col-md-2 align-self-center">
+                                    @if(\Auth::user()->hasRole('Customer'))
+                                        <a href="{{ route('quotations.onlineregister') }}" class="btn btn-primary">New Quote</a>
+                                    @else
+                                        <a href="{{ route('quotations.onlineregister') }}" class="btn btn-primary">New Inquiry</a>
+                                    @endif
                                 </div>
-                                <div class="col-2 col-md-1 align-self-center ps-0">
-                                    <select name="listforpage" class="form-select rounded-pill form-control-sm ms-0" id="listforpage" onchange="this.form.submit()">
+                                <div class="col-9 col-md-7 px-sm-0 d-flex align-self-center align-items-center justify-content-end">
+                                    <b class="me-1">Filters</b>
+                                    <select name="listforpage" class="form-select rounded-pill form-control-sm ms-0 me-1" id="listforpage" onchange="this.form.submit()">
                                         <option value="20" {{ request('listforpage') == 20 ? 'selected' : '' }}>20</option>
                                         <option value="50" {{ request('listforpage') == 50 ? 'selected' : '' }}>50</option>
                                         <option value="100" {{ request('listforpage') == 100 ? 'selected' : '' }}>100</option>
                                         <option value="200" {{ request('listforpage') == 200 ? 'selected' : '' }}>200</option>
                                         <option value="10" {{ request('listforpage') == 10 ? 'selected' : '' }}>10</option>
                                     </select>
-                                </div>
-                                <div class="col-7 col-md-5 px-sm-0 d-flex align-self-center align-items-center justify-content-end">
-
-                                    @if(\Auth::user()->hasRole('Customer'))
-                                        <a href="{{ route('quotations.onlineregister') }}" class="btn btn-primary">New Quote</a>
-                                    @endif
 
                                     @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Employee'))
-                                        <select class="form-control rounded-pill me-1 assigned-to" name="assignedto" onchange="this.form.submit()">
+
+
+
+                                        <!-- Dropdown source -->
+                                        <div class="dropdown">
+                                            <button class="dropdown-toggle rounded-pill form-select ms-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {{ request('source') ? request('source') : 'Source' }}
+                                            </button>
+                                            <input type="hidden" name="source" id="inputsearchsource" value="{{ request('source') }}">
+                                            <ul class="dropdown-menu mt-4" aria-labelledby="dropdownMenuButton">
+                                                <li>
+                                                    <a class="dropdown-item" href="#" onclick="selectSource('')">Source</a>
+                                                </li>
+                                                @foreach ($listsources as $source)
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" onclick="selectSource('{{ $source->user_source }}')">
+
+
+                                                            @php
+                                                            //color
+                                                            if($source->user_source == 'ppc') {
+                                                                $class_sb = 'sb-color-ppc';
+                                                                $text_sb = $source->user_source;
+                                                            } elseif($source->user_source == 'I am an existing customer'){
+                                                                $class_sb = 'sb-color-hou';
+                                                                $text_sb = 'hou';
+                                                            } elseif($source->user_source == 'Google Search') {
+                                                                $class_sb = 'sb-color-seo';
+                                                                $text_sb = 'seo';
+                                                            } elseif($source->user_source == 'Linkedin' || $source->user_source == 'Social Media'){
+                                                                $class_sb = 'sb-color-soc';
+                                                                $text_sb = 'soc';
+                                                            } elseif($source->user_source == 'Referral'){
+                                                                $class_sb = 'sb-color-ref';
+                                                                $text_sb = 'ref';
+                                                            } elseif($source->user_source == 'Other'){
+                                                                $class_sb = 'sb-color-oth';
+                                                                $text_sb = 'oth';
+                                                            } elseif($source->user_source == 'agt'){
+                                                                $class_sb = 'sb-color-agt';
+                                                                $text_sb = 'agt';
+                                                            }
+                                                        @endphp
+                                                        <span class="source-badge {{$class_sb}}" title="{{$source->user_source}}">{{ $text_sb }}</span>
+                                                        <span class="float-end fw-light">({{ $source->total }})</span>
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+
+
+                                        <!-- Dropdown para el rating con checkboxes -->
+                                        <div class="dropdown">
+                                            <button class="form-select rounded-pill ms-1 dropdown-toggle" type="button" id="ratingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {{ request('rating') ? implode(', ', request('rating')) : 'Rating' }}
+                                            </button>
+                                            <ul class="dropdown-menu mt-4 pt-2 ps-3 pb-0" aria-labelledby="ratingDropdown">
+                                                @foreach ($listratings as $rating)
+
+                                                    @php
+                                                        $fullStars = floor($rating->rating); // Redondeo hacia abajo para obtener estrellas completas
+                                                    @endphp
+
+                                                    <li>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="rating[]" value="{{ $rating->rating }}" id="rating{{ $rating->rating}} " {{ in_array($rating->rating, request('rating', [])) ? 'checked' : '' }} onchange="this.form.submit()">
+                                                            <label class="form-check-label qtrating" for="rating{{ $rating->rating }}">
+                                                                {{-- Generar estrellas llenas y vacías --}}
+                                                                @for ($i = 0; $i < 5; $i++)
+                                                                    @if ($i < $fullStars)
+                                                                        {{-- Estrella completa --}}
+                                                                        <span class="star">
+                                                                            <svg width="17" height="17" fill="#edb10c" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    @else
+                                                                        {{-- Estrella vacía --}}
+                                                                        <span class="star">
+                                                                            <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                                <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                            </svg>
+                                                                        </span>
+                                                                    @endif
+                                                                @endfor
+
+                                                                {{-- Mostrar total de cotizaciones --}}
+                                                                 <span class="ms-1 fw-light">({{ $rating->total }})</span>
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+
+                                        <select class="form-control rounded-pill ms-1 me-1 assigned-to" name="assignedto" onchange="this.form.submit()">
                                             <option value="">{{ __('All Team') }}</option>
                                             @foreach ($users as $user)
                                                 <option value="{{ $user->id }}" class="@if(Auth::user()->id == $user->id) as-to @endif" @if($user->id == request('assignedto')) selected @endif>{{ $user->name }}@if(Auth::user()->id == $user->id) (Me) @endif</option>
@@ -53,7 +148,7 @@
                                     @endif
 
                                 </div>
-                                <div class="col-md-4 text-end align-self-center align-items-center d-flex">
+                                <div class="col-md-3 text-end align-self-center align-items-center d-flex">
                                     <b class="me-1">Search</b>
                                     <div class="input-group rounded-pill dv-search">
                                         <input type="text" class="form-control rounded-pill border-0 mb-0 mb-sm-2 mb-md-0" name="search" placeholder="#ID, Email, Transport...." value="{{ request('search') }}">
