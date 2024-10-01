@@ -89,7 +89,7 @@
                                                             }
                                                         @endphp
                                                         <span class="source-badge {{$class_sb_sch}}" title="{{$source->user_source}}">{{ $text_sb_sch }}</span>
-                                                        <span class="float-end fw-light">({{ $source->total >= 1000 ? number_format($source->total / 1000, 1) . 'K' : $source->total }})</span>
+                                                        <small class="float-end fw-light">({{ $source->total >= 1000 ? number_format($source->total / 1000, 1) . 'K' : $source->total }})</small>
                                                         </a>
                                                     </li>
                                                 @endforeach
@@ -133,7 +133,7 @@
                                                                     @endfor
 
                                                                     {{-- Mostrar total de cotizaciones --}}
-                                                                    <span class="ms-1 fw-light">({{ $rating->total >= 1000 ? number_format($rating->total / 1000, 1) . 'K' : $rating->total }})</span>
+                                                                    <small class="ms-1 fw-light">({{ $rating->total >= 1000 ? number_format($rating->total / 1000, 1) . 'K' : $rating->total }})</small>
                                                                 </label>
                                                             </div>
                                                         </li>
