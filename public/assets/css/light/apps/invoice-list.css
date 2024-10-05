@@ -28,6 +28,10 @@ div.dataTables_wrapper button:hover {
   margin: 20px 21px 20px 21px;
 }
 
+.tr-featured {
+  background: #fffaee;
+}
+
 .featured svg {
   width: 20px !important;
   height: 20px !important;

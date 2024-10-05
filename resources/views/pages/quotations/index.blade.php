@@ -232,14 +232,16 @@
                                             @php
                                                 if($quotation->quotation_featured == '1'){
                                                     $feact_active = 'checked';
+                                                    $trfeatured = 'tr-featured';
                                                 }else{
                                                     $feact_active = '';
+                                                    $trfeatured = '';
                                                 }
 
 
                                             @endphp
 
-                                            <tr>
+                                            <tr class="{{$trfeatured}}">
                                                 @if($adminoremployee)
                                                 <td class="py-1 ps-2 pe-2 align-middle text-center">
                                                     <label class="featured mb-0">

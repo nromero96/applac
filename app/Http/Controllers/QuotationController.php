@@ -140,8 +140,8 @@ class QuotationController extends Controller
             }
         });
 
-        $quotations = $quotations->orderBy('quotations.featured', 'desc') // Ordenar primero por 'featured'
-                                ->orderBy('quotations.id', 'desc')    // Luego por 'id'
+        $quotations = $quotations->orderBy('quotations.featured', 'desc')
+                                ->orderBy('quotations.id', 'desc')
                                 ->paginate($listforpage);
 
         //get users selected in dropdown
@@ -332,6 +332,24 @@ class QuotationController extends Controller
                 'status' => $validatedData['action'],
                 'updated_at' => now(),
             ]);
+
+            //if action 'Quote Sent' update 'result'
+            if($validatedData['action'] == 'Quote Sent'){
+                $quotation->update([
+                    'result' => 'Under Review',
+                    'updated_at' => now(),
+                ]);
+
+                QuotationNote::create([
+                    'quotation_id' => $id,
+                    'type' => 'result_status',
+                    'action' => "'' to 'Under Review'",
+                    'reason' => '',
+                    'note' => 'Result status auto-updated',
+                    'user_id' => '1',
+                ]);
+            }
+
 
             return redirect()->route('quotations.show', ['quotation' => $id])->with('success', 'Updated status successfully quotation #'.$id);
         } catch (\Exception $e) {
