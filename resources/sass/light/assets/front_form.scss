@@ -256,6 +256,7 @@ p{
     transition: border-color 0.5s, opacity 0.5s;
 
     .radio-icon img{
+        margin-top: 10px;
         width: 32px;
         height: 32px;
         cursor: pointer;
@@ -265,12 +266,10 @@ p{
         margin: 0 auto;
         width: 20px;
         height: 20px;
-        margin-bottom: 10px;
         accent-color: $primary;
         border-radius: 50%;
         cursor: pointer;
-        appearance: none;
-        box-shadow: 0 0 0 1px #D8D8D8;
+        appearance: auto;
         transition: 0.1s;
 
     }
@@ -311,17 +310,18 @@ p{
   height: 20px;
   border-radius: 50%;
   transition: 0.3s;
+  margin: 0 auto;
 }
 
 .radio-card:hover input[type='radio']{
-  appearance:none;
-  box-shadow:0 0 0 1px $primary;
+  appearance:auto;
   border-radius: 50%;
 }
 
 .radio-card.active input[type='radio']{
   appearance: auto !important;
   box-shadow: 0 0 0 1px transparent;
+  width: 100%;
 }
 
 .radio-card:hover input[type='radio']:before {

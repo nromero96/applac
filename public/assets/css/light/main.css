@@ -72,6 +72,16 @@ body.dark .light-element {
   display: block;
 }
 
+.assto_select {
+  width: 165px;
+}
+
+.btn-rtg-cancel {
+  background: none;
+  border: 0px;
+  padding: 0px 0px;
+}
+
 .btn-reqoute {
   color: #fff;
   padding: 10px 25px;
@@ -3755,7 +3765,7 @@ fieldset:disabled .btn {
   font-size: 11px;
 }
 .activity-log .al-date {
-  margin-top: 2px;
+  margin-top: 0px;
 }
 .activity-log .al-date .date {
   font-family: "Nunito Sans";
@@ -3768,6 +3778,9 @@ fieldset:disabled .btn {
 .activity-log .al-date .badge {
   padding: 1px 7px !important;
   font-size: 10px;
+}
+.activity-log .al-date small {
+  font-size: 11px;
 }
 .activity-log .al-info {
   line-height: 11px;

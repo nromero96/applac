@@ -51,9 +51,9 @@
                                                 {{ request('source') ? request('source') : 'Source' }}
                                             </button>
                                             <input type="hidden" name="source" id="inputsearchsource" value="{{ request('source') }}">
-                                            <ul class="dropdown-menu mt-4" aria-labelledby="dropdownMenuButton">
+                                            <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuButton">
                                                 <li>
-                                                    <a class="dropdown-item" href="#" onclick="selectSource('')">Source</a>
+                                                    <a class="dropdown-item" href="#" onclick="selectSource('')"><b>All Sources</b> <small class="float-end fw-light">({{$totalQuotation}})</small></a>
                                                 </li>
                                                 @foreach ($listsources as $source)
                                                     <li>
@@ -102,7 +102,7 @@
                                             <button class="form-select rounded-pill ms-1 dropdown-toggle" type="button" id="ratingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                                 {{ request('rating') ? implode(', ', request('rating')) : 'Rating' }}
                                             </button>
-                                            <ul class="dropdown-menu mt-4 pt-2 ps-3 pb-0" aria-labelledby="ratingDropdown">
+                                            <ul class="dropdown-menu mt-3 pt-2 ps-3 pb-0" aria-labelledby="ratingDropdown">
                                                 @foreach ($listratings as $rating)
                                                     @php
                                                         $fullStars = floor($rating->rating); // Redondeo hacia abajo para obtener estrellas completas
@@ -142,7 +142,7 @@
                                             </ul>
                                         </div>
 
-                                        <select class="form-control rounded-pill ms-1 me-1 assigned-to" name="assignedto" onchange="this.form.submit()">
+                                        <select class="form-select rounded-pill ms-1 me-1 assigned-to" name="assignedto" onchange="this.form.submit()">
                                             <option value="">{{ __('All Team') }}</option>
                                             @foreach ($users as $user)
                                                 <option value="{{ $user->id }}" class="@if(Auth::user()->id == $user->id) as-to @endif" @if($user->id == request('assignedto')) selected @endif>{{ $user->name }}@if(Auth::user()->id == $user->id) (Me) @endif</option>
@@ -301,7 +301,7 @@
                                                         </span>
                                                         <small class="align-self-center ps-1 lh-1">
                                                             {{ date('d/m/Y', strtotime($quotation->quotation_created_at)) }}
-                                                            <small class="d-block text-muted">{{ date('H:i:s', strtotime($quotation->quotation_created_at)) }}</small>
+                                                            <small class="d-block text-muted">{{ date('H:i', strtotime($quotation->quotation_created_at)) }}</small>
                                                         </small>
                                                     </div>
                                                 </td>
@@ -387,7 +387,7 @@
                                                         @if($quotation->quotation_updated_at)
                                                         <span class="btn-text-inner text-center">{{ \Carbon\Carbon::parse($quotation->quotation_updated_at)->format('d-m-Y') }} </span> - <span class="btn-text-inner fw-light text-center">{{ \Carbon\Carbon::parse($quotation->quotation_updated_at)->format('H:i') }}</span>
                                                         @else
-                                                            NO UPDATE YET
+                                                            -
                                                         @endif
 
                                                         @php

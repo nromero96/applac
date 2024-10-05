@@ -210,6 +210,7 @@ p {
   transition: border-color 0.5s, opacity 0.5s;
 }
 .radio-card .radio-icon img {
+  margin-top: 10px;
   width: 32px;
   height: 32px;
   cursor: pointer;
@@ -218,14 +219,12 @@ p {
   margin: 0 auto;
   width: 20px;
   height: 20px;
-  margin-bottom: 10px;
   accent-color: #B80000;
   border-radius: 50%;
   cursor: pointer;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  box-shadow: 0 0 0 1px #D8D8D8;
+  -webkit-appearance: auto;
+     -moz-appearance: auto;
+          appearance: auto;
   transition: 0.1s;
 }
 .radio-card .radio-text {
@@ -260,13 +259,13 @@ p {
   height: 20px;
   border-radius: 50%;
   transition: 0.3s;
+  margin: 0 auto;
 }
 
 .radio-card:hover input[type=radio] {
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
-  box-shadow: 0 0 0 1px #B80000;
+  -webkit-appearance: auto;
+     -moz-appearance: auto;
+          appearance: auto;
   border-radius: 50%;
 }
 
@@ -275,6 +274,7 @@ p {
      -moz-appearance: auto !important;
           appearance: auto !important;
   box-shadow: 0 0 0 1px transparent;
+  width: 100%;
 }
 
 .radio-card:hover input[type=radio]:before {

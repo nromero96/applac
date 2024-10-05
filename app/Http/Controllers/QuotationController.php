@@ -162,6 +162,8 @@ class QuotationController extends Controller
         ->groupBy('user_source')
         ->get();
 
+        $totalQuotation = Quotation::count();
+
         //Contar los ratings de cotizaciones
         $listratings = Quotation::select(
             DB::raw('FLOOR(quotations.rating) as rating'),  // Redondear hacia abajo
@@ -173,7 +175,7 @@ class QuotationController extends Controller
 
 
 
-        return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users)->with('listsources', $listsources)->with('listratings', $listratings);
+        return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users)->with('listsources', $listsources)->with('listratings', $listratings)->with('totalQuotation', $totalQuotation);
     }
 
     public function onlineregister(Request $request){
@@ -223,7 +225,7 @@ class QuotationController extends Controller
             DB::raw('COALESCE(users.source, guest_users.source) as customer_source'),
 
             //is user or guest user
-            DB::raw('CASE WHEN users.id IS NOT NULL THEN "Customer" ELSE "Guest" END AS customer_type'),
+            DB::raw('CASE WHEN users.id IS NOT NULL THEN "Returning" ELSE "Guest" END AS customer_type'),
 
             'oc.name as origin_country',
             'dc.name as destination_country',

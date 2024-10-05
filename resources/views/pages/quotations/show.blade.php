@@ -47,7 +47,7 @@
 
                                         @if(Auth::user()->hasRole('Administrator'))
                                         <b class="me-1">Assigned to</b>
-                                        <select class="form-select rounded-pill px-2 w-auto py-1 d-inline-block user-select-assigned @if($quotation->assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->id }}">
+                                        <select class="form-select rounded-pill px-2 py-1 assto_select d-inline-block user-select-assigned @if($quotation->assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->id }}">
                                             <option value="">{{ __('Unassigned') }}</option>
                                             @foreach ($users as $user)
                                                 <option value="{{ $user->id }}" @if($user->id == $quotation->assigned_user_id) selected @endif>{{ $user->name }}</option>
@@ -154,6 +154,12 @@
                                                             <div class="ms-2 d-none" id="rtg_comment_input">
                                                                 <input type="text" name="rating_comment" class="rating_comment" placeholder="Comment">
                                                                 <button type="submit" class="btn-outline-primary ms-2 btn-rtg-update">Update</button>
+                                                                <button type="button" class="ms-1 btn-rtg-cancel">
+                                                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M18 6 6 18"></path>
+                                                                        <path d="m6 6 12 12"></path>
+                                                                      </svg>
+                                                                </button>
                                                             </div>
 
                                                             <div class="d-inline" id="rtg_modified_by">
@@ -192,16 +198,13 @@
                     </div>
                     <div class="widget-content widget-content-area pt-2">
                         <div class="row g-3 pt-3">
-                            <div class="col-md-6 mt-0">
+                            <div class="col-md-12 mt-0">
                                 <h6 class="text-primary mb-1">{{ __('Transport Details') }}</h6>
                                 <label class="fw-bold mb-0">{{__("Mode of transport")}}:</label> {{ $quotation->mode_of_transport }}<br>
                                 @if ($quotation->cargo_type)
                                 <label class="fw-bold mb-0">{{__("Cargo Type")}}:</label> {{ $quotation->cargo_type }}<br>
                                 @endif
                                 <label class="fw-bold mb-0">{{__("Service Type")}}:</label> {{ $quotation->service_type }}<br>
-                            </div>
-                            <div class="col-md-6 text-end mt-0 d-none d-sm-block">
-                                <small class="fw-light">({{ __('Requested') }}: {{ $quotation->created_at }})</small>
                             </div>
 
                             <div class="col-md-12 mt-2">
@@ -532,9 +535,6 @@
                                 <h6 class="text-primary mb-1">{{ __('Customers Information') }}</h6>
                             </div>
                             <div class="col-md-6 mt-0">
-                                <label class="fw-bold mb-0">{{__("Customer type")}}:</label> -<br>
-                            </div>
-                            <div class="col-md-6 mt-0">
                                 <label class="fw-bold mb-0">{{__("First Name")}}:</label> {{ $quotation->customer_name }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
@@ -550,16 +550,19 @@
                                 <label class="fw-bold mb-0">{{__("Company email")}}:</label> {{ $quotation->customer_email }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
-                                <label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }}<br>
-                            </div>
-                            <div class="col-md-6 mt-0">
                                 <label class="fw-bold mb-0">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
-                                <label class="fw-bold mb-0">{{__("Source")}}:</label> {{ $quotation->customer_source }}<br>
+                                <label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }}<br>
+                            </div>
+                            <div class="col-md-6 mt-0">
+                                <label class="fw-bold mb-0">{{__("Customer type")}}:</label> -<br>
                             </div>
                             <div class="col-md-6 mt-0">
                                 <label class="fw-bold mb-0">{{__("User type")}}:</label> {{ $quotation->customer_type }}<br>
+                            </div>
+                            <div class="col-md-6 mt-0">
+                                <label class="fw-bold mb-0">{{__("Source")}}:</label> {{ $quotation->customer_source }}<br>
                             </div>
                         </div>
 
@@ -828,9 +831,29 @@
                                     </div>
                                 </div>
                             @else
-                                <div class="widget-content widget-content-area px-2 pb-3 pt-1" id="quotation-notes">
+                                <div class="widget-content widget-content-area px-2 pb-3 pt-1">
+                                    <div id="quotation-notes">
+
+                                    </div>
+
+                                    <div class="activity-log border-0 mb-0 mt-2">
+                                        <div class="al-action">
+                                            <svg width="13" height="13" fill="none" stroke="#4cbb17" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                                <path d="M14 2v6h6"></path>
+                                                <path d="M12 18v-6"></path>
+                                                <path d="M9 15h6"></path>
+                                            </svg>
+                                            <span class="text-result">Inquiry received</span>
+                                        </div>
+                                        <div class="al-date">
+                                            <small class="date">{{ date('d/m/Y', strtotime($quotation->created_at)) }}</small> - <small class="time">{{ date('H:i', strtotime($quotation->created_at)) }}</small>
+                                            {{-- <span class="badge rounded-pill badge-light-info">5 days since received</span> --}}
+                                        </div>
+                                    </div>
 
                                 </div>
+
                             @endif
                         </div>
                     </div>

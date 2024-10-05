@@ -35,6 +35,25 @@ document.querySelector('.btn-modify').addEventListener('click', function() {
     });
 });
 
+//if click .btn-rtg-cancel javascript puro
+document.querySelector('.btn-rtg-cancel').addEventListener('click', function() {
+    document.getElementById('rtg_modified_by').classList.add('d-inline');
+    document.getElementById('rtg_modified_by').classList.remove('d-none');
+
+    document.getElementById('rtg_comment_input').classList.add('d-none');
+    document.getElementById('rtg_comment_input').classList.remove('d-inline');
+
+    document.getElementById('rtg_rating_stars').classList.remove('d-none');
+    document.getElementById('rtg_rating_stars').classList.add('d-inline');
+
+    document.getElementById('rtg_modified_stars').classList.add('d-none');
+    document.getElementById('rtg_modified_stars').classList.remove('d-inline');
+
+    document.querySelectorAll('input[name="new_rating"]').forEach(function(input) {
+        input.setAttribute('disabled', 'disabled');
+    });
+});
+
 //if change select id action
 document.getElementById('action').addEventListener('change', function() {
     if (this.value === 'Unqualified') {
@@ -60,23 +79,6 @@ function listQuotationNotes(quotationId) {
             let notesContainer = document.getElementById('quotation-notes');  // Suponiendo que tengas un contenedor en el DOM
             notesContainer.innerHTML = '';  // Limpiar contenido previo
 
-            // notesContainer.innerHTML =
-            // `<div class="activity-log pb-2 pt-2">
-            //                         <div class="al-action">
-            //                             <svg width="13" height="13" fill="none" stroke="#4cbb17" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            //                                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-            //                                 <path d="M14 2v6h6"></path>
-            //                                 <path d="M12 18v-6"></path>
-            //                                 <path d="M9 15h6"></path>
-            //                               </svg>
-            //                             <span class="text-result">Inquiry received</span>
-            //                         </div>
-            //                         <div class="al-date">
-            //                             <small class="date">2024-09-15</small> - <small class="time">08:00</small> <span class="badge rounded-pill badge-light-info">5 days since received</span>
-            //                         </div>
-            //                     </div>
-            // `;
-
             data.forEach(note => {
                 // Limpiar y separar el estado
                 let [last_status, new_status] = note.action.replace(/'/g, "").split(' to ');
@@ -89,6 +91,18 @@ function listQuotationNotes(quotationId) {
                 let date = new Date(note.created_at);
                 let formattedDate = date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
                 let formattedTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+
+                if(note.reason){
+                    var notereason = `
+                        <div class="al-info">
+                            <span class="name">Reason: </span>
+                            <span class="comment">${note.reason}</span>
+                        </div>
+                    `;
+                }else{
+                    var notereason = '';
+                }
+
 
                 let noteElement = document.createElement('div');
                 noteElement.classList.add('activity-log', 'pb-2', 'pt-2');
@@ -105,10 +119,7 @@ function listQuotationNotes(quotationId) {
                                     <div class="al-date">
                                         <small class="date">${formattedDate}</small> - <small class="time">${formattedTime}</small>
                                     </div>
-                                    <div class="al-info">
-                                        <span class="name">Reason: </span>
-                                        <span class="comment">${note.reason}</span>
-                                    </div>
+                                    ${notereason}
                                     <div class="al-info">
                                         <span class="name">${note.user_name}</span>
                                         <svg width="13" height="13" fill="none" stroke="#0a6ab7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -149,12 +160,12 @@ function listQuotationNotes(quotationId) {
 
                     let last_stars = '';
                     for (let i = 1; i <= last_status; i++) {
-                        last_stars += '*';
+                        last_stars += '★';
                     }
 
                     let new_stars = '';
                     for (let i = 1; i <= new_status; i++) {
-                        new_stars += '*';
+                        new_stars += '★';
                     }
 
 

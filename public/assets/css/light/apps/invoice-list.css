@@ -21,6 +21,9 @@ div.dataTables_wrapper button:hover {
   border: 1px solid #D8D8D8;
 }
 
+.dv-search input {
+  padding: 4px 10px;
+}
 .inv-list-top-section {
   margin: 20px 21px 20px 21px;
 }
@@ -294,17 +297,23 @@ table tr td {
 }
 
 .form-search .dropdown-toggle {
-  padding: 4px 10px;
-  width: 88px;
+  padding: 4px 25px 4px 10px;
+  width: 90px;
   text-align: start;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .form-search #listforpage {
   padding: 4px 10px;
   max-width: 64px;
 }
 .form-search .assigned-to {
-  padding: 4px 10px;
-  max-width: 91px;
+  padding: 4px 20px 4px 10px;
+  max-width: 102px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .form-search .daterequest {
   padding: 4px 10px;
