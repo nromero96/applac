@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     for (var i = 0; i < options_best.length; i++) {
         options_best[i].addEventListener('change', function() {
-            if (this.value == 'I’m an Individual') {
+            if (this.value == 'Individual') {
                 dv_options_best_personal.classList.remove('d-none');
                 dv_options_best.classList.add('d-none');
             } else {

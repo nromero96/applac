@@ -144,7 +144,7 @@
                                     </h2>
                                     <div class="row">
                                         <div class="col-md-4 mb-2">
-                                            <input type="radio" class="btn-check" name="customer_type" value="I’m a Business" id="ob_business" autocomplete="off">
+                                            <input type="radio" class="btn-check" name="customer_type" value="Business" id="ob_business" autocomplete="off">
                                             <label class="btn-typecustomer cursor-pointer w-100" for="ob_business">
                                                 <img src="{{asset('assets/img/type_business.svg')}}" alt="Business" class="d-block mx-auto">
                                                 <span>{{ __('I’m a Business') }}</span>
@@ -152,7 +152,7 @@
                                             </label>
                                         </div>
                                         <div class="col-md-4 mb-2">
-                                            <input type="radio" class="btn-check" name="customer_type" value="I’m a Logistics Company" id="ob_logistics" autocomplete="off">
+                                            <input type="radio" class="btn-check" name="customer_type" value="Logistics Company" id="ob_logistics" autocomplete="off">
                                             <label class="btn-typecustomer cursor-pointer w-100" for="ob_logistics">
                                                 <img src="{{asset('assets/img/type_logistics_company.svg')}}" alt="I’m a Logistics Company" class="d-block mx-auto">
                                                 <span>{{ __('I’m a Logistics Company') }}</span>
@@ -160,9 +160,9 @@
                                             </label>
                                         </div>
                                         <div class="col-md-4 mb-2">
-                                            <input type="radio" class="btn-check" name="customer_type" value="I’m an Individual" id="ob_personal" autocomplete="off">
+                                            <input type="radio" class="btn-check" name="customer_type" value="Individual" id="ob_personal" autocomplete="off">
                                             <label class="btn-typecustomer cursor-pointer w-100" for="ob_personal">
-                                                <img src="{{asset('assets/img/type_business.svg')}}" alt="I’m an Individual" class="d-block mx-auto">
+                                                <img src="{{asset('assets/img/type_invidual.svg')}}" alt="I’m an Individual" class="d-block mx-auto">
                                                 <span>{{ __('I’m an Individual') }}</span>
                                                 <i class="d-block text-muted">{{ __('Shipping vehicles such as cars, trucks, motorcycles, etc.') }}</i>
                                             </label>
