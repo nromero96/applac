@@ -49,6 +49,9 @@ class QuotationController extends Controller
         $daterequest = request()->query('daterequest');
         $search = request()->query('search');
 
+        $order_rating = request()->query('order-rating');
+        $order_status = request()->query('order-status');
+
         // lista de cotizaciones para el usuario logueado si es Customer
         $quotations = Quotation::select(
             'quotations.id as quotation_id',
@@ -141,8 +144,21 @@ class QuotationController extends Controller
         });
 
         $quotations = $quotations->orderBy('quotations.featured', 'desc')
-                                ->orderBy('quotations.id', 'desc')
-                                ->paginate($listforpage);
+
+        // Ordenar por rating si se ha solicitado
+        ->when($order_rating, function($query, $order_rating) {
+            return $query->orderBy('quotations.rating', $order_rating);
+        })
+
+        // Ordenar por status si se ha solicitado
+        ->when($order_status, function($query, $order_status) {
+            return $query->orderBy('quotations.status', $order_status);
+        })
+
+        //order por created_at si no hay ordenamiento
+        ->orderBy('quotations.created_at', 'desc')
+
+        ->paginate($listforpage);
 
         //get users selected in dropdown
         $users_selected_dropdown_quotes = Setting::where('key', 'users_selected_dropdown_quotes')->first();
@@ -225,7 +241,7 @@ class QuotationController extends Controller
             DB::raw('COALESCE(users.source, guest_users.source) as customer_source'),
 
             //is user or guest user
-            DB::raw('CASE WHEN users.id IS NOT NULL THEN "Returning" ELSE "Guest" END AS customer_type'),
+            DB::raw('CASE WHEN users.id IS NOT NULL THEN "Returning" ELSE "Guest" END AS user_type'),
 
             'oc.name as origin_country',
             'dc.name as destination_country',
@@ -293,15 +309,92 @@ class QuotationController extends Controller
     }
 
     public function listQuotationNotes($id)
-    {
-        $quotation_notes = QuotationNote::where('quotation_id', $id)
+{
+    // Obtener la cotización para acceder a su fecha de creación
+    $quotation = Quotation::find($id);
+    $quotationCreatedAt = $quotation ? $quotation->created_at : null;
+
+    // Obtener las notas de cotización
+    $quotation_notes = QuotationNote::where('quotation_id', $id)
         ->join('users', 'quotation_notes.user_id', '=', 'users.id')
         ->select('quotation_notes.*', 'users.name as user_name')
-        ->orderBy('quotation_notes.id', 'desc')
         ->get();
 
-        return response()->json($quotation_notes);
+    // Depurar las notas obtenidas
+    if ($quotation_notes->isEmpty()) {
+        return response()->json(['message' => 'No quotation notes found.'], 404);
     }
+
+    $previousDate = $quotationCreatedAt; // Iniciar con la fecha de creación de la cotización
+
+    // Calcular la diferencia de tiempo para cada nota
+    foreach ($quotation_notes as $index => $note) {
+        // Establecer la fecha de la nota anterior
+        $note->previous_note_date = $previousDate ? $previousDate : '-';
+
+        if ($index === 0) {
+            // Si es la primera nota, calcular desde la creación de la cotización
+            if ($quotationCreatedAt) {
+                // Calcular la diferencia desde la creación de la cotización
+                $diffInSecondsFromCreation = \Carbon\Carbon::parse($note->created_at)->diffInSeconds(\Carbon\Carbon::parse($quotationCreatedAt));
+
+                // Determinar la unidad de tiempo más apropiada
+                if ($diffInSecondsFromCreation < 60) {
+                    $note->time_diff = "in $diffInSecondsFromCreation seconds since received";
+                } elseif ($diffInSecondsFromCreation < 3600) {
+                    $minutes = floor($diffInSecondsFromCreation / 60);
+                    $note->time_diff = "in $minutes minute" . ($minutes > 1 ? 's' : '') . " since received";
+                } elseif ($diffInSecondsFromCreation < 604800) {
+                    $hours = floor($diffInSecondsFromCreation / 3600);
+                    $note->time_diff = "in $hours hour" . ($hours > 1 ? 's' : '') . " since received";
+                } else {
+                    $weeks = floor($diffInSecondsFromCreation / 604800);
+                    $note->time_diff = "in $weeks week" . ($weeks > 1 ? 's' : '') . " since received";
+                }
+            } else {
+                $note->time_diff = "No previous note";
+            }
+        } else {
+            // Calcular la diferencia en segundos desde la nota anterior
+            $diffInSeconds = \Carbon\Carbon::parse($note->created_at)->diffInSeconds(\Carbon\Carbon::parse($previousDate));
+
+            // Determinar la unidad de tiempo más apropiada
+            if ($diffInSeconds < 60) {
+                $note->time_diff = "in $diffInSeconds seconds";
+            } elseif ($diffInSeconds < 3600) {
+                $minutes = floor($diffInSeconds / 60);
+                $note->time_diff = "in $minutes minute" . ($minutes > 1 ? 's' : '');
+            } elseif ($diffInSeconds < 604800) {
+                $hours = floor($diffInSeconds / 3600);
+                $note->time_diff = "in $hours hour" . ($hours > 1 ? 's' : '');
+            } else {
+                $weeks = floor($diffInSeconds / 604800);
+                $note->time_diff = "in $weeks week" . ($weeks > 1 ? 's' : '');
+            }
+        }
+
+        // Actualizar la fecha de la nota anterior
+        $previousDate = $note->created_at;
+    }
+
+    // Ordenar por id después de agregar las columnas desendientes
+    $quotation_notes = $quotation_notes->sortByDesc('id');
+    return response()->json($quotation_notes->values()->all());
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function updateStatus(Request $request, $id)
     {
@@ -447,6 +540,7 @@ class QuotationController extends Controller
 
         try {
             $validatedData = $request->validate([
+                'customer_type' => 'nullable|max:70',
                 'mode_of_transport' => 'required|max:30',
                 'cargo_type' => [
                     'nullable',
@@ -519,6 +613,7 @@ class QuotationController extends Controller
                 $guest_user_id = $reguser->id;
                 //create quotation with guest user id
                 $quotation = Quotation::create([
+                    'customer_type' => $request->input('customer_type'),
                     'guest_user_id' => $guest_user_id,
                     'mode_of_transport' => $request->input('mode_of_transport'),
                     'cargo_type' => $request->input('cargo_type'),
@@ -714,6 +809,7 @@ class QuotationController extends Controller
 
                 //create quotation with user id
                 $quotation = Quotation::create([
+                    'customer_type' => $request->input('customer_type'),
                     'customer_user_id' => $newuser_id,
                     'mode_of_transport' => $request->input('mode_of_transport'),
                     'cargo_type' => $request->input('cargo_type'),

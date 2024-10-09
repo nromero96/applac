@@ -126,11 +126,12 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
-                // Aquí puedes manejar la respuesta, por ejemplo, mostrar un mensaje
+                const tr = event.target.closest('tr');
+                tr.classList.toggle('tr-featured', data.featured);
             })
             .catch((error) => {
                 console.error('Error:', error);
+
             });
         });
     });

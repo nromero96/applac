@@ -41,11 +41,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     //if click radio name options_best
-    var options_best = document.getElementsByName('options_best');
+    var options_best = document.getElementsByName('customer_type');
 
     for (var i = 0; i < options_best.length; i++) {
         options_best[i].addEventListener('change', function() {
-            if (this.value == 'personal') {
+            if (this.value == 'I’m an Individual') {
                 dv_options_best_personal.classList.remove('d-none');
                 dv_options_best.classList.add('d-none');
             } else {

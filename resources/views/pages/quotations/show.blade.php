@@ -556,10 +556,10 @@
                                 <label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
-                                <label class="fw-bold mb-0">{{__("Customer type")}}:</label> -<br>
+                                <label class="fw-bold mb-0">{{__("Customer type")}}:</label> {{$quotation->customer_type}}<br>
                             </div>
                             <div class="col-md-6 mt-0">
-                                <label class="fw-bold mb-0">{{__("User type")}}:</label> {{ $quotation->customer_type }}<br>
+                                <label class="fw-bold mb-0">{{__("User type")}}:</label> {{ $quotation->user_type }}<br>
                             </div>
                             <div class="col-md-6 mt-0">
                                 <label class="fw-bold mb-0">{{__("Source")}}:</label> {{ $quotation->customer_source }}<br>
@@ -847,7 +847,7 @@
                                             <span class="text-result">Inquiry received</span>
                                         </div>
                                         <div class="al-date">
-                                            <small class="date">{{ date('d/m/Y', strtotime($quotation->created_at)) }}</small> - <small class="time">{{ date('H:i', strtotime($quotation->created_at)) }}</small>
+                                            <small class="date">{{ date('d/m/Y', strtotime($quotation->created_at)) }}</small> - <small class="time">{{ date('H:i:s', strtotime($quotation->created_at)) }}</small>
                                             {{-- <span class="badge rounded-pill badge-light-info">5 days since received</span> --}}
                                         </div>
                                     </div>

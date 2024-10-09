@@ -195,14 +195,40 @@
                                         @endif
                                         <th>{{ __('Requested') }}</th>
                                         @if($adminoremployee)
-                                        <th class="p-1">{{ __('Rating') }}</th>
+                                        <th class="p-1">
+                                            {{ __('Rating') }}
+                                            <a href="{{ route('quotations.index', array_merge(request()->query(), ['order-rating' => request('order-rating') == 'asc' ? 'desc' : 'asc'])) }}" class="badge badge-light-primary p-0 order-rating">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    @if(request('order-rating') == 'desc')
+                                                        <path d="M6 9 L12 15 L18 9"></path> <!-- Chevron hacia abajo -->
+                                                    @elseif(request('order-rating') == 'asc')
+                                                        <path d="M18 15 L12 9 L6 15"></path> <!-- Chevron hacia arriba -->
+                                                    @else
+                                                        <path d="M6 10 L12 4 L18 10"></path> <!-- Chevron neutral superior -->
+                                                        <path d="M6 16 L12 22 L18 16"></path> <!-- Chevron neutral inferior -->
+                                                    @endif
+                                                </svg>
+                                            </a>
+                                        </th>
                                         @endif
-                                        <th class="px-2">{{ __('Status') }}</th>
+                                        <th class="px-2">
+                                            {{ __('Status') }}
+                                            <a href="{{ route('quotations.index', array_merge(request()->query(), ['order-status' => request('order-status') == 'asc' ? 'desc' : 'asc'])) }}" class="badge badge-light-primary p-0 order-status">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    @if(request('order-status') == 'desc')
+                                                        <path d="M6 9 L12 15 L18 9"></path> <!-- Chevron hacia abajo -->
+                                                    @elseif(request('order-status') == 'asc')
+                                                        <path d="M18 15 L12 9 L6 15"></path> <!-- Chevron hacia arriba -->
+                                                    @else
+                                                        <path d="M6 10 L12 4 L18 10"></path> <!-- Chevron neutral superior -->
+                                                        <path d="M6 16 L12 22 L18 16"></path> <!-- Chevron neutral inferior -->
+                                                    @endif
+                                                </svg>
+                                            </a>
+                                        </th>
                                         <th class="px-2">{{ __('Last Update') }}</th>
                                         <th>{{ __('Route') }}</th>
                                         <th>{{ __('Transport') }}</th>
-                                        <th>{{ __('Service Type') }}</th>
-                                        <th>{{ __('Company Name') }}</th>
                                         <th>{{ __('Location') }}</th>
                                         <th>{{ __('Email') }}</th>
                                         @if($adminoremployee)
@@ -429,16 +455,6 @@
 
                                                 <td>
                                                     {{ $quotation->quotation_mode_of_transport }}
-                                                </td>
-
-                                                <td>
-                                                    {{ $quotation->quotation_service_type }}
-                                                </td>
-
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <p class="align-self-center mb-0 user-name"> {{ $quotation->user_company_name ?? '-' }} </p>
-                                                    </div>
                                                 </td>
 
                                                 <td>

@@ -69,7 +69,7 @@
     <link href="{{ asset('plugins/src/filepond/filepond.min.css') }}" rel="stylesheet" type="text/css" >
     <link href="{{ asset('plugins/src/filepond/FilePondPluginImagePreview.min.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('plugins/src/intl-tel-input/css/intlTelInput.min.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('assets/css/light/front_form.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/light/front_form.css') }}?v={{ config('app.version') }}" rel="stylesheet" type="text/css" />
 
 
     @if(app()->environment('production'))
@@ -139,17 +139,33 @@
                         <div class="modal-content">
                             <div class="modal-body">
                                 <div id="options_best" class="">
-                                    <h2 class="text-center mb-4 bm-sm-5">
-                                        {{ __('Please, select the option that describes you best:') }}
+                                    <h2 class="text-center mb-4 bm-sm-5 subline-primary">
+                                        {{ __('Tell us a bit about yourself') }}
                                     </h2>
                                     <div class="row">
-                                        <div class="col-md-6 mb-2">
-                                            <input type="radio" class="btn-check" name="options_best" value="business" id="ob_business" autocomplete="off">
-                                            <label class="btn btn-primary w-100" for="ob_business">{{ __('I’m a Business Representative') }}</label>
+                                        <div class="col-md-4 mb-2">
+                                            <input type="radio" class="btn-check" name="customer_type" value="I’m a Business" id="ob_business" autocomplete="off">
+                                            <label class="btn-typecustomer cursor-pointer w-100" for="ob_business">
+                                                <img src="{{asset('assets/img/type_business.svg')}}" alt="Business" class="d-block mx-auto">
+                                                <span>{{ __('I’m a Business') }}</span>
+                                                <i class="d-block text-muted">{{ __('Manufacturer, Trading Company, Distributor, etc.') }}</i>
+                                            </label>
                                         </div>
-                                        <div class="col-md-6 mb-2">
-                                            <input type="radio" class="btn-check" name="options_best" value="personal" id="ob_personal" autocomplete="off">
-                                            <label class="btn btn-primary w-100" for="ob_personal">{{ __('I’m a Private Person') }}</label>
+                                        <div class="col-md-4 mb-2">
+                                            <input type="radio" class="btn-check" name="customer_type" value="I’m a Logistics Company" id="ob_logistics" autocomplete="off">
+                                            <label class="btn-typecustomer cursor-pointer w-100" for="ob_logistics">
+                                                <img src="{{asset('assets/img/type_logistics_company.svg')}}" alt="I’m a Logistics Company" class="d-block mx-auto">
+                                                <span>{{ __('I’m a Logistics Company') }}</span>
+                                                <i class="d-block text-muted">{{ __('Freight Forwarder, 3PL, Transportation Broker, etc.') }}</i>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-4 mb-2">
+                                            <input type="radio" class="btn-check" name="customer_type" value="I’m an Individual" id="ob_personal" autocomplete="off">
+                                            <label class="btn-typecustomer cursor-pointer w-100" for="ob_personal">
+                                                <img src="{{asset('assets/img/type_business.svg')}}" alt="I’m an Individual" class="d-block mx-auto">
+                                                <span>{{ __('I’m an Individual') }}</span>
+                                                <i class="d-block text-muted">{{ __('Shipping vehicles such as cars, trucks, motorcycles, etc.') }}</i>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
