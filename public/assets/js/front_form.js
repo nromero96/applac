@@ -2,7 +2,22 @@ document.addEventListener('DOMContentLoaded', function () {
 
     //modal confirm-percomp-modal auto open javascript puro
     var confirm_percomp_modal = new bootstrap.Modal(document.getElementById('confirm-percomp-modal'));
-    confirm_percomp_modal.show();
+
+    //verificar si existe el id valid_customer_type
+    if (document.getElementById('valid_customer_type')) {
+        //verificar si tiene valor
+        if (document.getElementById('valid_customer_type').value == undefined || document.getElementById('valid_customer_type').value == '') {
+            //mostrar modal
+            confirm_percomp_modal.show();
+        } else {
+            //ocultar modal
+            confirm_percomp_modal.hide();
+        }
+    } else {
+        //mostrar modal
+        confirm_percomp_modal.show();
+    }
+
 
     var dv_options_best = document.getElementById('options_best');
     var dv_options_best_personal = document.getElementById('options_best_personal');
@@ -777,9 +792,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const updateCheckedState = () => {
         radioCards.forEach(radio => {
             if (radio.checked) {
-                radio.parentNode.classList.add('active');
+                //buscamos el padre del segundo padre del radio
+                radio.parentNode.parentNode.classList.add('active');
             } else {
-                radio.parentNode.classList.remove('active');
+                radio.parentNode.parentNode.classList.remove('active');
             }
         });
     };

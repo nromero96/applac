@@ -142,9 +142,14 @@
                                     <h2 class="text-center mb-4 bm-sm-5 subline-primary">
                                         {{ __('Tell us a bit about yourself') }}
                                     </h2>
+
+                                    @auth
+                                    <input type="hidden" id="valid_customer_type" value="{{ Auth::user()->customer_type }}" />
+                                    @endauth
+
                                     <div class="row">
                                         <div class="col-md-4 mb-2">
-                                            <input type="radio" class="btn-check" name="customer_type" value="Business" id="ob_business" autocomplete="off">
+                                            <input type="radio" class="btn-check" name="customer_type" value="Business" id="ob_business" autocomplete="off" @auth @if(Auth::user()->customer_type == 'Business') checked @endif @endauth>
                                             <label class="btn-typecustomer cursor-pointer w-100" for="ob_business">
                                                 <img src="{{asset('assets/img/type_business.svg')}}" alt="Business" class="d-block mx-auto">
                                                 <span>{{ __('I’m a Business') }}</span>
@@ -152,7 +157,7 @@
                                             </label>
                                         </div>
                                         <div class="col-md-4 mb-2">
-                                            <input type="radio" class="btn-check" name="customer_type" value="Logistics Company" id="ob_logistics" autocomplete="off">
+                                            <input type="radio" class="btn-check" name="customer_type" value="Logistics Company" id="ob_logistics" autocomplete="off" @auth @if(Auth::user()->customer_type == 'Logistics Company') checked @endif @endauth>
                                             <label class="btn-typecustomer cursor-pointer w-100" for="ob_logistics">
                                                 <img src="{{asset('assets/img/type_logistics_company.svg')}}" alt="I’m a Logistics Company" class="d-block mx-auto">
                                                 <span>{{ __('I’m a Logistics Company') }}</span>
@@ -160,7 +165,7 @@
                                             </label>
                                         </div>
                                         <div class="col-md-4 mb-2">
-                                            <input type="radio" class="btn-check" name="customer_type" value="Individual" id="ob_personal" autocomplete="off">
+                                            <input type="radio" class="btn-check" name="customer_type" value="Individual" id="ob_personal" autocomplete="off" @auth @if(Auth::user()->customer_type == 'Individual') checked @endif @endauth>
                                             <label class="btn-typecustomer cursor-pointer w-100" for="ob_personal">
                                                 <img src="{{asset('assets/img/type_invidual.svg')}}" alt="I’m an Individual" class="d-block mx-auto">
                                                 <span>{{ __('I’m an Individual') }}</span>
@@ -237,6 +242,7 @@
                             <div class="row">
                                 <div class="col-xl-12 col-md-12 col-sm-12 col-12 text-center pt-5">
                                     <h2 class="tit-form pb-1 mb-4">{{ __('Get a Shipping Quote') }}</h2>
+
                                     <p class="tit-form-descrip">Share your shipping details below, and we'll be in touch soon with a tailored quote.<br> Our team is committed to finding the most efficient and cost-effective solution for your cargo.</p>
                                     @auth
                                         {{-- No show data --}}
@@ -692,12 +698,12 @@
                                         <div class="row">
                                             <div class="col-md-6 mb-2">
                                                 <label for="name" class="form-label mb-0">{{ __('First Name') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="name" id="name" class="form-control" @auth value="{{ Auth::user()->name }}" readonly @endauth>
+                                                <input type="text" name="name" id="name" class="form-control" @auth value="{{ Auth::user()->name }}" autocomplete="off" readonly @endauth>
                                                 <div class="text-danger msg-info" id="name_error"></div>
                                             </div>
                                             <div class="col-md-6 mb-2">
                                                 <label for="lastname" class="form-label mb-0">{{ __('Last Name') }} <span class="text-danger">*</span></label>
-                                                <input type="text" name="lastname" id="lastname" class="form-control" @auth value="{{ Auth::user()->lastname }}" readonly @endauth>
+                                                <input type="text" name="lastname" id="lastname" class="form-control" @auth value="{{ Auth::user()->lastname }}" autocomplete="off" readonly @endauth>
                                                 <div class="text-danger msg-info" id="lastname_error"></div>
                                             </div>
                                         </div>
@@ -718,12 +724,12 @@
                                         <div class="row">
                                             <div class="col-md-3 mb-2">
                                                 <label for="email" class="form-label mb-0" id="labelemail">{{ __('Company email') }} <span class="text-danger">*</span></label>
-                                                <input type="email" name="email" id="email" class="form-control email-input" @auth value="{{ Auth::user()->email }}" readonly @endauth>
+                                                <input type="email" name="email" id="email" class="form-control email-input" @auth value="{{ Auth::user()->email }}" autocomplete="off" readonly @endauth>
                                                 <div class="text-danger msg-info" id="email_error"></div>
                                             </div>
                                             <div class="col-md-3 mb-2">
                                                 <label for="confirm_email" class="form-label mb-0" id="labelconfirm_email">{{ __('Confirm company email') }} <span class="text-danger">*</span></label>
-                                                <input type="email" name="confirm_email" id="confirm_email" class="form-control email-input" @auth value="{{ Auth::user()->email }}" readonly @endauth>
+                                                <input type="email" name="confirm_email" id="confirm_email" class="form-control email-input" @auth value="{{ Auth::user()->email }}" autocomplete="off" readonly @endauth>
                                                 <div class="text-danger msg-info" id="confirm_email_error"></div>
                                             </div>
 
@@ -757,7 +763,7 @@
                                                 @else
                                                     <label for="source" class="form-label mb-0">{{ __('How do you know about us?') }}</label>
                                                         @auth
-                                                            <input type="text" name="source" value="I am an existing customer" class="form-control" readonly>
+                                                            <input type="text" name="source" value="I am an existing customer" id="source" class="form-control" readonly>
                                                         @else
                                                             <select name="source" id="source" class="form-select">
                                                                 <option value="">{{ __('Select...') }}</option>

@@ -687,7 +687,6 @@
                                             <option value="Pending" @if($quotation->status == 'Pending') disabled @endif>Pending</option>
                                             <option value="Qualifying" @if($quotation->status == 'Qualifying') disabled @endif>Qualifying</option>
                                             <option value="Processing" @if($quotation->status == 'Processing') disabled @endif>Processing</option>
-                                            <option value="Attended" @if($quotation->status == 'Attended') disabled @endif>Attended</option>
                                             <option value="Quote Sent" @if($quotation->status == 'Quote Sent') disabled @endif>Quote Sent</option>
                                             <option value="Unqualified" @if($quotation->status == 'Unqualified') disabled @endif>Unqualified</option>
                                         </select>

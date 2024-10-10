@@ -13,7 +13,6 @@ class Quotation extends Model
 
     protected $fillable = [
         'featured',
-        'customer_type',
         'customer_user_id',
         'guest_user_id',
         'mode_of_transport',

@@ -20,8 +20,9 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
+        'customer_type',
         'name',
-        'lastname',	
+        'lastname',
         'company_name',
         'company_website',
         'email',
@@ -53,4 +54,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    // Relación con FeaturedQuotation
+    public function featuredQuotations()
+    {
+        return $this->belongsToMany(Quotation::class, 'featured_quotations')
+                    ->withTimestamps();
+    }
+
 }

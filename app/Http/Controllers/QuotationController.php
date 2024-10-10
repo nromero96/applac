@@ -24,6 +24,8 @@ use App\Models\GuestUser;
 use App\Models\User;
 use App\Models\Setting;
 
+use App\Models\FeaturedQuotation;
+
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\DB;
@@ -55,7 +57,6 @@ class QuotationController extends Controller
         // lista de cotizaciones para el usuario logueado si es Customer
         $quotations = Quotation::select(
             'quotations.id as quotation_id',
-            'quotations.featured as quotation_featured',
             DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
             DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),
             DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
@@ -71,12 +72,19 @@ class QuotationController extends Controller
             'quotations.created_at as quotation_created_at',
             'quotations.updated_at as quotation_updated_at',
             'quotation_notes.created_at as quotation_note_created_at',
+            DB::raw('IF(featured_quotations.quotation_id IS NOT NULL, 1, 0) as is_featured') // Marcar si está en featured
         )
         ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
         ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
         ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
         ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
         ->leftJoin('countries as lc', DB::raw('COALESCE(users.location, guest_users.location)'), '=', 'lc.id')
+
+        // Join con la tabla de cotizaciones destacadas
+        ->leftJoin('featured_quotations', function($join) {
+            $join->on('quotations.id', '=', 'featured_quotations.quotation_id')
+                ->where('featured_quotations.user_id', '=', auth()->id()); // Solo para el usuario logueado
+        })
 
         // obtener created_at de la última nota de cotización
         ->leftJoin('quotation_notes', function($join) {
@@ -143,22 +151,25 @@ class QuotationController extends Controller
             }
         });
 
-        $quotations = $quotations->orderBy('quotations.featured', 'desc')
+
+        // Siempre ordenar por "is_featured" primero
+        $quotations = $quotations->orderBy('is_featured', 'desc');
 
         // Ordenar por rating si se ha solicitado
-        ->when($order_rating, function($query, $order_rating) {
-            return $query->orderBy('quotations.rating', $order_rating);
-        })
+        if (!empty($order_rating)) {
+            $quotations = $quotations->orderBy('quotations.rating', $order_rating);
+        }
 
         // Ordenar por status si se ha solicitado
-        ->when($order_status, function($query, $order_status) {
-            return $query->orderBy('quotations.status', $order_status);
-        })
+        if (!empty($order_status)) {
+            $quotations = $quotations->orderBy('quotations.status', $order_status);
+        }
 
-        //order por created_at si no hay ordenamiento
-        ->orderBy('quotations.created_at', 'desc')
+        // Finalmente, ordenar por "created_at" para los restantes
+        $quotations = $quotations->orderBy('quotations.created_at', 'desc');
 
-        ->paginate($listforpage);
+        // Paginación
+        $quotations = $quotations->paginate($listforpage);
 
         //get users selected in dropdown
         $users_selected_dropdown_quotes = Setting::where('key', 'users_selected_dropdown_quotes')->first();
@@ -230,6 +241,7 @@ class QuotationController extends Controller
 
         $quotation = Quotation::select(
             'quotations.*',
+            DB::raw('COALESCE(users.customer_type, guest_users.customer_type) as customer_type'),
             DB::raw('COALESCE(users.name, guest_users.name) as customer_name'),
             DB::raw('COALESCE(users.lastname, guest_users.lastname) as customer_lastname'),
             DB::raw('COALESCE(users.company_name, guest_users.company_name) as customer_company_name'),
@@ -523,24 +535,50 @@ class QuotationController extends Controller
     }
 
     public function updateFeatured(Request $request, $id)
-    {
-        $request->validate([
-            'featured' => 'required|boolean',
-        ]);
+{
+    $request->validate([
+        'featured' => 'required|boolean', // Valida que 'featured' sea requerido y sea booleano
+    ]);
 
-        $quotation = Quotation::findOrFail($id);
-        $quotation->featured = $request->featured;
-        $quotation->save();
+    $quotation = Quotation::findOrFail($id); // Encuentra la cotización o lanza una excepción
+    $user = auth()->user(); // Obtiene el usuario autenticado
 
-        return response()->json(['success' => true, 'featured' => $quotation->featured]);
+    Log::info('User '. $user->id .' is updating featured for quotation #'. $id);
+
+    // verifica si el id ya existe en la tabla de cotizaciones destacadas para el usuario autenticado
+    $featuredQuotation = FeaturedQuotation::where('user_id', $user->id)
+        ->where('quotation_id', $id)
+        ->first();
+
+    // Si la cotización ya está en la tabla de cotizaciones destacadas
+    if ($featuredQuotation) {
+        // Si la cotización ya está en la tabla de cotizaciones destacadas y se está desmarcando como destacada
+        if ($request->featured === false) {
+            $featuredQuotation->delete(); // Elimina la cotización destacada
+            Log::info('Quotation #'. $id .' removed from featured quotations for user '. $user->id);
+        }
+    } else {
+        // Si la cotización no está en la tabla de cotizaciones destacadas y se está marcando como destacada
+        if ($request->featured === true) {
+            FeaturedQuotation::create([
+                'user_id' => $user->id,
+                'quotation_id' => $id,
+            ]);
+            Log::info('Quotation #'. $id .' added to featured quotations for user '. $user->id);
+        }
     }
+
+    return response()->json(['message' => 'Featured status updated successfully.']);
+}
+
+
+
 
 
     public function onlinestore(Request $request){
 
         try {
             $validatedData = $request->validate([
-                'customer_type' => 'nullable|max:70',
                 'mode_of_transport' => 'required|max:30',
                 'cargo_type' => [
                     'nullable',
@@ -580,6 +618,7 @@ class QuotationController extends Controller
                 'insurance_required' => 'required|max:5',
                 'currency' => 'required|max:30',
 
+                'customer_type' => 'nullable|max:70',
                 'name' => 'required|max:150',
                 'lastname' => 'required|max:150',
                 'company_name' => 'nullable|max:250',
@@ -597,6 +636,7 @@ class QuotationController extends Controller
             if($create_account == 'no' && !Auth::check()){
                 //create guest user
                 $reguser = GuestUser::create([
+                    'customer_type' => $request->input('customer_type'),
                     'name' => $request->input('name'),
                     'lastname' => $request->input('lastname'),
                     'company_name' => $request->input('company_name'),
@@ -613,7 +653,6 @@ class QuotationController extends Controller
                 $guest_user_id = $reguser->id;
                 //create quotation with guest user id
                 $quotation = Quotation::create([
-                    'customer_type' => $request->input('customer_type'),
                     'guest_user_id' => $guest_user_id,
                     'mode_of_transport' => $request->input('mode_of_transport'),
                     'cargo_type' => $request->input('cargo_type'),
@@ -774,6 +813,11 @@ class QuotationController extends Controller
                         $reguser->save();
                     }
 
+                    //update customer_type if is not '' or null
+                    if($request->input('customer_type') != '' && $request->input('customer_type') != null){
+                        $reguser->customer_type = $request->input('customer_type');
+                        $reguser->save();
+                    }
 
                 } else {
 
@@ -786,6 +830,7 @@ class QuotationController extends Controller
                         $password = Str::random(8);
 
                         $reguser = User::create([
+                            'customer_type' => $request->input('customer_type'),
                             'name' => $request->input('name'),
                             'lastname' => $request->input('lastname'),
                             'company_name' => $request->input('company_name'),
@@ -809,7 +854,6 @@ class QuotationController extends Controller
 
                 //create quotation with user id
                 $quotation = Quotation::create([
-                    'customer_type' => $request->input('customer_type'),
                     'customer_user_id' => $newuser_id,
                     'mode_of_transport' => $request->input('mode_of_transport'),
                     'cargo_type' => $request->input('cargo_type'),
