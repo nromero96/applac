@@ -72,7 +72,7 @@ class QuotationController extends Controller
             'quotations.created_at as quotation_created_at',
             'quotations.updated_at as quotation_updated_at',
             'quotation_notes.created_at as quotation_note_created_at',
-            DB::raw('IF(featured_quotations.quotation_id IS NOT NULL, 1, 0) as is_featured') // Marcar si está en featured
+            DB::raw('EXISTS(SELECT 1 FROM featured_quotations WHERE featured_quotations.quotation_id = quotations.id AND featured_quotations.user_id = ' . auth()->id() . ') as is_featured') // Optimización de featured
         )
         ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
         ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
