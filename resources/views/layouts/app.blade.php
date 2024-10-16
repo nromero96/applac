@@ -10,7 +10,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ setTitle($page_name) }}</title>
-    
+
     <!-- Icons -->
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon.ico') }}">
     <link rel="apple-touch-icon" href="{{ asset('assets/img/apple-touch-icon.png') }}">
@@ -26,15 +26,16 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
     <!-- Styles -->
-    @include('inc.styles')  
+    @include('inc.styles')
 
     @if(app()->environment('production'))
         @include('partials.gtm_head')
     @endif
 
+    @livewireStyles
 </head>
 <body class="layout-boxed">
-    
+
     @if(app()->environment('production'))
         @include('partials.gtm_body')
     @endif
@@ -46,7 +47,7 @@
     <!--  END LOADER -->
 
     @include('inc.navbar')
-    
+
     <!--  BEGIN MAIN CONTAINER  -->
     <div class="main-container" id="container">
 
@@ -59,7 +60,7 @@
         <div id="content" class="main-content">
 
             @yield('content')
-            
+
             @if ($page_name != 'account_settings')
                 @include('inc.footer')
             @endif
@@ -70,6 +71,6 @@
     <!-- END MAIN CONTAINER -->
 
     @include('inc.scripts')
-
+    @livewireScripts
 </body>
 </html>

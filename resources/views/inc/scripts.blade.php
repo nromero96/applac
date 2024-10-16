@@ -15,9 +15,13 @@
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     @switch($page_name)
         @case('dashboard')
+            <script src="{{ asset('plugins/src/jquery-ui/jquery-ui.min.js') }}"></script>
+            <script>
+                $(() => $('[data-toggle="tooltip"]').tooltip())
+            </script>
             {{-- Dashboard --}}
-            <script src="{{ asset('plugins/src/apex/apexcharts.min.js') }}"></script>
-            <script src="{{ asset('assets/js/dashboard/dash_1.js') }}"></script>
+            {{-- <script src="{{ asset('plugins/src/apex/apexcharts.min.js') }}"></script> --}}
+            {{-- <script src="{{ asset('assets/js/dashboard/dash_1.js') }}"></script> --}}
             @break
         @case('users')
             {{-- Users --}}
