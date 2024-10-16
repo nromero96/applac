@@ -9,7 +9,7 @@
     <p style="font-size: 14px; line-height: 1.4;">Dear {{$reguser->name}} {{$reguser->lastname}},</p>
 
     <p style="font-size: 14px; line-height: 1.4;">Thank you for your interest in shipping with LAC. Partnering with the right logistics provider is essential to your transportation strategy.</p>
-    
+
     <p style="font-size: 14px; line-height: 1.4;"><b style="color: #CC0000;">Your Quote ID #: {{ $quotation->id }}</b></p>
 
     <p style="font-size: 14px; line-height: 1.4;"><b>Please be informed:</b> Due to the embargo imposed on Cuba, we are unable to offer quotations without a proof of license/exemption from the Bureau of Industry and Security (BIS). For more information please visit <a href="https://www.bis.gov/" style="color: #161515; text-decoration: underline;">www.bis.doc.gov</a>.</p>
@@ -238,7 +238,7 @@
                                         <br>
                                     @endif
 
-                                    <span style="color:#808080;font-weight:bold;">Cargo Description:</span> 
+                                    <span style="color:#808080;font-weight:bold;">Cargo Description:</span>
                                     {{ $cargo_detail['cargo_description'] }}
                                     @if ($cargo_detail['dangerous_cargo'] == 'yes')
                                     <br>
@@ -294,7 +294,7 @@
                                     </span><br>{{ $cargo_detail['item_total_volume_weight_cubic_meter'] }}</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="5"><span style="color:#808080;font-weight:bold;">Cargo Description:</span> 
+                                    <td colspan="5"><span style="color:#808080;font-weight:bold;">Cargo Description:</span>
                                         {{ $cargo_detail['cargo_description'] }}
                                     </td>
                                     <td colspan="5">
@@ -323,7 +323,7 @@
 
                     </table>
                     <br>
-                    
+
                     <table style="border-collapse:collapse;width:100%;background: #ffffff;border-color: #a7a3a3; @if ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL') display:none; @else display:inline-table; @endif" border="1" cellpadding="1" cellspacing="1">
                         <tr>
                             <td colspan="4">
@@ -384,7 +384,7 @@
                     <b>Declared value: </b> {{ $quotation->declared_value }}<br>
                     <b>Insurance required: </b> {{ $quotation->insurance_required }}<br>
                     <b>Currency: </b> {{ $quotation->currency }}<br>
-                    
+
                     @if(count($quotation_documents) > 0)
                         <p style="margin-bottom: 0px; font-size: 15px; font-weight: bold; color: #b80000;">Attached files:</p>
                         <ul style="font-size: 14px; line-height: 1.4; margin-top: 2px; padding-left: 0px; list-style: none;">
@@ -404,11 +404,12 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <b>First Name:</b>  {{ $reguser->name }}<br>
-                    <b>Last Name: </b> {{ $reguser->lastname }}<br>
+                    <b>First name:</b>  {{ $reguser->name }}<br>
+                    <b>Last name: </b> {{ $reguser->lastname }}<br>
                     <b>Company name: </b> {{ $reguser->company_name }}<br>
                     <b>Company website: </b> {{ $reguser->company_website }}<br>
                     <b>Company email: </b> {{ $reguser->email }}<br>
+                    <b>Customer type</b> {{ $reguser->customer_type }}<br>
                     <b>Location: </b> {{ $reguser_location_name }}<br>
                     <b>Phone: </b> +{{ $reguser->phone_code }} {{ $reguser->phone }}<br>
                 </td>

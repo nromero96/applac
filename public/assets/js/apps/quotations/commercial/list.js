@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Enviar solicitud AJAX para guardar el estado
             const quotationId = event.target.value; // Obtiene el ID de la cotización
-            const featured = event.target.checked ? 1 : 0; // 1 si está marcado, 0 si no
+            const featured = event.target.checked; // true si está marcado, false si no
 
             fetch(`/quotations/${quotationId}/featured`, {
                 method: 'PATCH',
@@ -126,19 +126,33 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
-                // Aquí puedes manejar la respuesta, por ejemplo, mostrar un mensaje
+                const tr = event.target.closest('tr');
+                // Actualiza la clase de la fila según el estado de 'featured'
+                tr.classList.toggle('tr-featured', featured); // Usa 'featured' directamente
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
         });
     });
+
+
 });
 
 function selectSource(source) {
     var input = document.getElementById('inputsearchsource');
     input.value = source;
+
+    const form = document.getElementById('form-search');
+
+    // Enviar el formulario
+    form.submit();
+}
+
+
+function selectTeam(assignedto) {
+    var input = document.getElementById('inputsearchassignedto');
+    input.value = assignedto;
 
     const form = document.getElementById('form-search');
 

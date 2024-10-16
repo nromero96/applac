@@ -89,8 +89,20 @@ function listQuotationNotes(quotationId) {
 
                 // manejar el formato de la fecha (YYY-MM-DD) y hora(HH:MM)
                 let date = new Date(note.created_at);
-                let formattedDate = date.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                let formattedTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+                // Formatear la fecha con la zona horaria específica
+                let formattedDate = date.toLocaleDateString('es-US', {
+                    day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'America/New_York'
+                });
+
+                // Formatear la hora con la zona horaria específica
+                let formattedTime = date.toLocaleTimeString('en-US', {
+                    hour: '2-digit', minute: '2-digit', second:'2-digit', hour12: false, timeZone: 'America/New_York'
+                });
+
+                //Calcular la diferencia de tiempo que diga 'in 30 minutes' o '2 hours' o '1 day' se debe calcular del estus anterior al actual
+
+                //imprimir todo en log
+
 
                 if(note.reason){
                     var notereason = `
@@ -118,6 +130,7 @@ function listQuotationNotes(quotationId) {
                                     </div>
                                     <div class="al-date">
                                         <small class="date">${formattedDate}</small> - <small class="time">${formattedTime}</small>
+                                        <span class="badge rounded-pill badge-light-info">${note.time_diff}</span>
                                     </div>
                                     ${notereason}
                                     <div class="al-info">

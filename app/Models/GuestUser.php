@@ -10,6 +10,7 @@ class GuestUser extends Model
     use HasFactory;
 
     protected $fillable = [
+        'customer_type',
         'name',
         'lastname',
         'company_name',

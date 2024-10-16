@@ -24,6 +24,8 @@ use App\Models\GuestUser;
 use App\Models\User;
 use App\Models\Setting;
 
+use App\Models\FeaturedQuotation;
+
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\DB;
@@ -49,10 +51,12 @@ class QuotationController extends Controller
         $daterequest = request()->query('daterequest');
         $search = request()->query('search');
 
+        $order_rating = request()->query('order-rating');
+        $order_status = request()->query('order-status');
+
         // lista de cotizaciones para el usuario logueado si es Customer
         $quotations = Quotation::select(
             'quotations.id as quotation_id',
-            'quotations.featured as quotation_featured',
             DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
             DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),
             DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
@@ -68,12 +72,19 @@ class QuotationController extends Controller
             'quotations.created_at as quotation_created_at',
             'quotations.updated_at as quotation_updated_at',
             'quotation_notes.created_at as quotation_note_created_at',
+            DB::raw('EXISTS(SELECT 1 FROM featured_quotations WHERE featured_quotations.quotation_id = quotations.id AND featured_quotations.user_id = ' . auth()->id() . ') as is_featured') // Optimización de featured
         )
         ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
         ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
         ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
         ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
         ->leftJoin('countries as lc', DB::raw('COALESCE(users.location, guest_users.location)'), '=', 'lc.id')
+
+        // Join con la tabla de cotizaciones destacadas
+        ->leftJoin('featured_quotations', function($join) {
+            $join->on('quotations.id', '=', 'featured_quotations.quotation_id')
+                ->where('featured_quotations.user_id', '=', auth()->id()); // Solo para el usuario logueado
+        })
 
         // obtener created_at de la última nota de cotización
         ->leftJoin('quotation_notes', function($join) {
@@ -140,9 +151,25 @@ class QuotationController extends Controller
             }
         });
 
-        $quotations = $quotations->orderBy('quotations.featured', 'desc')
-                                ->orderBy('quotations.id', 'desc')
-                                ->paginate($listforpage);
+
+        // Siempre ordenar por "is_featured" primero
+        $quotations = $quotations->orderBy('is_featured', 'desc');
+
+        // Ordenar por rating si se ha solicitado
+        if (!empty($order_rating)) {
+            $quotations = $quotations->orderBy('quotations.rating', $order_rating);
+        }
+
+        // Ordenar por status si se ha solicitado
+        if (!empty($order_status)) {
+            $quotations = $quotations->orderBy('quotations.status', $order_status);
+        }
+
+        // Finalmente, ordenar por "created_at" para los restantes
+        $quotations = $quotations->orderBy('quotations.created_at', 'desc');
+
+        // Paginación
+        $quotations = $quotations->paginate($listforpage);
 
         //get users selected in dropdown
         $users_selected_dropdown_quotes = Setting::where('key', 'users_selected_dropdown_quotes')->first();
@@ -214,6 +241,7 @@ class QuotationController extends Controller
 
         $quotation = Quotation::select(
             'quotations.*',
+            DB::raw('COALESCE(users.customer_type, guest_users.customer_type) as customer_type'),
             DB::raw('COALESCE(users.name, guest_users.name) as customer_name'),
             DB::raw('COALESCE(users.lastname, guest_users.lastname) as customer_lastname'),
             DB::raw('COALESCE(users.company_name, guest_users.company_name) as customer_company_name'),
@@ -225,7 +253,7 @@ class QuotationController extends Controller
             DB::raw('COALESCE(users.source, guest_users.source) as customer_source'),
 
             //is user or guest user
-            DB::raw('CASE WHEN users.id IS NOT NULL THEN "Returning" ELSE "Guest" END AS customer_type'),
+            DB::raw('CASE WHEN users.id IS NOT NULL THEN "Returning" ELSE "Guest" END AS user_type'),
 
             'oc.name as origin_country',
             'dc.name as destination_country',
@@ -293,15 +321,92 @@ class QuotationController extends Controller
     }
 
     public function listQuotationNotes($id)
-    {
-        $quotation_notes = QuotationNote::where('quotation_id', $id)
+{
+    // Obtener la cotización para acceder a su fecha de creación
+    $quotation = Quotation::find($id);
+    $quotationCreatedAt = $quotation ? $quotation->created_at : null;
+
+    // Obtener las notas de cotización
+    $quotation_notes = QuotationNote::where('quotation_id', $id)
         ->join('users', 'quotation_notes.user_id', '=', 'users.id')
         ->select('quotation_notes.*', 'users.name as user_name')
-        ->orderBy('quotation_notes.id', 'desc')
         ->get();
 
-        return response()->json($quotation_notes);
+    // Depurar las notas obtenidas
+    if ($quotation_notes->isEmpty()) {
+        return response()->json(['message' => 'No quotation notes found.'], 404);
     }
+
+    $previousDate = $quotationCreatedAt; // Iniciar con la fecha de creación de la cotización
+
+    // Calcular la diferencia de tiempo para cada nota
+    foreach ($quotation_notes as $index => $note) {
+        // Establecer la fecha de la nota anterior
+        $note->previous_note_date = $previousDate ? $previousDate : '-';
+
+        if ($index === 0) {
+            // Si es la primera nota, calcular desde la creación de la cotización
+            if ($quotationCreatedAt) {
+                // Calcular la diferencia desde la creación de la cotización
+                $diffInSecondsFromCreation = \Carbon\Carbon::parse($note->created_at)->diffInSeconds(\Carbon\Carbon::parse($quotationCreatedAt));
+
+                // Determinar la unidad de tiempo más apropiada
+                if ($diffInSecondsFromCreation < 60) {
+                    $note->time_diff = "in $diffInSecondsFromCreation seconds since received";
+                } elseif ($diffInSecondsFromCreation < 3600) {
+                    $minutes = floor($diffInSecondsFromCreation / 60);
+                    $note->time_diff = "in $minutes minute" . ($minutes > 1 ? 's' : '') . " since received";
+                } elseif ($diffInSecondsFromCreation < 604800) {
+                    $hours = floor($diffInSecondsFromCreation / 3600);
+                    $note->time_diff = "in $hours hour" . ($hours > 1 ? 's' : '') . " since received";
+                } else {
+                    $weeks = floor($diffInSecondsFromCreation / 604800);
+                    $note->time_diff = "in $weeks week" . ($weeks > 1 ? 's' : '') . " since received";
+                }
+            } else {
+                $note->time_diff = "No previous note";
+            }
+        } else {
+            // Calcular la diferencia en segundos desde la nota anterior
+            $diffInSeconds = \Carbon\Carbon::parse($note->created_at)->diffInSeconds(\Carbon\Carbon::parse($previousDate));
+
+            // Determinar la unidad de tiempo más apropiada
+            if ($diffInSeconds < 60) {
+                $note->time_diff = "in $diffInSeconds seconds";
+            } elseif ($diffInSeconds < 3600) {
+                $minutes = floor($diffInSeconds / 60);
+                $note->time_diff = "in $minutes minute" . ($minutes > 1 ? 's' : '');
+            } elseif ($diffInSeconds < 604800) {
+                $hours = floor($diffInSeconds / 3600);
+                $note->time_diff = "in $hours hour" . ($hours > 1 ? 's' : '');
+            } else {
+                $weeks = floor($diffInSeconds / 604800);
+                $note->time_diff = "in $weeks week" . ($weeks > 1 ? 's' : '');
+            }
+        }
+
+        // Actualizar la fecha de la nota anterior
+        $previousDate = $note->created_at;
+    }
+
+    // Ordenar por id después de agregar las columnas desendientes
+    $quotation_notes = $quotation_notes->sortByDesc('id');
+    return response()->json($quotation_notes->values()->all());
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function updateStatus(Request $request, $id)
     {
@@ -430,17 +535,44 @@ class QuotationController extends Controller
     }
 
     public function updateFeatured(Request $request, $id)
-    {
-        $request->validate([
-            'featured' => 'required|boolean',
-        ]);
+{
+    $request->validate([
+        'featured' => 'required|boolean', // Valida que 'featured' sea requerido y sea booleano
+    ]);
 
-        $quotation = Quotation::findOrFail($id);
-        $quotation->featured = $request->featured;
-        $quotation->save();
+    $quotation = Quotation::findOrFail($id); // Encuentra la cotización o lanza una excepción
+    $user = auth()->user(); // Obtiene el usuario autenticado
 
-        return response()->json(['success' => true, 'featured' => $quotation->featured]);
+    Log::info('User '. $user->id .' is updating featured for quotation #'. $id);
+
+    // verifica si el id ya existe en la tabla de cotizaciones destacadas para el usuario autenticado
+    $featuredQuotation = FeaturedQuotation::where('user_id', $user->id)
+        ->where('quotation_id', $id)
+        ->first();
+
+    // Si la cotización ya está en la tabla de cotizaciones destacadas
+    if ($featuredQuotation) {
+        // Si la cotización ya está en la tabla de cotizaciones destacadas y se está desmarcando como destacada
+        if ($request->featured === false) {
+            $featuredQuotation->delete(); // Elimina la cotización destacada
+            Log::info('Quotation #'. $id .' removed from featured quotations for user '. $user->id);
+        }
+    } else {
+        // Si la cotización no está en la tabla de cotizaciones destacadas y se está marcando como destacada
+        if ($request->featured === true) {
+            FeaturedQuotation::create([
+                'user_id' => $user->id,
+                'quotation_id' => $id,
+            ]);
+            Log::info('Quotation #'. $id .' added to featured quotations for user '. $user->id);
+        }
     }
+
+    return response()->json(['message' => 'Featured status updated successfully.']);
+}
+
+
+
 
 
     public function onlinestore(Request $request){
@@ -486,6 +618,7 @@ class QuotationController extends Controller
                 'insurance_required' => 'required|max:5',
                 'currency' => 'required|max:30',
 
+                'customer_type' => 'nullable|max:70',
                 'name' => 'required|max:150',
                 'lastname' => 'required|max:150',
                 'company_name' => 'nullable|max:250',
@@ -503,6 +636,7 @@ class QuotationController extends Controller
             if($create_account == 'no' && !Auth::check()){
                 //create guest user
                 $reguser = GuestUser::create([
+                    'customer_type' => $request->input('customer_type'),
                     'name' => $request->input('name'),
                     'lastname' => $request->input('lastname'),
                     'company_name' => $request->input('company_name'),
@@ -679,6 +813,11 @@ class QuotationController extends Controller
                         $reguser->save();
                     }
 
+                    //update customer_type if is not '' or null
+                    if($request->input('customer_type') != '' && $request->input('customer_type') != null){
+                        $reguser->customer_type = $request->input('customer_type');
+                        $reguser->save();
+                    }
 
                 } else {
 
@@ -691,6 +830,7 @@ class QuotationController extends Controller
                         $password = Str::random(8);
 
                         $reguser = User::create([
+                            'customer_type' => $request->input('customer_type'),
                             'name' => $request->input('name'),
                             'lastname' => $request->input('lastname'),
                             'company_name' => $request->input('company_name'),

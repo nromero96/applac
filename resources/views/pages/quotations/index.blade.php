@@ -23,12 +23,12 @@
                 <div class="statbox widget box box-shadow">
                     <div class="widget-header pb-2 pt-2">
                         <form action="{{ route('quotations.index') }}" method="GET" class="mb-0 form-search" id="form-search">
-                            <div class="row">
+                            <div class="row py-1">
                                 <div class="col-2 col-md-2 align-self-center">
                                     @if(\Auth::user()->hasRole('Customer'))
-                                        <a href="{{ route('quotations.onlineregister') }}" class="btn btn-primary">New Quote</a>
+                                        <a href="{{ route('quotations.onlineregister') }}" class="btn-newquote">New Quote</a>
                                     @else
-                                        <a href="{{ route('quotations.onlineregister') }}" class="btn btn-primary">New Inquiry</a>
+                                        <a href="{{ route('quotations.onlineregister') }}" class="btn-newquote">New Inquiry</a>
                                     @endif
                                 </div>
                                 <div class="col-9 col-md-7 px-sm-0 d-flex align-self-center align-items-center justify-content-end">
@@ -47,7 +47,7 @@
 
                                         <!-- Dropdown source -->
                                         <div class="dropdown">
-                                            <button class="dropdown-toggle rounded-pill form-select ms-0" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="dropdown-toggle rounded-pill form-select ms-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                                 {{ request('source') ? request('source') : 'Source' }}
                                             </button>
                                             <input type="hidden" name="source" id="inputsearchsource" value="{{ request('source') }}">
@@ -99,7 +99,7 @@
 
                                         <!-- Dropdown para el rating con checkboxes -->
                                         <div class="dropdown">
-                                            <button class="form-select rounded-pill ms-1 dropdown-toggle" type="button" id="ratingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="form-select rounded-pill ms-2 dropdown-toggle" type="button" id="ratingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                                 {{ request('rating') ? implode(', ', request('rating')) : 'Rating' }}
                                             </button>
                                             <ul class="dropdown-menu mt-3 pt-2 ps-3 pb-0" aria-labelledby="ratingDropdown">
@@ -142,13 +142,34 @@
                                             </ul>
                                         </div>
 
-                                        <select class="form-select rounded-pill ms-1 me-1 assigned-to" name="assignedto" onchange="this.form.submit()">
-                                            <option value="">{{ __('All Team') }}</option>
-                                            @foreach ($users as $user)
-                                                <option value="{{ $user->id }}" class="@if(Auth::user()->id == $user->id) as-to @endif" @if($user->id == request('assignedto')) selected @endif>{{ $user->name }}@if(Auth::user()->id == $user->id) (Me) @endif</option>
-                                            @endforeach
-                                        </select>
-                                        <input type="date" name="daterequest" class="form-control rounded-pill float-end daterequest" value="{{ request('daterequest') }}" onchange="this.form.submit()">
+                                        <!-- Dropdown Team -->
+                                        <div class="dropdown">
+                                            <button class="dropdown-toggle rounded-pill form-select ms-2 assigned-to" type="button" id="dropdownTeamButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                @foreach ($users as $user)
+                                                    @if(request('assignedto') == $user->id)
+                                                        {{ $user->name }}
+                                                        @if(Auth::user()->id == $user->id) (Me) @endif
+                                                    @elseif(request('assignedto') == '')
+                                                        Member
+                                                    @endif
+                                                @endforeach
+                                            </button>
+                                            <input type="hidden" name="assignedto" id="inputsearchassignedto" value="{{ request('assignedto') }}">
+                                            <ul class="dropdown-menu mt-3" aria-labelledby="dropdownTeamButton">
+                                                <li>
+                                                    <a class="dropdown-item" href="#" onclick="selectTeam('')"><b>All Team</b></a>
+                                                </li>
+                                                @foreach ($users as $user)
+                                                    <li class="@if(Auth::user()->id == $user->id) as-to @endif">
+                                                        <a class="dropdown-item" href="#" onclick="selectTeam('{{ $user->id }}')">
+                                                            <span class="" title="{{ $user->name }}">{{ $user->name }}</span>
+                                                            @if(Auth::user()->id == $user->id) (Me) @endif
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                        <input type="date" name="daterequest" class="form-control rounded-pill ms-2 float-end daterequest" value="{{ request('daterequest') }}" onchange="this.form.submit()">
                                     @endif
 
                                 </div>
@@ -195,14 +216,40 @@
                                         @endif
                                         <th>{{ __('Requested') }}</th>
                                         @if($adminoremployee)
-                                        <th class="p-1">{{ __('Rating') }}</th>
+                                        <th class="p-1">
+                                            {{ __('Rating') }}
+                                            <a href="{{ route('quotations.index', array_merge(request()->query(), ['order-rating' => request('order-rating') == 'asc' ? 'desc' : (request('order-rating') == 'desc' ? '' : 'asc')])) }}" class="badge badge-light-primary p-0 order-rating">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    @if(request('order-rating') == 'desc')
+                                                        <path d="M6 9 L12 15 L18 9"></path> <!-- Chevron hacia abajo -->
+                                                    @elseif(request('order-rating') == 'asc')
+                                                        <path d="M18 15 L12 9 L6 15"></path> <!-- Chevron hacia arriba -->
+                                                    @else
+                                                        <path d="M6 10 L12 4 L18 10"></path> <!-- Chevron neutral superior -->
+                                                        <path d="M6 16 L12 22 L18 16"></path> <!-- Chevron neutral inferior -->
+                                                    @endif
+                                                </svg>
+                                            </a>
+                                        </th>
                                         @endif
-                                        <th class="px-2">{{ __('Status') }}</th>
+                                        <th class="px-2">
+                                            {{ __('Status') }}
+                                            <a href="{{ route('quotations.index', array_merge(request()->query(), ['order-status' => request('order-status') == 'asc' ? 'desc' : (request('order-status') == 'desc' ? '' : 'asc')])) }}" class="badge badge-light-primary p-0 order-status">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    @if(request('order-status') == 'desc')
+                                                        <path d="M6 9 L12 15 L18 9"></path> <!-- Chevron hacia abajo -->
+                                                    @elseif(request('order-status') == 'asc')
+                                                        <path d="M18 15 L12 9 L6 15"></path> <!-- Chevron hacia arriba -->
+                                                    @else
+                                                        <path d="M6 10 L12 4 L18 10"></path> <!-- Chevron neutral superior -->
+                                                        <path d="M6 16 L12 22 L18 16"></path> <!-- Chevron neutral inferior -->
+                                                    @endif
+                                                </svg>
+                                            </a>
+                                        </th>
                                         <th class="px-2">{{ __('Last Update') }}</th>
                                         <th>{{ __('Route') }}</th>
                                         <th>{{ __('Transport') }}</th>
-                                        <th>{{ __('Service Type') }}</th>
-                                        <th>{{ __('Company Name') }}</th>
                                         <th>{{ __('Location') }}</th>
                                         <th>{{ __('Email') }}</th>
                                         @if($adminoremployee)
@@ -230,7 +277,7 @@
                                         @foreach ($quotations as $quotation)
 
                                             @php
-                                                if($quotation->quotation_featured == '1'){
+                                                if($quotation->is_featured){
                                                     $feact_active = 'checked';
                                                     $trfeatured = 'tr-featured';
                                                 }else{
@@ -429,16 +476,6 @@
 
                                                 <td>
                                                     {{ $quotation->quotation_mode_of_transport }}
-                                                </td>
-
-                                                <td>
-                                                    {{ $quotation->quotation_service_type }}
-                                                </td>
-
-                                                <td>
-                                                    <div class="d-flex">
-                                                        <p class="align-self-center mb-0 user-name"> {{ $quotation->user_company_name ?? '-' }} </p>
-                                                    </div>
                                                 </td>
 
                                                 <td>
