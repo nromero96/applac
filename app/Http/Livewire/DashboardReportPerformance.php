@@ -334,6 +334,6 @@ class DashboardReportPerformance extends Component
             default: break;
         }
         $data['title_file'] = $title_file;
-        return Excel::download(new ReportPerformanceExport($data), 'report.xlsx');
+        return Excel::download(new ReportPerformanceExport($data), 'MyLAC_Sales_Report.xlsx');
     }
 }

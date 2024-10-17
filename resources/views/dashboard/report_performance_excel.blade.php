@@ -31,11 +31,11 @@
                 <td>{{ $info['requests_received'] }}</td>
                 <td>{{ $info['pre_qualified'] }}</td>
                 <td>{{ $info['quotes_attended'] }}</td>
-                <td>{{ $info['attending_rate'] }}%</td>
+                <td>{{ $info['attending_rate'] }}</td>
                 <td>{{ $info['avg_attend_time'] }}</td>
                 <td>{{ $info['quotes_sent'] }}</td>
                 <td>{{ $info['avg_quote_time'] }}</td>
-                <td>{{ $info['closing_rate'] }}%</td>
+                <td>{{ $info['closing_rate'] }}</td>
             </tr>
         @endforeach
     </tbody>

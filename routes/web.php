@@ -90,6 +90,12 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
         return 'Cache limpiado con éxito.';
     });
 
+    //Optimize
+    Route::get('/optimize', function () {
+        Artisan::call('optimize');
+        return 'Optimizado.';
+    });
+
     //storage link
     Route::get('/storage-link', function () {
         Artisan::call('storage:link');
