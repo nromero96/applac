@@ -96,6 +96,16 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
         return 'Optimizado.';
     });
 
+    //Cache todo
+    Route::get('/cache-todo', function () {
+        Artisan::call('optimize');
+        Artisan::call('cache:clear');
+        Artisan::call('config:clear');
+        Artisan::call('view:clear');
+        Artisan::call('route:clear');
+        return 'Cache todo.';
+    });
+
     //storage link
     Route::get('/storage-link', function () {
         Artisan::call('storage:link');
