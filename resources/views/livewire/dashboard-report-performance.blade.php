@@ -1,16 +1,26 @@
 <div wire:loading.class='opacity-50 pe-none'>
-    <div class="d-flex">
-        <select class="form-select rounded-pill" name="dash_report_options" id="dash_report_options" wire:model="period">
-            @foreach ($period_list as $key => $value)
-                <option value="{{ $key }}">{{ $value }}</option>
-            @endforeach
-        </select>
-        @if ($period == 'custom')
-            <input class="form-control rounded-pill float-end" type="date" name="dash_report_date_from" id="dash_report_date_from" wire:model="date_from">
-            <input class="form-control rounded-pill float-end" type="date" name="dash_report_date_to" id="dash_report_date_to" wire:model="date_to">
-        @endif
+    <div class="dash_reports_filter">
+        <div class="dash_reports_filter_content">
+            <select class="form-select rounded-pill mb-2" name="dash_report_options" id="dash_report_options" wire:model="period">
+                @foreach ($period_list as $key => $value)
+                    <option value="{{ $key }}">{{ $value }}</option>
+                @endforeach
+            </select>
+            <div class="dash_reports_filter_dates">
+                @if ($period == 'custom')
+                    <div class="__input">
+                        <span>From</span>
+                        <input class="form-control rounded-pill" type="date" name="dash_report_date_from" id="dash_report_date_from" wire:model="date_from">
+                    </div>
+                    <div class="__input">
+                        <span>To</span>
+                        <input class="form-control rounded-pill" type="date" name="dash_report_date_to" id="dash_report_date_to" wire:model="date_to">
+                    </div>
+                @endif
+            </div>
+        </div>
+        <button type="button" class="btn-newquote" wire:click="export_excel()">Export to Excel</button>
     </div>
-    <button type="button" wire:click="export_excel()">Export to Excel</button>
 
     <div class="widget-content widget-content-area br-8 pb-2">
         <div class="table-responsive">

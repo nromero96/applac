@@ -1,1 +1,29 @@
 @use '../widgets/analytics';
+
+.btn-newquote{
+    color: #fff;
+    background-color: #B80000;
+    font-weight: normal;
+    border-radius: 4px;
+    padding: 11px 16px;
+    border: none;
+}
+
+.dash_reports_filter {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    margin-top: 16px;
+    &_content {
+        width: 320px;
+    }
+    &_dates {
+        display: flex;
+        // grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    .__input {
+        width: calc(50% - 4px);
+    }
+}

@@ -34,11 +34,11 @@
                                 <div class="col-9 col-md-7 px-sm-0 d-flex align-self-center align-items-center justify-content-end">
                                     <b class="me-1">Filters</b>
                                     <select name="listforpage" class="form-select rounded-pill form-control-sm ms-0 me-1" id="listforpage" onchange="this.form.submit()">
-                                        <option value="20" {{ request('listforpage') == 20 ? 'selected' : '' }}>20</option>
-                                        <option value="50" {{ request('listforpage') == 50 ? 'selected' : '' }}>50</option>
-                                        <option value="100" {{ request('listforpage') == 100 ? 'selected' : '' }}>100</option>
-                                        <option value="200" {{ request('listforpage') == 200 ? 'selected' : '' }}>200</option>
-                                        <option value="10" {{ request('listforpage') == 10 ? 'selected' : '' }}>10</option>
+                                        <option value="20" {{ $listforpage == 20 ? 'selected' : '' }}>20</option>
+                                        <option value="50" {{ $listforpage == 50 ? 'selected' : '' }}>50</option>
+                                        <option value="100" {{ $listforpage == 100 ? 'selected' : '' }}>100</option>
+                                        <option value="200" {{ $listforpage == 200 ? 'selected' : '' }}>200</option>
+                                        <option value="10" {{ $listforpage == 10 ? 'selected' : '' }}>10</option>
                                     </select>
 
                                     @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Employee'))

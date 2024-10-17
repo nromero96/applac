@@ -14,15 +14,15 @@ use Maatwebsite\Excel\Facades\Excel;
 class DashboardReportPerformance extends Component
 {
     public $period_list = [
-        'all' => 'All time',
         'today' => 'Today',
         'last_7_days' => 'Last 7 days',
         'last_30_days' => 'Last 30 days',
         'last_90_days' => 'Last 90 days',
-        'custom' => 'Custom',
+        'custom' => 'Custom (select range)',
+        'all' => 'All time',
     ];
     public $icon_info = '<svg style="width:16px;heigth:16px;flex-shrink:0;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M11 11h2v6h-2zm0-4h2v2h-2z"></path></svg>';
-    public $period = 'all';
+    public $period = 'last_7_days';
     public $date_from = null;
     public $date_to = null;
 
@@ -319,13 +319,13 @@ class DashboardReportPerformance extends Component
 
             case 'custom':
                 if ($this->date_from and $this->date_to == null) {
-                    $title_file .= ' (' . $date_from_format . ')';
+                    $title_file = 'Custom (' . $date_from_format . ')';
                 } else {
                     if ($this->date_from == null and $this->date_to) {
-                        $title_file .= ' (' . $date_to_format . ')';
+                        $title_file = 'Custom (' . $date_to_format . ')';
                     } else {
                         if ($this->date_from and $this->date_to) {
-                            $title_file .= ' (' . $date_from_format . ' - ' . $date_to_format . ')';
+                            $title_file = 'Custom (' . $date_from_format . ' - ' . $date_to_format . ')';
                         }
                     }
                 }

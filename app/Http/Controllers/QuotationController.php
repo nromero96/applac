@@ -44,7 +44,7 @@ class QuotationController extends Controller
             'scrollspy_offset' => '',
         ];
 
-        $listforpage = request()->query('listforpage') ?? 20;
+        $listforpage = request()->query('listforpage') ?? 50;
         $source = request()->query('source');
         $assignedto = request()->query('assignedto');
         $rating = request()->query('rating');
@@ -202,6 +202,7 @@ class QuotationController extends Controller
 
 
 
+        $data['listforpage'] = $listforpage;
         return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users)->with('listsources', $listsources)->with('listratings', $listratings)->with('totalQuotation', $totalQuotation);
     }
 
