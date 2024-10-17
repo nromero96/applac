@@ -103,7 +103,7 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
         Artisan::call('config:clear');
         Artisan::call('view:clear');
         Artisan::call('route:clear');
-        Artisan::call('livewire:discover');
+        // Artisan::call('livewire:discover');
         return 'Cache todo.';
     });
 
