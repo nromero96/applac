@@ -22,8 +22,8 @@
         @case('dashboard')
             {{-- Dashboard --}}
             <link href="{{ asset('plugins/src/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
-            <link href="{{ asset('assets/css/light/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css" />
-            <link href="{{ asset('assets/css/dark/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('assets/css/light/dashboard/dash_1.css') }}?v={{ config('app.version') }}" rel="stylesheet" type="text/css" />
+            <link href="{{ asset('assets/css/dark/dashboard/dash_1.css') }}?v={{ config('app.version') }}" rel="stylesheet" type="text/css" />
             @break
 
         @case('sales')
