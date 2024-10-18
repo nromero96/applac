@@ -29,7 +29,7 @@
                     <tr>
                         <th></th>
                         <th class="ps-2 pe-2 text-center">
-                            <div class="d-flex align-items-center gap-1">
+                            <div class="d-flex align-items-center gap-1 text-start">
                                 Received
                                 <div data-toggle="tooltip" data-placement="top" title="Total number of leads received within the selected timeframe">
                                     {!! $icon_info !!}
@@ -37,7 +37,7 @@
                             </div>
                         </th>
                         <th class="ps-2 pe-2 text-center">
-                            <div class="d-flex align-items-center gap-1">
+                            <div class="d-flex align-items-center gap-1 text-start">
                                 Pre-qualified
                                 <div data-toggle="tooltip" data-placement="top" title="Number of 3-5 star leads identified by our lead scoring system">
                                     {!! $icon_info !!}
@@ -45,7 +45,7 @@
                             </div>
                         </th>
                         <th class="ps-2 pe-2 text-center">
-                            <div class="d-flex align-items-center gap-1">
+                            <div class="d-flex align-items-center gap-1 text-start">
                                 Attended
                                 <div data-toggle="tooltip" data-placement="top" title="Pre-qualified leads that have been followed up by a sales representative">
                                     {!! $icon_info !!}
@@ -53,7 +53,7 @@
                             </div>
                         </th>
                         <th class="ps-2 pe-2 text-center">
-                            <div class="d-flex align-items-center gap-1">
+                            <div class="d-flex align-items-center gap-1 text-start">
                                 Attending Rate
                                 <div data-toggle="tooltip" data-placement="top" title="Percentage of pre-qualified leads that have received follow-up from a sales representative">
                                     {!! $icon_info !!}
@@ -61,7 +61,7 @@
                             </div>
                         </th>
                         <th class="ps-2 pe-2 text-center">
-                            <div class="d-flex align-items-center gap-1">
+                            <div class="d-flex align-items-center gap-1 text-start">
                                 Avg. Attend Time
                                 <div data-toggle="tooltip" data-placement="top" title="Average time taken for a sales representative to initiate contact with a pre-qualified lead">
                                     {!! $icon_info !!}
@@ -69,7 +69,7 @@
                             </div>
                         </th>
                         <th class="ps-2 pe-2 text-center">
-                            <div class="d-flex align-items-center gap-1">
+                            <div class="d-flex align-items-center gap-1 text-start">
                                 Quotes sent
                                 <div data-toggle="tooltip" data-placement="top" title="Number of quotes sent to potential clients">
                                     {!! $icon_info !!}
@@ -77,7 +77,7 @@
                             </div>
                         </th>
                         <th class="ps-2 pe-2 text-center">
-                            <div class="d-flex align-items-center gap-1">
+                            <div class="d-flex align-items-center gap-1 text-start">
                                 Avg. Quote Time
                                 <div data-toggle="tooltip" data-placement="top" title="Average time taken to send a quote after an inquiry is received">
                                     {!! $icon_info !!}
@@ -85,7 +85,7 @@
                             </div>
                         </th>
                         <th class="ps-2 pe-2 text-center">
-                            <div class="d-flex align-items-center gap-1">
+                            <div class="d-flex align-items-center gap-1 text-start">
                                 Closing Rate
                                 <div data-toggle="tooltip" data-placement="top" title="Percentage of quotes that converted into won business">
                                     {!! $icon_info !!}
