@@ -26,10 +26,10 @@
         <div class="items items-header-section">
             <div class="item-content">
                 <div class="d-inline-flex">
-                    <h4>Code</h4>
+                    <h4>Org. Code</h4>
                 </div>
                 <div class="user-email">
-                    <h4>Name</h4>
+                    <h4>Organization Name</h4>
                 </div>
                 <div class="user-location">
                     <h4 style="margin-left: 0;">Addresses</h4>
@@ -52,11 +52,15 @@
                             <p>{{ $org->name }}</p>
                         </div>
                         <div class="user-location">
-                            <ul>
-                                @foreach ($org->addresses as $address)
-                                    <li>{{ $address }}</li>
-                                @endforeach
-                            </ul>
+                            @if ($org->addresses != '')
+                                <ul>
+                                    @foreach ($org->addresses as $address)
+                                        <li>{{ $address }}</li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p>-</p>
+                            @endif
                         </div>
                         <div class="action-btn">
                             <a href="{{ route('organization.show', $org->id) }}">

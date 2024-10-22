@@ -17,11 +17,10 @@ class OrganizationForm extends Component
 
     public $rules = [
         'name' => 'required|max:255',
-        'addresses' => 'required',
         'addresses.*' => 'required',
         'contacts' => 'required',
         'contacts.*.name' => 'required|max:255',
-        'contacts.*.job_title' => 'required|max:255',
+        'contacts.*.job_title' => 'nullable|max:255',
         'contacts.*.email' => 'required|max:255|email',
         'contacts.*.phone' => 'required|max:20',
         'contacts.*.fax' => 'nullable|max:20',
@@ -42,7 +41,11 @@ class OrganizationForm extends Component
         if ($this->org_editing) {
             $this->code = $this->org_editing->code;
             $this->name = $this->org_editing->name;
-            $this->addresses = $this->org_editing->addresses;
+            if ($this->org_editing->addresses == '') {
+                $this->addresses = [];
+            } else {
+                $this->addresses = $this->org_editing->addresses;
+            }
             $this->contacts = $this->org_editing->contacts->toArray();
             $this->rules['code'] = 'required|max:20|unique:organizations,id,'.$this->org_editing->id;
         } else {
@@ -58,6 +61,9 @@ class OrganizationForm extends Component
     public function store(){
         $data = $this->validate($this->rules, [], $this->attributes);
 
+        if (sizeof($this->addresses) == 0) {
+            $data['addresses'] = '';
+        }
         $org = Organization::create($data);
         $org->contacts()->createMany($this->contacts);
 
