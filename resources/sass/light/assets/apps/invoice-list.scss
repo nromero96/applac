@@ -342,8 +342,21 @@ table tr td{
     margin-bottom: 0px;
   }
 
+.listforpage{
+    max-width: 70px;
+    padding: 5.5px 10px !important;
+}
+
 .daterequest{
-    max-width: 120px;
+  padding: 5.5px 30px 5.5px 10px;
+  max-width: 180px;
+  font-size: 13px;
+  background-image: url('/assets/img/calendar-icon.svg');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 15px;
+
+
 }
 
 a.dropdown-item:hover {
@@ -364,6 +377,7 @@ a.dropdown-item:hover {
 }
 
 .btn-newquote{
+    display: inline-block;
     color: #fff !important;
     background-color: #b80000 !important;
     border-color: #b80000 !important;
@@ -375,35 +389,40 @@ a.dropdown-item:hover {
     padding: 6.59px 9px;
 }
 
+.btn-clearfilter{
+    border-radius: 50px;
+    background-color: #F8F8F8;
+    font-weight: bold;
+    padding: 4px 10px 4px 8px;
+  svg{
+    width: 17px;
+    height: 17px;
+    margin-top: -3px;
+    margin-right: -2px;
+  }
+
+  span{
+    font-size: 13px;
+  }
+
+}
+
 .form-search{
 
     .dropdown-toggle{
         padding: 4px 25px 4px 10px;
-        width: 90px;
+        max-width: 140px;
         text-align: start;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    #listforpage{
-        padding: 5.5px 10px;
-        max-width: 64px;
-    }
-
     .assigned-to{
-        padding: 4px 20px 4px 10px;
-        width: 102px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
-
-    .daterequest{
-        padding: 4px 10px;
-        max-width: 150px;
-    }
-
 }
 
 .source-badge{

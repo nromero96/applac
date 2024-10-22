@@ -24,6 +24,8 @@ use App\Models\GuestUser;
 use App\Models\User;
 use App\Models\Setting;
 
+use Carbon\Carbon;
+
 use App\Models\FeaturedQuotation;
 
 use Illuminate\Support\Facades\Auth;
@@ -125,7 +127,10 @@ class QuotationController extends Controller
 
             // Aplicar la fecha si está presente
             if (!empty($daterequest)) {
-                $query->whereDate('quotations.created_at', $daterequest);
+                $dates = explode(' - ', $daterequest);
+                $startDate = Carbon::createFromFormat('Y-m-d', $dates[0])->startOfDay();
+                $endDate = Carbon::createFromFormat('Y-m-d', $dates[1])->endOfDay();
+                $query->whereBetween('quotations.created_at', [$startDate, $endDate]);
             }
 
             // Aplicar la búsqueda si hay un término de búsqueda
@@ -196,6 +201,9 @@ class QuotationController extends Controller
             DB::raw('FLOOR(quotations.rating) as rating'),  // Redondear hacia abajo
             DB::raw('COUNT(quotations.id) as total')
         )
+        ->whereNotNull('quotations.rating') // Excluir valores nulos
+        ->where('quotations.rating', '>=', 0) // Asegurarse de que sea mayor o igual a 0
+        ->where('quotations.rating', '<=', 5) // Asegurarse de que sea menor o igual a 5
         ->groupBy(DB::raw('FLOOR(quotations.rating)'))
         ->orderBy('rating', 'desc')
         ->get();
