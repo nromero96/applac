@@ -44,6 +44,12 @@ if (!function_exists('setTitle')) :
         elseif ($page_name === 'suppliershow'):
             echo __('Show Suppliers') . $admin_name;
 
+        // organizations
+        elseif ($page_name === 'organizations'):
+            echo __('Organizations') . $admin_name;
+        elseif ($page_name === 'organizationscreate'):
+            echo __('Organization Create') . $admin_name;
+
         elseif ($page_name === 'customers') :
             echo __('Customers') . $admin_name;
         // Apps
@@ -52,7 +58,7 @@ if (!function_exists('setTitle')) :
         elseif ($page_name === 'notes') :
             echo __('Notes') . $admin_name;
 
-        
+
         elseif ($page_name === 'chat') :
             echo 'Chat Application ' . $admin_name;
         elseif ($page_name === 'invoice') :
@@ -151,7 +157,7 @@ if (!function_exists('setTitle')) :
             echo 'Typography ' . $admin_name;
         elseif ($page_name === 'font_icons') :
             echo 'Font Icon ' . $admin_name;
-        
+
         // Forms
         elseif ($page_name === 'basic') :
             echo 'Bootstrap Forms ' . $admin_name;
@@ -267,9 +273,9 @@ endif;
 
 if (!function_exists('set_breadcrumb')) {
     function set_breadcrumb($page_name, $category_name) {
-        
+
         $category = ucfirst($category_name);
-        
+
         $removeUnderscore = str_replace('_', ' ', $page_name);
 
         $removeDash = str_replace('-', ' ', $removeUnderscore);
@@ -472,7 +478,7 @@ if (!function_exists('set_breadcrumb')) {
         elseif ($page_name === 'font_icons') :
             // echo 'Font Icon ' . $admin_name;
             echo '<li class="breadcrumb-item"><a href="javascript:void(0);">'. $page .'</a></li>';
-        
+
         // Forms
         elseif ($page_name === 'basic') :
             // echo 'Bootstrap Forms ' . $admin_name;

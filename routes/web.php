@@ -13,6 +13,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\CountryStateController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UsefullinkController;
 
@@ -150,6 +151,13 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
 
     //customers
     Route::resource('customers', CustomerController::class)->names('customers');
+
+    // Organizations
+    Route::get('/organizations', [OrganizationController::class, 'index'])->name('organization.index');
+    Route::get('/organizations/create', [OrganizationController::class, 'create'])->name('organization.create');
+    Route::get('/organizations/{organization}/edit', [OrganizationController::class, 'edit'])->name('organization.edit');
+    Route::get('/organizations/{organization}/show', [OrganizationController::class, 'show'])->name('organization.show');
+    // Route::get('/organizations/import', [OrganizationController::class, 'import'])->name('organization.import');
 
     //calendar
     Route::get('calendar', [CalendarController::class, 'index'])->name('calendars.index');

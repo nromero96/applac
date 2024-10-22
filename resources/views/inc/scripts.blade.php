@@ -80,6 +80,19 @@
             <script src="{{ asset('assets/js/apps/supplier-show.js') }}"></script>
             @break
 
+        @case('organizations')
+            <script src="{{ asset('plugins/src/jquery-ui/jquery-ui.min.js') }}"></script>
+            <script src="{{ asset('plugins/src/tagify/tagify.min.js') }}"></script>
+            <script src="{{ asset('assets/js/apps/organization.js') }}?v={{ config('app.version') }}"></script>
+            @break
+
+        @case('organizationsshow')
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.js"></script>
+            <script src="{{ asset('plugins/src/tagify/tagify.min.js') }}"></script>
+            <script src="{{ asset('assets/js/apps/organization.js') }}?v={{ config('app.version') }}"></script>
+            @break
+
         @case('customers')
             <script src="{{ asset('plugins/src/jquery-ui/jquery-ui.min.js') }}"></script>
             <script src="{{ asset('assets/js/apps/contact.js') }}?v={{ config('app.version') }}"></script>
