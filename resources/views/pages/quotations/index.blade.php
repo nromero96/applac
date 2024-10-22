@@ -20,26 +20,34 @@
                         {{ session('error') }}
                     </div>
                 @endif
+
+                <div class="row mb-3">
+                    <div class="col-4 col-md-6">
+                        @if(\Auth::user()->hasRole('Customer'))
+                            <a href="{{ route('quotations.onlineregister') }}" class="btn-newquote">New Quote</a>
+                        @else
+                            <a href="{{ route('quotations.onlineregister') }}" class="btn-newquote">New Inquiry</a>
+                        @endif
+                    </div>
+                    <div class="col-8 col-md-6 d-flex align-self-center align-items-center justify-content-end">
+                        <select name="listforpage" class="form-select rounded-pill form-control-sm ms-0 me-1 listforpage" id="listforpage" >
+                            <option value="20" {{ $listforpage == 20 ? 'selected' : '' }}>20</option>
+                            <option value="50" {{ $listforpage == 50 ? 'selected' : '' }}>50</option>
+                            <option value="100" {{ $listforpage == 100 ? 'selected' : '' }}>100</option>
+                            <option value="200" {{ $listforpage == 200 ? 'selected' : '' }}>200</option>
+                            <option value="10" {{ $listforpage == 10 ? 'selected' : '' }}>10</option>
+                        </select>
+                        <input type="text" name="daterequest" id="daterequest" class="form-control rounded-pill ms-2 float-end daterequest" value="{{ request('daterequest') }}" placeholder="Date/Range" autocomplete="off">
+                    </div>
+                </div>
+
                 <div class="statbox widget box box-shadow">
                     <div class="widget-header pb-2 pt-2">
                         <form action="{{ route('quotations.index') }}" method="GET" class="mb-0 form-search" id="form-search">
                             <div class="row py-1">
-                                <div class="col-2 col-md-2 align-self-center">
-                                    @if(\Auth::user()->hasRole('Customer'))
-                                        <a href="{{ route('quotations.onlineregister') }}" class="btn-newquote">New Quote</a>
-                                    @else
-                                        <a href="{{ route('quotations.onlineregister') }}" class="btn-newquote">New Inquiry</a>
-                                    @endif
-                                </div>
-                                <div class="col-9 col-md-7 px-sm-0 d-flex align-self-center align-items-center justify-content-end">
+                                <div class="col-12 col-md-9 mb-2 mb-sm-0 d-flex align-self-center align-items-center justify-content-start">
                                     <b class="me-1">Filters</b>
-                                    <select name="listforpage" class="form-select rounded-pill form-control-sm ms-0 me-1" id="listforpage" onchange="this.form.submit()">
-                                        <option value="20" {{ $listforpage == 20 ? 'selected' : '' }}>20</option>
-                                        <option value="50" {{ $listforpage == 50 ? 'selected' : '' }}>50</option>
-                                        <option value="100" {{ $listforpage == 100 ? 'selected' : '' }}>100</option>
-                                        <option value="200" {{ $listforpage == 200 ? 'selected' : '' }}>200</option>
-                                        <option value="10" {{ $listforpage == 10 ? 'selected' : '' }}>10</option>
-                                    </select>
+                                    
 
                                     @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Employee'))
 
@@ -108,10 +116,10 @@
                                                         $fullStars = floor($rating->rating); // Redondeo hacia abajo para obtener estrellas completas
                                                     @endphp
 
-                                                    @if($fullStars >= 1 && $fullStars <= 5)
+                                                    @if($fullStars >= 0 && $fullStars <= 5)
                                                         <li>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="rating[]" value="{{ $rating->rating }}" id="rating{{ $rating->rating}} " {{ in_array($rating->rating, request('rating', [])) ? 'checked' : '' }} onchange="this.form.submit()">
+                                                                <input class="form-check-input" type="checkbox" name="rating[]" value="{{ $rating->rating }}" id="rating{{ $rating->rating}} " {{ in_array($rating->rating, request('rating', [])) ? 'checked' : '' }}>
                                                                 <label class="form-check-label qtrating" for="rating{{ $rating->rating }}">
                                                                     {{-- Generar estrellas llenas y vacías --}}
                                                                     @for ($i = 0; $i < 5; $i++)
@@ -144,15 +152,17 @@
 
                                         <!-- Dropdown Team -->
                                         <div class="dropdown">
-                                            <button class="dropdown-toggle rounded-pill form-select ms-2 assigned-to" type="button" id="dropdownTeamButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                @foreach ($users as $user)
-                                                    @if(request('assignedto') == $user->id)
-                                                        {{ $user->name }}
-                                                        @if(Auth::user()->id == $user->id) (Me) @endif
-                                                    @elseif(request('assignedto') == '')
-                                                        Member
-                                                    @endif
-                                                @endforeach
+                                            <button class="dropdown-toggle rounded-pill form-select ms-3 assigned-to" type="button" id="dropdownTeamButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                @if(request('assignedto') == '')
+                                                    Member
+                                                @else
+                                                    @foreach ($users as $user)
+                                                        @if(request('assignedto') == $user->id)
+                                                            {{ $user->name }}
+                                                            @if(Auth::user()->id == $user->id) (Me) @endif
+                                                        @endif
+                                                    @endforeach
+                                                @endif
                                             </button>
                                             <input type="hidden" name="assignedto" id="inputsearchassignedto" value="{{ request('assignedto') }}">
                                             <ul class="dropdown-menu mt-3" aria-labelledby="dropdownTeamButton">
@@ -169,7 +179,18 @@
                                                 @endforeach
                                             </ul>
                                         </div>
-                                        <input type="date" name="daterequest" class="form-control rounded-pill ms-2 float-end daterequest" value="{{ request('daterequest') }}" onchange="this.form.submit()">
+
+                                        @if(request('assignedto') != '' || request('source') != '' || request('rating') != '')
+                                            <a href="{{ route('quotations.index') }}" class="ms-4 text-primary btn-clearfilter">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M18 6 6 18"></path>
+                                                    <path d="m6 6 12 12"></path>
+                                                </svg>
+                                                <span>Clear filters</span>
+                                            </a>
+                                        @endif
+                                        
+                                        
                                     @endif
 
                                 </div>

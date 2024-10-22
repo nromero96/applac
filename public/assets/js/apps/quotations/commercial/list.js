@@ -137,6 +137,48 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+
+    var start = moment().subtract(29, 'days');
+var end = moment();
+
+// Función para actualizar el campo con las fechas seleccionadas
+function cb(start, end) {
+    $('#daterequest').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+}
+
+// Inicializar el daterangepicker
+$('#daterequest').daterangepicker({
+    startDate: start,
+    endDate: end,
+    autoUpdateInput: false, // No actualizar automáticamente el campo de entrada
+    locale: {
+        format: 'YYYY-MM-DD', // Establecer el formato de la fecha
+        cancelLabel: 'Clear' // Texto del botón para limpiar la selección
+    },
+    ranges: {
+       'Today': [moment(), moment()],
+       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+       'This Month': [moment().startOf('month'), moment().endOf('month')],
+       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+    }
+}, cb);
+
+// Cuando se seleccionan fechas, actualizar el input con el formato adecuado
+$('#daterequest').on('apply.daterangepicker', function(ev, picker) {
+    $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+});
+
+// Limpiar el campo y restaurar el placeholder al hacer clic en "Clear"
+$('#daterequest').on('cancel.daterangepicker', function(ev, picker) {
+    $(this).val(''); // Limpiar el campo
+    $(this).attr('placeholder', 'Date/Range'); // Restaurar el placeholder
+});
+
+
+
+
 });
 
 function selectSource(source) {
@@ -160,3 +202,68 @@ function selectTeam(assignedto) {
     form.submit();
 }
 
+function submitSearch() {
+    // Obtener la URL actual y sus parámetros
+    const currentUrl = new URL(window.location.href);
+    const formData = new URLSearchParams(currentUrl.search); // Crear un nuevo objeto URLSearchParams con los parámetros actuales
+
+    // Obtener el valor seleccionado de listforpage
+    const listforpage = document.getElementById('listforpage').value;
+    const daterequest = document.getElementById('daterequest').value;
+
+    // Añadir o actualizar listforpage y daterequest a formData
+    formData.set('listforpage', listforpage); 
+    formData.set('daterequest', daterequest); 
+
+    // Limpiar los checkboxes anteriores
+    formData.delete('rating[]');
+
+    // Obtener los valores de los inputs dentro del formulario y añadirlos a formData
+    const inputs = document.getElementById('form-search').querySelectorAll('input');
+    inputs.forEach(input => {
+        if (input.type === 'checkbox') {
+            // Manejar checkboxes: si están seleccionados, añadir su valor
+            if (input.checked) {
+                // Si el checkbox es parte de un array, usamos 'append' para agregarlo
+                formData.append(input.name, input.value);
+            }
+        } else {
+            // Para otros tipos de input, usamos 'set' para asegurarnos de que se actualizan los valores
+            formData.set(input.name, input.value);
+        }
+    });
+
+    // Redirigir a la URL con los parámetros actualizados
+    window.location.href = `${document.getElementById('form-search').action}?${formData.toString()}`;
+}
+
+// Añadir eventos de cambio a los inputs dentro del formulario
+document.getElementById('form-search').querySelectorAll('input').forEach(input => {
+    input.addEventListener('change', () => {
+        submitSearch();
+    });
+});
+
+// Añadir evento de cambio al input adicional
+document.getElementById('listforpage').addEventListener('change', () => {
+    submitSearch();
+});
+
+// Añadir evento de cambio al input adicional change date
+document.getElementById('daterequest').addEventListener('change', () => {
+    submitSearch();
+});
+
+// Añadir evento de cambio al input adicional change date
+$('#daterequest').on('apply.daterangepicker', function(ev, picker) {
+    submitSearch();
+});
+
+// cunado haga click en clear del datepicker limpiar el campo
+$('#daterequest').on('cancel.daterangepicker', function(ev, picker) {
+    //de la url limpiar el campo daterequest pero mantener los demas parametros
+    const currentUrl = new URL(window.location.href);
+    const formData = new URLSearchParams(currentUrl.search); // Crear un nuevo objeto URLSearchParams con los parámetros actuales
+    formData.delete('daterequest');
+    window.location.href = `${document.getElementById('form-search').action}?${formData.toString()}`;
+});

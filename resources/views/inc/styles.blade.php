@@ -82,7 +82,7 @@
 
         @case('quotations')
             {{-- All quotes --}}
-
+            <link rel="stylesheet" type="text/css" href="{{asset('plugins/src/daterangepicke/daterangepicker.css')}}">
             <link rel="stylesheet" type="text/css" href="{{asset('assets/css/light/apps/invoice-list.css')}}?v={{ config('app.version') }}">
 
             <link rel="stylesheet" type="text/css" href="{{asset('assets/css/dark/apps/invoice-list.css')}}?v={{ config('app.version') }}">
