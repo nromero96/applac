@@ -81,7 +81,10 @@
                                                             } elseif($source->user_source == 'Google Search') {
                                                                 $class_sb_sch = 'sb-color-seo';
                                                                 $text_sb_sch = 'seo';
-                                                            } elseif($source->user_source == 'Linkedin' || $source->user_source == 'Social Media'){
+                                                            } elseif($source->user_source == 'Linkedin'){
+                                                                $class_sb_sch = 'sb-color-lnk';
+                                                                $text_sb_sch = 'lnk';
+                                                            } elseif($source->user_source == 'Social Media'){
                                                                 $class_sb_sch = 'sb-color-soc';
                                                                 $text_sb_sch = 'soc';
                                                             } elseif($source->user_source == 'Referral'){
@@ -343,7 +346,10 @@
                                                             } elseif($quotation->user_source == 'Google Search') {
                                                                 $class_sb = 'sb-color-seo';
                                                                 $text_sb = 'seo';
-                                                            } elseif($quotation->user_source == 'Linkedin' || $quotation->user_source == 'Social Media'){
+                                                            } elseif($source->user_source == 'Linkedin'){
+                                                                $class_sb_sch = 'sb-color-lnk';
+                                                                $text_sb_sch = 'lnk';
+                                                            } elseif($quotation->user_source == 'Social Media'){
                                                                 $class_sb = 'sb-color-soc';
                                                                 $text_sb = 'soc';
                                                             } elseif($quotation->user_source == 'Referral'){

@@ -283,6 +283,18 @@ class QuotationController extends Controller
         ->where('quotations.id', $id)
         ->first();
 
+        //verificar si la cotización es Unqualified
+        if($quotation->status == 'Unqualified'){
+            //buscar el reason de la nota de estado Unqualified
+            $reason_unqualified = QuotationNote::where('quotation_id', $id)
+            ->select('reason')
+            ->orderBy('id', 'desc')
+            ->first();
+            $reason_unqualified = $reason_unqualified->reason;
+        } else {
+            $reason_unqualified = '';
+        }
+
         //Verificar si hay una nota de estado de cotización type rating
         $is_ratinginnote = QuotationNote::where('quotation_id', $id)
         ->where('type', 'rating')
@@ -305,7 +317,7 @@ class QuotationController extends Controller
 
         //verificate if quotation is assigned to user logged or is Administator
         if($quotation->assigned_user_id == auth()->id() || auth()->user()->hasRole('Administrator') || ($quotation->customer_user_id == auth()->id()  && auth()->user()->hasRole('Customer')) ){
-            return view('pages.quotations.show')->with($data)->with('quotation', $quotation)->with('is_ratinginnote', $is_ratinginnote)->with('cargo_details', $cargo_details)->with('quotation_documents', $quotation_documents)->with('users', $users);
+            return view('pages.quotations.show')->with($data)->with('quotation', $quotation)->with('is_ratinginnote', $is_ratinginnote)->with('cargo_details', $cargo_details)->with('quotation_documents', $quotation_documents)->with('users', $users)->with('reason_unqualified', $reason_unqualified);
         }else{
             return redirect()->route('quotations.index')->with('error', 'You do not have permission to view this quote.');
         }

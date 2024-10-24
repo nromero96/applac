@@ -763,14 +763,13 @@
                                                 @else
                                                     <label for="source" class="form-label mb-0">{{ __('How do you know about us?') }}</label>
                                                         @auth
-                                                            <input type="text" name="source" value="I am an existing customer" id="source" class="form-control" readonly>
+                                                            <input type="text" name="source" value="{{ Auth::user()->source }}" id="source" class="form-control" readonly>
                                                         @else
                                                             <select name="source" id="source" class="form-select">
                                                                 <option value="">{{ __('Select...') }}</option>
-                                                                <option value="I am an existing customer">{{ __('I am an existing customer') }}</option>
                                                                 <option value="Google Search">{{ __('Google Search') }}</option>
                                                                 <option value="Linkedin">{{ __('Linkedin') }}</option>
-                                                                <option value="Social Media">{{ __('Social Media') }}</option>
+                                                                <option value="Social Media">{{ __('Social Media (Facebook, Instagram, Youtube)') }}</option>
                                                                 <option value="Referral">{{ __('Referral') }}</option>
                                                                 <option value="Other">{{ __('Other') }}</option>
                                                             </select>

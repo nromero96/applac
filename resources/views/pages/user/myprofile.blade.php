@@ -72,10 +72,9 @@
                                 <label for="source" class="form-label mb-0 fw-bold">{{__("How do you know about us?")}}</label>
                                 <select name="source" id="source" class="form-select">
                                     <option value="" @php if($user->source == ''){ echo 'selected'; } @endphp >{{ __('Select...') }}</option>
-                                    <option value="I am an existing customer" @php if($user->source == 'I am an existing customer'){ echo 'selected'; } @endphp>{{ __('I am an existing customer') }}</option>
                                     <option value="Google Search" @php if($user->source == 'Google Search'){ echo 'selected'; } @endphp>{{ __('Google Search') }}</option>
                                     <option value="Linkedin" @php if($user->source == 'Linkedin'){ echo 'selected'; } @endphp>{{ __('Linkedin') }}</option>
-                                    <option value="Social Media" @php if($user->source == 'Social Media'){ echo 'selected'; } @endphp>{{ __('Social Media') }}</option>
+                                    <option value="Social Media" @php if($user->source == 'Social Media'){ echo 'selected'; } @endphp>{{ __('Social Media (Facebook, Instagram, Youtube)') }}</option>
                                     <option value="Referral" @php if($user->source == 'Referral'){ echo 'selected'; } @endphp>{{ __('Referral') }}</option>
                                     <option value="Other" @php if($user->source == 'Other'){ echo 'selected'; } @endphp>{{ __('Other') }}</option>
                                 </select>
