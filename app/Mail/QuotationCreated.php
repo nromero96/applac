@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 //model country
 use App\Models\Country;
 use App\Models\State;
+use App\Models\QuotationNote;
 
 class QuotationCreated extends Mailable{
     use Queueable, SerializesModels;
@@ -107,6 +108,40 @@ class QuotationCreated extends Mailable{
                     'mime_type' => 'application/pdf',
                 ];
             }
+
+            // Actualizar el status de la cotización
+            $this->quotation->update([
+                'status' => 'Quote Sent',
+                'updated_at' => now(),
+            ]);
+
+            // Registrar nota en la tabla quotation_notes QuotationNote
+            QuotationNote::create([
+                'quotation_id' => $this->quotation->id,
+                'type' => 'inquiry_status',
+                'action' => "'Pending' to 'Quote Sent'",
+                'reason' => '',
+                'note' => 'Auto-quoted - RORO for Personal Vehicles',
+                'user_id' => '1',
+            ]);
+
+            // Actualizar el status de la cotización
+            $this->quotation->update([
+                'result' => 'Under Review',
+                'updated_at' => now(),
+            ]);
+
+            // Registrar nota en la tabla quotation_notes QuotationNote
+            QuotationNote::create([
+                'quotation_id' => $this->quotation->id,
+                'type' => 'result_status',
+                'action' => "'' to 'Under Review'",
+                'reason' => '',
+                'note' => 'Result status auto-updated',
+                'user_id' => '1',
+            ]);
+
+
         } else if($this->quotation->origin_country_id == '231' && $this->quotation->destination_country_id == '55' ){
             $contviewblade = 'emails.quotation_created_usa_to_cuba';
         } else if($this->quotation->origin_country_id != '231' && $this->quotation->destination_country_id == '55' ){

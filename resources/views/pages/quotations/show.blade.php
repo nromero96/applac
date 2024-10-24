@@ -683,25 +683,26 @@
                                     <div class="mb-2">
                                         <label for="action" class="form-label mb-0">{{ __('Change status to') }}</label>
                                         <select name="action" id="action" class="form-select" required>
-                                            <option value="" selected>{{ __('Select status') }}</option>
-                                            <option value="Pending" @if($quotation->status == 'Pending') disabled @endif>Pending</option>
-                                            <option value="Qualifying" @if($quotation->status == 'Qualifying') disabled @endif>Qualifying</option>
-                                            <option value="Processing" @if($quotation->status == 'Processing') disabled @endif>Processing</option>
-                                            <option value="Quote Sent" @if($quotation->status == 'Quote Sent') disabled @endif>Quote Sent</option>
-                                            <option value="Unqualified" @if($quotation->status == 'Unqualified') disabled @endif>Unqualified</option>
+                                            <option value="">{{ __('Select status') }} </option>
+                                            <option value="Pending" @if($quotation->status == 'Pending') selected disabled  @endif>Pending</option>
+                                            <option value="Qualifying" @if($quotation->status == 'Qualifying') selected disabled @endif>Qualifying</option>
+                                            <option value="Processing" @if($quotation->status == 'Processing') selected disabled @endif>Processing</option>
+                                            <option value="Quote Sent" @if($quotation->status == 'Quote Sent') selected disabled @endif>Quote Sent</option>
+                                            <option value="Unqualified" @if($quotation->status == 'Unqualified') selected disabled @endif>Unqualified</option>
                                         </select>
                                     </div>
-                                    <div class="mb-2 d-none" id="dv_reason">
+                                    <div class="mb-2 @if($reason_unqualified) @else d-none @endif" id="dv_reason">
                                         <label for="reason" class="form-label mb-0">{{ __('Reason to decline') }} <span class="text-danger">*</span></label>
                                         <select name="reason" id="reason" class="form-select">
-                                            <option value="" selected>{{ __('Select and option') }}</option>
-                                            <option value="3PL located in CA / US quoting from CA / US" @if($quotation->reason == '3PL located in CA / US quoting from CA / US') selected @endif>3PL located in CA / US quoting from CA / US</option>
-                                            <option value="3PL located in foreign country quoting from foreign to CA / US" @if($quotation->reason == '3PL located in foreign country quoting from foreign to CA / US') selected @endif>3PL located in foreign country quoting from foreign to CA / US</option>
-                                            <option value="Business requesting a quote out-of-scope" @if($quotation->reason == 'Business requesting a quote out-of-scope') selected @endif>Business requesting a quote out-of-scope</option>
-                                            <option value="Foreign business quoting for triangular shipment" @if($quotation->reason == 'Foreign business quoting for triangular shipment') selected @endif>Foreign business quoting for triangular shipment</option>
-                                            <option value="CA/US business quoting from China to LATAM / NA (Small Qty)" @if($quotation->reason == 'CA/US business quoting from China to LATAM / NA (Small Qty)') selected @endif>CA/US business quoting from China to LATAM / NA (Small Qty)</option>
-                                            <option value="Personal effects / Household goods" @if($quotation->reason == 'Personal effects / Household goods') selected @endif>Personal effects / Household goods</option>
-                                            <option value="Business consulting" @if($quotation->reason == 'Business consulting') selected @endif>Business consulting</option>
+                                            <option value="">{{ __('Select and option') }}</option>
+                                            <option value="3PL located in CA / US quoting from CA / US" @if($reason_unqualified == '3PL located in CA / US quoting from CA / US') selected disabled @endif>3PL located in CA / US quoting from CA / US</option>
+                                            <option value="3PL located in foreign country quoting from foreign to CA / US" @if($reason_unqualified == '3PL located in foreign country quoting from foreign to CA / US') selected disabled @endif>3PL located in foreign country quoting from foreign to CA / US</option>
+                                            <option value="Business requesting a quote out-of-scope" @if($reason_unqualified == 'Business requesting a quote out-of-scope') selected disabled @endif>Business requesting a quote out-of-scope</option>
+                                            <option value="Foreign business quoting for triangular shipment" @if($reason_unqualified == 'Foreign business quoting for triangular shipment') selected disabled @endif>Foreign business quoting for triangular shipment</option>
+                                            <option value="CA/US business quoting from China to LATAM / NA (Small Qty)" @if($reason_unqualified == 'CA/US business quoting from China to LATAM / NA (Small Qty)') selected disabled @endif>CA/US business quoting from China to LATAM / NA (Small Qty)</option>
+                                            <option value="Personal effects / Household goods" @if($reason_unqualified == 'Personal effects / Household goods') selected disabled @endif>Personal effects / Household goods</option>
+                                            <option value="Business consulting" @if($reason_unqualified == 'Business consulting') selected disabled @endif>Business consulting</option>
+                                            <option value="Other" @if($reason_unqualified == 'Other') selected disabled @endif>Other</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
@@ -746,10 +747,10 @@
                                     <div class="mb-2">
                                         <label for="action" class="form-label mb-0">{{ __('Change status to') }}</label>
                                         <select name="result_action" id="result_action" class="form-select">
-                                            <option value="" selected>{{ __('Select status') }}</option>
-                                            <option value="Won" @if($quotation->result == 'Won') disabled @endif>Won</option>
-                                            <option value="Lost" @if($quotation->result == 'Lost') disabled @endif>Lost</option>
-                                            <option value="Under Review" @if($quotation->result == 'Under Review') disabled @endif>Under Review</option>
+                                            <option value="">{{ __('Select status') }}</option>
+                                            <option value="Won" @if($quotation->result == 'Won') selected disabled @endif>Won</option>
+                                            <option value="Lost" @if($quotation->result == 'Lost') selected disabled @endif>Lost</option>
+                                            <option value="Under Review" @if($quotation->result == 'Under Review') selected disabled @endif>Under Review</option>
                                         </select>
                                     </div>
                                     <div class="mb-3">
