@@ -3,6 +3,8 @@
 
 @section('content')
 
+<livewire:new-inquiry />
+
 <div class="layout-px-spacing">
 
     <div class="middle-content container-xxl p-0">
@@ -26,7 +28,7 @@
                         @if(\Auth::user()->hasRole('Customer'))
                             <a href="{{ route('quotations.onlineregister') }}" class="btn-newquote">New Quote</a>
                         @else
-                            <a href="{{ route('quotations.onlineregister') }}" class="btn-newquote">New Inquiry</a>
+                            <a id="btn-new-interl-inquiry" class="btn-newquote">New Inquiry</a>
                         @endif
                     </div>
                     <div class="col-8 col-md-6 d-flex align-self-center align-items-center justify-content-end">
@@ -47,7 +49,7 @@
                             <div class="row py-1">
                                 <div class="col-12 col-md-9 mb-2 mb-sm-0 d-flex align-self-center align-items-center justify-content-start">
                                     <b class="me-1">Filters</b>
-                                    
+
 
                                     @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Employee'))
 
@@ -189,8 +191,8 @@
                                                 <span>Clear filters</span>
                                             </a>
                                         @endif
-                                        
-                                        
+
+
                                     @endif
 
                                 </div>

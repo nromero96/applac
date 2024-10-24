@@ -1,3 +1,124 @@
-body.dark .bs-stepper-content{padding:3em 0 0;width:100%}body.dark .bs-stepper .step.crossed+.line{background-color:#c00000}body.dark .step.crossed .step-trigger.disabled .bs-stepper-circle,body.dark .step.crossed .step-trigger:disabled .bs-stepper-circle{background-color:rgba(192,0,0,0);color:#fff}body.dark .bs-stepper .line,body.dark .bs-stepper-line{background-color:hsla(0,0%,100%,.12)}body.dark .bs-stepper-circle{background-color:hsla(0,0%,100%,0)}body.dark .bs-stepper-circle svg{height:16px;width:16px}body.dark .step.crossed .step-trigger{opacity:1!important}body.dark .bs-stepper .step-trigger{border-bottom:3px solid;border-radius:0;color:#595959;display:block;font-weight:200;letter-spacing:1px;padding-bottom:0}body.dark .bs-stepper .step-trigger.disabled,body.dark .bs-stepper .step-trigger:disabled{opacity:.5}body.dark .bs-stepper .step-trigger.disabled .bs-stepper-circle,body.dark .bs-stepper .step-trigger:disabled .bs-stepper-circle{color:#595959;font-family:Kanit;font-size:41px;font-weight:400;height:1em;width:4em}body.dark .active .step-trigger{border-color:#c00000}body.dark .active .bs-stepper-circle{background-color:hsla(0,0%,100%,0);color:#c00000;font-family:Kanit;font-size:41px;font-weight:400;height:1em;width:4em}body.dark .bs-stepper-label{font-weight:700}body.dark .bs-stepper-label:focus{color:#c00000}body.dark .bs-stepper.vertical .bs-stepper-header{display:block}body.dark .bs-stepper.vertical .step-trigger{padding:0 0 15px}body.dark .bs-stepper.vertical .bs-stepper-content .content:not(.active){display:none}body.dark .bs-stepper.vertical .line,body.dark .vertical .bs-stepper-line{height:25px;margin-bottom:15px;width:1px}@media (max-width:575px){body.dark .bs-stepper-header,body.dark .bs-stepper.vertical{display:block}body.dark .bs-stepper .line,body.dark .bs-stepper-line{display:none}body.dark .bs-stepper .step-trigger{padding:8px 0}body.dark .bs-stepper-content{padding:20px 0 0}}
+/*
+	===============================
+			@Import	Function
+	===============================
+*/
+/*
+	===============================
+			@Import	Mixins
+	===============================
+*/
+body.dark .bs-stepper-content {
+  width: 100%;
+  padding: 0px;
+  padding-top: 3em;
+}
+body.dark .bs-stepper .step.crossed + .line {
+  background-color: #c00000;
+}
+body.dark .step.crossed .step-trigger.disabled .bs-stepper-circle, body.dark .step.crossed .step-trigger:disabled .bs-stepper-circle {
+  background-color: rgba(192, 0, 0, 0);
+  color: #fff;
+}
+body.dark .step.crossed .step-trigger.disabled .bs-stepper-circle {
+  background-color: rgba(192, 0, 0, 0);
+  color: #fff;
+}
+body.dark .bs-stepper .line, body.dark .bs-stepper-line {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+body.dark .bs-stepper-circle {
+  background-color: rgba(255, 255, 255, 0);
+}
+body.dark .bs-stepper-circle svg {
+  width: 16px;
+  height: 16px;
+}
+body.dark .step.crossed .step-trigger {
+  opacity: 1 !important;
+}
+body.dark .bs-stepper .step-trigger {
+  display: block;
+  color: #595959;
+  font-weight: 200;
+  letter-spacing: 1px;
+  border-bottom: 3px solid;
+  border-radius: 0;
+  padding-bottom: 0px;
+}
+body.dark .bs-stepper .step-trigger.disabled, body.dark .bs-stepper .step-trigger:disabled {
+  opacity: 0.5;
+}
+body.dark .bs-stepper .step-trigger.disabled .bs-stepper-circle, body.dark .bs-stepper .step-trigger:disabled .bs-stepper-circle {
+  color: #595959;
+  font-weight: 400;
+  font-size: 41px;
+  height: 1em;
+  width: 4em;
+  font-family: "Kanit";
+}
+body.dark .active .step-trigger {
+  border-color: #c00000;
+}
+body.dark .active .bs-stepper-circle {
+  background-color: rgba(255, 255, 255, 0);
+  color: #c00000;
+  font-family: "Kanit";
+  font-size: 41px;
+  font-weight: 400;
+  height: 1em;
+  width: 4em;
+}
+body.dark .bs-stepper-label {
+  font-weight: bold;
+}
+body.dark .bs-stepper-label:focus {
+  color: #c00000;
+}
 
-/*# sourceMappingURL=custom-bsStepper.css.map*/
+/* 
+    ================
+        Vertical
+    ================
+*/
+body.dark .bs-stepper.vertical .bs-stepper-header {
+  display: block;
+}
+body.dark .bs-stepper.vertical .step-trigger {
+  padding: 0;
+  padding-bottom: 15px;
+}
+body.dark .bs-stepper.vertical .bs-stepper-content .content:not(.active) {
+  display: none;
+}
+body.dark .bs-stepper.vertical .line {
+  width: 1px;
+  height: 25px;
+  margin-bottom: 15px;
+}
+body.dark .vertical .bs-stepper-line {
+  width: 1px;
+  height: 25px;
+  margin-bottom: 15px;
+}
+@media (max-width: 575px) {
+  body.dark .bs-stepper-header {
+    display: block;
+  }
+  body.dark .bs-stepper.vertical {
+    display: block;
+  }
+  body.dark .bs-stepper .line {
+    display: none;
+  }
+  body.dark .bs-stepper-line {
+    display: none;
+  }
+  body.dark .bs-stepper .step-trigger {
+    padding: 8px 0;
+  }
+  body.dark .bs-stepper-content {
+    padding: 0;
+    padding: 20px 0 0;
+  }
+}

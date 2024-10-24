@@ -49,6 +49,8 @@ if (!function_exists('setTitle')) :
             echo __('Organizations') . $admin_name;
         elseif ($page_name === 'organizationscreate'):
             echo __('Organization Create') . $admin_name;
+        elseif ($page_name === 'organizationsedit'):
+            echo __('Organization Edit') . $admin_name;
 
         elseif ($page_name === 'customers') :
             echo __('Customers') . $admin_name;
