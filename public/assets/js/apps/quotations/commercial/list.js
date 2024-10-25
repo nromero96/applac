@@ -212,8 +212,8 @@ function submitSearch() {
     const daterequest = document.getElementById('daterequest').value;
 
     // Añadir o actualizar listforpage y daterequest a formData
-    formData.set('listforpage', listforpage); 
-    formData.set('daterequest', daterequest); 
+    formData.set('listforpage', listforpage);
+    formData.set('daterequest', daterequest);
 
     // Limpiar los checkboxes anteriores
     formData.delete('rating[]');
@@ -267,3 +267,49 @@ $('#daterequest').on('cancel.daterangepicker', function(ev, picker) {
     formData.delete('daterequest');
     window.location.href = `${document.getElementById('form-search').action}?${formData.toString()}`;
 });
+
+// Internal Inquiry
+jQuery('#btn-new-internal-inquiry').on('click', function(e){
+    e.preventDefault();
+    jQuery('#newinquiryForm').fadeIn('fast');
+    jQuery('html').css('overflowY', 'hidden');
+})
+
+jQuery('body').on('click', '#newinquiryForm:not(.__stored)', function(e){
+    e.preventDefault();
+    jQuery('#newinquiryForm').fadeOut('fast');
+    setTimeout(() => {
+        Livewire.emit('clean_data_after_close');
+        jQuery('html').css('overflowY', 'auto');
+    }, 300);
+})
+jQuery('#newinquiry__close').on('click', function(e){
+    e.preventDefault();
+    jQuery('#newinquiryForm').fadeOut('fast');
+    setTimeout(() => {
+        Livewire.emit('clean_data_after_close');
+        jQuery('html').css('overflowY', 'auto');
+    }, 300);
+})
+
+jQuery('body').on('click', '#newinquiryForm.__stored', function(e){
+    e.preventDefault();
+    jQuery('#newinquiryForm.__stored').show();
+    location.reload();
+})
+
+jQuery('#newinquiryForm .newinquiry__content').on('click', function(e){
+    e.stopPropagation();
+})
+
+jQuery('#newinquiryForm').on('click', '.newinquiry__thanks', function(e){
+    e.stopPropagation();
+})
+
+
+document.addEventListener('livewire:load', function () {
+    window.livewire.on("add_stored_class_to_internal_inquiry", function(){
+        jQuery('#newinquiryForm').addClass('__stored');
+    })
+})
+

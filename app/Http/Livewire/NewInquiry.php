@@ -2,15 +2,22 @@
 
 namespace App\Http\Livewire;
 
+use App\Models\GuestUser;
 use App\Models\Organization;
 use App\Models\OrganizationContact;
+use App\Models\Quotation;
 use App\Models\Setting;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class NewInquiry extends Component
 {
+    protected $listeners = ['clean_data_after_close'];
+
     // org
+    public $org_id;
     public $org_name;
     public $org_code;
 
@@ -23,10 +30,12 @@ class NewInquiry extends Component
         'phone' => '',
     ];
 
-    // inq
+    // inquiry
     public $member;
     public $source;
     public $rating;
+    public $recovered_account = false;
+    public $cargo_description;
 
     // aux
     public $org_selected = false;
@@ -49,6 +58,7 @@ class NewInquiry extends Component
             'Social Media' => ['key' => 'SOC', 'label' => 'Social Media', 'color' => '#1877F2'],
         ]
     ];
+    public $stored = false;
 
     public $rules = [
         'org_name' => 'required|max:255',
@@ -76,7 +86,15 @@ class NewInquiry extends Component
         $setting_users_quoted_ids = array_map('intval', json_decode($setting_users_quoted->value));
         $members = User::whereIn('id', $setting_users_quoted_ids)->select('id', 'name', 'lastname')->get();
 
+        // member adm or employee
+        $member_employee_role = '';
+        if (Auth::user()->hasRole('Employee')) {
+            $this->member = Auth::user()->id;
+            $member_employee_role = Auth::user()->name . ' ' . Auth::user()->lastname;
+        }
+
         $data['members'] = $members;
+        $data['member_employee_role'] = $member_employee_role;
 
         return view('livewire.new-inquiry', $data);
     }
@@ -90,14 +108,111 @@ class NewInquiry extends Component
     }
 
     public function store(){
-        $this->validate($this->rules, [], $this->attributes);
+        if (true) {
+            $this->validate($this->rules, [], $this->attributes);
+
+            DB::transaction(function () {
+                // Org
+                $id_org = null;
+                if ($this->org_selected) { // Org existe
+                    // capturar id
+                    $id_org = $this->org_id;
+                    if ($this->new_contact) { // si deseo agregar un contacto diferente a los que figuran
+                        OrganizationContact::create([
+                            'name' => $this->contact['name'],
+                            'job_title' => $this->contact['job_title'],
+                            'email' => $this->contact['email'],
+                            'phone' => $this->contact['phone'],
+                            'organization_id' => $id_org,
+                        ]);
+                    }
+                } else { // Org es nuevo
+                    // crear org
+                    $org_new = Organization::create([
+                        'code' => $this->org_code,
+                        'name' => $this->org_name,
+                    ]);
+                    // asignar id de org creado
+                    $id_org = $org_new->id;
+                    // crear contacto
+                    OrganizationContact::create([
+                        'name' => $this->contact['name'],
+                        'job_title' => $this->contact['job_title'],
+                        'email' => $this->contact['email'],
+                        'phone' => $this->contact['phone'],
+                        'organization_id' => $id_org,
+                    ]);
+                }
+
+                // crear guest_user
+                $guest_user = GuestUser::create([
+                    'name' => $this->contact['name'],
+                    'lastname' => '',
+                    'company_name' => $this->org_name,
+                    'email' => $this->contact['email'],
+                    'phone_code' => '',
+                    'phone' => $this->contact['phone'],
+                    'source' => $this->source,
+                    'subscribed_to_newsletter' => 'no',
+                ]);
+
+                // create quote con el id del org /
+                $quotation = Quotation::create([
+                    // 'customer_user_id' => '',
+                    'guest_user_id' => $guest_user->id,
+                    'mode_of_transport' => '',
+                    // 'cargo_type' => '',
+                    'service_type' => '',
+                    'origin_country_id' => 38, // Canada
+                    // 'origin_address' => '',
+                    // 'origin_city' => '',
+                    // 'origin_state_id' => '',
+                    // 'origin_zip_code' => '',
+                    // 'origin_airportorport' => '',
+                    'destination_country_id' => 38, // Canada
+                    // 'destination_address' => '',
+                    // 'destination_city' => '',
+                    // 'destination_state_id' => '',
+                    // 'destination_zip_code' => '',
+                    // 'destination_airportorport' => '',
+                    // 'total_qty' => '',
+                    // 'total_actualweight' => '',
+                    // 'total_volum_weight' => '',
+                    // 'tota_chargeable_weight' => '',
+                    // 'shipping_date' => '',
+                    'no_shipping_date' => 'no',
+                    'declared_value' => 0,
+                    'insurance_required' => 'no',
+                    'currency' => 'USD - US Dollar',
+                    'rating' => $this->rating,
+                    'rating_modified' => 0,
+                    'status' => 'Pending',
+                    // 'result' => '',
+                    'assigned_user_id' => $this->member,
+                    'is_internal_inquiry' => true,
+                    'recovered_account' => $this->recovered_account,
+                    'cargo_description' => $this->cargo_description,
+                    'created_at' => now(),
+                ]);
+
+                // Subir adjuntos
+
+                // Mostrar Mensaje de Gracias
+                $this->emit('add_stored_class_to_internal_inquiry');
+                $this->stored = true;
+            });
+        }
+
     }
 
     public function select_org(Organization $org){
+        $this->org_id = $org->id;
         $this->org_name = $org->name;
         $this->org_code = $org->code;
         $this->contacts = $org->contacts;
         $this->contact = $org->contacts->first()->toArray();
+        // clean errors
+        $this->resetErrorBag(['org_name', 'org_code', 'contact.name', 'contact.job_title', 'contact.email', 'contact.phone']);
         //
         $this->org_selected = true;
         $this->organizations = [];
@@ -113,6 +228,7 @@ class NewInquiry extends Component
     }
 
     public function cancel_new_contact(){
+        $this->resetErrorBag(['contact.name', 'contact.job_title', 'contact.email', 'contact.phone']);
         $this->new_contact = false;
         $this->contact = $this->contacts[0]->toArray();
     }
@@ -156,6 +272,11 @@ class NewInquiry extends Component
     }
 
     public function reset_data(){
-        $this->reset('org_selected', 'org_name', 'org_code', 'contact', 'contacts', 'new_contact');
+        $this->reset('org_selected', 'org_id', 'org_name', 'org_code', 'contact', 'contacts', 'new_contact');
+    }
+
+    public function clean_data_after_close(){
+        $this->resetErrorBag();
+        $this->reset('org_id', 'org_name', 'org_code', 'contact', 'member', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label');
     }
 }

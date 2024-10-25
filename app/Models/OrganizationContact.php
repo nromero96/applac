@@ -15,6 +15,7 @@ class OrganizationContact extends Model
         'email',
         'phone',
         'fax',
+        'organization_id',
     ];
 
     public function organization(){

@@ -62,7 +62,7 @@ class OrganizationForm extends Component
         $data = $this->validate($this->rules, [], $this->attributes);
 
         if (sizeof($this->addresses) == 0) {
-            $data['addresses'] = '';
+            $data['addresses'] = null;
         }
         $org = Organization::create($data);
         $org->contacts()->createMany($this->contacts);

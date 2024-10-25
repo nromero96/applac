@@ -52,7 +52,7 @@
                     </button>
                 </div>
             @else
-                @if ($addresses != '')
+                @if ($addresses)
                     @foreach ($addresses as $address)
                         <p class="form-control px-2 bg-text-control-form border-0 mb-2" style="background-color: #ebedf2">{{ $address }}</p>
                     @endforeach
