@@ -180,7 +180,7 @@
                             <div class="col-md-12 mt-3">
                                 <label for="organization_code" class="form-label d-flex align-items-center justify-content-between">
                                     Rating
-                                    <div data-toggle="tooltip" data-placement="top" title="How promising is this inquiry? Consider the business type, cargo value, and shipment urgency.">
+                                    <div wire:ignore data-toggle="tooltip" data-placement="top" title="How promising is this inquiry? Consider the business type, cargo value, and shipment urgency.">
                                         <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
                                             <path d="M8 11.1667V8.5" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
@@ -209,7 +209,7 @@
                                     <input class="form-check-input" type="checkbox" id="recovered-account" wire:model.defer="recovered_account">
                                     <label class="form-check-label d-flex align-items-center gap-2" for="recovered-account">
                                         Recovered account
-                                        <div data-toggle="tooltip" data-placement="top" title="Check this box if this inquiry is from a customer who hasn't used our services in over 6 months.">
+                                        <div wire:ignore data-toggle="tooltip" data-placement="top" title="Check this box if this inquiry is from a customer who hasn't used our services in over 6 months.">
                                             <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
                                                 <path d="M8 11.1667V8.5" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
@@ -233,7 +233,7 @@
                 <div class="col-md-12 mt-3">
                     <label class="d-flex align-items-center justify-content-between">
                         Additional Documentation (Optional)
-                        <div data-toggle="tooltip" data-placement="top" title="Attach any documents relevant to this inquiry. Accepted files: EML, PDF, DOC, XLS, JPG, PNG. Max. file size: 2 mb">
+                        <div data-toggle="tooltip" wire:ignore data-placement="top" title="Attach any documents relevant to this inquiry. Accepted files: EML, PDF, DOC, XLS, JPG, PNG. Max. file size: 2 mb">
                             <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M8 11.1667V8.5" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>

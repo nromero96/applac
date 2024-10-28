@@ -115,6 +115,12 @@ class NewInquiry extends Component
         }
     }
 
+    public function updatedContact($value, $name){
+        if ($name == 'email') {
+            $this->contact['email'] = trim($value);
+        }
+    }
+
     public function store(){
         $this->validate(
             $this->rules,
