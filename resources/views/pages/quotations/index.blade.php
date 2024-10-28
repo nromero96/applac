@@ -77,7 +77,7 @@
                                                                 $text_sb_sch = $source->user_source;
                                                             } elseif($source->user_source == 'I am an existing customer'){
                                                                 $class_sb_sch = 'sb-color-hou';
-                                                                $text_sb_sch = 'hou';
+                                                                $text_sb_sch = 'dir';
                                                             } elseif($source->user_source == 'Google Search') {
                                                                 $class_sb_sch = 'sb-color-seo';
                                                                 $text_sb_sch = 'seo';
@@ -342,7 +342,7 @@
                                                                 $text_sb = $quotation->user_source;
                                                             } elseif($quotation->user_source == 'I am an existing customer'){
                                                                 $class_sb = 'sb-color-hou';
-                                                                $text_sb = 'hou';
+                                                                $text_sb = 'dir';
                                                             } elseif($quotation->user_source == 'Google Search') {
                                                                 $class_sb = 'sb-color-seo';
                                                                 $text_sb = 'seo';

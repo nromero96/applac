@@ -248,7 +248,7 @@ class NewInquiry extends Component
         for ($i = 1; $i <= $value; $i++) {
             $rating_value .= $this->rating_star_icon;
         }
-        return '<span>' . $rating_value . '</span>' . ' <span>' . $value . ' star'. ($value > 1 ? 's' : '') .'</span>';
+        return '<span>' . $rating_value . '</span>' . ' <span style="transform: translateY(1px);">' . $value . ' star'. ($value > 1 ? 's' : '') .'</span>';
     }
 
     public function set_source($value, $group = null) {

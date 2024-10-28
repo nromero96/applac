@@ -98,6 +98,22 @@
                 .table tbody tr td {
                     white-space: normal;
                 }
+                .recovered_account {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 4px;
+                    background-color: #F5F5F5;
+                    border-radius: 10rem;
+                    font-weight: 700;
+                    color: #4CBB17;
+                    padding: 6px 12px;
+                }
+                .recovered_account img {
+                    width: 18px;
+                    height: 18px;
+                    object-fit: contain;
+                }
             </style>
 
             {{-- swal --}}

@@ -61,7 +61,7 @@
                                             <path d="M15.334 14V12.6667C15.3335 12.0758 15.1369 11.5019 14.7749 11.0349C14.4129 10.5679 13.9061 10.2344 13.334 10.0867" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
                                             <path d="M10.666 2.08667C11.2396 2.23354 11.748 2.56714 12.1111 3.03488C12.4742 3.50262 12.6712 4.07789 12.6712 4.67C12.6712 5.26212 12.4742 5.83739 12.1111 6.30513C11.748 6.77287 11.2396 7.10647 10.666 7.25334" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
                                         </svg>
-                                        <span>{{ $contacts->count() }}</span>
+                                        <span>{{ $contacts->count() + ($new_contact ? 1 : 0) }}</span>
                                     </div>
                                 @endif
                                 @if (!empty($contacts))
@@ -131,7 +131,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="newinquiry__block">
-                        <h5>Details</h5>
+                        <h5>Inquiry Details</h5>
                         <div class="row">
                             <div class="col-md-5">
                                 <label for="organization_code" class="form-label">
@@ -221,7 +221,7 @@
                             </div>
                             <div class="col-md-12 mt-1">
                                 <label for="organization_code" class="form-label">
-                                    Cargo Description (Optional)
+                                    Additional Information (Optional)
                                 </label>
                                 <textarea rows="6" wire:model.defer="cargo_description" class="form-control"></textarea>
                                 @error('cargo_description') <span class='text-danger'>{{ $message }}</span> @enderror
@@ -232,8 +232,8 @@
 
                 <div class="col-md-12 mt-3">
                     <label class="d-flex align-items-center justify-content-between">
-                        Additional Documentation
-                        <div data-toggle="tooltip" data-placement="top" title="Attach any documents relevant to this inquiry. Accepted files: EML, PDF, DOC, XLS, JPG, PNG.">
+                        Additional Documentation (Optional)
+                        <div data-toggle="tooltip" data-placement="top" title="Attach any documents relevant to this inquiry. Accepted files: EML, PDF, DOC, XLS, JPG, PNG. Max. file size: 2 mb">
                             <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M8 11.1667V8.5" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
@@ -253,7 +253,7 @@
                                 <path d="M17 8L12 3L7 8" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 <path d="M12 3V15" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <input type="file" multiple wire:model="attachments_added">
+                            <input type="file" multiple wire:model="attachments_added" accept=".eml, .pdf, .doc, .docx, .xls, .xlsx, .jpg, .png, .jpeg">
                             <p>Drag and drop your files here or <span>click to browse</span></p>
                         </div>
                         @if (sizeof($attachments) > 0)
@@ -273,7 +273,6 @@
                         @endif
                     </div>
                     @error('attachments.*') <span class='text-danger'>{{ $message }}</span> @enderror
-                    <p>Max. file size: 2 mb</p>
                 </div>
             </div>
 
