@@ -35,6 +35,9 @@
             <script src="{{asset('plugins/src/daterangepicke/moment.min.js')}}"></script>
             <script src="{{asset('plugins/src/daterangepicke/daterangepicker.js')}}"></script>
             <script src="{{asset('assets/js/apps/quotations/commercial/list.js')}}?v={{ config('app.version') }}"></script>
+            <script>
+                $(() => $('[data-toggle="tooltip"]').tooltip())
+            </script>
             @break
         @case('quotations_show')
             {{-- All quotes --}}

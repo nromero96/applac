@@ -279,7 +279,7 @@ jQuery('body').on('click', '#newinquiryForm:not(.__stored)', function(e){
     e.preventDefault();
     jQuery('#newinquiryForm').fadeOut('fast');
     setTimeout(() => {
-        Livewire.emit('clean_data_after_close');
+        // Livewire.emit('clean_data_after_close');
         jQuery('html').css('overflowY', 'auto');
     }, 300);
 })
@@ -287,7 +287,7 @@ jQuery('#newinquiry__close').on('click', function(e){
     e.preventDefault();
     jQuery('#newinquiryForm').fadeOut('fast');
     setTimeout(() => {
-        Livewire.emit('clean_data_after_close');
+        // Livewire.emit('clean_data_after_close');
         jQuery('html').css('overflowY', 'auto');
     }, 300);
 })

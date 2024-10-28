@@ -6,14 +6,18 @@ use App\Models\GuestUser;
 use App\Models\Organization;
 use App\Models\OrganizationContact;
 use App\Models\Quotation;
+use App\Models\QuotationDocument;
 use App\Models\Setting;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class NewInquiry extends Component
 {
+    use WithFileUploads;
+
     protected $listeners = ['clean_data_after_close'];
 
     // org
@@ -36,8 +40,10 @@ class NewInquiry extends Component
     public $rating;
     public $recovered_account = false;
     public $cargo_description;
+    public $attachments = [];
 
     // aux
+    public $attachments_added = [];
     public $org_selected = false;
     public $contacts = [];
     public $organizations = [];
@@ -70,6 +76,7 @@ class NewInquiry extends Component
         'contact.job_title' => 'nullable|max:255',
         'contact.email' => 'required|max:255|email',
         'contact.phone' => 'required|max:20',
+        'attachments.*' => 'max:2048',
     ];
 
     public $attributes = [
@@ -77,6 +84,7 @@ class NewInquiry extends Component
         'contact.job_title' => 'contact job title',
         'contact.email' => 'contact email',
         'contact.phone' => 'contact phone',
+        'attachments.*' => 'attachments',
     ];
 
     public function render()
@@ -108,33 +116,19 @@ class NewInquiry extends Component
     }
 
     public function store(){
-        if (true) {
-            $this->validate($this->rules, [], $this->attributes);
+        $this->validate(
+            $this->rules,
+            ['attachments.*.max' => 'The attachments must not be greater than 2MB.'],
+            $this->attributes
+        );
 
-            DB::transaction(function () {
-                // Org
-                $id_org = null;
-                if ($this->org_selected) { // Org existe
-                    // capturar id
-                    $id_org = $this->org_id;
-                    if ($this->new_contact) { // si deseo agregar un contacto diferente a los que figuran
-                        OrganizationContact::create([
-                            'name' => $this->contact['name'],
-                            'job_title' => $this->contact['job_title'],
-                            'email' => $this->contact['email'],
-                            'phone' => $this->contact['phone'],
-                            'organization_id' => $id_org,
-                        ]);
-                    }
-                } else { // Org es nuevo
-                    // crear org
-                    $org_new = Organization::create([
-                        'code' => $this->org_code,
-                        'name' => $this->org_name,
-                    ]);
-                    // asignar id de org creado
-                    $id_org = $org_new->id;
-                    // crear contacto
+        DB::transaction(function () {
+            // Org
+            $id_org = null;
+            if ($this->org_selected) { // Org existe
+                // capturar id
+                $id_org = $this->org_id;
+                if ($this->new_contact) { // si deseo agregar un contacto diferente a los que figuran
                     OrganizationContact::create([
                         'name' => $this->contact['name'],
                         'job_title' => $this->contact['job_title'],
@@ -143,66 +137,73 @@ class NewInquiry extends Component
                         'organization_id' => $id_org,
                     ]);
                 }
-
-                // crear guest_user
-                $guest_user = GuestUser::create([
+            } else { // Org es nuevo
+                // crear org
+                $org_new = Organization::create([
+                    'code' => $this->org_code,
+                    'name' => $this->org_name,
+                ]);
+                // asignar id de org creado
+                $id_org = $org_new->id;
+                // crear contacto
+                OrganizationContact::create([
                     'name' => $this->contact['name'],
-                    'lastname' => '',
-                    'company_name' => $this->org_name,
+                    'job_title' => $this->contact['job_title'],
                     'email' => $this->contact['email'],
-                    'phone_code' => '',
                     'phone' => $this->contact['phone'],
-                    'source' => $this->source,
-                    'subscribed_to_newsletter' => 'no',
+                    'organization_id' => $id_org,
                 ]);
+            }
 
-                // create quote con el id del org /
-                $quotation = Quotation::create([
-                    // 'customer_user_id' => '',
-                    'guest_user_id' => $guest_user->id,
-                    'mode_of_transport' => '',
-                    // 'cargo_type' => '',
-                    'service_type' => '',
-                    'origin_country_id' => 38, // Canada
-                    // 'origin_address' => '',
-                    // 'origin_city' => '',
-                    // 'origin_state_id' => '',
-                    // 'origin_zip_code' => '',
-                    // 'origin_airportorport' => '',
-                    'destination_country_id' => 38, // Canada
-                    // 'destination_address' => '',
-                    // 'destination_city' => '',
-                    // 'destination_state_id' => '',
-                    // 'destination_zip_code' => '',
-                    // 'destination_airportorport' => '',
-                    // 'total_qty' => '',
-                    // 'total_actualweight' => '',
-                    // 'total_volum_weight' => '',
-                    // 'tota_chargeable_weight' => '',
-                    // 'shipping_date' => '',
-                    'no_shipping_date' => 'no',
-                    'declared_value' => 0,
-                    'insurance_required' => 'no',
-                    'currency' => 'USD - US Dollar',
-                    'rating' => $this->rating,
-                    'rating_modified' => 0,
-                    'status' => 'Pending',
-                    // 'result' => '',
-                    'assigned_user_id' => $this->member,
-                    'is_internal_inquiry' => true,
-                    'recovered_account' => $this->recovered_account,
-                    'cargo_description' => $this->cargo_description,
-                    'created_at' => now(),
-                ]);
+            // crear guest_user
+            $guest_user = GuestUser::create([
+                'name' => $this->contact['name'],
+                'lastname' => '',
+                'company_name' => $this->org_name,
+                'email' => $this->contact['email'],
+                'phone_code' => '',
+                'phone' => $this->contact['phone'],
+                'source' => $this->source,
+                'subscribed_to_newsletter' => 'no',
+            ]);
 
-                // Subir adjuntos
+            // create quote con el id del org /
+            $quotation = Quotation::create([
+                'guest_user_id' => $guest_user->id,
+                'mode_of_transport' => '',
+                'service_type' => '',
+                'origin_country_id' => 38, // Canada
+                'destination_country_id' => 38, // Canada
+                'no_shipping_date' => 'no',
+                'declared_value' => 0,
+                'insurance_required' => 'no',
+                'currency' => 'USD - US Dollar',
+                'rating' => $this->rating,
+                'rating_modified' => 0,
+                'status' => 'Processing',
+                'assigned_user_id' => $this->member,
+                'is_internal_inquiry' => true,
+                'recovered_account' => $this->recovered_account,
+                'cargo_description' => $this->cargo_description,
+                'created_at' => now(),
+            ]);
 
-                // Mostrar Mensaje de Gracias
-                $this->emit('add_stored_class_to_internal_inquiry');
-                $this->stored = true;
-            });
-        }
+            // Subir adjuntos
+            if (sizeof($this->attachments) > 0) {
+                foreach ($this->attachments as $attach) {
+                    $filename = uniqid() . '_' . $attach->getClientOriginalName();
+                    $attach->storeAs('public\uploads\quotation_documents', $filename);
+                    QuotationDocument::create([
+                        'quotation_id' => $quotation->id,
+                        'document_path' => $filename,
+                    ]);
+                }
+            }
 
+            // Mostrar Mensaje de Gracias
+            $this->emit('add_stored_class_to_internal_inquiry');
+            $this->stored = true;
+        });
     }
 
     public function select_org(Organization $org){
@@ -277,6 +278,37 @@ class NewInquiry extends Component
 
     public function clean_data_after_close(){
         $this->resetErrorBag();
-        $this->reset('org_id', 'org_name', 'org_code', 'contact', 'member', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label');
+        $this->reset('org_id', 'org_name', 'org_code', 'contact', 'member', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label', 'attachments', 'attachments_added');
     }
+
+    // Attachments
+    public $attach_dropping = false;
+
+    public function updatedAttachmentsAdded(){
+        $this->attachments = array_merge($this->attachments, $this->attachments_added);
+    }
+
+    public function formatSizeAttachment($size) {
+        if ($size < 1024) {
+            return $size . ' bytes';
+        } elseif ($size < 1048576) {
+            return round($size / 1024, 2) . ' KB';
+        } else {
+            return round($size / 1048576, 2) . ' MB';
+        }
+    }
+
+    public function attach_toggleDropping($value) {
+        $this->attach_dropping = $value;
+    }
+
+    public function attach_toggleDropped($value) {
+        $this->attach_dropping = $value;
+    }
+
+    public function attach_remove($index) {
+        array_splice($this->attachments, $index, 1);
+    }
+
+
 }

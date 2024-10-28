@@ -10,6 +10,8 @@ class OrganizationsList extends Component
 {
     use WithPagination;
 
+    protected $listeners = ['delete_organization'];
+
     public $per_page = 30;
     public $query = '';
 
@@ -32,7 +34,7 @@ class OrganizationsList extends Component
         $this->resetPage();
     }
 
-    public function destroy(Organization $organization){
+    public function delete_organization(Organization $organization){
         $organization->delete();
     }
 }

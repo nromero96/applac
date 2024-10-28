@@ -178,8 +178,15 @@
                                 @error('source') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-12 mt-3">
-                                <label for="organization_code" class="form-label">
+                                <label for="organization_code" class="form-label d-flex align-items-center justify-content-between">
                                     Rating
+                                    <div data-toggle="tooltip" data-placement="top" title="How promising is this inquiry? Consider the business type, cargo value, and shipment urgency.">
+                                        <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M8 11.1667V8.5" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M8 5.83334H8.00667" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </div>
                                 </label>
                                 <div class="dropdown">
                                     <button class="dropdown-toggle form-select d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -188,11 +195,11 @@
                                     <input type="hidden" wire:model="rating" />
                                     <ul class="dropdown-menu mt-4">
                                         <li><button class="dropdown-item" type="button" wire:click="set_rating('')"><b>Select Rating</b></button></li>
-                                        <li><button class="dropdown-item" type="button" wire:click="set_rating(1)"><div class="d-flex align-items-center gap-2">{!! $this->rating_draw_stars(1) !!}</div></button></li>
-                                        <li><button class="dropdown-item" type="button" wire:click="set_rating(2)"><div class="d-flex align-items-center gap-2">{!! $this->rating_draw_stars(2) !!}</div></button></li>
-                                        <li><button class="dropdown-item" type="button" wire:click="set_rating(3)"><div class="d-flex align-items-center gap-2">{!! $this->rating_draw_stars(3) !!}</div></button></li>
-                                        <li><button class="dropdown-item" type="button" wire:click="set_rating(4)"><div class="d-flex align-items-center gap-2">{!! $this->rating_draw_stars(4) !!}</div></button></li>
                                         <li><button class="dropdown-item" type="button" wire:click="set_rating(5)"><div class="d-flex align-items-center gap-2">{!! $this->rating_draw_stars(5) !!}</div></button></li>
+                                        <li><button class="dropdown-item" type="button" wire:click="set_rating(4)"><div class="d-flex align-items-center gap-2">{!! $this->rating_draw_stars(4) !!}</div></button></li>
+                                        <li><button class="dropdown-item" type="button" wire:click="set_rating(3)"><div class="d-flex align-items-center gap-2">{!! $this->rating_draw_stars(3) !!}</div></button></li>
+                                        <li><button class="dropdown-item" type="button" wire:click="set_rating(2)"><div class="d-flex align-items-center gap-2">{!! $this->rating_draw_stars(2) !!}</div></button></li>
+                                        <li><button class="dropdown-item" type="button" wire:click="set_rating(1)"><div class="d-flex align-items-center gap-2">{!! $this->rating_draw_stars(1) !!}</div></button></li>
                                     </ul>
                                 </div>
                                 @error('rating') <span class='text-danger'>{{ $message }}</span> @enderror
@@ -200,8 +207,15 @@
                             <div class="col-md-12 mt-3">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="recovered-account" wire:model.defer="recovered_account">
-                                    <label class="form-check-label" for="recovered-account">
+                                    <label class="form-check-label d-flex align-items-center gap-2" for="recovered-account">
                                         Recovered account
+                                        <div data-toggle="tooltip" data-placement="top" title="Check this box if this inquiry is from a customer who hasn't used our services in over 6 months.">
+                                            <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M8 11.1667V8.5" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M8 5.83334H8.00667" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </div>
                                     </label>
                                 </div>
                             </div>
@@ -215,11 +229,52 @@
                         </div>
                     </div>
                 </div>
-                @if (false)
-                    <div class="col-md-12 mt-3">
-                        <label>Additional Documentation</label>
+
+                <div class="col-md-12 mt-3">
+                    <label class="d-flex align-items-center justify-content-between">
+                        Additional Documentation
+                        <div data-toggle="tooltip" data-placement="top" title="Attach any documents relevant to this inquiry. Accepted files: EML, PDF, DOC, XLS, JPG, PNG.">
+                            <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 11.1667V8.5" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M8 5.83334H8.00667" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                    </label>
+                    <div class="newinquiry__attachments" wire:loading.class="__loading" wire:target="attach_toggleDropped">
+                        <div
+                            class="newinquiry__attachments__drop {{ $attach_dropping ? '__dropping' : '' }}"
+                            wire:dragover="attach_toggleDropping(true)"
+                            wire:dragleave="attach_toggleDropping(false)"
+                            wire:drop="attach_toggleDropped(false)"
+                        >
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M17 8L12 3L7 8" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M12 3V15" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <input type="file" multiple wire:model="attachments_added">
+                            <p>Drag and drop your files here or <span>click to browse</span></p>
+                        </div>
+                        @if (sizeof($attachments) > 0)
+                            <ul class="newinquiry__attachments__list">
+                                @foreach ($attachments as $index => $attach)
+                                    <li>
+                                        <div>
+                                            <span>{{ $attach->getClientOriginalName() }}</span>
+                                            <small>{{ $this->formatSizeAttachment($attach->getSize()) }}</small>
+                                        </div>
+                                        <button type="button" wire:click="attach_remove({{ $index }})">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(81, 82, 100, 1);transform: ;msFilter:;"><path d="m16.192 6.344-4.243 4.242-4.242-4.242-1.414 1.414L10.535 12l-4.242 4.242 1.414 1.414 4.242-4.242 4.243 4.242 1.414-1.414L13.364 12l4.242-4.242z"></path></svg>
+                                        </button>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @endif
                     </div>
-                @endif
+                    @error('attachments.*') <span class='text-danger'>{{ $message }}</span> @enderror
+                    <p>Max. file size: 2 mb</p>
+                </div>
             </div>
 
             <button type="submit" class="newinquiry__submit">Submit Inquiry</button>

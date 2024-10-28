@@ -470,7 +470,7 @@ a.dropdown-item:hover {
     width: 100%;
     height: 100%;
     background-color: rgba(black, .5);
-    z-index: 9999;
+    z-index: 1040;
     overflow-y: auto;
     display: none;
 
@@ -526,6 +526,12 @@ a.dropdown-item:hover {
         padding: 24px;
         box-shadow: 0 0 10px rgba(black, .1);
         position: relative;
+        margin-bottom: 1.5rem;
+
+        &.__loading {
+            opacity: .75;
+            pointer-events: none;
+        }
     }
 
     &__title {
@@ -662,6 +668,96 @@ a.dropdown-item:hover {
             }
         }
 
+    }
+
+    &__attachments {
+
+        &.__loading {
+            opacity: .5;
+            pointer-events: none;
+        }
+
+        &__drop {
+            width: 100%;
+            // height: 100px;
+            border: 1px dashed #B80000;
+            border-radius: 4px;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            gap: 16px;
+            padding: 32px 16px;
+
+            &.__dropping {
+                background-color: rgba(#B80000, .15);
+            }
+
+            svg {
+                flex-shrink: 0;
+            }
+
+            p {
+
+                span {
+                    color: #2196F3;
+                    text-decoration: underline;
+                }
+            }
+
+            input {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+                opacity: 0;
+            }
+        }
+
+        &__list {
+            padding: 16px;
+            border: 1px dashed #B80000;
+            border-top: none;
+            border-radius: 0 0 4px 4px;
+            background-color: white;
+
+            &.__loading {
+                opacity: .5;
+                pointer-events: none;
+            }
+
+            li {
+                background-color: #515264;
+                border-radius: 4px;
+                margin-bottom: 8px;
+                list-style: none;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 4px 8px;
+
+
+                div {
+                    display: flex;
+                    flex-direction: column;
+
+                    span {
+                        color: white;
+                    }
+                }
+
+                button {
+                    padding: 0;
+                    border-radius: 50%;
+                    background-color: #E0E7EE;
+                    border: none;
+                }
+            }
+        }
     }
 
 }

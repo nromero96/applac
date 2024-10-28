@@ -26,6 +26,14 @@ $('.view-grid').on('click', function(event) {
     $(this).parents('.searchable-container').find('.searchable-items').addClass('list');
 });
 
+$('#delete_organization').on('click', function(e){
+    e.preventDefault();
+    const confirm_delete = confirm('Are you sure?');
+    if (confirm_delete) {
+        Livewire.emit('delete_organization', $(this).attr('data-id'))
+    }
+})
+
   document
     .getElementById("print_supplier")
     .addEventListener("click", function () {
