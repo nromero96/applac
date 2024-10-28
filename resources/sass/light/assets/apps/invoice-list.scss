@@ -543,6 +543,10 @@ a.dropdown-item:hover {
             opacity: .75;
             pointer-events: none;
         }
+
+        .form-label {
+            margin-bottom: .2rem;
+        }
     }
 
     &__title {
