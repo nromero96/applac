@@ -384,9 +384,9 @@
                                                             } elseif($quotation->user_source == 'Google Search') {
                                                                 $class_sb = 'sb-color-seo';
                                                                 $text_sb = 'seo';
-                                                            } elseif($source->user_source == 'Linkedin'){
-                                                                $class_sb_sch = 'sb-color-lnk';
-                                                                $text_sb_sch = 'lnk';
+                                                            } elseif($quotation->user_source == 'Linkedin'){
+                                                                $class_sb = 'sb-color-lnk';
+                                                                $text_sb = 'lnk';
                                                             } elseif($quotation->user_source == 'Social Media'){
                                                                 $class_sb = 'sb-color-soc';
                                                                 $text_sb = 'soc';
