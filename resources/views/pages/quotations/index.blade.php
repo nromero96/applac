@@ -54,10 +54,48 @@
                                     @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Employee'))
 
 
+                                        <!-- Dropdown status -->
+                                        <div class="dropdown">
+                                            <button class="dropdown-toggle rounded-pill select-dropdown ms-1 me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {{ request('status') ? request('status') : 'Status' }}
+                                            </button>
+                                            <input type="hidden" name="status" id="inputsearchstatus" value="{{ request('status') }}">
+                                            <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuButton">
+                                                <li>
+                                                    <a class="dropdown-item" href="#" onclick="selectStatus('')"><b>All Status</b> <small class="float-end fw-light">({{$totalQuotation}})</small></a>
+                                                </li>
+                                                @foreach ($liststatus as $status)
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" onclick="selectStatus('{{ $status->quotation_status }}')">
+
+                                                            @php
+                                                            //color
+                                                            if($status->quotation_status == 'Pending') {
+                                                                $class_sb_sch = 'badge-light-pending';
+                                                            } elseif($status->quotation_status == 'Qualifying'){
+                                                                $class_sb_sch = 'badge-light-warning';
+                                                            } elseif($status->quotation_status == 'Processing') {
+                                                                $class_sb_sch = 'badge-light-info';
+                                                            } elseif($status->quotation_status == 'Quote Sent'){
+                                                                $class_sb_sch = 'badge-light-success';
+                                                            } elseif($status->quotation_status == 'Unqualified'){
+                                                                $class_sb_sch = 'badge-light-unqualified';
+                                                            } else {
+                                                                $class_sb_sch = 'badge-light-unqualified';
+                                                            }
+                                                        @endphp
+                                                        <span class="cret-bge ms-0 align-middle badge {{$class_sb_sch}}" title="{{$status->quotation_status}}">{{ $status->quotation_status }}</span>
+                                                        <small class="float-end fw-light">({{ $status->total >= 1000 ? number_format($status->total / 1000, 1) . 'K' : $status->total }})</small>
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+
 
                                         <!-- Dropdown source -->
                                         <div class="dropdown">
-                                            <button class="dropdown-toggle rounded-pill form-select ms-1" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="dropdown-toggle rounded-pill select-dropdown me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                                 {{ request('source') ? request('source') : 'Source' }}
                                             </button>
                                             <input type="hidden" name="source" id="inputsearchsource" value="{{ request('source') }}">
@@ -75,8 +113,8 @@
                                                             if($source->user_source == 'ppc') {
                                                                 $class_sb_sch = 'sb-color-ppc';
                                                                 $text_sb_sch = $source->user_source;
-                                                            } elseif($source->user_source == 'I am an existing customer'){
-                                                                $class_sb_sch = 'sb-color-hou';
+                                                            } elseif($source->user_source == 'Direct Client'){
+                                                                $class_sb_sch = 'sb-color-dir';
                                                                 $text_sb_sch = 'dir';
                                                             } elseif($source->user_source == 'Google Search') {
                                                                 $class_sb_sch = 'sb-color-seo';
@@ -112,7 +150,7 @@
 
                                         <!-- Dropdown para el rating con checkboxes -->
                                         <div class="dropdown">
-                                            <button class="form-select rounded-pill ms-2 dropdown-toggle" type="button" id="ratingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="rounded-pill dropdown-toggle select-dropdown me-2" type="button" id="ratingDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                                 {{ request('rating') ? implode(', ', request('rating')) : 'Rating' }}
                                             </button>
                                             <ul class="dropdown-menu mt-3 pt-2 ps-3 pb-0" aria-labelledby="ratingDropdown">
@@ -157,7 +195,7 @@
 
                                         <!-- Dropdown Team -->
                                         <div class="dropdown">
-                                            <button class="dropdown-toggle rounded-pill form-select ms-3 assigned-to" type="button" id="dropdownTeamButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="dropdown-toggle rounded-pill select-dropdown me-2 assigned-to" type="button" id="dropdownTeamButton" data-bs-toggle="dropdown" aria-expanded="false">
                                                 @if(request('assignedto') == '')
                                                     Member
                                                 @else
@@ -185,8 +223,8 @@
                                             </ul>
                                         </div>
 
-                                        @if(request('assignedto') != '' || request('source') != '' || request('rating') != '')
-                                            <a href="{{ route('quotations.index') }}" class="ms-4 text-primary btn-clearfilter">
+                                        @if(request('assignedto') != '' || request('status')!= '' || request('source') != '' || request('rating') != '')
+                                            <a href="{{ route('quotations.index') }}" class="ms-0 text-primary btn-clearfilter">
                                                 <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M18 6 6 18"></path>
                                                     <path d="m6 6 12 12"></path>
@@ -480,7 +518,7 @@
                                                         @endphp
 
                                                         @if($diff)
-                                                            <span class="badge badge-light-info rounded-pill d-block infattended">
+                                                            <span class="badge badge-light-time rounded-pill d-block infattended">
                                                                 {{ __('in') }}
                                                                 @if($diff->d > 0)
                                                                     {{ $diff->d }} {{ __('days') }}

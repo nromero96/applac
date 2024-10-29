@@ -1145,6 +1145,7 @@ span.form-label{
     &:hover {
       cursor: not-allowed;
       color: #e0e6ed;
+      box-shadow: none !important;
     }
   }
 
@@ -1156,16 +1157,8 @@ span.form-label{
     color: $dark;
     font-weight: 600;
 
-    &.flatpickr-disabled {
-      color: #bfc9d4;
-
-      &:hover {
-        color: #bfc9d4;
-      }
-    }
-
     &.prevMonthDay, &.nextMonthDay {
-      color: #bfc9d4;
+      color: #878787;
     }
 
     &.notAllowed {

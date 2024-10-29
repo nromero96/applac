@@ -130,7 +130,7 @@ function listQuotationNotes(quotationId) {
                                     </div>
                                     <div class="al-date">
                                         <small class="date">${formattedDate}</small> - <small class="time">${formattedTime}</small>
-                                        <span class="badge rounded-pill badge-light-info">${note.time_diff}</span>
+                                        <span class="badge rounded-pill badge-light-time">${note.time_diff}</span>
                                     </div>
                                     ${notereason}
                                     <div class="al-info">

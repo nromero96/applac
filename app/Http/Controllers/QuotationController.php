@@ -47,6 +47,7 @@ class QuotationController extends Controller
         ];
 
         $listforpage = request()->query('listforpage') ?? 50;
+        $status = request()->query('status');
         $source = request()->query('source');
         $assignedto = request()->query('assignedto');
         $rating = request()->query('rating');
@@ -100,7 +101,13 @@ class QuotationController extends Controller
         }
 
         // Aplicar filtros de búsqueda y fecha si hay términos de búsqueda y/o fecha solicitada
-        $quotations->where(function($query) use ($search, $source, $rating, $assignedto, $daterequest) {
+        $quotations->where(function($query) use ($search, $status, $source, $rating, $assignedto, $daterequest) {
+
+
+            // Aplicar status si está presente
+            if (!empty($status)) {
+                $query->where('quotations.status', $status);
+            }
 
             // Aplicar source si está presente
             if (!empty($source)) {
@@ -185,14 +192,19 @@ class QuotationController extends Controller
         $users = User::whereIn('id', $dropdownUserIds)->get();
 
         //Contar los sources de cotizaciones
+        $sourceorderforlist = ['Google Search', 'Direct Client', 'agt', 'Referral', 'Linkedin', 'Social Media', 'ppc', 'Other', 'Unknown'];
         $listsources = Quotation::select(
-            DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
-            DB::raw('COUNT(quotations.id) as total')
-        )
-        ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
-        ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
-        ->groupBy('user_source')
-        ->get();
+                DB::raw('COALESCE(users.source, guest_users.source, "Unknown") as user_source'),
+                DB::raw('COUNT(DISTINCT quotations.id) as total')
+            )
+            ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
+            ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
+            ->groupBy('user_source')
+            ->get()
+            ->sortBy(function ($source) use ($sourceorderforlist) {
+                return array_search($source->user_source, $sourceorderforlist);
+            })
+            ->values(); // Reinicia los índices
 
         $totalQuotation = Quotation::count();
 
@@ -208,10 +220,21 @@ class QuotationController extends Controller
         ->orderBy('rating', 'desc')
         ->get();
 
+       // Contar por status de cotizaciones
+       $statusorderforlist = ['Pending', 'Qualifying', 'Processing', 'Quote Sent', 'Unqualified', 'Attended'];
+        $liststatus = Quotation::select(
+            'quotations.status as quotation_status',
+            DB::raw('COUNT(quotations.id) as total')
+        )
+        ->groupBy('quotations.status') // Agrupa por el campo 'status'
+        ->get()
+        ->sortBy(function ($status) use ($statusorderforlist) {
+            return array_search($status->quotation_status, $statusorderforlist);
+        });
 
 
         $data['listforpage'] = $listforpage;
-        return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users)->with('listsources', $listsources)->with('listratings', $listratings)->with('totalQuotation', $totalQuotation);
+        return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users)->with('listsources', $listsources)->with('listratings', $listratings)->with('totalQuotation', $totalQuotation)->with('liststatus', $liststatus);
     }
 
     public function onlineregister(Request $request){

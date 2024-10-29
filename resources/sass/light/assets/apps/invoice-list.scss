@@ -235,6 +235,20 @@ table tr td{
   }
 }
 
+.select-dropdown {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #42403E;
+  font-size: 15px;
+  background-color: #fff;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23B80000' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right .75rem center;
+  background-size: 16px 12px;
+  border: 1px solid #ced4da;
+}
+
 /*
     Inv List Bottom Section
 */
@@ -410,7 +424,7 @@ a.dropdown-item:hover {
 .form-search{
 
     .dropdown-toggle{
-        padding: 4px 25px 4px 10px;
+        padding: 4px 35px 4px 10px;
         max-width: 140px;
         text-align: start;
         white-space: nowrap;
@@ -438,7 +452,7 @@ a.dropdown-item:hover {
     color: #6200EE;
 }
 
-.sb-color-hou{
+.sb-color-dir{
     color: #CC0000;
 }
 
@@ -460,6 +474,10 @@ a.dropdown-item:hover {
 
 .sb-color-agt{
     color: #FF5F1F;
+}
+
+.sb-color-lnk{
+    color: #0077B5;
 }
 
 // new Inquiry

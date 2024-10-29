@@ -3422,6 +3422,12 @@ fieldset:disabled .btn {
     border: 1px solid #E8E8E8;
 }
 
+.badge-light-time {
+  color: #1C81A1;
+  background-color: #E9F4F7;
+  border: 1px solid #E9F4F7;
+}
+
 /*      Link     */
 
 .badge[class*="link-badge-"] {
@@ -4675,13 +4681,13 @@ fieldset:disabled .btn {
     .al-action{
         .text-result{
             font-family: 'Nunito Sans';
-            font-size: 12px;
+            font-size: 13px;
             color: #161515;
         }
 
         .badge{
             padding: 2px 7px !important;
-            font-size: 11px;
+            font-size: 12px;
         }
     }
 
@@ -4699,7 +4705,7 @@ fieldset:disabled .btn {
 
         .badge{
             padding: 1px 7px !important;
-            font-size: 10px;
+            font-size: 11px;
         }
 
         small{
@@ -4713,14 +4719,14 @@ fieldset:disabled .btn {
         margin-top: 3px;
         .name{
             font-family: 'Nunito Sans';
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
             color: #161515;
         }
 
         .comment{
             color: #999999;
-            font-size: 11px;
+            font-size: 12px;
         }
 
 
