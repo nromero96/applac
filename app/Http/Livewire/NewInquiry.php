@@ -54,7 +54,7 @@ class NewInquiry extends Component
     public $source_label = 'Select Source';
     public $sources_list = [
         [
-            'I am an existing customer' => ['key' => 'DIR', 'label' => 'Direct Client', 'color' => '#CC0000'],
+            'Direct Client' => ['key' => 'DIR', 'label' => 'Direct Client', 'color' => '#CC0000'],
             'agt' => ['key' => 'AGT', 'label' => 'Agent', 'color' => '#FF5F1F'],
             'Referral' => ['key' => 'REF', 'label' => 'Referral', 'color' => '#FFCC00'],
             'Other' => ['key' => 'OTH', 'label' => 'Other', 'color' => '#595959'],

@@ -15,14 +15,14 @@
     <link href="{{ asset('layouts/vertical-light-menu/css/light/loader.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('layouts/vertical-light-menu/css/dark/loader.css') }}" rel="stylesheet" type="text/css" />
     <script src="{{ asset('layouts/vertical-light-menu/loader.js') }}"></script>
-    
+
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css2?family=Kanit&amp;family=Nunito:wght@400;600;700&amp;display=swap" rel="stylesheet">
     <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
-    
+
     <link href="{{ asset('layouts/vertical-light-menu/css/light/plugins.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/light/authentication/auth-boxed.css') }}" rel="stylesheet" type="text/css" />
-    
+
     <link href="{{ asset('layouts/vertical-light-menu/css/dark/plugins.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/css/dark/authentication/auth-boxed.css') }}" rel="stylesheet" type="text/css" />
 
@@ -37,13 +37,13 @@
 
     <link rel="stylesheet" href="{{ asset('plugins/src/filepond/filepond.min.css') }}">
     <link rel="stylesheet" href="{{ asset('plugins/src/filepond/FilePondPluginImagePreview.min.css') }}">
-    
+
     <link href="{{ asset('plugins/css/light/filepond/custom-filepond.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('plugins/css/dark/filepond/custom-filepond.css') }}" rel="stylesheet" type="text/css" />
 
     <link href="{{ asset('plugins/css/light/flatpickr/custom-flatpickr.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('plugins/css/dark/flatpickr/custom-flatpickr.css') }}" rel="stylesheet" type="text/css" />
-    
+
     <link rel="stylesheet" href="{{ asset('plugins/src/intl-tel-input/css/intlTelInput.min.css') }}" type="text/css">
 
     <style>
@@ -51,7 +51,7 @@
         body{
             background: #ffffff;
         }
-    
+
     .radio-card{
         background: #FFFFFF;
         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -155,11 +155,11 @@
                                     <div class="col-md-12 mb-4">
                                         <h5 class="fw-bold">{{ __('Transport Details') }}</h5>
                                     </div>
-        
+
                                     <div class="col-md-12 mb-1">
                                         <h6 class="fw-bold">{{ __('Mode of transport') }}</h6>
                                     </div>
-        
+
                                     <div class="col-md-12">
                                         <div class="row align-items-center justify-content-center">
                                             <div class="col mb-4 text-center">
@@ -327,7 +327,7 @@
                                         <div class="d-flex align-items-center justify-content-center h-100">
                                             <svg width="7" height="22" viewBox="0 0 7 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M1 21L6 11L1 1" stroke="#D8D8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg> 
+                                            </svg>
                                             <svg width="7" height="22" viewBox="0 0 7 22" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M1 21L6 11L1 1" stroke="#D8D8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                             </svg>
@@ -408,7 +408,7 @@
                                             <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                                             <span class="btn-text-inner">{{ __('Add item') }}</span>
                                         </a>
-                                    
+
                                     </div>
 
                                     <div class="col-md-12" id="dv_totsummary">
@@ -456,7 +456,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        
+
                                                         <div class="col-md-12 mt-1">
                                                             <span id="ts_infotext" class="d-block"></span>
                                                             <span id="ts_notetext" class="text-danger d-block"></span>
@@ -490,7 +490,7 @@
                                                 <label class="form-label">{{ __('Declared value') }}</label>
                                                 <input type="text" name="declared_value" id="declared_value" class="form-control" placeholder="" required>
                                                 <div class="text-danger" id="declared_value_error"></div>
-                                                
+
                                                 <div class="form-check form-check-primary form-check-inline mt-1">
                                                     <input type="hidden" name="insurance_required" value="no">
                                                     <input class="form-check-input" type="checkbox" name="insurance_required" id="insurance_required" value="yes">
@@ -511,13 +511,13 @@
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label">{{ __('Documentation') }} <span class="infototi" data-bs-toggle="tooltip" data-bs-placement="top" title="(Max. 10mb - Allowed files: jpg, jpeg, png, gif, doc, docx, ppt, pptx, pdf, xls, xlsx)" ></span></label>
                                                 <div class="multiple-file-upload">
-                                                    <input 
-                                                        type="file" 
+                                                    <input
+                                                        type="file"
                                                         name="quotation_documents[]"
-                                                        class="quotation_documents" 
-                                                        multiple 
-                                                        data-allow-reorder="true" 
-                                                        data-max-file-size="3MB" 
+                                                        class="quotation_documents"
+                                                        multiple
+                                                        data-allow-reorder="true"
+                                                        data-max-file-size="3MB"
                                                         data-max-files="6">
                                                 </div>
                                                 <span class="text">
@@ -601,7 +601,7 @@
                                                         <label for="source" class="form-label mb-0">{{ __('How do you know about us?') }}</label>
                                                         <select name="source" id="source" class="form-select">
                                                             <option value="">{{ __('Select...') }}</option>
-                                                            <option value="I am an existing customer">{{ __('I am an existing customer') }}</option>
+                                                            <option value="Direct Client">{{ __('Direct Client') }}</option>
                                                             <option value="Google Search">{{ __('Google Search') }}</option>
                                                             <option value="Linkedin">{{ __('Linkedin') }}</option>
                                                             <option value="Social Media">{{ __('Social Media') }}</option>
@@ -698,14 +698,14 @@
                 var $dv_cargotype_roro = $('#dv_cargotype_roro');
                 var $service_type = $('#service_type');
 
-                
+
                 $dv_cargotype.addClass('d-none');
                 $dv_cargotype_ground.addClass('d-none');
                 $dv_cargotype_container.addClass('d-none');
                 $dv_cargotype_roro.addClass('d-none');
                 $dv_cargotype.find('input[type="radio"]').prop('checked', false);
                 $('#info_company').removeClass('d-none');
-                
+
                 $service_type.html('<option value="">Select...</option><option value="Door-to-Door">Door-to-Door</option><option value="Door-to-Airport">Door-to-Airport</option><option value="Airport-to-Door">Airport-to-Door</option><option value="Airport-to-Airport">Airport-to-Airport</option>');
 
                 switch (mode_of_transport) {
@@ -748,7 +748,7 @@
 
             });
 
-    
+
             // Cambiar el select por el nombre "service_type"
             function handleServiceTypeChange() {
                 var service_type = $('select[name="service_type"]').val();
@@ -1444,7 +1444,7 @@
 
                 initializeDangerousCargoModal();
                 initializeTooltips();
-            
+
             });
 
 
@@ -1796,7 +1796,7 @@ function clearValidationErrors() {
         //if click in no_shipping_date checkbox readonly shipping_date and delete value
         $(document).on('click', 'input[name="no_shipping_date"]', function() {
             var $shippingDateInput = $('#shipping_date');
-            
+
             if ($(this).is(':checked')) {
                 f3.clear();
                 f3.destroy();
@@ -1805,7 +1805,7 @@ function clearValidationErrors() {
             } else {
                 $shippingDateInput.prop('readonly', false)
                                 .val('');
-                
+
                 $shippingDateInput.attr('required', true);
 
                 f3 = flatpickr($shippingDateInput[0], {
@@ -1847,7 +1847,7 @@ function clearValidationErrors() {
                 alert('Please add at least one Cargo Details');
                 return false;
             }
-            
+
             if($('#cargoinfodata input[required].is-invalid').length == 0 && $('#cargoinfodata select[required].is-invalid').length == 0 && countItemDetail > 0){
                 $('#CustomerInformationModal').modal('show');
             }
@@ -1889,7 +1889,7 @@ function clearValidationErrors() {
         });
 
     </script>
-    
+
     <script>
         // Obtener todos los elementos radio con name="cargo_type"
         const originCountrySelect = document.getElementById('origin_country_id');

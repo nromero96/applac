@@ -254,7 +254,7 @@
                                 <path d="M12 3V15" stroke="#2196F3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
                             <input type="file" multiple wire:model="attachments_added" accept=".eml, .pdf, .doc, .docx, .xls, .xlsx, .jpg, .png, .jpeg">
-                            <p>Drag and drop your files here or <span>click to browse</span></p>
+                            <p style="margin-bottom: 0">Drag and drop your files here or <span>click to browse</span></p>
                         </div>
                         @if (sizeof($attachments) > 0)
                             <ul class="newinquiry__attachments__list">

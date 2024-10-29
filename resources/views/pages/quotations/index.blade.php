@@ -378,7 +378,7 @@
                                                             if($quotation->user_source == 'ppc') {
                                                                 $class_sb = 'sb-color-ppc';
                                                                 $text_sb = $quotation->user_source;
-                                                            } elseif($quotation->user_source == 'I am an existing customer'){
+                                                            } elseif($quotation->user_source == 'Direct Client'){
                                                                 $class_sb = 'sb-color-hou';
                                                                 $text_sb = 'dir';
                                                             } elseif($quotation->user_source == 'Google Search') {

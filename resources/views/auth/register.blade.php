@@ -9,7 +9,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <title>Register | Latin American Cargo</title>
-    
+
     <!-- Icons -->
     <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/favicon.ico') }}">
     <link rel="apple-touch-icon" href="{{ asset('assets/img/apple-touch-icon.png') }}">
@@ -33,7 +33,7 @@
 
     <link href="{{asset('layouts/vertical-light-menu/css/light/plugins.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/css/light/authentication/auth-cover.css')}}" rel="stylesheet" type="text/css" />
-    
+
     <link href="{{asset('layouts/vertical-light-menu/css/dark/plugins.css')}}" rel="stylesheet" type="text/css" />
     <link href="{{asset('assets/css/dark/authentication/auth-cover.css')}}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
@@ -41,7 +41,7 @@
 
     <!-- RECAPTCHA -->
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-    
+
     @if(app()->environment('production'))
         @include('partials.gtm_head')
     @endif
@@ -94,7 +94,7 @@
                                                 <img src="{{asset('assets/img/logo-original-lac.svg')}}" alt="Latin American Cargo" class="lg-htform">
                                             </a>
                                         </div>
-                                        
+
                                         <div class="text-end">
                                             <a href="locale/en" class="" ><span class="badge {{ (app()->getLocale() == 'en') ? 'badge-light-primary' : 'badge-light-dark' }}">EN</span></span></a>
                                             <a href="locale/es" class="" ><span class="badge {{ (app()->getLocale() == 'es') ? 'badge-light-primary' : 'badge-light-dark' }}">ES</span></span></a>
@@ -199,7 +199,7 @@
                                             <label class="form-label mb-0">{{ __('How do you know about us?') }} </label>
                                             <select class="form-select @error('phone') is-invalid @enderror" name="source" id="source">
                                                 <option value="">Select...</option>
-                                                <option value="I am an existing customer" {{ old('source') == 'I am an existing customer' ? 'selected' : '' }}>I am an existing customer</option>
+                                                <option value="Direct Client" {{ old('source') == 'Direct Client' ? 'selected' : '' }}>Direct Client</option>
                                                 <option value="Google Search" {{ old('source') == 'Google Search' ? 'selected' : '' }}>Google Search</option>
                                                 <option value="Linkedin" {{ old('source') == 'Linkedin' ? 'selected' : '' }}>Linkedin</option>
                                                 <option value="Social Media" {{ old('source') == 'Social Media' ? 'selected' : '' }}>Social Media</option>
@@ -271,15 +271,15 @@
     <script>
         //initialize the javascript
         document.addEventListener('DOMContentLoaded', function () {
-            
+
             const email = document.querySelector('#email');
-            
+
             const confirmEmail = document.querySelector('#confirm_email');
             const confirmEmailtext = document.querySelector('#confirm_emailtext');
 
             const password = document.querySelector('#password');
             const passwordsecurity = document.querySelector('#passwordsecurity');
-            
+
             const confirmPassword = document.querySelector('#password-confirm');
             const confirmPasswordtext = document.querySelector('#password-confirmtext');
 
