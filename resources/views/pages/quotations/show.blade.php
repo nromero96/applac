@@ -521,7 +521,7 @@
                                     <label class="fw-bold mb-0">{{__("Insurance required")}}:</label> {{ $quotation->insurance_required }}<br>
                                     <label class="fw-bold mb-0">{{__("Currency")}}:</label> {{ $quotation->currency }}<br>
                                 @else
-                                    <label class="fw-bold mb-0">{{__("Cargo Description")}}:</label> <br> {{ $quotation->cargo_description ? : '-' }}<br>
+                                    <label class="fw-bold mb-0">{{__("Cargo Description")}}:</label> <br> {!! nl2br($quotation->cargo_description) ? : '-' !!}<br>
                                 @endif
                             </div>
 
