@@ -28,7 +28,7 @@
                         @if(\Auth::user()->hasRole('Customer'))
                             <a href="{{ route('quotations.onlineregister') }}" class="btn-newquote">New Quote</a>
                         @else
-                            <a id="btn-new-internal-inquiry" href="#" class="btn-newquote">New Inquiry</a>
+                            <a id="btn-new-internal-inquiry" href="#" class="btn-newquote">Add Internal Inquiry</a>
                         @endif
                     </div>
                     <div class="col-8 col-md-6 d-flex align-self-center align-items-center justify-content-end">

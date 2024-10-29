@@ -10,7 +10,7 @@
             </button>
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="newinquiry__title">Add internal Inquiry</h2>
+                    <h2 class="newinquiry__title">Add Internal Inquiry</h2>
                 </div>
             </div>
 
@@ -93,8 +93,8 @@
                                 @if (!empty($contacts))
                                     @if (!$new_contact)
                                         <select type="text" class="form-select" wire:model="contact.id" wire:change="select_contact($event.target.value)">
-                                            @foreach ($contacts as $contact)
-                                                <option value="{{ $contact->id }}">{{ $contact->name }}</option>
+                                            @foreach ($contacts as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
                                     @else
@@ -109,21 +109,21 @@
                                 <label for="organization_code" class="form-label">
                                     Job Title (Optional)
                                 </label>
-                                <input type="text" class="form-control" wire:model="contact.job_title" {{ ($org_selected and !$new_contact) ? 'disabled' : '' }} />
+                                <input type="text" class="form-control" wire:model="contact.job_title" {{ ($org_selected and !$new_contact and !$update_contact) ? 'disabled' : '' }} />
                                 @error('contact.job_title') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-6 mt-3">
                                 <label for="organization_code" class="form-label">
                                     Email
                                 </label>
-                                <input type="text" class="form-control" wire:model="contact.email"  {{ ($org_selected and !$new_contact) ? 'disabled' : '' }} />
+                                <input type="text" class="form-control" wire:model="contact.email"  {{ ($org_selected and !$new_contact and !$update_contact) ? 'disabled' : '' }} />
                                 @error('contact.email') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-6 mt-3">
                                 <label for="organization_code" class="form-label">
                                     Phone
                                 </label>
-                                <input type="text" class="form-control" wire:model="contact.phone"  {{ ($org_selected and !$new_contact) ? 'disabled' : '' }} />
+                                <input type="text" class="form-control" wire:model="contact.phone"  {{ ($org_selected and !$new_contact and !$update_contact) ? 'disabled' : '' }} />
                                 @error('contact.phone') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
                         </div>

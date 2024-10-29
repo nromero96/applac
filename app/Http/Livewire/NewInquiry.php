@@ -48,6 +48,7 @@ class NewInquiry extends Component
     public $contacts = [];
     public $organizations = [];
     public $new_contact = false;
+    public $update_contact = false;
     public $rating_label = 'Select Rating';
     public $rating_star_icon = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.00065 0.333344L9.06065 4.50668L13.6673 5.18001L10.334 8.42668L11.1207 13.0133L7.00065 10.8467L2.88065 13.0133L3.66732 8.42668L0.333984 5.18001L4.94065 4.50668L7.00065 0.333344Z" fill="#EDB10C"/></svg>';
     public $source_label = 'Select Source';
@@ -142,6 +143,15 @@ class NewInquiry extends Component
                         'phone' => $this->contact['phone'],
                         'organization_id' => $id_org,
                     ]);
+                } else {
+                    if ($this->update_contact) { // si a un contacto seleccionado le faltan datos
+                        $contact_update = OrganizationContact::where('id', $this->contact['id'])->first();
+                        $contact_update->update([
+                            'job_title' => $this->contact['job_title'],
+                            'email' => $this->contact['email'],
+                            'phone' => $this->contact['phone'],
+                        ]);
+                    }
                 }
             } else { // Org es nuevo
                 // crear org
@@ -218,6 +228,12 @@ class NewInquiry extends Component
         $this->org_code = $org->code;
         $this->contacts = $org->contacts;
         $this->contact = $org->contacts->first()->toArray();
+        // activar actualizacion de contact sin data
+        if ($this->contact['email'] == '' || $this->contact['phone'] == '' || $this->contact['job_title'] == '') {
+            $this->update_contact = true;
+        } else {
+            $this->update_contact = false;
+        }
         // clean errors
         $this->resetErrorBag(['org_name', 'org_code', 'contact.name', 'contact.job_title', 'contact.email', 'contact.phone']);
         //
@@ -227,6 +243,12 @@ class NewInquiry extends Component
 
     public function select_contact(OrganizationContact $contact){
         $this->contact = $contact->toArray();
+        // activar actualizacion de contact sin data
+        if ($this->contact['email'] == '' || $this->contact['phone'] == '' || $this->contact['job_title'] == '') {
+            $this->update_contact = true;
+        } else {
+            $this->update_contact = false;
+        }
     }
 
     public function add_new_contact(){
@@ -279,7 +301,7 @@ class NewInquiry extends Component
     }
 
     public function reset_data(){
-        $this->reset('org_selected', 'org_id', 'org_name', 'org_code', 'contact', 'contacts', 'new_contact');
+        $this->reset('org_selected', 'org_id', 'org_name', 'org_code', 'contact', 'contacts', 'new_contact', 'update_contact');
     }
 
     public function clean_data_after_close(){

@@ -396,11 +396,11 @@ a.dropdown-item:hover {
     background-color: #b80000 !important;
     border-color: #b80000 !important;
     box-shadow: 0 10px 20px -13px rgba(192, 0, 0, 0.59);
-    font-weight: normal;
+    font-weight: 600;
     white-space: normal;
     word-wrap: break-word;
     border-radius: 4px;
-    padding: 6.59px 9px;
+    padding: 8px 12px;
 }
 
 .btn-clearfilter{
@@ -492,6 +492,10 @@ a.dropdown-item:hover {
     overflow-y: auto;
     display: none;
 
+    h5 {
+        font-size: 1.1rem;
+    }
+
     .form-control:disabled {
         color: #777777;
     }
@@ -571,6 +575,7 @@ a.dropdown-item:hover {
         border-bottom: 2px solid #FFCC00;
         padding-bottom: 12px;
         margin-bottom: 20px;
+        font-size: 1.7rem;
     }
 
     &__block {
@@ -725,7 +730,7 @@ a.dropdown-item:hover {
             justify-content: center;
             position: relative;
             gap: 16px;
-            padding: 32px 16px;
+            padding: 20px 16px;
             flex: 1;
 
             &.__dropping {

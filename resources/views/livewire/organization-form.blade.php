@@ -114,7 +114,7 @@
                                                         <input type="text" wire:model.defer="contacts.{{ $index }}.email" class="form-control form-control-sm" placeholder="Type here" />
                                                         @error('contacts.'. $index.'.email') <span class='text-danger'>{{ $message }}</span> @enderror
                                                     @else
-                                                        <p class="form-control px-2 bg-text-control-form border-0 mb-0" style="background-color: #ebedf2">{{ $contact['email'] }}</p>
+                                                        <p class="form-control px-2 bg-text-control-form border-0 mb-0" style="background-color: #ebedf2">{{ $contact['email'] ? : '-' }}</p>
                                                     @endif
                                                 </div>
                                             </div>
@@ -125,7 +125,7 @@
                                                         <input type="text" wire:model.defer="contacts.{{ $index }}.phone" class="form-control form-control-sm" placeholder="Type here" />
                                                         @error('contacts.'. $index.'.phone') <span class='text-danger'>{{ $message }}</span> @enderror
                                                     @else
-                                                        <p class="form-control px-2 bg-text-control-form border-0 mb-0" style="background-color: #ebedf2">{{ $contact['phone'] }}</p>
+                                                        <p class="form-control px-2 bg-text-control-form border-0 mb-0" style="background-color: #ebedf2">{{ $contact['phone'] ? : '-' }}</p>
                                                     @endif
                                                 </div>
                                             </div>
