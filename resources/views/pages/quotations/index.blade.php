@@ -379,7 +379,7 @@
                                                                 $class_sb = 'sb-color-ppc';
                                                                 $text_sb = $quotation->user_source;
                                                             } elseif($quotation->user_source == 'Direct Client'){
-                                                                $class_sb = 'sb-color-hou';
+                                                                $class_sb = 'sb-color-dir';
                                                                 $text_sb = 'dir';
                                                             } elseif($quotation->user_source == 'Google Search') {
                                                                 $class_sb = 'sb-color-seo';
