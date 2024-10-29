@@ -618,8 +618,8 @@
                                                         <h5 class="subtit-steep">{{ __('Additional Information') }}</h5>
                                                     </div>
                                                     <div class="col-md-6 mb-2">
-                                                        <label class="form-label mb-0">{{ __('Shipping date') }} <span class="text-danger">*</span></label>
-                                                        <input type="date" name="shipping_date" id="shipping_date" class="form-control" placeholder="Shipping Date/Range">
+                                                        <label class="form-label mb-0">{{ __('Shipping Date/Range') }} <span class="text-danger">*</span></label>
+                                                        <input type="date" name="shipping_date" id="shipping_date" class="form-control" placeholder="YYYY - MM - DD">
                                                         <div class="text-danger msg-info" id="shipping_date_error"></div>
                                                         <div class="form-check form-check-primary form-check-inline mt-1">
                                                             <input type="hidden" name="no_shipping_date" value="no">
