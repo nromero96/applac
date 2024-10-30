@@ -104,4 +104,7 @@ mix.sass('resources/sass/light/assets/main.scss', 'public/assets/css/light')
     .sass('resources/sass/light/plugins/table/datatable/dt-global_style.scss','public/plugins/css/light/table/datatable')
     .sass('resources/sass/dark/plugins/table/datatable/dt-global_style.scss','public/plugins/css/dark/table/datatable')
 
-    .sourceMaps();
+    // Habilitar source maps solo en desarrollo
+if (!mix.inProduction()) {
+    mix.sourceMaps();
+}
