@@ -181,6 +181,16 @@ $('#daterequest').on('cancel.daterangepicker', function(ev, picker) {
 
 });
 
+function selectResult(result) {
+    var input = document.getElementById('inputsearchresult');
+    input.value = result;
+
+    const form = document.getElementById('form-search');
+
+    // Enviar el formulario
+    form.submit();
+}
+
 function selectStatus(status) {
     var input = document.getElementById('inputsearchstatus');
     input.value = status;

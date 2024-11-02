@@ -56,16 +56,34 @@ document.querySelector('.btn-rtg-cancel').addEventListener('click', function() {
 
 //if change select id action
 document.getElementById('action').addEventListener('change', function() {
+    document.getElementById('note').value = '';
     if (this.value === 'Unqualified') {
         document.getElementById('dv_reason').classList.add('d-block');
         document.getElementById('dv_reason').classList.remove('d-none');
-        //required reason
         document.getElementById('reason').setAttribute('required', 'required');
+        document.getElementById('dv_inquiry_note').classList.add('d-none');
     } else {
         document.getElementById('dv_reason').classList.add('d-none');
         document.getElementById('dv_reason').classList.remove('d-inline');
         //remove required reason
         document.getElementById('reason').removeAttribute('required');
+        // dv_inquiry_note
+        document.getElementById('dv_inquiry_note').classList.remove('d-none');
+    }
+});
+
+//if chage reason
+document.getElementById('reason').addEventListener('change', function() {
+    document.getElementById('note').value = '';
+    if (this.value === 'Other') {
+        //dv_inquiry_note
+        document.getElementById('dv_inquiry_note').classList.remove('d-none');
+        document.getElementById('label_note').innerHTML = 'Specify reason <span class="text-danger">*</span>';
+        document.getElementById('note').setAttribute('required', 'required');
+    } else {
+        document.getElementById('dv_inquiry_note').classList.add('d-none');
+        document.getElementById('label_note').innerHTML = 'Comment (Optional)';
+        document.getElementById('note').removeAttribute('required');
     }
 });
 

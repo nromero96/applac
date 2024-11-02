@@ -743,11 +743,11 @@
                                             <option value="Other" @if($reason_unqualified == 'Other') selected disabled @endif>Other</option>
                                         </select>
                                     </div>
-                                    <div class="mb-3">
-                                        <label for="note" class="form-label mb-0">{{ __('Comment (Optional)') }}</label>
+                                    <div class="mb-2" id="dv_inquiry_note">
+                                        <label for="note" class="form-label mb-0" id="label_note">{{ __('Comment (Optional)') }}</label>
                                         <input type="text" class="form-control" name="note" id="note">
                                     </div>
-                                    <div class="">
+                                    <div class="mt-3">
                                         <button type="submit" class="btn btn-primary w-100 fw-bold px-2 py-2">{{ __('Update') }}</button>
                                     </div>
                                 </form>
