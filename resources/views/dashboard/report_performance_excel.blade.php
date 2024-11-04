@@ -1,10 +1,14 @@
 <h2>{{ $title_file }}</h2>
+<h3>{{ $ratings_selected }}</h3>
+<h3>{{ $sources_selected }}</h3>
 <table>
     <thead>
         <tr>
             <th></th>
             <th>Received</th>
-            <th>Pre-qualified</th>
+            @if (false)
+                <th>Pre-qualified</th>
+            @endif
             <th>Attended</th>
             <th>Attending Rate (%)</th>
             <th>Avg. Attend Time</th>
@@ -17,7 +21,9 @@
         <tr>
             <td><b>Global</b></td>
             <td>{{ $info_global['quotations'] }}</td>
-            <td>{{ $info_global['pre_qualified'] }}</td>
+            @if (false)
+                <td>{{ $info_global['pre_qualified'] }}</td>
+            @endif
             <td>{{ $info_global['quotes_attended'] }}</td>
             <td>{{ $info_global['attending_rate'] }}</td>
             <td>{{ $info_global['avg_attend_time'] }}</td>
@@ -29,7 +35,9 @@
             <tr>
                 <td>{{ $info['employee']->name }} {{ $info['employee']->lastname }}</td>
                 <td>{{ $info['requests_received'] }}</td>
-                <td>{{ $info['pre_qualified'] }}</td>
+                @if (false)
+                    <td>{{ $info['pre_qualified'] }}</td>
+                @endif
                 <td>{{ $info['quotes_attended'] }}</td>
                 <td>{{ $info['attending_rate'] }}</td>
                 <td>{{ $info['avg_attend_time'] }}</td>

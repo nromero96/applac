@@ -1,4 +1,4 @@
-<div wire:loading.class='opacity-50 pe-none' wire:target='render'>
+<div wire:loading.class='opacity-50 pe-none' wire:target="export_excel, period, render">
     <div class="dash_reports_filter">
         <div class="dash_reports_filter_content">
             <select class="form-select" name="dash_report_options" id="dash_report_options" wire:model="period">

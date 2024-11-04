@@ -406,6 +406,7 @@ class DashboardReportPerformance extends Component
     }
 
     public function export_excel(){
+        $this->render();
         $data = $this->performance_report();
 
         // Title
@@ -455,6 +456,8 @@ class DashboardReportPerformance extends Component
             default: break;
         }
         $data['title_file'] = $title_file;
+        $data['ratings_selected'] = $this->rating_field_label;
+        $data['sources_selected'] = $this->source_field_label;
         return Excel::download(new ReportPerformanceExport($data), 'MyLAC_Sales_Report.xlsx');
     }
 }
