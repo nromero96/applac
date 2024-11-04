@@ -16,7 +16,7 @@ class DashboardReportPerformance extends Component
     // parameteres
     public $period = 'last_7_days';
     public $source;
-    public $rating = [0, 1, 2, 3, 4];
+    public $rating = [0, 1, 2, 3, 4, 5];
     public $date_from = null;
     public $date_to = null;
 
