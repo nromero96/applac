@@ -137,49 +137,67 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
+    var start = moment().subtract(20, 'years');
+    var end = moment();
 
-    var start = moment().subtract(29, 'days');
-var end = moment();
-
-// Función para actualizar el campo con las fechas seleccionadas
-function cb(start, end) {
-    $('#daterequest').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
-}
-
-// Inicializar el daterangepicker
-$('#daterequest').daterangepicker({
-    startDate: start,
-    endDate: end,
-    autoUpdateInput: false, // No actualizar automáticamente el campo de entrada
-    locale: {
-        format: 'YYYY-MM-DD', // Establecer el formato de la fecha
-        cancelLabel: 'Clear' // Texto del botón para limpiar la selección
-    },
-    ranges: {
-       'Today': [moment(), moment()],
-       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-       'This Month': [moment().startOf('month'), moment().endOf('month')],
-       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+    if($('#daterequest').val() != '') {
+        var dates = $('#daterequest').val().split(' - ');
+        start = moment(dates[0]);
+        end = moment(dates[1]);
     }
-}, cb);
 
-// Cuando se seleccionan fechas, actualizar el input con el formato adecuado
-$('#daterequest').on('apply.daterangepicker', function(ev, picker) {
-    $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+    // Función para actualizar el campo con las fechas seleccionadas
+    function cb(start, end, label) {
+        if (label === 'All time') {
+            $('#daterequest').val(''); // Limpiar el campo de entrada cuando se selecciona "All time"
+        } else {
+            $('#daterequest').val(start.format('YYYY-MM-DD') + ' - ' + end.format('YYYY-MM-DD'));
+        }
+    }
+
+    // Inicializar el daterangepicker
+    $('#daterequest').daterangepicker({
+        startDate: start,
+        endDate: end,
+        autoUpdateInput: false, // No actualizar automáticamente el campo de entrada
+        locale: {
+            format: 'YYYY-MM-DD', // Establecer el formato de la fecha
+            cancelLabel: 'Clear' // Texto del botón para limpiar la selección
+        },
+        ranges: {
+            'All time': [moment().subtract(20, 'years'), moment()], // Desde hace 10 años hasta hoy
+            'Today': [moment(), moment()],
+            'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+            'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+            'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+            'This Month': [moment().startOf('month'), moment().endOf('month')],
+            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+        }
+    }, cb);
+
+
+    // Cuando se seleccionan fechas, actualizar el input con el formato adecuado
+    $('#daterequest').on('apply.daterangepicker', function(ev, picker) {
+        $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+    });
+
+    // Limpiar el campo y restaurar el placeholder al hacer clic en "Clear"
+    $('#daterequest').on('cancel.daterangepicker', function(ev, picker) {
+        $(this).val(''); // Limpiar el campo
+        $(this).attr('placeholder', 'Date/Range'); // Restaurar el placeholder
+    });
+
 });
 
-// Limpiar el campo y restaurar el placeholder al hacer clic en "Clear"
-$('#daterequest').on('cancel.daterangepicker', function(ev, picker) {
-    $(this).val(''); // Limpiar el campo
-    $(this).attr('placeholder', 'Date/Range'); // Restaurar el placeholder
-});
+function selectResult(result) {
+    var input = document.getElementById('inputsearchresult');
+    input.value = result;
 
+    const form = document.getElementById('form-search');
 
-
-
-});
+    // Enviar el formulario
+    form.submit();
+}
 
 function selectStatus(status) {
     var input = document.getElementById('inputsearchstatus');

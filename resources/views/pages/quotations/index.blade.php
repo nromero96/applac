@@ -52,11 +52,43 @@
 
 
                                     @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Employee'))
+                                        <!-- Dropdown Result -->
+                                        <div class="dropdown">
+                                            <button class="dropdown-toggle rounded-pill select-dropdown ms-1 me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {{ request('result') ? request('result') : 'Result' }}
+                                            </button>
+                                            <input type="hidden" name="result" id="inputsearchresult" value="{{ request('result') }}">
+                                            <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuButton">
+                                                <li>
+                                                    <a class="dropdown-item" href="#" onclick="selectResult('')"><b>All Result</b> <small class="float-end fw-light">({{$totalQuotation}})</small></a>
+                                                </li>
+                                                @foreach ($listresults as $result)
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" onclick="selectResult('{{ $result->quotation_result }}')">
 
+                                                            @php
+                                                            //color
+                                                            if($result->quotation_result == 'Under Review') {
+                                                                $class_sb_sch = 'badge-light-warning';
+                                                            } elseif($result->quotation_result == 'Won'){
+                                                                $class_sb_sch = 'badge-light-success';
+                                                            } elseif($result->quotation_result == 'Lost') {
+                                                                $class_sb_sch = 'badge-light-danger';
+                                                            } else {
+                                                                $class_sb_sch = 'badge-light-unqualified';
+                                                            }
+                                                        @endphp
+                                                        <span class="cret-bge ms-0 align-middle badge {{$class_sb_sch}}" title="{{$result->quotation_result}}">{{ $result->quotation_result }}</span>
+                                                        <small class="float-end fw-light">({{ $result->total >= 1000 ? number_format($result->total / 1000, 1) . 'K' : $result->total }})</small>
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
 
                                         <!-- Dropdown status -->
                                         <div class="dropdown">
-                                            <button class="dropdown-toggle rounded-pill select-dropdown ms-1 me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <button class="dropdown-toggle rounded-pill select-dropdown me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                                                 {{ request('status') ? request('status') : 'Status' }}
                                             </button>
                                             <input type="hidden" name="status" id="inputsearchstatus" value="{{ request('status') }}">
@@ -223,7 +255,7 @@
                                             </ul>
                                         </div>
 
-                                        @if(request('assignedto') != '' || request('status')!= '' || request('source') != '' || request('rating') != '')
+                                        @if(request('assignedto') != '' || request('result')!= '' || request('status')!= '' || request('source') != '' || request('rating') != '')
                                             <a href="{{ route('quotations.index') }}" class="ms-0 text-primary btn-clearfilter">
                                                 <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M18 6 6 18"></path>

@@ -47,6 +47,7 @@ class QuotationController extends Controller
         ];
 
         $listforpage = request()->query('listforpage') ?? 50;
+        $result = request()->query('result');
         $status = request()->query('status');
         $source = request()->query('source');
         $assignedto = request()->query('assignedto');
@@ -102,8 +103,12 @@ class QuotationController extends Controller
         }
 
         // Aplicar filtros de búsqueda y fecha si hay términos de búsqueda y/o fecha solicitada
-        $quotations->where(function($query) use ($search, $status, $source, $rating, $assignedto, $daterequest) {
+        $quotations->where(function($query) use ($search, $result, $status, $source, $rating, $assignedto, $daterequest) {
 
+            // Aplicar result si está presente
+            if (!empty($result)) {
+                $query->where('quotations.result', $result);
+            }
 
             // Aplicar status si está presente
             if (!empty($status)) {
@@ -221,8 +226,8 @@ class QuotationController extends Controller
         ->orderBy('rating', 'desc')
         ->get();
 
-       // Contar por status de cotizaciones
-       $statusorderforlist = ['Pending', 'Qualifying', 'Processing', 'Quote Sent', 'Unqualified', 'Attended'];
+        // Contar por status de cotizaciones
+        $statusorderforlist = ['Pending', 'Qualifying', 'Processing', 'Quote Sent', 'Unqualified', 'Attended'];
         $liststatus = Quotation::select(
             'quotations.status as quotation_status',
             DB::raw('COUNT(quotations.id) as total')
@@ -233,9 +238,22 @@ class QuotationController extends Controller
             return array_search($status->quotation_status, $statusorderforlist);
         });
 
+        //Contar Result
+        $resultsorderforlist = ['Under Review', 'Won', 'Lost', 'N/A'];
+        $listresults = Quotation::select(
+            DB::raw("COALESCE(quotations.result, 'N/A') as quotation_result"),
+            DB::raw('COUNT(quotations.id) as total')
+        )
+        ->groupBy(DB::raw("COALESCE(quotations.result, 'N/A')")) // Agrupa usando 'N/A' si result es nulo
+        ->get()
+        ->sortBy(function ($result) use ($resultsorderforlist) {
+            return array_search($result->quotation_result, $resultsorderforlist);
+        });
+    
+
 
         $data['listforpage'] = $listforpage;
-        return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users)->with('listsources', $listsources)->with('listratings', $listratings)->with('totalQuotation', $totalQuotation)->with('liststatus', $liststatus);
+        return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users)->with('listsources', $listsources)->with('listratings', $listratings)->with('totalQuotation', $totalQuotation)->with('liststatus', $liststatus)->with('listresults', $listresults);
     }
 
     public function onlineregister(Request $request){
@@ -621,6 +639,8 @@ class QuotationController extends Controller
 
 
     public function onlinestore(Request $request){
+
+        Log::info('Información de la cotización recibida: '. json_encode($request->all()));
 
         try {
             $validatedData = $request->validate([

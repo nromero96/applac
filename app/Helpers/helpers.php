@@ -1,6 +1,7 @@
 <?php
 use GuzzleHttp\Client;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Log;
 
 function sendMailApiLac($toEmail, $subject, $content, $attachments, $ccEmails = [], $bccEmails = [])
 {
@@ -74,9 +75,13 @@ if (!function_exists('rateQuotation')) {
     function rateQuotation($quotation_id) {
 
         $quotation = \App\Models\Quotation::find($quotation_id);
+        
         if (!$quotation) {
             throw new \Exception("Quotation not found");
         }
+
+        //obtener cargoDetails
+        $cargoDetails = \App\Models\CargoDetail::where('quotation_id', $quotation_id)->get();
 
         $rating = 0;
 
@@ -88,25 +93,6 @@ if (!function_exists('rateQuotation')) {
         $unasemanadespues = $fecha_solicitud->copy()->addDays(7);  // 7 días desde la fecha de solicitud
         $dossemanasdespues = $fecha_solicitud->copy()->addDays(14); // 14 días desde la fecha de solicitud
         $tressemanasdespues = $fecha_solicitud->copy()->addDays(21); // 21 días desde la fecha de solicitud
-
-
-        //######## Fecha de envío :::::::::::
-        if ($quotation->shipping_date) {
-            $fecha_envio = Carbon::parse(explode(' to ', $quotation->shipping_date)[0]);
-            if (in_array($quotationmodeoftransport, ['Air', 'Ground'])) {
-                if ($fecha_envio->between($fecha_solicitud,  $unasemanadespues)) {
-                    $rating += 2;  //a una semana desde la fecha solicitud
-                } elseif ($fecha_envio->between($unasemanadespues, $dossemanasdespues)){
-                    $rating += 1; //Desde el día 8-14
-                }
-            } elseif (in_array($quotationmodeoftransport, ['Container', 'RoRo', 'Breakbulk'])) {
-                if ($fecha_envio->between($fecha_solicitud, $unasemanadespues)) {
-                    $rating += 2; //a una semana desde la fecha solicitud
-                } elseif($fecha_envio->between($unasemanadespues, $tressemanasdespues)){
-                    $rating += 1; //Hasta 3 semanas desde la fecha solicitud
-                }
-            }
-        }
 
 
         //######## Correo electrónico :::::::::::
@@ -125,78 +111,83 @@ if (!function_exists('rateQuotation')) {
             'icloud.com',
         ];
 
+        $package_type = '';
 
-        //######## Origen/Destino, Ubicación y correo :::::::::::
-        $scopeCountries = ['7', '9', '10', '12', '16', '19', '22', '24', '26', '30', '38', '40', '43', '47', '52', '55', '60', '61', '63', '65', '76', '87', '88', '90', '94', '95', '97', '108', '138', '142', '147', '154', '158', '169', '171', '172', '177', '184', '185', '187', '208', '221', '225', '231', '233', '237', '239', '240'];  // Países en el scope
-        $specialCountries = ['38', '231']; // Países especiales (Canadá y USA)
+        // Verificar si cargoDetails existe y no está vacío
+        if (!empty($cargoDetails) && count($cargoDetails) === 1) {
+            $package_type = isset($cargoDetails[0]['package_type']) ? $cargoDetails[0]['package_type'] : '';
+        }
 
-        $location = $quotation->customer_user_id ? \App\Models\User::find($quotation->customer_user_id)->location : \App\Models\GuestUser::find($quotation->guest_user_id)->location;
-
-        $isLocationInSpecialCountries = in_array($location, $specialCountries);
-
-        $isOriginInScope = in_array($quotation->origin_country_id, $scopeCountries);
-        $isDestinationInScope = in_array($quotation->destination_country_id, $scopeCountries);
-        $isBusinessEmailAndNotEdu = !in_array($domain, $personal_domains) && !preg_match('/\.edu(\.[a-z]{2,})?$/', $domain);
-
-        //scope exclude $specialCountries
-        $scopeExcludeSpecialCountries = array_diff($scopeCountries, $specialCountries);
-        //Location dentro del Scope $specialCountries
-        $isLocationInScopeExcludeSpecialCountries = in_array($location, $scopeExcludeSpecialCountries);
-
-        if ($isLocationInSpecialCountries) {
-            if ($isBusinessEmailAndNotEdu) {
-                if ($isOriginInScope && $isDestinationInScope) {
-                    $rating += 2;  // Tanto origen como destino están en el scope y el correo es de una empresa
-                } elseif ($isOriginInScope || $isDestinationInScope) {
-                    $rating += 1; // Origen o destino están en el scope y el correo es de una empresa
-                } else {
-                    $rating += 0.5; // Cualquier país fuera del scope
+        if($quotation->mode_of_transport == 'RoRo' && $quotation->cargo_type == 'Personal Vehicle' && ($package_type == 'Automobile' || $package_type == 'Motorcycle (crated or palletized) / ATV')){ 
+            $rating += 1;
+        } else {
+            //######## Fecha de envío :::::::::::
+            if ($quotation->shipping_date) {
+                $fecha_envio = Carbon::parse(explode(' to ', $quotation->shipping_date)[0]);
+                if (in_array($quotationmodeoftransport, ['Air', 'Ground'])) {
+                    if ($fecha_envio->between($fecha_solicitud,  $unasemanadespues)) {
+                        $rating += 2;  //a una semana desde la fecha solicitud
+                    } elseif ($fecha_envio->between($unasemanadespues, $dossemanasdespues)){
+                        $rating += 1; //Desde el día 8-14
+                    }
+                } elseif (in_array($quotationmodeoftransport, ['Container', 'RoRo', 'Breakbulk'])) {
+                    if ($fecha_envio->between($fecha_solicitud, $unasemanadespues)) {
+                        $rating += 2; //a una semana desde la fecha solicitud
+                    } elseif($fecha_envio->between($unasemanadespues, $tressemanasdespues)){
+                        $rating += 1; //Hasta 3 semanas desde la fecha solicitud
+                    }
                 }
             }
-        // Si la ubicación está en los países del scope excluyendo los especiales
-        } elseif ($isLocationInScopeExcludeSpecialCountries && $isBusinessEmailAndNotEdu) {
-            if (in_array($quotation->origin_country_id, $specialCountries) && in_array($quotation->destination_country_id, $scopeExcludeSpecialCountries)) {
-                $rating += 1; // Origen en specialCountries y destino en scopeExcludeSpecialCountries y el correo es de una empresa
+
+            //######## Origen/Destino, Ubicación y correo :::::::::::
+            $scopeCountries = ['7', '9', '10', '12', '16', '19', '22', '24', '26', '30', '38', '40', '43', '47', '52', '55', '60', '61', '63', '65', '76', '87', '88', '90', '94', '95', '97', '108', '138', '142', '147', '154', '158', '169', '171', '172', '177', '184', '185', '187', '208', '221', '225', '231', '233', '237', '239', '240'];  // Países en el scope
+            $specialCountries = ['38', '231']; // Países especiales (Canadá y USA)
+
+            $location = $quotation->customer_user_id ? \App\Models\User::find($quotation->customer_user_id)->location : \App\Models\GuestUser::find($quotation->guest_user_id)->location;
+
+            $isLocationInSpecialCountries = in_array($location, $specialCountries);
+
+            $isOriginInScope = in_array($quotation->origin_country_id, $scopeCountries);
+            $isDestinationInScope = in_array($quotation->destination_country_id, $scopeCountries);
+            $isBusinessEmailAndNotEdu = !in_array($domain, $personal_domains) && !preg_match('/\.edu(\.[a-z]{2,})?$/', $domain);
+
+            //scope exclude $specialCountries
+            $scopeExcludeSpecialCountries = array_diff($scopeCountries, $specialCountries);
+            //Location dentro del Scope $specialCountries
+            $isLocationInScopeExcludeSpecialCountries = in_array($location, $scopeExcludeSpecialCountries);
+
+            if ($isLocationInSpecialCountries) {
+                if ($isBusinessEmailAndNotEdu) {
+                    if ($isOriginInScope && $isDestinationInScope) {
+                        $rating += 2;  // Tanto origen como destino están en el scope y el correo es de una empresa
+                    } elseif ($isOriginInScope || $isDestinationInScope) {
+                        $rating += 1; // Origen o destino están en el scope y el correo es de una empresa
+                    } else {
+                        $rating += 0.5; // Cualquier país fuera del scope
+                    }
+                }
+            // Si la ubicación está en los países del scope excluyendo los especiales
+            } elseif ($isLocationInScopeExcludeSpecialCountries && $isBusinessEmailAndNotEdu) {
+                if (in_array($quotation->origin_country_id, $specialCountries) && in_array($quotation->destination_country_id, $scopeExcludeSpecialCountries)) {
+                    $rating += 1; // Origen en specialCountries y destino en scopeExcludeSpecialCountries y el correo es de una empresa
+                }
+            }
+
+            //######## Valor ::::::::::::
+            if($cargotype == 'LCL' || $cargotype == 'LTL' || $quotationmodeoftransport == 'Air'){
+                if ($quotation->declared_value > 2500) {
+                    $rating += 1;
+                }
+            } else if($cargotype == 'FCL' || $cargotype == 'FTL' || $quotationmodeoftransport == 'RoRo'){
+                if ($quotation->declared_value > 25000) {
+                    $rating += 1;
+                }
+            } else if($quotationmodeoftransport == 'Breakbulk'){
+                if ($quotation->declared_value > 60000) {
+                    $rating += 1;
+                }
             }
         }
-
-        //######## Valor ::::::::::::
-        if($cargotype == 'LCL' || $cargotype == 'LTL' || $quotationmodeoftransport == 'Air'){
-            if ($quotation->declared_value > 2500) {
-                $rating += 1;
-            }
-        } else if($cargotype == 'FCL' || $cargotype == 'FTL' || $quotationmodeoftransport == 'RoRo'){
-            if ($quotation->declared_value > 25000) {
-                $rating += 1;
-            }
-        } else if($quotationmodeoftransport == 'Breakbulk'){
-            if ($quotation->declared_value > 60000) {
-                $rating += 1;
-            }
-        }
-
-        // Cantidades
-        // if($quotationmodeoftransport == 'Air'){
-        //     if ($quotation->tota_chargeable_weight > 200) {
-        //         $rating += 1;
-        //     }
-        // } else if($cargotype == 'LTL' ){
-        //     if ($quotation->total_volum_weight > 1.50) {
-        //         $rating += 1;
-        //     }
-        // } else if($cargotype == 'LCL'){
-        //     if ($quotation->total_volum_weight > 1.50) {
-        //         $rating += 1;
-        //     }
-        // } else if($quotationmodeoftransport == 'RoRo'){
-        //     if ($quotation->total_volum_weight > 30) {
-        //         $rating += 1;
-        //     }
-        // } else if($quotationmodeoftransport == 'Breakbulk'){
-        //     if ($quotation->total_volum_weight > 30) {
-        //         $rating += 1;
-        //     }
-        // }
 
         // Guarda la calificación en la cotización
         $quotation->rating = $rating;
@@ -279,9 +270,6 @@ if (!function_exists('rateQuotation')) {
                 }
 
             }
-
-
-
 
             //ver si la cotización cumple con 4 y 5 rating
             if($rating >= 4){
