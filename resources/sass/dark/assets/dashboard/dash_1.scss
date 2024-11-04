@@ -50,7 +50,7 @@
         border-radius: 4px;
         padding: 12px;
         position: absolute;
-        top: 100%;
+        top: calc(100% + 6px);
         left: 0;
         z-index: 5;
         width: max-content;
@@ -87,9 +87,14 @@
 }
 
 .dashboard_reports {
+    background-color: white;
 
     .table {
         border-bottom: 1px solid #D8D8D8;
+    }
+
+    .table-hover > tbody > tr:hover td {
+        border-radius: 0;
     }
 
     .table thead tr th {
