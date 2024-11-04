@@ -85,3 +85,26 @@
         }
     }
 }
+
+.dashboard_reports {
+
+    .table {
+        border-bottom: 1px solid #D8D8D8;
+    }
+
+    .table thead tr th {
+        background-color: #D8D8D8;
+        color: #B80000;
+    }
+
+    .table:not(.dataTable) thead tr th {
+        border-radius: 0;
+    }
+
+    .table tbody {
+
+        tr:nth-child(even) {
+            background-color: #F8F8F8;
+        }
+    }
+}

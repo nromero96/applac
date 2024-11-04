@@ -78,7 +78,7 @@
         </div>
     </div>
 
-    <div class="widget-content widget-content-area br-8 pb-2">
+    <div class="widget-content widget-content-area br-8 pb-2 dashboard_reports">
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead>

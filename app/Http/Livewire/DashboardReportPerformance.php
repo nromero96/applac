@@ -40,7 +40,20 @@ class DashboardReportPerformance extends Component
     ];
     public $source_field_label = 'All Sources';
     public $rating_field_label = 'All Ratings';
-    public $icon_info = '<svg style="width:16px;heigth:16px;flex-shrink:0;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm0 18c-4.411 0-8-3.589-8-8s3.589-8 8-8 8 3.589 8 8-3.589 8-8 8z"></path><path d="M11 11h2v6h-2zm0-4h2v2h-2z"></path></svg>';
+    public $icon_info = '
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_6504_8076)">
+        <path d="M8.00065 14.6666C11.6825 14.6666 14.6673 11.6818 14.6673 7.99992C14.6673 4.31802 11.6825 1.33325 8.00065 1.33325C4.31875 1.33325 1.33398 4.31802 1.33398 7.99992C1.33398 11.6818 4.31875 14.6666 8.00065 14.6666Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 10.6667V8" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M8 5.33325H8.00667" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_6504_8076">
+        <rect width="16" height="16" fill="white"/>
+        </clipPath>
+        </defs>
+        </svg>
+    ';
 
     public function mount() {
         $this->source = array_keys($this->sources_list);
