@@ -473,4 +473,9 @@ class DashboardReportPerformance extends Component
         $data['sources_selected'] = $this->source_field_label;
         return Excel::download(new ReportPerformanceExport($data), 'MyLAC_Sales_Report.xlsx');
     }
+
+    public function restore_defaults(){
+        $this->reset('rating');
+        $this->source = array_keys($this->sources_list);
+    }
 }
