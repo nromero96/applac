@@ -29,7 +29,7 @@
                                     Organization Name
                                 </label>
                                 <div class="newinquiry__org-name">
-                                    <input type="text" class="form-control" wire:model.debounce.500ms="org_name" {{ $org_selected ? 'disabled' : '' }} />
+                                    <input type="text" class="form-control text-uppercase" wire:model.debounce.500ms="org_name" {{ $org_selected ? 'disabled' : '' }} />
                                     @if (sizeof($organizations) > 0)
                                         <ul>
                                             @foreach ($organizations as $org)
@@ -44,7 +44,7 @@
                                 <label for="organization_code" class="form-label">
                                     Org. Code
                                 </label>
-                                <input type="text" class="form-control" wire:model.defer="org_code" {{ $org_selected ? 'disabled' : '' }} />
+                                <input type="text" class="form-control text-uppercase" wire:model.defer="org_code" {{ $org_selected ? 'disabled' : '' }} />
                                 @error('org_code') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
                         </div>

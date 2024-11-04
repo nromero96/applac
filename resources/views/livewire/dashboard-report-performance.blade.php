@@ -1,7 +1,7 @@
-<div wire:loading.class='opacity-50 pe-none'>
+<div wire:loading.class='opacity-50 pe-none' wire:target='render'>
     <div class="dash_reports_filter">
         <div class="dash_reports_filter_content">
-            <select class="form-select rounded-pill mb-2" name="dash_report_options" id="dash_report_options" wire:model="period">
+            <select class="form-select" name="dash_report_options" id="dash_report_options" wire:model="period">
                 @foreach ($period_list as $key => $value)
                     <option value="{{ $key }}">{{ $value }}</option>
                 @endforeach
@@ -19,7 +19,63 @@
                 @endif
             </div>
         </div>
-        <button type="button" class="btn-newquote" wire:click="export_excel()">Export to Excel</button>
+        <div class="d-flex align-items-center gap-5">
+            <div class="d-flex gap-4">
+                {{-- rating --}}
+                <div class="dash_field_select">
+                    <div class="form-select pe-5">{{ $rating_field_label }}</div>
+                    <div class="dash_field_select_content" wire:ignore.self>
+                        @php $starts_total = 5 @endphp
+                        @for ($i = 5; $i >= 0; $i--)
+                            <label class="form-check">
+                                <input type="checkbox" wire:model.defer="rating" value="{{ $i }}" class="form-check-input">
+                                <div class="form-check-label d-flex align-items-center gap-2">
+                                    <b>{{ $i }}</b>
+                                    <div class="d-flex align-items-center">
+                                        @for ($star = 0; $star < $i; $star++)
+                                            <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M8.00065 1.83325L10.0607 6.00659L14.6673 6.67992L11.334 9.92659L12.1207 14.5133L8.00065 12.3466L3.88065 14.5133L4.66732 9.92659L1.33398 6.67992L5.94065 6.00659L8.00065 1.83325Z" fill="#EDB10C"/>
+                                            </svg>
+                                        @endfor
+                                        @for ($no_star = 0; $no_star < $starts_total - $i; $no_star++)
+                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M7.00065 0.833252L9.06065 5.00659L13.6673 5.67992L10.334 8.92659L11.1207 13.5133L7.00065 11.3466L2.88065 13.5133L3.66732 8.92659L0.333984 5.67992L4.94065 5.00659L7.00065 0.833252Z" fill="#E1E1E1"/>
+                                            </svg>
+                                        @endfor
+                                    </div>
+                                </div>
+                            </label>
+                        @endfor
+                        <div class="dash_field_select_actions">
+                            <button type="button" class="__clear" wire:click="clear_rating()">Clear</button>
+                            <button type="button" wire:click="render()" class="__apply">Apply</button>
+                        </div>
+                    </div>
+                </div>
+                {{-- source --}}
+                <div class="dash_field_select">
+                    <div class="form-select pe-5">{{ $source_field_label }}</div>
+                    <div class="dash_field_select_content" wire:ignore.self>
+                        @foreach ($sources_list as $key => $value)
+                            <label class="form-check d-flex align-items-center gap-2 mb-1">
+                                <input type="checkbox" class="form-check-input" wire:model.defer="source" value="{{ $key }}">
+                                <div class="form-check-label d-flex align-items-center gap-1">
+                                    <span style="color: {{ $value['color'] }}; border: 2px solid {{ $value['color'] }};" class="dash_tag_source">
+                                        <b>{{ $value['key'] }}</b>
+                                    </span>
+                                    {{ $value['label'] }}
+                                </div>
+                            </label>
+                        @endforeach
+                        <div class="dash_field_select_actions">
+                            <button type="button" class="__clear" wire:click="clear_source()">Clear</button>
+                            <button type="button" wire:click="render()" class="__apply">Apply</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn-newquote" wire:click="export_excel()">Export Data</button>
+        </div>
     </div>
 
     <div class="widget-content widget-content-area br-8 pb-2">
@@ -30,24 +86,26 @@
                         <th></th>
                         <th class="ps-2 pe-2 text-center">
                             <div class="d-flex align-items-center gap-1 text-start">
-                                Received
-                                <div data-toggle="tooltip" data-placement="top" title="Total number of leads received within the selected timeframe">
+                                Total
+                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Total number of leads received within the selected timeframe">
                                     {!! $icon_info !!}
                                 </div>
                             </div>
                         </th>
-                        <th class="ps-2 pe-2 text-center">
-                            <div class="d-flex align-items-center gap-1 text-start">
-                                Pre-qualified
-                                <div data-toggle="tooltip" data-placement="top" title="Number of 3-5 star leads identified by our lead scoring system">
-                                    {!! $icon_info !!}
+                        @if (false)
+                            <th class="ps-2 pe-2 text-center">
+                                <div class="d-flex align-items-center gap-1 text-start">
+                                    Pre-qualified
+                                    <div data-toggle="tooltip" wire:ignore data-placement="top" title="Number of 3-5 star leads identified by our lead scoring system">
+                                        {!! $icon_info !!}
+                                    </div>
                                 </div>
-                            </div>
-                        </th>
+                            </th>
+                        @endif
                         <th class="ps-2 pe-2 text-center">
                             <div class="d-flex align-items-center gap-1 text-start">
                                 Attended
-                                <div data-toggle="tooltip" data-placement="top" title="Pre-qualified leads that have been followed up by a sales representative">
+                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Pre-qualified leads that have been followed up by a sales representative">
                                     {!! $icon_info !!}
                                 </div>
                             </div>
@@ -55,7 +113,7 @@
                         <th class="ps-2 pe-2 text-center">
                             <div class="d-flex align-items-center gap-1 text-start">
                                 Attending Rate
-                                <div data-toggle="tooltip" data-placement="top" title="Percentage of pre-qualified leads that have received follow-up from a sales representative">
+                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Percentage of pre-qualified leads that have received follow-up from a sales representative">
                                     {!! $icon_info !!}
                                 </div>
                             </div>
@@ -63,7 +121,7 @@
                         <th class="ps-2 pe-2 text-center">
                             <div class="d-flex align-items-center gap-1 text-start">
                                 Avg. Attend Time
-                                <div data-toggle="tooltip" data-placement="top" title="Average time taken for a sales representative to initiate contact with a pre-qualified lead">
+                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Average time taken for a sales representative to initiate contact with a pre-qualified lead">
                                     {!! $icon_info !!}
                                 </div>
                             </div>
@@ -71,7 +129,7 @@
                         <th class="ps-2 pe-2 text-center">
                             <div class="d-flex align-items-center gap-1 text-start">
                                 Quotes sent
-                                <div data-toggle="tooltip" data-placement="top" title="Number of quotes sent to potential clients">
+                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Number of quotes sent to potential clients">
                                     {!! $icon_info !!}
                                 </div>
                             </div>
@@ -79,7 +137,7 @@
                         <th class="ps-2 pe-2 text-center">
                             <div class="d-flex align-items-center gap-1 text-start">
                                 Avg. Quote Time
-                                <div data-toggle="tooltip" data-placement="top" title="Average time taken to send a quote after an inquiry is received">
+                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Average time taken to send a quote after an inquiry is received">
                                     {!! $icon_info !!}
                                 </div>
                             </div>
@@ -87,7 +145,7 @@
                         <th class="ps-2 pe-2 text-center">
                             <div class="d-flex align-items-center gap-1 text-start">
                                 Closing Rate
-                                <div data-toggle="tooltip" data-placement="top" title="Percentage of quotes that converted into won business">
+                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Percentage of quotes that converted into won business">
                                     {!! $icon_info !!}
                                 </div>
                             </div>
@@ -98,7 +156,9 @@
                     <tr>
                         <td class=""><b>Global</b></td>
                         <td class="ps-2 pe-2"><b>{{ $info_global['quotations'] }}</b></td>
-                        <td class="ps-2 pe-2"><b>{{ $info_global['pre_qualified'] }}</b></td>
+                        @if (false)
+                            <td class="ps-2 pe-2"><b>{{ $info_global['pre_qualified'] }}</b></td>
+                        @endif
                         <td class="ps-2 pe-2"><b>{{ $info_global['quotes_attended'] }}</b></td>
                         <td class="ps-2 pe-2"><b>{{ $info_global['attending_rate'] }}%</b></td>
                         <td class="ps-2 pe-2"><b>{{ $info_global['avg_attend_time'] }}</b></td>
@@ -110,7 +170,9 @@
                         <tr>
                             <td title="{{ $info['employee']->id }}">{{ $info['employee']->name }} {{ $info['employee']->lastname }}</td>
                             <td class="ps-2 pe-2">{{ $info['requests_received'] }}</td>
-                            <td class="ps-2 pe-2">{{ $info['pre_qualified'] }}</td>
+                            @if (false)
+                                <td class="ps-2 pe-2">{{ $info['pre_qualified'] }}</td>
+                            @endif
                             <td class="ps-2 pe-2">{{ $info['quotes_attended'] }}</td>
                             <td class="ps-2 pe-2">{{ $info['attending_rate'] }}%</td>
                             <td class="ps-2 pe-2">{{ $info['avg_attend_time'] }}</td>

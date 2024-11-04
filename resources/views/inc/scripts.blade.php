@@ -21,7 +21,7 @@
             </script>
             {{-- Dashboard --}}
             {{-- <script src="{{ asset('plugins/src/apex/apexcharts.min.js') }}"></script> --}}
-            {{-- <script src="{{ asset('assets/js/dashboard/dash_1.js') }}"></script> --}}
+            <script src="{{ asset('assets/js/dashboard/dash_1.js') }}?v={{ config('app.version') }}"></script>
             @break
         @case('users')
             {{-- Users --}}

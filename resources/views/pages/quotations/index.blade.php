@@ -537,7 +537,11 @@
 
                                                 <td>
                                                     <span class="inv-country">
-                                                        {{ $quotation->origin_country }} - {{ $quotation->destination_country }}
+                                                        @if (!$quotation->is_internal_inquiry)
+                                                            {{ $quotation->origin_country }} - {{ $quotation->destination_country }}
+                                                        @else
+                                                            {{ __('Internal Inquiry') }}
+                                                        @endif
                                                     </span>
                                                 </td>
 

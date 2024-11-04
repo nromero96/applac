@@ -60,6 +60,7 @@ class QuotationController extends Controller
         // lista de cotizaciones para el usuario logueado si es Customer
         $quotations = Quotation::select(
             'quotations.id as quotation_id',
+            'quotations.is_internal_inquiry',
             DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
             DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),
             DB::raw('COALESCE(users.email, guest_users.email) as user_email'),

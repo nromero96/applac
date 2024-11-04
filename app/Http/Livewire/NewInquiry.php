@@ -156,8 +156,8 @@ class NewInquiry extends Component
             } else { // Org es nuevo
                 // crear org
                 $org_new = Organization::create([
-                    'code' => $this->org_code,
-                    'name' => $this->org_name,
+                    'code' => strtoupper($this->org_code),
+                    'name' => strtoupper($this->org_name),
                 ]);
                 // asignar id de org creado
                 $id_org = $org_new->id;
@@ -175,7 +175,7 @@ class NewInquiry extends Component
             $guest_user = GuestUser::create([
                 'name' => $this->contact['name'],
                 'lastname' => '',
-                'company_name' => $this->org_name,
+                'company_name' => strtoupper($this->org_name),
                 'email' => $this->contact['email'],
                 'phone_code' => '',
                 'phone' => $this->contact['phone'],
@@ -301,7 +301,8 @@ class NewInquiry extends Component
     }
 
     public function reset_data(){
-        $this->reset('org_selected', 'org_id', 'org_name', 'org_code', 'contact', 'contacts', 'new_contact', 'update_contact');
+        // $this->reset('org_selected', 'org_id', 'org_name', 'org_code', 'contact', 'contacts', 'new_contact', 'update_contact');
+        $this->reset('org_id', 'org_name', 'org_code', 'contact', 'member', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label', 'attachments', 'attachments_added');
     }
 
     public function clean_data_after_close(){

@@ -27,3 +27,61 @@
         width: calc(50% - 4px);
     }
 }
+
+.dash_tag_source {
+    border-radius: 100px;
+    padding: 2px;
+    text-align: center;
+    width: 43px;
+    font-size: 12px;
+}
+
+.dash_field_select {
+    position: relative;
+
+    .form-select {
+        cursor: pointer;
+        width: 100%;
+    }
+
+    &_content {
+        background-color: white;
+        border: 1px solid #D8D8D8;
+        border-radius: 4px;
+        padding: 12px;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        z-index: 5;
+        width: max-content;
+        display: none;
+    }
+
+    &_actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 16px;
+
+        button {
+            border: 1px solid transparent;
+            text-align: center;
+            font-size: 12px;
+            padding: 1px 10px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .__apply {
+            border-color: #B80000;
+            color: white;
+            background-color: #B80000;
+        }
+
+        .__clear {
+            border-color: #D8D8D8;
+            color: #B80000;
+            background-color: #F5F5F5;
+        }
+    }
+}
