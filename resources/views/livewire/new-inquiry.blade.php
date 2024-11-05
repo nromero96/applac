@@ -19,9 +19,9 @@
                     <div class="newinquiry__block mb-3">
                         <div class="w-100 position-relative">
                             <h5>Organization</h5>
-                            @if ($org_selected)
-                                <button type="button" class="newinquiry__reset" wire:click="reset_data()">Reset</button>
-                            @endif
+                            {{-- @if ($org_selected)
+                            @endif --}}
+                            <button type="button" class="newinquiry__reset" wire:click="reset_data()">Reset</button>
                         </div>
                         <div class="row">
                             <div class="col-md-7">
