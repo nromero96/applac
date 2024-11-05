@@ -855,12 +855,23 @@
 $('body').on('click', function(){
     const content = $('.dash_field_select_content');
     content.hide();
+    $('.dash_field_select').removeClass('__opened');
+})
+$('body').on('click', '.dash_field_select_content', function(e){
+    e.stopPropagation();
 })
 $('body').on('click', '.dash_field_select', function(e) {
     e.stopPropagation();
-    $('.dash_field_select_content').hide();
+    // $('.dash_field_select_content').hide();
     const content = $(this).find('.dash_field_select_content');
     content.show();
+    if ($(this).hasClass('__opened')) {
+        $(this).removeClass('__opened');
+        content.hide();
+    } else {
+        $(this).addClass('__opened');
+        content.show();
+    }
 })
 document.addEventListener('livewire:load', function () {
     window.livewire.on("dashboard_report_close_dropdown_selectors", function(){
