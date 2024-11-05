@@ -4,7 +4,7 @@
 <table>
     <thead>
         <tr>
-            <th></th>
+            <th>Member</th>
             <th>Received</th>
             @if (false)
                 <th>Pre-qualified</th>

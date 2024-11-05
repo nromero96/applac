@@ -57,6 +57,7 @@ class DashboardReportPerformance extends Component
 
     public function mount() {
         $this->source = array_keys($this->sources_list);
+        // $this->source = ['agt'];
     }
 
     public function render()
@@ -219,6 +220,12 @@ class DashboardReportPerformance extends Component
                 ->groupBy('quotations.id')
                 ->get();
 
+                // rating
+                if (sizeof($this->rating) > 0) {
+                    $quotations_1 = $quotations_1->whereIn('rating', $this->rating);
+                    $quotations_2 = $quotations_2->whereIn('rating', $this->rating);
+                }
+
                 // sources
                 if (sizeof($this->source) > 0) {
                     $quotations_1 = $quotations_1->whereIn('user_source', $this->source);
@@ -228,22 +235,17 @@ class DashboardReportPerformance extends Component
                 $info_global['quotations'] += $quotations_1->count();
 
                 // pre qualified
-                if (sizeof($this->rating) > 0) {
-                    $pre_qualified = $quotations_1->whereIn('rating', $this->rating);
-                } else {
-                    $pre_qualified = $quotations_1;
-                }
-                $info_global['pre_qualified'] += $pre_qualified->count();
+                $info_global['pre_qualified'] += $quotations_1->count();
 
                 // quotes attended
-                $quotes_attended_no_internal = $pre_qualified->where('status', '!=', 'Pending')->where('is_internal_inquiry', 0);
-                $quotes_attended_internal = $pre_qualified->where('status', '!=', 'Processing')->where('is_internal_inquiry', 1);
+                $quotes_attended_no_internal = $quotations_1->where('status', '!=', 'Pending')->where('is_internal_inquiry', 0);
+                $quotes_attended_internal = $quotations_1->where('status', '!=', 'Processing')->where('is_internal_inquiry', 1);
                 $quotes_attended = $quotes_attended_no_internal->union($quotes_attended_internal);
                 $info_global['quotes_attended'] += $quotes_attended->count();
 
                 // attending rate
-                if ($pre_qualified->count() > 0) {
-                    $attending_rate = round($quotes_attended->count() / $pre_qualified->count() * 100, 2);
+                if ($quotations_1->count() > 0) {
+                    $attending_rate = round($quotes_attended->count() / $quotations_1->count() * 100, 2);
                 } else {
                     $attending_rate = 0;
                 }
@@ -271,7 +273,7 @@ class DashboardReportPerformance extends Component
                         });
                     })
                     ->where('quotations.assigned_user_id', $employee->id)
-                    ->whereIn('quotations.id', $pre_qualified->pluck('id'))
+                    ->whereIn('quotations.id', $quotations_1->pluck('id'))
                     ->when($this->period != 'all', function($q) {
                         switch ($this->period) {
                             case 'today':
@@ -303,13 +305,23 @@ class DashboardReportPerformance extends Component
                             default: break;
                         }
                     })
-                    ->groupBy('quotation_notes.quotation_id')
-                    ->select(DB::raw('(TIMESTAMPDIFF(SECOND, quotations.created_at, quotation_notes.created_at)) as avg_diff_seconds'))
+                    // ->groupBy('quotation_notes.quotation_id')
+                    // ->select(DB::raw('(TIMESTAMPDIFF(SECOND, quotations.created_at, quotation_notes.created_at)) as avg_diff_seconds'))
+                    ->select('quotations.created_at as date_start', 'quotation_notes.created_at as date_end')
                     ->get();
-                $avg_attend_time_prom = $avg_attend_time_min->avg('avg_diff_seconds');
-                if ($employee->id == 206) {
-                    // dd($avg_attend_time_prom);
+                // if ($employee->id == 206) {
+                //     dd($avg_attend_time_min);
+                // }
+                $prom = 0;
+                if ($avg_attend_time_min->count()) {
+                    foreach ($avg_attend_time_min as $item) {
+                        $prom += $this->calcularSegundosLaborales($item->date_start, $item->date_end);
+                    }
+                    $avg_attend_time_prom = round($prom / $avg_attend_time_min->count());
+                } else {
+                    $avg_attend_time_prom = 0;
                 }
+                // $avg_attend_time_prom = $avg_attend_time_min->avg('avg_diff_seconds');
                 if ($quotes_attended->count() > 0) {
                     $avg_attend_time = CarbonInterval::seconds($avg_attend_time_prom)->cascade()->forHumans();
                 } else {
@@ -324,9 +336,6 @@ class DashboardReportPerformance extends Component
                 }
 
                 // quotes sent
-                if (sizeof($this->rating) > 0) {
-                    $quotations_2 = $quotations_2->whereIn('rating', $this->rating);
-                }
                 $quotes_sent = $quotations_2->where('status', 'Quote Sent');
                 $info_global['quotes_sent'] += $quotes_sent->count();
 
@@ -368,11 +377,22 @@ class DashboardReportPerformance extends Component
                             default: break;
                         }
                     })
-                    ->groupBy('quotation_notes.quotation_id')
-                    ->select(DB::raw('(TIMESTAMPDIFF(SECOND, quotations.created_at, quotation_notes.created_at)) as avg_diff_seconds'))
+                    // ->groupBy('quotation_notes.quotation_id')
+                    // ->select(DB::raw('(TIMESTAMPDIFF(SECOND, quotations.created_at, quotation_notes.created_at)) as avg_diff_seconds'))
+                    ->select('quotations.created_at as date_start', 'quotation_notes.created_at as date_end')
                     ->get();
 
-                $avg_quote_time_prom = $avg_quote_time_min->avg('avg_diff_seconds');
+                $prom_q = 0;
+                if ($avg_quote_time_min->count()) {
+                    foreach ($avg_quote_time_min as $item) {
+                        $prom_q += $this->calcularSegundosLaborales($item->date_start, $item->date_end);
+                    }
+                    $avg_quote_time_prom = round($prom_q / $avg_quote_time_min->count());
+                } else {
+                    $avg_quote_time_prom = 0;
+                }
+
+                // $avg_quote_time_prom = $avg_quote_time_min->avg('avg_diff_seconds');
                 if ($avg_quote_time_prom) {
                     $avg_quote_time = CarbonInterval::seconds($avg_quote_time_prom)->cascade()->forHumans();
                 } else {
@@ -401,7 +421,7 @@ class DashboardReportPerformance extends Component
                 $info_employees[] = [
                     'employee' => $employee,
                     'requests_received' => $quotations_1->count(),
-                    'pre_qualified' => $pre_qualified->count(),
+                    // 'pre_qualified' => $pre_qualified->count(),
                     'quotes_attended' => $quotes_attended->count(),
                     'attending_rate' => $attending_rate,
                     'avg_attend_time' => $avg_attend_time,
@@ -477,5 +497,42 @@ class DashboardReportPerformance extends Component
     public function restore_defaults(){
         $this->reset('rating');
         $this->source = array_keys($this->sources_list);
+    }
+
+    private function calcularSegundosLaborales($fechaInicio, $fechaFin){
+        // Convertir las fechas a instancias de Carbon
+        $inicio = Carbon::parse($fechaInicio);
+        $fin = Carbon::parse($fechaFin);
+
+        // Asegurar que la fecha de inicio sea antes de la fecha de fin
+        if ($inicio->greaterThan($fin)) {
+            return 0;
+        }
+
+        $segundosTotales = 0;
+
+        // Iterar día a día dentro del rango
+        while ($inicio->lte($fin)) {
+            // Solo contar días de lunes a viernes
+            if (!$inicio->isWeekend()) {
+                // Definir el inicio y fin del horario laboral para el día
+                $inicioLaboral = $inicio->copy()->setTime(9, 0, 0);
+                $finLaboral = $inicio->copy()->setTime(17, 0, 0);
+
+                // Calcular los segundos laborales del día actual
+                if ($inicio->lt($inicioLaboral)) {
+                    // Si la fecha de inicio está antes de las 9 am, comenzamos a contar desde las 9 am
+                    $segundosTotales += min($fin->timestamp, $finLaboral->timestamp) - $inicioLaboral->timestamp;
+                } elseif ($inicio->lt($finLaboral)) {
+                    // Si la fecha de inicio está dentro del horario laboral
+                    $segundosTotales += min($fin->timestamp, $finLaboral->timestamp) - $inicio->timestamp;
+                }
+            }
+
+            // Pasar al siguiente día
+            $inicio->addDay()->setTime(0, 0, 0);
+        }
+
+        return $segundosTotales;
     }
 }

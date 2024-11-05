@@ -1,4 +1,5 @@
 <div wire:loading.class='opacity-50 pe-none' wire:target="export_excel, period, restore_defaults, render">
+    <h1 style="font-size: 24px; color: #161515; margin: 32px 0 24px 0;">Performance Report</h1>
     <div class="dash_reports_filter">
         <div class="dash_reports_filter_content">
             <select class="form-select" name="dash_report_options" id="dash_report_options" wire:model="period">
@@ -93,11 +94,11 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>Member</th>
                         <th class="ps-2 pe-2 text-center">
                             <div class="d-flex align-items-center gap-1 text-start">
                                 Total
-                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Total number of leads received within the selected timeframe">
+                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Total number of inquiries received within the selected timeframe">
                                     {!! $icon_info !!}
                                 </div>
                             </div>
@@ -115,7 +116,7 @@
                         <th class="ps-2 pe-2 text-center">
                             <div class="d-flex align-items-center gap-1 text-start">
                                 Attended
-                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Pre-qualified leads that have been followed up by a sales representative">
+                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Inquiries that have been followed up by a sales representative">
                                     {!! $icon_info !!}
                                 </div>
                             </div>
@@ -123,7 +124,7 @@
                         <th class="ps-2 pe-2 text-center">
                             <div class="d-flex align-items-center gap-1 text-start">
                                 Attending Rate
-                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Percentage of pre-qualified leads that have received follow-up from a sales representative">
+                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Percentage of inquiries that have received a follow-up from a sales representative">
                                     {!! $icon_info !!}
                                 </div>
                             </div>
@@ -131,7 +132,7 @@
                         <th class="ps-2 pe-2 text-center">
                             <div class="d-flex align-items-center gap-1 text-start">
                                 Avg. Attend Time
-                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Average time taken for a sales representative to initiate contact with a pre-qualified lead">
+                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Average time taken for a sales representative to follow-up an inquiry">
                                     {!! $icon_info !!}
                                 </div>
                             </div>
@@ -139,7 +140,7 @@
                         <th class="ps-2 pe-2 text-center">
                             <div class="d-flex align-items-center gap-1 text-start">
                                 Quotes sent
-                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Number of quotes sent to potential clients">
+                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Number of quotes sent (includes automated quotes)">
                                     {!! $icon_info !!}
                                 </div>
                             </div>
