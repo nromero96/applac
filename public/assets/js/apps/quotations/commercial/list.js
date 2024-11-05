@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
 
-    var start = moment().subtract(20, 'years');
+    var start = moment().subtract(60, 'days');
     var end = moment();
 
     if($('#daterequest').val() != '') {
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', function () {
             cancelLabel: 'Clear' // Texto del botón para limpiar la selección
         },
         ranges: {
-            'All time': [moment().subtract(20, 'years'), moment()], // Desde hace 10 años hasta hoy
+            'All time': [moment().subtract(60, 'days'), moment()], // Desde hace 10 años hasta hoy
             'Today': [moment(), moment()],
             'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
             'Last 7 Days': [moment().subtract(6, 'days'), moment()],
