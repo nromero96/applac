@@ -68,7 +68,7 @@
                     <div class="form-select pe-5">{{ $source_field_label }}</div>
                     <div class="dash_field_select_content" wire:ignore.self>
                         @foreach ($sources_list as $key => $value)
-                            <label class="form-check d-flex align-items-center gap-2 mb-1">
+                            <label class="form-check d-flex align-items-center gap-2" style="margin-bottom: .5rem">
                                 <input type="checkbox" class="form-check-input" wire:model.defer="source" value="{{ $key }}">
                                 <div class="form-check-label d-flex align-items-center gap-1">
                                     <span style="color: {{ $value['color'] }}; border: 2px solid {{ $value['color'] }};" class="dash_tag_source">

@@ -323,14 +323,14 @@ class DashboardReportPerformance extends Component
                 }
                 // $avg_attend_time_prom = $avg_attend_time_min->avg('avg_diff_seconds');
                 if ($quotes_attended->count() > 0) {
-                    $avg_attend_time = CarbonInterval::seconds($avg_attend_time_prom)->cascade()->forHumans();
+                    $avg_attend_time = CarbonInterval::seconds($avg_attend_time_prom)->cascade()->forHumans(['parts' => 2]);
                 } else {
                     $avg_attend_time = '-';
                 }
                 $info_global_avg_attend_time += $avg_attend_time_prom;
                 if ($info_global_avg_attend_time) {
                     $info_global['avg_attend_time'] = round($info_global_avg_attend_time);
-                    $info_global['avg_attend_time'] = CarbonInterval::seconds($info_global['avg_attend_time'] / $employees->count())->cascade()->forHumans();
+                    $info_global['avg_attend_time'] = CarbonInterval::seconds($info_global['avg_attend_time'] / $employees->count())->cascade()->forHumans(['parts' => 2]);
                 } else {
                     $info_global['avg_attend_time'] = '-';
                 }
@@ -394,7 +394,7 @@ class DashboardReportPerformance extends Component
 
                 // $avg_quote_time_prom = $avg_quote_time_min->avg('avg_diff_seconds');
                 if ($avg_quote_time_prom) {
-                    $avg_quote_time = CarbonInterval::seconds($avg_quote_time_prom)->cascade()->forHumans();
+                    $avg_quote_time = CarbonInterval::seconds($avg_quote_time_prom)->cascade()->forHumans(['parts' => 2]);
                 } else {
                     $avg_quote_time = '-';
                 }
@@ -402,7 +402,7 @@ class DashboardReportPerformance extends Component
                 $info_global_avg_quote_time += $avg_quote_time_prom;
                 if ($info_global_avg_quote_time > 0) {
                     $info_global['avg_quote_time'] = round($info_global_avg_quote_time);
-                    $info_global['avg_quote_time'] = CarbonInterval::seconds($info_global['avg_quote_time'] / $employees->count())->cascade()->forHumans();
+                    $info_global['avg_quote_time'] = CarbonInterval::seconds($info_global['avg_quote_time'] / $employees->count())->cascade()->forHumans(['parts' => 2]);
                 } else {
                     $info_global['avg_quote_time'] = '-';
                 }
