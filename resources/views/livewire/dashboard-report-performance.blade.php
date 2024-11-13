@@ -85,7 +85,9 @@
                     </div>
                 </div>
             </div>
-            <button type="button" class="btn-newquote" wire:click="export_excel()">Export Data</button>
+            @if (\Auth::user()->hasRole('Administrator'))
+                <button type="button" class="btn-newquote" wire:click="export_excel()">Export Data</button>
+            @endif
         </div>
     </div>
 

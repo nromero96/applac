@@ -5,20 +5,17 @@
 
 <div class="layout-px-spacing">
 
-    @if(\Auth::user()->hasRole('Administrator'))
-        <div class="middle-content container-xxl p-0">
-
-            <div class="row layout-top-spacing">
-                <div class="col-md-12">
-                    <h4>{{__("Hi")}} <b>{{\Auth::user()->name}}</b> 👋</h5>
-                    <p>{{__("Welcome to Latin American Cargo (LAC)")}}</p>
-                </div>
+    <div class="middle-content container-xxl p-0">
+        <div class="row layout-top-spacing">
+            <div class="col-md-12">
+                <h4>{{__("Hi")}} <b>{{\Auth::user()->name}}</b> 👋</h5>
+                <p>{{__("Welcome to Latin American Cargo (LAC)")}}</p>
             </div>
-
-            <div id="dashboard-report-performance">
+        </div>
+        @if(\Auth::user()->hasRole('Administrator') or \Auth::user()->hasRole('Employee'))
+            <div id="dashboard-report-performance" class="mb-4">
                 <livewire:dashboard-report-performance />
             </div>
-
             @if (false)
                 @if($usersQuotes)
 
@@ -287,19 +284,9 @@
                     </div>
                 </div>
             @endif
+        @endif
 
-        </div>
-    @else
-
-        <div class="middle-content container-xxl p-0">
-
-            <div class="row layout-top-spacing">
-                <div class="col-md-12">
-                    <h4>{{__("Hi")}} <b>{{\Auth::user()->name}}</b> 👋</h5>
-                    <p>{{__("Welcome to Latin American Cargo (LAC)")}}</p>
-                </div>
-            </div>
-
+        @if (!\Auth::user()->hasRole('Administrator'))
             <div class="row">
                 <div class="col-md-12">
                     <a href="{{ route('quotations.index') }}" class="usr-link mb-3 w-100">
@@ -320,9 +307,9 @@
                     </a>
                 </div>
             </div>
+        @endif
+    </div>
 
-        </div>
-    @endif
 
 </div>
 
