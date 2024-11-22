@@ -199,10 +199,9 @@
                                             <label class="form-label mb-0">{{ __('How do you know about us?') }} </label>
                                             <select class="form-select @error('phone') is-invalid @enderror" name="source" id="source">
                                                 <option value="">Select...</option>
-                                                <option value="Direct Client" {{ old('source') == 'Direct Client' ? 'selected' : '' }}>Direct Client</option>
                                                 <option value="Google Search" {{ old('source') == 'Google Search' ? 'selected' : '' }}>Google Search</option>
                                                 <option value="Linkedin" {{ old('source') == 'Linkedin' ? 'selected' : '' }}>Linkedin</option>
-                                                <option value="Social Media" {{ old('source') == 'Social Media' ? 'selected' : '' }}>Social Media</option>
+                                                <option value="Social Media" {{ old('source') == 'Social Media' ? 'selected' : '' }}>Social Media (Facebook, Instagram, Youtube)</option>
                                                 <option value="Referral" {{ old('source') == 'Referral' ? 'selected' : '' }}>Referral</option>
                                                 <option value="Other" {{ old('source') == 'Other' ? 'selected' : '' }}>Other</option>
                                             </select>
@@ -304,19 +303,19 @@
             function updateRegistrationStatus() {
                 const emailMatch = email.value === confirmEmail.value;
                 const passwordMatch = password.value === confirmPassword.value;
-                const passwordValid = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{9,}$/.test(password.value);
+                
+                // Validación solo de longitud mínima de 8 caracteres
+                    const passwordValid = password.value.length >= 8;
 
                 let passwordStrength = "";
                 passwordsecurity.style.color = "black";
-                if (password.value.length >= 9 && passwordValid) {
-                    passwordStrength = "Password Secure.";
-                    passwordsecurity.style.color = "green";
-                } else if (password.value.length >= 6) {
-                    passwordStrength = "Moderate, include at least 1 letter, 1 number, 1 special character";
-                    passwordsecurity.style.color = "orange";
+
+                if (passwordValid) {
+                    passwordStrength = ""; // No mostrar mensaje si la contraseña tiene 8 o más caracteres
+                    passwordsecurity.style.color = "black"; // Color predeterminado
                 } else {
-                    passwordStrength = "Weak, minimum 9 characters required";
-                    passwordsecurity.style.color = "red";
+                    passwordStrength = "Weak, minimum 8 characters required."; // Advertencia de longitud
+                    passwordsecurity.style.color = "red"; // Color rojo para advertencia
                 }
 
                 passwordsecurity.innerHTML = passwordStrength;
