@@ -679,7 +679,7 @@ class QuotationController extends Controller
                 'tota_chargeable_weight' => 'nullable|max:50',
                 'shipping_date' => 'nullable|max:50',
                 'no_shipping_date' => 'required|max:5',
-                'declared_value' => 'required|numeric',
+                'declared_value' => 'required|max:30',
                 'insurance_required' => 'required|max:5',
                 'currency' => 'required|max:30',
 

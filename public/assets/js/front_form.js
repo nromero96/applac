@@ -180,6 +180,31 @@ document.addEventListener('DOMContentLoaded', function () {
         const contactPhone = document.getElementById('phone');
         const contactPhoneError = document.getElementById('phone_error');
 
+        // Prevenir pegar contenido no permitido
+        declared_value.addEventListener('paste', (event) => {
+            event.preventDefault();
+        });
+
+        // Validar entrada mientras se escribe
+        declared_value.addEventListener('input', (event) => {
+            const validValue = event.target.value.replace(/[^0-9,\.]/g, ''); // Solo permite números, comas y puntos
+            if (event.target.value !== validValue) {
+                event.target.value = validValue; // Limpia cualquier carácter inválido
+            }
+        });
+
+        // Validar teclas permitidas
+        declared_value.addEventListener('keydown', (event) => {
+            const allowedKeys = [
+                'Backspace', 'Tab', 'ArrowLeft', 'ArrowRight', 'Delete', // Navegación
+                ',', '.'                                                 // Coma y punto
+            ];
+
+            if (!allowedKeys.includes(event.key) && !/^[0-9]$/.test(event.key)) {
+                event.preventDefault(); // Bloquea cualquier tecla no permitida
+            }
+        });
+
 
         // Lógica de validación para cada paso
         if (step === '#defaultStep-one') {
@@ -820,6 +845,5 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Llamada inicial para configurar la URL al cargar la página
     initializeURL();
-
 
 });
