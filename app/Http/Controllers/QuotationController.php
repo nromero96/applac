@@ -692,7 +692,7 @@ class QuotationController extends Controller
                 'location' => 'nullable',
                 'confirm_email' => 'required|email|max:250|same:email',
                 'phone' => 'required|max:50',
-                'source' => 'required|max:250',
+                'source' => 'nullable|max:50',
                 'subscribed_to_newsletter' => 'required|max:5',
             ]);
 
