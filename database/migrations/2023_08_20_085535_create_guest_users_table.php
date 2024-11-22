@@ -22,7 +22,7 @@ class CreateGuestUsersTable extends Migration
             $table->string('email');
             $table->string('phone_code');
             $table->string('phone');
-            $table->string('source');
+            $table->string('source')->nullable();
             $table->string('subscribed_to_newsletter');
             $table->timestamps();
         });

@@ -38,7 +38,7 @@ class CreateQuotationsTable extends Migration
             $table->string('tota_chargeable_weight')->nullable();
             $table->string('shipping_date')->nullable();
             $table->string('no_shipping_date',5);
-            $table->decimal('declared_value', 8, 2);
+            $table->string('declared_value', 30);
             $table->string('insurance_required',5);
             $table->string('currency',30);
             $table->string('rating',30)->nullable();
