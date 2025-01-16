@@ -307,10 +307,22 @@
                                         <th class="ps-2 pe-2 text-center">Flag</th>
                                         @endif
                                         <th class="ps-2 pe-2 sticky-column">{{ __('ID') }}</th>
-                                        @if($adminoremployee)
-                                        <th class="pe-1">{{ __('Source') }}</th>
-                                        @endif
                                         <th>{{ __('Requested') }}</th>
+                                        <th class="px-2">
+                                            {{ __('Status') }}
+                                            <a href="{{ route('quotations.index', array_merge(request()->query(), ['order-status' => request('order-status') == 'asc' ? 'desc' : (request('order-status') == 'desc' ? '' : 'asc')])) }}" class="badge badge-light-primary p-0 order-status">
+                                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                    @if(request('order-status') == 'desc')
+                                                        <path d="M6 9 L12 15 L18 9"></path> <!-- Chevron hacia abajo -->
+                                                    @elseif(request('order-status') == 'asc')
+                                                        <path d="M18 15 L12 9 L6 15"></path> <!-- Chevron hacia arriba -->
+                                                    @else
+                                                        <path d="M6 10 L12 4 L18 10"></path> <!-- Chevron neutral superior -->
+                                                        <path d="M6 16 L12 22 L18 16"></path> <!-- Chevron neutral inferior -->
+                                                    @endif
+                                                </svg>
+                                            </a>
+                                        </th>
                                         @if($adminoremployee)
                                         <th class="p-1">
                                             {{ __('Rating') }}
@@ -328,29 +340,15 @@
                                             </a>
                                         </th>
                                         @endif
-                                        <th class="px-2">
-                                            {{ __('Status') }}
-                                            <a href="{{ route('quotations.index', array_merge(request()->query(), ['order-status' => request('order-status') == 'asc' ? 'desc' : (request('order-status') == 'desc' ? '' : 'asc')])) }}" class="badge badge-light-primary p-0 order-status">
-                                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    @if(request('order-status') == 'desc')
-                                                        <path d="M6 9 L12 15 L18 9"></path> <!-- Chevron hacia abajo -->
-                                                    @elseif(request('order-status') == 'asc')
-                                                        <path d="M18 15 L12 9 L6 15"></path> <!-- Chevron hacia arriba -->
-                                                    @else
-                                                        <path d="M6 10 L12 4 L18 10"></path> <!-- Chevron neutral superior -->
-                                                        <path d="M6 16 L12 22 L18 16"></path> <!-- Chevron neutral inferior -->
-                                                    @endif
-                                                </svg>
-                                            </a>
-                                        </th>
-                                        <th class="px-2">{{ __('Last Update') }}</th>
+                                        <th>{{ __('Email') }}</th>
+                                        <th>{{ __('Location') }}</th>
                                         <th>{{ __('Route') }}</th>
                                         <th>{{ __('Transport') }}</th>
-                                        <th>{{ __('Location') }}</th>
-                                        <th>{{ __('Email') }}</th>
                                         @if($adminoremployee)
                                         <th>{{ __('Assigned') }}</th>
+                                        <th class="px-2">{{ __('Source') }}</th>
                                         @endif
+                                        <th class="px-2">{{ __('Last Update') }}</th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -402,46 +400,6 @@
                                                         #{{ $quotation->quotation_id }}
                                                     @endif
                                                 </td>
-                                                @if($adminoremployee)
-                                                <td class="py-1 align-middle pe-1">
-                                                    @if($quotation->user_source)
-                                                        @php
-                                                            //color
-                                                            if($quotation->user_source == 'ppc') {
-                                                                $class_sb = 'sb-color-ppc';
-                                                                $text_sb = $quotation->user_source;
-                                                            } elseif($quotation->user_source == 'Direct Client'){
-                                                                $class_sb = 'sb-color-dir';
-                                                                $text_sb = 'dir';
-                                                            } elseif($quotation->user_source == 'Google Search') {
-                                                                $class_sb = 'sb-color-seo';
-                                                                $text_sb = 'seo';
-                                                            } elseif($quotation->user_source == 'Linkedin'){
-                                                                $class_sb = 'sb-color-lnk';
-                                                                $text_sb = 'lnk';
-                                                            } elseif($quotation->user_source == 'Social Media'){
-                                                                $class_sb = 'sb-color-soc';
-                                                                $text_sb = 'soc';
-                                                            } elseif($quotation->user_source == 'Referral'){
-                                                                $class_sb = 'sb-color-ref';
-                                                                $text_sb = 'ref';
-                                                            } elseif($quotation->user_source == 'Other'){
-                                                                $class_sb = 'sb-color-oth';
-                                                                $text_sb = 'oth';
-                                                            } elseif($quotation->user_source == 'agt'){
-                                                                $class_sb = 'sb-color-agt';
-                                                                $text_sb = 'agt';
-                                                            } else {
-                                                                $class_sb = 'sb-color-oth';
-                                                                $text_sb = 'N/A';
-                                                            }
-                                                        @endphp
-                                                        <span class="source-badge {{$class_sb}}" title="{{$quotation->user_source}}">{{ $text_sb }}</span>
-                                                    @else
-                                                        <span>-</span>
-                                                    @endif
-                                                </td>
-                                                @endif
                                                 <td class="py-1 align-middle">
                                                     <div class="inv-date d-flex">
                                                         <span class="align-self-center">
@@ -452,6 +410,33 @@
                                                             <small class="d-block text-muted">{{ date('H:i', strtotime($quotation->quotation_created_at)) }}</small>
                                                         </small>
                                                     </div>
+                                                </td>
+
+                                                <td class="px-2">
+
+                                                    <span class="cret-bge ms-0 w-100 align-middle badge
+                                                            @if ($quotation->quotation_status == 'Pending')
+                                                                badge-light-pending
+                                                            @elseif ($quotation->quotation_status == 'Qualifying')
+                                                                badge-light-warning
+                                                            @elseif ($quotation->quotation_status == 'Processing')
+                                                                badge-light-info
+                                                            @elseif ($quotation->quotation_status == 'Attended')
+                                                                badge-light-info
+                                                            @elseif ($quotation->quotation_status == 'Quote Sent')
+                                                                badge-light-success
+                                                            @elseif ($quotation->quotation_status == 'Unqualified')
+                                                                badge-light-unqualified
+                                                            @endif
+                                                            inv-status">
+                                                            @if($adminoremployee || in_array($quotation->quotation_status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
+                                                                {{ $quotation->quotation_status }}
+                                                            @elseif ($quotation->quotation_status == 'Qualifying')
+                                                                Attending
+                                                            @elseif ($quotation->quotation_status == 'Unqualified')
+                                                                Unable to fulfill
+                                                            @endif
+                                                    </span>
                                                 </td>
 
                                                 @if($adminoremployee)
@@ -502,33 +487,106 @@
                                                     </td>
                                                 @endif
 
-                                                <td class="px-2">
-
-                                                    <span class="cret-bge ms-0 w-100 align-middle badge
-                                                            @if ($quotation->quotation_status == 'Pending')
-                                                                badge-light-pending
-                                                            @elseif ($quotation->quotation_status == 'Qualifying')
-                                                                badge-light-warning
-                                                            @elseif ($quotation->quotation_status == 'Processing')
-                                                                badge-light-info
-                                                            @elseif ($quotation->quotation_status == 'Attended')
-                                                                badge-light-info
-                                                            @elseif ($quotation->quotation_status == 'Quote Sent')
-                                                                badge-light-success
-                                                            @elseif ($quotation->quotation_status == 'Unqualified')
-                                                                badge-light-unqualified
-                                                            @endif
-                                                            inv-status">
-                                                            @if($adminoremployee || in_array($quotation->quotation_status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
-                                                                {{ $quotation->quotation_status }}
-                                                            @elseif ($quotation->quotation_status == 'Qualifying')
-                                                                Attending
-                                                            @elseif ($quotation->quotation_status == 'Unqualified')
-                                                                Unable to fulfill
-                                                            @endif
+                                                <td>
+                                                    <span class="inv-email">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                                        {{ $quotation->user_email }}
                                                     </span>
                                                 </td>
 
+                                                <td>
+                                                    {{$quotation->location_name}}
+                                                </td>
+
+                                                <td>
+                                                    <span class="inv-country">
+                                                        @if (!$quotation->is_internal_inquiry)
+                                                            {{ $quotation->origin_country }} - {{ $quotation->destination_country }}
+                                                        @else
+                                                            {{ __('Internal Inquiry') }}
+                                                        @endif
+                                                    </span>
+                                                </td>
+
+                                                <td>
+                                                    {{ $quotation->quotation_mode_of_transport }}
+                                                </td>
+
+                                                @if($adminoremployee)
+
+                                                <td>
+
+                                                    {{-- Select if user logged is admin spatie --}}
+                                                    @if (Auth::user()->hasRole('Administrator'))
+                                                        <select class="user-select-assigned @if($quotation->quotation_assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->quotation_id }}">
+                                                            <option value="">{{ __('Unassigned') }}</option>
+                                                            @foreach ($users as $user)
+                                                                <option value="{{ $user->id }}" @if($user->id == $quotation->quotation_assigned_user_id) selected @endif>{{ $user->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                    @else
+
+                                                        @if($quotation->quotation_assigned_user_id == null)
+
+                                                            {{-- <a class="badge badge-primary text-start me-2 action-edit" href="{{ route('assignQuoteForMe', $quotation->quotation_id) }}">
+                                                                {{ __('Make') }}
+                                                            </a> --}}
+
+                                                            {{ __('Unassigned') }}
+
+                                                        @else
+                                                            @if ($quotation->quotation_assigned_user_id == Auth::user()->id)
+                                                                <span class="badge badge-light-success">{{ __('You were assigned') }}</span>
+                                                            @else
+                                                                <span class="badge badge-light-danger">{{ __('Other user assigned') }}</span>
+                                                            @endif
+                                                        @endif
+
+                                                    @endif
+
+                                                </td>
+
+                                                <td class="py-1 align-middle px-2">
+                                                    @if($quotation->user_source)
+                                                        @php
+                                                            //color
+                                                            if($quotation->user_source == 'ppc') {
+                                                                $class_sb = 'sb-color-ppc';
+                                                                $text_sb = $quotation->user_source;
+                                                            } elseif($quotation->user_source == 'Direct Client'){
+                                                                $class_sb = 'sb-color-dir';
+                                                                $text_sb = 'dir';
+                                                            } elseif($quotation->user_source == 'Google Search') {
+                                                                $class_sb = 'sb-color-seo';
+                                                                $text_sb = 'seo';
+                                                            } elseif($quotation->user_source == 'Linkedin'){
+                                                                $class_sb = 'sb-color-lnk';
+                                                                $text_sb = 'lnk';
+                                                            } elseif($quotation->user_source == 'Social Media'){
+                                                                $class_sb = 'sb-color-soc';
+                                                                $text_sb = 'soc';
+                                                            } elseif($quotation->user_source == 'Referral'){
+                                                                $class_sb = 'sb-color-ref';
+                                                                $text_sb = 'ref';
+                                                            } elseif($quotation->user_source == 'Other'){
+                                                                $class_sb = 'sb-color-oth';
+                                                                $text_sb = 'oth';
+                                                            } elseif($quotation->user_source == 'agt'){
+                                                                $class_sb = 'sb-color-agt';
+                                                                $text_sb = 'agt';
+                                                            } else {
+                                                                $class_sb = 'sb-color-oth';
+                                                                $text_sb = 'N/A';
+                                                            }
+                                                        @endphp
+                                                        <span class="source-badge {{$class_sb}}" title="{{$quotation->user_source}}">{{ $text_sb }}</span>
+                                                    @else
+                                                        <span>-</span>
+                                                    @endif
+                                                </td>
+
+                                                @endif
+                                                
                                                 <td class="py-0 px-2">
                                                     <div class="rounded-1 btn-sm py-0 px-0">
 
@@ -566,70 +624,6 @@
 
                                                     </div>
                                                 </td>
-
-                                                <td>
-                                                    <span class="inv-country">
-                                                        @if (!$quotation->is_internal_inquiry)
-                                                            {{ $quotation->origin_country }} - {{ $quotation->destination_country }}
-                                                        @else
-                                                            {{ __('Internal Inquiry') }}
-                                                        @endif
-                                                    </span>
-                                                </td>
-
-                                                <td>
-                                                    {{ $quotation->quotation_mode_of_transport }}
-                                                </td>
-
-                                                <td>
-                                                    {{$quotation->location_name}}
-                                                </td>
-
-                                                <td>
-                                                    <span class="inv-email">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                                                        {{ $quotation->user_email }}
-                                                    </span>
-                                                </td>
-
-
-
-                                                @if($adminoremployee)
-
-                                                <td>
-
-                                                    {{-- Select if user logged is admin spatie --}}
-                                                    @if (Auth::user()->hasRole('Administrator'))
-                                                        <select class="user-select-assigned @if($quotation->quotation_assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->quotation_id }}">
-                                                            <option value="">{{ __('Unassigned') }}</option>
-                                                            @foreach ($users as $user)
-                                                                <option value="{{ $user->id }}" @if($user->id == $quotation->quotation_assigned_user_id) selected @endif>{{ $user->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                    @else
-
-                                                        @if($quotation->quotation_assigned_user_id == null)
-
-                                                            {{-- <a class="badge badge-primary text-start me-2 action-edit" href="{{ route('assignQuoteForMe', $quotation->quotation_id) }}">
-                                                                {{ __('Make') }}
-                                                            </a> --}}
-
-                                                            {{ __('Unassigned') }}
-
-                                                        @else
-                                                            @if ($quotation->quotation_assigned_user_id == Auth::user()->id)
-                                                                <span class="badge badge-light-success">{{ __('You were assigned') }}</span>
-                                                            @else
-                                                                <span class="badge badge-light-danger">{{ __('Other user assigned') }}</span>
-                                                            @endif
-                                                        @endif
-
-                                                    @endif
-
-                                                </td>
-
-                                                @endif
-
 
                                                 <td>
                                                     @if ($quotation->quotation_assigned_user_id == Auth::user()->id || Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Customer'))
