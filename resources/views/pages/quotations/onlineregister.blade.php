@@ -121,7 +121,7 @@
         </div>
     </header>
 
-    <div style="background-image: url({{ asset('assets/img/116806505d8b5c4ca3-53784-min.jpg') }})" class="hd-img-quote">
+    <div style="background-image: url({{ asset('assets/img/116806505d8b5c4ca3-53784-min.jpg') }})" class="hd-img-quote d-none d-md-block">
         {{-- Image header --}}
     </div>
 
@@ -241,13 +241,13 @@
                         <div class="widget-header">
                             <div class="row">
                                 <div class="col-xl-12 col-md-12 col-sm-12 col-12 text-center pt-5">
-                                    <h2 class="tit-form pb-1 mb-4">{{ __('Get a Shipping Quote') }}</h2>
+                                    <h2 class="tit-form pb-1 mb-4">{{ __('Get a Quote') }}</h2>
 
-                                    <p class="tit-form-descrip">Share your shipping details below, and we'll be in touch soon with a tailored quote.<br> Our team is committed to finding the most efficient and cost-effective solution for your cargo.</p>
+                                    <p class="tit-form-descrip">Provide your shipping details for a custom quote.<br> Our experts will ensure you get the most efficient and cost-effective solution.</p>
                                     @auth
                                         {{-- No show data --}}
                                     @else
-                                        <p class="tit-form-descrip mt-3">{{ __('Already have an account?') }} <a href="{{ route('quotations.index') }}" class="text-primary">{{ __('Log In here') }}</a></p>
+                                        {{-- <p class="tit-form-descrip mt-3">{{ __('Already have an account?') }} <a href="{{ route('quotations.index') }}" class="text-primary">{{ __('Log In here') }}</a></p> --}}
                                     @endauth
 
                                 </div>
@@ -525,7 +525,7 @@
                                         </div>
 
                                         <div class="button-action text-center mb-3 d-flex flex-column flex-sm-row justify-content-center">
-                                            <a class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Return') }} </a>
+                                            <a class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Back') }} </a>
                                             <a class="btn btn-primary btn-nxt order-0 order-sm-1 mb-2 mb-sm-0"> {{ __('Continue to Cargo') }} → </a>
                                         </div>
                                     </div>
@@ -683,7 +683,7 @@
                                         </div>
 
                                         <div class="button-action text-center mb-3 d-flex flex-column flex-sm-row justify-content-center">
-                                            <a class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Return') }} </a>
+                                            <a class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Back') }} </a>
                                             <a class="btn btn-primary btn-nxt order-0 order-sm-1 mb-2 mb-sm-0"> {{ __('Continue to Contact') }} → </a>
                                         </div>
                                     </div>
@@ -723,7 +723,11 @@
 
                                         <div class="row">
                                             <div class="col-md-3 mb-2">
-                                                <label for="email" class="form-label mb-0" id="labelemail">{{ __('Company email') }} <span class="text-danger">*</span></label>
+                                                <label for="email" class="form-label w-100 mb-0" id="labelemail">
+                                                    {{ __('Company email') }} 
+                                                    <span class="text-danger">*</span> 
+                                                    <span class="infototi mb-2 float-end" data-bs-toggle="tooltip" data-bs-placement="top" title="For faster service, please use your work email address."></span>
+                                                </label>
                                                 <input type="email" name="email" id="email" class="form-control email-input" @auth value="{{ Auth::user()->email }}" autocomplete="off" readonly @endauth>
                                                 <div class="text-danger msg-info" id="email_error"></div>
                                             </div>
@@ -779,7 +783,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="row @auth d-none @endauth">
+                                        <div class="row d-none">
                                             <div class="col-md-12">
                                                 <div class="form-check form-check-primary form-check-inline mt-1">
                                                     <input type="hidden" name="create_account" value="no">
@@ -815,8 +819,8 @@
                                         @endauth
 
                                         <div class="button-action text-center mb-3 d-flex flex-column flex-sm-row justify-content-center">
-                                            <a class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Return') }} </a>
-                                            <button type="submit" class="btn btn-primary send_rq order-0 order-sm-1 mb-2 mb-sm-0" id="submitBtn">{{ __('Complete my Quote Request') }}</button>
+                                            <a class="btn btn-outline-primary btn-prev me-0 me-sm-3 order-1 order-sm-0"> ← {{ __('Back') }} </a>
+                                            <button type="submit" class="btn btn-primary send_rq order-0 order-sm-1 mb-2 mb-sm-0" id="submitBtn">{{ __('Submit my Quote Request') }}</button>
 
                                             <div class="mx-5 mt-2 mb-1 text-center" id="loadingSpinner" style="display: none;">
                                                 <div class="spinner-border text-warning align-self-center"></div>
@@ -845,7 +849,7 @@
 
     <footer class="ft-form-quote py-4 mt-5">
         <div class="container">
-            <p class="ft-text-cr text-center">© 2024 Latin American Cargo. All Rights Reserved.</p>
+            <p class="ft-text-cr text-center">© 2025 Latin American Cargo. All Rights Reserved.</p>
         </div>
     </footer>
 
@@ -2050,7 +2054,7 @@
                     labelconfirm_email.innerHTML = 'Confirm email';
                 } else {
                     infoCompany.classList.remove('d-none'); // Elimina la clase 'tu-clase' de info_company
-                    labelemail.innerHTML = 'Company email <span class="text-danger">*</span>';
+                    labelemail.innerHTML = 'Company email <span class="text-danger">*</span> <span class="infototi mb-2 float-end" data-bs-toggle="tooltip" data-bs-placement="top" title="For faster service, please use your work email address."></span>';
                     labelconfirm_email.innerHTML = 'Confirm company email';
                 }
             });
