@@ -12,7 +12,7 @@
 
     <p style="font-size: 14px; line-height: 1.4;"><b>Please find attached our estimated quote to ship your Automobile/Motorcycle/ATV to {{ $destination_country_name }} - {{ $quotation->destination_airportorport }}.</b></p>
 
-    <p style="font-size: 14px; line-height: 1.4;"><b style="color: #CC0000;">Your Quote ID #: {{ $quotation->id }}</b></p>
+    <p style="font-size: 14px; line-height: 1.4;"><b style="color: #CC0000;">Your Quote ID: #{{ $quotation->id }}</b></p>
 
     <p style="font-size: 14px; line-height: 1.4;">If you agree with our estimated offer, we kindly ask that you provide the following details to <a href="mailto:quote-form@lacship.com" style="color: #161515; text-decoration: underline;">quote-form@lacship.com</a>:<br>
         <b>1.</b> LAC Quote ID #<br>

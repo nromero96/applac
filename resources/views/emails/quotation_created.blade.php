@@ -11,7 +11,7 @@
 
     <p style="font-size: 14px; line-height: 1.4;"><b>Your quote request is under review, and our sales team will aim to respond within two business days.</b></p>
 
-    <p style="font-size: 14px; line-height: 1.4;"><b style="color: #CC0000;">Your Quote ID #: {{ $quotation->id }}</b></p>
+    <p style="font-size: 14px; line-height: 1.4;"><b style="color: #CC0000;">Your Quote ID: #{{ $quotation->id }}</b></p>
 
     <p style="font-size: 14px; line-height: 1.4;">
         At <b>LAC</b>, we believe in the power of specialization to drive success. With over 25 years of experience in connecting the world with Latin America, we streamline your logistics, allowing you to focus on growing your business.

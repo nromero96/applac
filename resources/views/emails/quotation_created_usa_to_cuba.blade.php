@@ -10,7 +10,7 @@
 
     <p style="font-size: 14px; line-height: 1.4;">Thank you for your interest in shipping with LAC. Partnering with the right logistics provider is essential to your transportation strategy.</p>
 
-    <p style="font-size: 14px; line-height: 1.4;"><b style="color: #CC0000;">Your Quote ID #: {{ $quotation->id }}</b></p>
+    <p style="font-size: 14px; line-height: 1.4;"><b style="color: #CC0000;">Your Quote ID: #{{ $quotation->id }}</b></p>
 
     <p style="font-size: 14px; line-height: 1.4;"><b>Please be informed:</b> Due to the embargo imposed on Cuba, we are unable to offer quotations without a proof of license/exemption from the Bureau of Industry and Security (BIS). For more information please visit <a href="https://www.bis.gov/" style="color: #161515; text-decoration: underline;">www.bis.doc.gov</a>.</p>
 

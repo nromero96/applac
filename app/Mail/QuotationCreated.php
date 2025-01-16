@@ -166,7 +166,7 @@ class QuotationCreated extends Mailable{
         // Llama a tu función sendMailApi para enviar el correo
         sendMailApiLac(
             $this->email, 
-            'Quote ID #: '. $this->quotation->id .' - Your Request with Latin American Cargo - '. $this->quotation->mode_of_transport .' - ['. $origin_country_name .' - '. $destination_country_name .'].', 
+            'Quote ID: #'. $this->quotation->id .' - Your Request with Latin American Cargo - '. $this->quotation->mode_of_transport .' - ['. $origin_country_name .' - '. $destination_country_name .'].', 
             $content,
             ($pdf !== null) ? [$pdf] : [],
             [], 

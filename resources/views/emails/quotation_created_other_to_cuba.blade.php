@@ -10,7 +10,7 @@
 
     <p style="font-size: 14px; line-height: 1.4;">Thank you for your interest in shipping with LAC. Partnering with the right logistics provider is essential to your transportation strategy.</p>
 
-    <p style="font-size: 14px; line-height: 1.4;"><b style="color: #CC0000;">Your Quote ID #: {{ $quotation->id }}</b></p>
+    <p style="font-size: 14px; line-height: 1.4;"><b style="color: #CC0000;">Your Quote ID: #{{ $quotation->id }}</b></p>
 
     <p style="font-size: 14px; line-height: 1.4;">We are pleased to assist you with your shipping request. <b>To help us serve you more efficiently, please provide the following details</b> to <a href="mailto:quote-form@lacship.com" style="color: #161515; text-decoration: underline;">quote-form@lacship.com</a> and one of our sales representatives will contact you for further assistance:</p>
 
@@ -23,6 +23,7 @@
                 <li style="margin-left: 0;">- Contact</li>
                 <li style="margin-left: 0;">- Telephone Number</li>
             </ul>
+            <li style="margin-left: 0;">• Contract Number with Cuban Importer</li>
     </ul>
 
     <p style="font-size: 14px; line-height: 1.4;">We look forward to hearing back from you.</p>
