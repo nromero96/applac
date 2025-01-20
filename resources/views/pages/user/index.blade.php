@@ -19,7 +19,7 @@
                         @endphp
 
                         <a href="{{ route('users.index') }}?type=1" class="btn-taps {{ $type == 1 || empty($type) ? 'btps-active' : '' }}">{{__("Administrators")}}</a>
-                        <a href="{{ route('users.index') }}?type=2" class="btn-taps {{ $type == 2 ? 'btps-active' : '' }}">{{__("Employees")}}</a>
+                        <a href="{{ route('users.index') }}?type=2" class="btn-taps {{ $type == 2 ? 'btps-active' : '' }}">{{__("Sales")}}</a>
                         <a href="{{ route('users.index') }}?type=3" class="btn-taps {{ $type == 3 ? 'btps-active' : '' }}">{{__("Customers")}}</a>
                     </div>
                     <div class="col-md-4 text-end">

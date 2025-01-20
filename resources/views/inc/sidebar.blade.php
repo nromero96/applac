@@ -121,7 +121,7 @@
             </li>
             @endcan
 
-            @if(\Auth::user()->hasRole('Administrator') or \Auth::user()->hasRole('Employee'))
+            @can('organization.index')
                 <li class="menu {{ ($category_name === 'organizations') ? 'active' : '' }}">
                     <a href="{{ route('organization.index') }}" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
@@ -130,7 +130,7 @@
                         </div>
                     </a>
                 </li>
-            @endif
+            @endcan
 
             @can('usefullinks.index')
             <li class="menu {{ ($category_name === 'usefullinks') ? 'active' : '' }}">

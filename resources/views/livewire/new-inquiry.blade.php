@@ -145,8 +145,8 @@
                                         @endforeach
                                     </select>
                                 @endif
-                                @if (\Auth::user()->hasRole('Employee'))
-                                    <input type="text" value="{{ $member_employee_role }}" class="form-control" disabled />
+                                @if (\Auth::user()->hasRole('Sales'))
+                                    <input type="text" value="{{ $member_sales_role }}" class="form-control" disabled />
                                 @endif
                                 @error('member') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>

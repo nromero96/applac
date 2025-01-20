@@ -24,9 +24,9 @@ class SettingController extends Controller
             'scrollspy_offset' => '',
         ];
 
-        //get user with has role Administrator and Employee where status is active
+        //get user with has role Administrator and Sales where status is active
         $data['users'] = User::whereHas('roles', function ($q) {
-            $q->whereIn('name', ['Administrator', 'Employee']);
+            $q->whereIn('name', ['Administrator', 'Sales']);
         })->where('status', 'active')->get();
 
         //get settings key and value from settings

@@ -61,7 +61,7 @@
                                     <b class="me-1">Filters</b>
 
 
-                                    @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Employee'))
+                                    @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Sales'))
                                         <!-- Dropdown Result -->
                                         <div class="dropdown">
                                             <button class="dropdown-toggle rounded-pill select-dropdown ms-1 me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -309,13 +309,13 @@
                     <div class="widget-content widget-content-area br-8 pb-2">
                         <div class="table-responsive drag-scroll">
                             @php
-                                $adminoremployee = Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee');
+                                $adminorsales = Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Sales');
                             @endphp
 
                             <table id="invoice-list" class="table table-hover" style="width:100%">
                                 <thead>
                                     <tr>
-                                        @if($adminoremployee)
+                                        @if($adminorsales)
                                         <th class="ps-2 pe-2 text-center">Flag</th>
                                         @endif
                                         <th class="ps-2 pe-2 sticky-column">{{ __('ID') }}</th>
@@ -335,7 +335,7 @@
                                                 </svg>
                                             </a>
                                         </th>
-                                        @if($adminoremployee)
+                                        @if($adminorsales)
                                         <th class="p-1">
                                             {{ __('Rating') }}
                                             <a href="{{ route('quotations.index', array_merge(request()->query(), ['order-rating' => request('order-rating') == 'asc' ? 'desc' : (request('order-rating') == 'desc' ? '' : 'asc')])) }}" class="badge badge-light-primary p-0 order-rating">
@@ -356,7 +356,7 @@
                                         <th>{{ __('Location') }}</th>
                                         <th>{{ __('Route') }}</th>
                                         <th>{{ __('Transport') }}</th>
-                                        @if($adminoremployee)
+                                        @if($adminorsales)
                                         <th>{{ __('Assigned') }}</th>
                                         <th class="px-2">{{ __('Source') }}</th>
                                         @endif
@@ -395,7 +395,7 @@
                                             @endphp
 
                                             <tr class="{{$trfeatured}}">
-                                                @if($adminoremployee)
+                                                @if($adminorsales)
                                                 <td class="py-1 ps-2 pe-2 align-middle text-center">
                                                     <label class="featured mb-0">
                                                         <input type="checkbox" id="checkbox{{ $quotation->quotation_id }}" class="featured_check" value="{{ $quotation->quotation_id }}" {{$feact_active}}>
@@ -443,7 +443,7 @@
                                                                 badge-light-danger
                                                             @endif
                                                             inv-status">
-                                                            @if($adminoremployee || in_array($quotation->quotation_status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
+                                                            @if($adminorsales || in_array($quotation->quotation_status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
                                                                 {{ $quotation->quotation_status }}
                                                             @elseif ($quotation->quotation_status == 'Qualifying')
                                                                 Attending
@@ -453,7 +453,7 @@
                                                     </span>
                                                 </td>
 
-                                                @if($adminoremployee)
+                                                @if($adminorsales)
                                                     <td class="p-1 text-start">
                                                         {{-- Rating aleatorio --}}
                                                         <div class="qtrating">
@@ -526,7 +526,7 @@
                                                     {{ $quotation->quotation_mode_of_transport }}
                                                 </td>
 
-                                                @if($adminoremployee)
+                                                @if($adminorsales)
 
                                                 <td>
 

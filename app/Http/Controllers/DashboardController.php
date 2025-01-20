@@ -32,8 +32,8 @@ class DashboardController extends Controller{
             'scrollspy_offset' => '',
         ];
 
-        // Obtener todos los usuarios con roles 'Employee' y 'Administrator'
-        // $users = User::role(['Employee', 'Administrator'])->get();
+        // Obtener todos los usuarios con roles 'Sales' y 'Administrator'
+        // $users = User::role(['Sales', 'Administrator'])->get();
 
         // // Inicializar el array de usuarios con cotizaciones
         // $usersQuotes = [];

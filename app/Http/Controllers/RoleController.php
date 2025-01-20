@@ -10,6 +10,7 @@ class RoleController extends Controller
 {
 
     public function index(){
+        $this->authorize('roles.index');
         // $category_name = '';
         $data = [
             'category_name' => 'roles',
@@ -22,6 +23,7 @@ class RoleController extends Controller
     }
 
     public function create(){
+        $this->authorize('roles.create');
         // $category_name = '';
         $data = [
             'category_name' => 'roles',
@@ -35,7 +37,7 @@ class RoleController extends Controller
 
 
     public function store(Request $request){
-
+        $this->authorize('roles.create');
         $request->validate([
             'name' => 'required'
         ]);
@@ -54,6 +56,7 @@ class RoleController extends Controller
      */
     public function show(Role $role)
     {
+        $this->authorize('roles.edit');
         return view('pages.roles.show')->with($role);
     }
 
@@ -65,6 +68,7 @@ class RoleController extends Controller
      */
     public function edit($id)
     {
+        $this->authorize('roles.edit');
         // $category_name = '';
         $data = [
             'category_name' => 'roles',
@@ -91,6 +95,7 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize('roles.edit');
         $request->validate([
             'name' => 'required'
         ]);

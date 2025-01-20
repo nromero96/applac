@@ -95,15 +95,15 @@ class NewInquiry extends Component
         $setting_users_quoted_ids = array_map('intval', json_decode($setting_users_quoted->value));
         $members = User::whereIn('id', $setting_users_quoted_ids)->select('id', 'name', 'lastname')->get();
 
-        // member adm or employee
-        $member_employee_role = '';
-        if (Auth::user()->hasRole('Employee')) {
+        // member adm or sales
+        $member_sales_role = '';
+        if (Auth::user()->hasRole('Sales')) {
             $this->member = Auth::user()->id;
-            $member_employee_role = Auth::user()->name . ' ' . Auth::user()->lastname;
+            $member_sales_role = Auth::user()->name . ' ' . Auth::user()->lastname;
         }
 
         $data['members'] = $members;
-        $data['member_employee_role'] = $member_employee_role;
+        $data['member_sales_role'] = $member_sales_role;
 
         return view('livewire.new-inquiry', $data);
     }

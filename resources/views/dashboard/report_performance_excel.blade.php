@@ -31,9 +31,9 @@
             <td>{{ $info_global['avg_quote_time'] }}</td>
             <td>{{ $info_global['closing_rate'] }}</td>
         </tr>
-        @foreach ($info_employees as $info)
+        @foreach ($info_sales as $info)
             <tr>
-                <td>{{ $info['employee']->name }} {{ $info['employee']->lastname }}</td>
+                <td>{{ $info['sale']->name }} {{ $info['sale']->lastname }}</td>
                 <td>{{ $info['requests_received'] }}</td>
                 @if (false)
                     <td>{{ $info['pre_qualified'] }}</td>

@@ -102,8 +102,8 @@ class DashboardReportPerformance extends Component
     }
 
     private function performance_report(){
-        // employees
-        $employees = User::whereHas('roles', function($query){
+        // sales
+        $sales = User::whereHas('roles', function($query){
             $query->where('role_id', 2);
         })
         ->join('quotations', 'quotations.assigned_user_id', '=', 'users.id')
@@ -112,7 +112,7 @@ class DashboardReportPerformance extends Component
         ->select('users.id as id', 'name', 'lastname')
         ->get();
 
-        $info_employees = [];
+        $info_sales = [];
         $info_global['quotations'] = 0;
         $info_global['pre_qualified'] = 0;
         $info_global['quotes_attended'] = 0;
@@ -122,8 +122,8 @@ class DashboardReportPerformance extends Component
         $info_global_avg_quote_time = 0;
         $info_global['closing_rate'] = 0;
         $global_closed = 0;
-        if ($employees->count() > 0) {
-            foreach ($employees as $employee) {
+        if ($sales->count() > 0) {
+            foreach ($sales as $sale) {
                 // para los attended. Considera estrellas y logica de cargo
                 $quotations_1 = Quotation::select(
                     'quotations.id',
@@ -165,7 +165,7 @@ class DashboardReportPerformance extends Component
                         default: break;
                     }
                 })
-                ->where('quotations.assigned_user_id', $employee->id)
+                ->where('quotations.assigned_user_id', $sale->id)
                 ->groupBy('quotations.id')
                 ->where(function ($query) {
                     $query->where('is_internal_inquiry', 1);
@@ -216,7 +216,7 @@ class DashboardReportPerformance extends Component
                         default: break;
                     }
                 })
-                ->where('quotations.assigned_user_id', $employee->id)
+                ->where('quotations.assigned_user_id', $sale->id)
                 ->groupBy('quotations.id')
                 ->get();
 
@@ -272,7 +272,7 @@ class DashboardReportPerformance extends Component
                             ]);
                         });
                     })
-                    ->where('quotations.assigned_user_id', $employee->id)
+                    ->where('quotations.assigned_user_id', $sale->id)
                     ->whereIn('quotations.id', $quotations_1->pluck('id'))
                     ->when($this->period != 'all', function($q) {
                         switch ($this->period) {
@@ -309,7 +309,7 @@ class DashboardReportPerformance extends Component
                     // ->select(DB::raw('(TIMESTAMPDIFF(SECOND, quotations.created_at, quotation_notes.created_at)) as avg_diff_seconds'))
                     ->select('quotations.created_at as date_start', 'quotation_notes.created_at as date_end')
                     ->get();
-                // if ($employee->id == 206) {
+                // if ($sale->id == 206) {
                 //     dd($avg_attend_time_min);
                 // }
                 $prom = 0;
@@ -330,7 +330,7 @@ class DashboardReportPerformance extends Component
                 $info_global_avg_attend_time += $avg_attend_time_prom;
                 if ($info_global_avg_attend_time) {
                     $info_global['avg_attend_time'] = round($info_global_avg_attend_time);
-                    $info_global['avg_attend_time'] = CarbonInterval::seconds($info_global['avg_attend_time'] / $employees->count())->cascade()->forHumans(['parts' => 2]);
+                    $info_global['avg_attend_time'] = CarbonInterval::seconds($info_global['avg_attend_time'] / $sales->count())->cascade()->forHumans(['parts' => 2]);
                 } else {
                     $info_global['avg_attend_time'] = '-';
                 }
@@ -344,7 +344,7 @@ class DashboardReportPerformance extends Component
                     ->join('quotations', 'quotations.id', '=', 'quotation_notes.quotation_id')
                     ->where('quotation_notes.type', 'inquiry_status')
                     ->where('quotation_notes.action', 'LIKE', "%to 'Quote Sent'")
-                    ->where('quotations.assigned_user_id', $employee->id)
+                    ->where('quotations.assigned_user_id', $sale->id)
                     ->whereIn('quotations.id', $quotations_2->pluck('id'))
                     ->when($this->period != 'all', function($q) {
                         switch ($this->period) {
@@ -402,7 +402,7 @@ class DashboardReportPerformance extends Component
                 $info_global_avg_quote_time += $avg_quote_time_prom;
                 if ($info_global_avg_quote_time > 0) {
                     $info_global['avg_quote_time'] = round($info_global_avg_quote_time);
-                    $info_global['avg_quote_time'] = CarbonInterval::seconds($info_global['avg_quote_time'] / $employees->count())->cascade()->forHumans(['parts' => 2]);
+                    $info_global['avg_quote_time'] = CarbonInterval::seconds($info_global['avg_quote_time'] / $sales->count())->cascade()->forHumans(['parts' => 2]);
                 } else {
                     $info_global['avg_quote_time'] = '-';
                 }
@@ -418,8 +418,8 @@ class DashboardReportPerformance extends Component
                     $info_global['closing_rate'] = 0;
                 }
 
-                $info_employees[] = [
-                    'employee' => $employee,
+                $info_sales[] = [
+                    'sale' => $sale,
                     'requests_received' => $quotations_1->count(),
                     // 'pre_qualified' => $pre_qualified->count(),
                     'quotes_attended' => $quotes_attended->count(),
@@ -433,7 +433,7 @@ class DashboardReportPerformance extends Component
         }
 
         $data['info_global'] = $info_global;
-        $data['info_employees'] = $info_employees;
+        $data['info_sales'] = $info_sales;
 
         return $data;
     }

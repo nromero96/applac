@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 class OrganizationController extends Controller
 {
     public function index(){
+        $this->authorize('organization.index');
         $data = [
             'category_name' => 'organizations',
             'page_name' => 'organizations',
@@ -19,6 +20,7 @@ class OrganizationController extends Controller
     }
 
     public function create(){
+        $this->authorize('organization.create');
         $data = [
             'category_name' => 'organizations',
             'page_name' => 'organizationscreate',
@@ -30,6 +32,7 @@ class OrganizationController extends Controller
     }
 
     public function edit(Organization $organization){
+        $this->authorize('organization.edit');
         $data = [
             'category_name' => 'organizations',
             'page_name' => 'organizationsedit',
@@ -43,6 +46,7 @@ class OrganizationController extends Controller
     }
 
     public function show(Organization $organization){
+        $this->authorize('organization.edit');
         $data = [
             'category_name' => 'organizations',
             'page_name' => 'organizationsshow',

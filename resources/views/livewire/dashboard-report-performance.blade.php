@@ -179,9 +179,9 @@
                         <td class="ps-2 pe-2"><b>{{ $info_global['avg_quote_time'] }}</b></td>
                         <td class="ps-2 pe-2"><b>{{ $info_global['closing_rate'] }}%</b></td>
                     </tr>
-                    @foreach ($info_employees as $info)
+                    @foreach ($info_sales as $info)
                         <tr>
-                            <td title="{{ $info['employee']->id }}">{{ $info['employee']->name }} {{ $info['employee']->lastname }}</td>
+                            <td title="{{ $info['sale']->id }}">{{ $info['sale']->name }} {{ $info['sale']->lastname }}</td>
                             <td class="ps-2 pe-2">{{ $info['requests_received'] }}</td>
                             @if (false)
                                 <td class="ps-2 pe-2">{{ $info['pre_qualified'] }}</td>

@@ -32,6 +32,9 @@ class SupplierController extends Controller implements HasMedia
     
     public function index()
 {
+
+    $this->authorize('suppliers.index');
+
     $data = [
         'category_name' => 'suppliers',
         'page_name' => 'suppliers',
@@ -144,6 +147,9 @@ class SupplierController extends Controller implements HasMedia
      */
     public function create()
     {
+
+        $this->authorize('suppliers.create');
+
         // $category_name = '';
         $data = [
             'category_name' => 'suppliers',
@@ -277,6 +283,9 @@ class SupplierController extends Controller implements HasMedia
      */
     public function show($id)
     {
+
+        $this->authorize('suppliers.edit');
+
         // $category_name = '';
         $data = [
             'category_name' => 'suppliers',
@@ -322,6 +331,9 @@ class SupplierController extends Controller implements HasMedia
      */
     public function edit($id)
     {
+
+        $this->authorize('suppliers.edit');
+
         // $category_name = '';
         $data = [
             'category_name' => 'suppliers',

@@ -12,7 +12,7 @@
                 <p>{{__("Welcome to Latin American Cargo (LAC)")}}</p>
             </div>
         </div>
-        @if(\Auth::user()->hasRole('Administrator') or \Auth::user()->hasRole('Employee'))
+        @if(\Auth::user()->hasRole('Administrator') or \Auth::user()->hasRole('Sales'))
             <div id="dashboard-report-performance" class="mb-4">
                 <livewire:dashboard-report-performance />
             </div>

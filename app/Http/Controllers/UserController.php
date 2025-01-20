@@ -30,7 +30,7 @@ class UserController extends Controller
         $type = request()->get('type');
 
         //1 is Has Role Administrator
-        //2 is Has Role Employee
+        //2 is Has Role Sales
         //3 is Has Role Customer
 
         if($type == 1 || empty($type)){
@@ -39,8 +39,8 @@ class UserController extends Controller
                             ->where('status', '!=', 'deleted')
                             ->get();
         }elseif($type == 2){
-            //get users with role employee
-            $users = User::role('employee')
+            //get users with role sales
+            $users = User::role('sales')
                             ->where('status', '!=', 'deleted')
                             ->get();
         }elseif($type == 3){

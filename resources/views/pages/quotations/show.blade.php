@@ -4,7 +4,7 @@
 @section('content')
 
 @php
-    $adminoremployee = Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee');
+    $adminorsales = Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Sales');
 @endphp
 
 <div class="layout-px-spacing data_inquiry">
@@ -60,7 +60,7 @@
                                         <input type="hidden" id="quotation_id" value="{{ $quotation->id }}">
                                     </div>
                                     <div class="flex-grow-1">
-                                        @if($adminoremployee)
+                                        @if($adminorsales)
 
                                             @php
                                                 if($is_ratinginnote){
@@ -613,7 +613,7 @@
 
 
                 <div class="row mt-2">
-                    @if($adminoremployee)
+                    @if($adminorsales)
                     <div class="col-md-4">
                         <div class="statbox widget box box-shadow mt-2 bxstatus">
                             <div class="widget-header px-2 pt-2 pb-0">
@@ -641,7 +641,7 @@
                                                     badge-light-danger
                                                 @endif
                                                 inv-status">
-                                                @if($adminoremployee || in_array($quotation->status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
+                                                @if($adminorsales || in_array($quotation->status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
                                                     {{ $quotation->status }}
                                                 @elseif ($quotation->status == 'Qualifying')
                                                     Attending
@@ -777,7 +777,7 @@
                                                     badge-light-danger
                                                 @endif
                                                 inv-status">
-                                                @if($adminoremployee || in_array($quotation->status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
+                                                @if($adminorsales || in_array($quotation->status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
                                                     {{ $quotation->status }}
                                                 @elseif ($quotation->status == 'Qualifying')
                                                     Attending
@@ -798,7 +798,7 @@
                                                             badge-light-success
                                                 @endif
                                                 inv-status">
-                                                @if($adminoremployee || in_array($quotation->status, ['Under Review']))
+                                                @if($adminorsales || in_array($quotation->status, ['Under Review']))
                                                     {{ $quotation->status }}
                                                 @elseif ($quotation->status == 'Lost')
                                                     Approved
