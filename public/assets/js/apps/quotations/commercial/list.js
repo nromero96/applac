@@ -288,6 +288,36 @@ document.getElementById('daterequest').addEventListener('change', () => {
     submitSearch();
 });
 
+// Exportar Data
+if (document.getElementById('exportData')) {
+    document.getElementById('exportData').addEventListener('click', function (e) {
+        e.preventDefault();
+
+        const button = e.target; // El botón que fue clicado
+
+        // Desactivar el botón y añadir animación
+        button.disabled = true;
+        button.classList.add('disabled', 'animate');
+
+        // Redirección con exportación
+        const currentUrl = new URL(window.location.href);
+        const formData = new URLSearchParams(currentUrl.search);
+        formData.set('export', 'csv');
+
+        // Simular la exportación (habilitar después de un tiempo estimado)
+        setTimeout(() => {
+            button.disabled = false; // Habilitar el botón
+            button.classList.remove('disabled', 'animate');
+        }, 5000); // Tiempo estimado para la descarga (ajústalo según sea necesario)
+
+        // Realizar la redirección para exportar
+        window.location.href = `${document.getElementById('form-search').action}?${formData.toString()}`;
+    });
+}
+
+
+
+
 // Añadir evento de cambio al input adicional change date
 $('#daterequest').on('apply.daterangepicker', function(ev, picker) {
     submitSearch();
@@ -346,4 +376,6 @@ document.addEventListener('livewire:load', function () {
         jQuery('#newinquiryForm').addClass('__stored');
     })
 })
+
+
 

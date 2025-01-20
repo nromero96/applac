@@ -33,13 +33,23 @@
                     </div>
                     <div class="col-8 col-md-6 d-flex align-self-center align-items-center justify-content-end">
                         <select name="listforpage" class="form-select rounded-pill form-control-sm ms-0 me-1 listforpage" id="listforpage" >
+                            <option value="10" {{ $listforpage == 10 ? 'selected' : '' }}>10</option>
                             <option value="20" {{ $listforpage == 20 ? 'selected' : '' }}>20</option>
                             <option value="50" {{ $listforpage == 50 ? 'selected' : '' }}>50</option>
                             <option value="100" {{ $listforpage == 100 ? 'selected' : '' }}>100</option>
                             <option value="200" {{ $listforpage == 200 ? 'selected' : '' }}>200</option>
-                            <option value="10" {{ $listforpage == 10 ? 'selected' : '' }}>10</option>
+                            @role('Administrator')
+                            <option value="{{$quotations->total()}}" {{ $listforpage == $quotations->total() ? 'selected' : '' }}>All ({{$quotations->total()}})</option>
+                            @endrole
                         </select>
                         <input type="text" name="daterequest" id="daterequest" class="form-control rounded-pill ms-2 float-end daterequest" value="{{ request('daterequest') }}" placeholder="Date/Range" autocomplete="off">
+                        
+                        @role('Administrator')
+                        <button class="btn btn-outline-primary py-1 ms-2 fw-bold btn-exportdata" id="exportData">
+                            Export
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                        </button>
+                        @endrole
                     </div>
                 </div>
 

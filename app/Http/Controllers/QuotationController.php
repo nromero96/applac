@@ -58,6 +58,8 @@ class QuotationController extends Controller
         $order_rating = request()->query('order-rating');
         $order_status = request()->query('order-status');
 
+        $export = request()->query('export');
+
         // lista de cotizaciones para el usuario logueado si es Customer
         $quotations = Quotation::select(
             'quotations.id as quotation_id',
@@ -74,6 +76,7 @@ class QuotationController extends Controller
             'dc.name as destination_country',
             'lc.name as location_name',
             'quotations.assigned_user_id as quotation_assigned_user_id',
+            'users_assigned.name as assigned_user_name',
             'quotations.created_at as quotation_created_at',
             'quotations.updated_at as quotation_updated_at',
             'quotation_notes.created_at as quotation_note_created_at',
@@ -84,6 +87,8 @@ class QuotationController extends Controller
         ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
         ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
         ->leftJoin('countries as lc', DB::raw('COALESCE(users.location, guest_users.location)'), '=', 'lc.id')
+        ->leftJoin('users as users_assigned', 'quotations.assigned_user_id', '=', 'users_assigned.id') // Obtener el nombre del usuario asignado
+        //
 
         // Join con la tabla de cotizaciones destacadas
         ->leftJoin('featured_quotations', function($join) {
@@ -254,7 +259,63 @@ class QuotationController extends Controller
         ->sortBy(function ($result) use ($resultsorderforlist) {
             return array_search($result->quotation_result, $resultsorderforlist);
         });
-    
+
+
+
+        // Si se requiere exportación a CSV
+        if ($export === 'csv') {
+            // Asegúrate de que quotations es una colección
+            if (method_exists($quotations, 'get')) {
+                $quotations = $quotations->get(); // Si es una consulta, conviértelo a colección
+            }
+        
+            // Genera el archivo CSV
+            $filename = 'quotations_' . now()->format('Ymd_His') . '.csv';
+            $headers = [
+                'Content-Type' => 'text/csv',
+                'Content-Disposition' => "attachment; filename=\"$filename\"",
+            ];
+        
+            $columns = [
+                'ID',
+                'Request Date',
+                'Status',
+                'Rating',
+                'User Email',
+                'Location',
+                'Route',
+                'Transport',
+                'Assigned',
+                'Source',
+                'Last Updated',
+            ];
+        
+            $callback = function () use ($quotations, $columns) {
+                $file = fopen('php://output', 'w');
+                fputcsv($file, $columns); // Encabezados
+        
+                foreach ($quotations as $quotation) {
+                    fputcsv($file, [
+                        $quotation->quotation_id ?? '', // Maneja valores nulos
+                        $quotation->quotation_created_at ?? '',
+                        $quotation->quotation_status ?? '',
+                        $quotation->quotation_rating ?? '',
+                        $quotation->user_email ?? '',
+                        $quotation->location_name ?? '',
+                        $quotation->origin_country . ' - ' . $quotation->destination_country ?? '',
+                        $quotation->quotation_mode_of_transport ?? '',
+                        $quotation->assigned_user_name ?? '',
+                        $quotation->user_source ?? '',
+                        $quotation->quotation_updated_at ?? '',
+                    ]);
+                }
+        
+                fclose($file);
+            };
+        
+            return response()->stream($callback, 200, $headers);
+        }
+        
 
 
         $data['listforpage'] = $listforpage;

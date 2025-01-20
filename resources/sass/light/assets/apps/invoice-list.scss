@@ -480,6 +480,15 @@ a.dropdown-item:hover {
     color: #0077B5;
 }
 
+.btn-exportdata{
+  svg{
+    height: 16px;
+    margin-left: 4px;
+    margin-top: -3px;
+    width: 16px;
+  }
+}
+
 // new Inquiry
 .newinquiry {
     position: fixed;
