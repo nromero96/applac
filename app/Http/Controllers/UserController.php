@@ -48,6 +48,11 @@ class UserController extends Controller
             $users = User::role('customer')
                             ->where('status', '!=', 'deleted')
                             ->get();
+        }elseif($type == 4){
+            //get users with role customer
+            $users = User::role('operations')
+                            ->where('status', '!=', 'deleted')
+                            ->get();
         }else{
             $users = User::where('status', '!=', 'deleted')->get();
         }
