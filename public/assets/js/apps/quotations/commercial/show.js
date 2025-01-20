@@ -248,6 +248,7 @@ function getBadge(status) {
         'Under Review': 'badge-light-warning',
         'Lost': 'badge-light-danger',
         'Won': 'badge-light-success',
+        'Deleted': 'badge-light-danger',
     };
 
     // Retornar el badge correspondiente o uno por defecto si no se encuentra el estado

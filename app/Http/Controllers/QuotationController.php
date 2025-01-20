@@ -229,16 +229,19 @@ class QuotationController extends Controller
         ->get();
 
         // Contar por status de cotizaciones
-        $statusorderforlist = ['Pending', 'Qualifying', 'Processing', 'Quote Sent', 'Unqualified', 'Attended'];
+        $statusorderforlist = ['Pending', 'Qualifying', 'Processing', 'Quote Sent', 'Unqualified', 'Deleted'];
+
         $liststatus = Quotation::select(
             'quotations.status as quotation_status',
             DB::raw('COUNT(quotations.id) as total')
         )
+        ->whereIn('quotations.status', $statusorderforlist) // Filtra por los estados en la lista
         ->groupBy('quotations.status') // Agrupa por el campo 'status'
         ->get()
         ->sortBy(function ($status) use ($statusorderforlist) {
             return array_search($status->quotation_status, $statusorderforlist);
         });
+
 
         //Contar Result
         $resultsorderforlist = ['Under Review', 'Won', 'Lost', 'N/A'];

@@ -189,46 +189,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-function selectResult(result) {
-    var input = document.getElementById('inputsearchresult');
-    input.value = result;
+
+
+function selectFilter(inputId, value) {
+    // Asignar el valor al input correspondiente
+    var input = document.getElementById(inputId);
+    input.value = value;
 
     const form = document.getElementById('form-search');
 
+    // Obtener los parámetros actuales de la URL
+    const urlParams = new URLSearchParams(window.location.search);
+
+    // Añadir los parámetros actuales al formulario como inputs ocultos
+    urlParams.forEach((paramValue, key) => {
+        if (!form.querySelector(`input[name="${key}"]`)) { // Evitar duplicados
+            const hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = key;
+            hiddenInput.value = paramValue;
+            form.appendChild(hiddenInput);
+        }
+    });
+
     // Enviar el formulario
     form.submit();
+}
+
+
+function selectResult(result) {
+    selectFilter('inputsearchresult', result);
 }
 
 function selectStatus(status) {
-    var input = document.getElementById('inputsearchstatus');
-    input.value = status;
-
-    const form = document.getElementById('form-search');
-
-    // Enviar el formulario
-    form.submit();
+    selectFilter('inputsearchstatus', status);
 }
 
 function selectSource(source) {
-    var input = document.getElementById('inputsearchsource');
-    input.value = source;
-
-    const form = document.getElementById('form-search');
-
-    // Enviar el formulario
-    form.submit();
+    selectFilter('inputsearchsource', source);
 }
-
 
 function selectTeam(assignedto) {
-    var input = document.getElementById('inputsearchassignedto');
-    input.value = assignedto;
-
-    const form = document.getElementById('form-search');
-
-    // Enviar el formulario
-    form.submit();
+    selectFilter('inputsearchassignedto', assignedto);
 }
+
+
+
 
 function submitSearch() {
     // Obtener la URL actual y sus parámetros
