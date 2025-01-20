@@ -306,3 +306,47 @@ document.addEventListener('change', function(event) {
         });
     }
 });
+
+//click action 'a' classs delete_inquiry
+const deleteInquiry = document.querySelectorAll('.delete_inquiry');
+deleteInquiry.forEach((element) => {
+    element.addEventListener('click', function(event) {
+        event.preventDefault();
+        var inquiry_id = this.getAttribute('data-inquiry-id');
+        var mymodal = new bootstrap.Modal(document.getElementById('confirmDeleteModal'));
+        mymodal.show();
+        
+
+    });
+});
+
+//print content id 'data_inquiry' by click class 'print_inquiry'
+document
+    .getElementById("print_inquiry")
+    .addEventListener("click", function () {
+        const elementToCapture = document.querySelector(".data_inquiry");
+
+        const ignoreElements = function (element) {
+            // Retorna true para excluir el elemento con la clase ''
+            return (
+                element.classList.contains("bxstatus") ||
+                element.classList.contains("bxresult") ||
+                element.classList.contains("btn-modify") ||
+                element.classList.contains("dropdown-menu") ||
+                element.classList.contains("page-meta")
+            );
+        };
+
+        html2canvas(elementToCapture, {
+            ignoreElements: ignoreElements,
+        }).then(function (canvas) {
+            const image = canvas.toDataURL("image/png");
+            printJS({
+                printable: image,
+                type: "image",
+                onPrintDialogClose: function () {
+                    // Aquí puedes realizar acciones adicionales después de que se cierra el diálogo de impresión
+                },
+            });
+        });
+    });

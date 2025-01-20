@@ -48,6 +48,10 @@ mix.sass('resources/sass/light/assets/main.scss', 'public/assets/css/light')
     .sass('resources/sass/light/assets/components/list-group.scss','public/assets/css/light/components')
     .sass('resources/sass/dark/assets/components/list-group.scss','public/assets/css/dark/components')
 
+    //Modal
+    .sass('resources/sass/light/assets/components/modal.scss','public/assets/css/light/components')
+    .sass('resources/sass/dark/assets/components/modal.scss','public/assets/css/dark/components')
+
     // Users
     .sass('resources/sass/light/assets/users/users-list.scss','public/assets/css/light/users')
     .sass('resources/sass/dark/assets/users/users-list.scss','public/assets/css/dark/users')

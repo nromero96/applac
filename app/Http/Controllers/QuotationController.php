@@ -97,7 +97,6 @@ class QuotationController extends Controller
                 ->where('quotation_notes.id', '=', DB::raw("(select max(id) from quotation_notes WHERE quotation_id = quotations.id)"));
         });
 
-
         if(auth()->user()->hasRole('Customer')) {
             $quotations->where('quotations.customer_user_id', auth()->id());
         }
@@ -113,6 +112,9 @@ class QuotationController extends Controller
             // Aplicar status si está presente
             if (!empty($status)) {
                 $query->where('quotations.status', $status);
+            } else {
+                // Si no se ha especificado un estado, excluir las cotizaciones con estado 'Deleted'
+                $query->where('quotations.status', '!=', 'Deleted');
             }
 
             // Aplicar source si está presente
@@ -380,11 +382,29 @@ class QuotationController extends Controller
 
     public function destroy($id)
     {
-        //
+        $quotation = Quotation::findOrFail($id);
+
+        //Registrar nota de estado
+        QuotationNote::create([
+            'quotation_id' => $id,
+            'type' => 'inquiry_status',
+            'action' => "'{$quotation->status}' to 'Deleted'",
+            'reason' => '',
+            'note' => 'Quotation deleted',
+            'user_id' => auth()->id(),
+        ]);
+        
+        //cambiar de estatus a Deleted
+        $quotation->update([
+            'status' => 'Deleted',
+            'updated_at' => now(),
+        ]);
+
+        return redirect()->route('quotations.index')->with('success', 'Quotation deleted successfully.');
     }
 
     public function listQuotationNotes($id)
-{
+    {
     // Obtener la cotización para acceder a su fecha de creación
     $quotation = Quotation::find($id);
     $quotationCreatedAt = $quotation ? $quotation->created_at : null;

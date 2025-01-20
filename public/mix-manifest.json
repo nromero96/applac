@@ -29,6 +29,8 @@
     "/assets/css/light/apps/notes.css": "/assets/css/light/apps/notes.css",
     "/assets/css/dark/users/users-list.css": "/assets/css/dark/users/users-list.css",
     "/assets/css/light/users/users-list.css": "/assets/css/light/users/users-list.css",
+    "/assets/css/dark/components/modal.css": "/assets/css/dark/components/modal.css",
+    "/assets/css/light/components/modal.css": "/assets/css/light/components/modal.css",
     "/assets/css/dark/components/list-group.css": "/assets/css/dark/components/list-group.css",
     "/assets/css/light/components/list-group.css": "/assets/css/light/components/list-group.css",
     "/assets/css/dark/authentication/auth-boxed.css": "/assets/css/dark/authentication/auth-boxed.css",

@@ -186,30 +186,33 @@ class SupplierController extends Controller implements HasMedia
         $supplier->company_note = $request->input('company_note');
         $supplier->save();
 
-        $temporaryfile_document_one = TemporaryFile::where('folder', $request->document_one)->first();
+        $folder_document_one = str_replace(['[', ']', '"'], '', $request->document_one);
+        $temporaryfile_document_one = TemporaryFile::where('folder', $folder_document_one)->first();
         if($temporaryfile_document_one){
-            Storage::move('public/uploads/tmp/'.$request->document_one.'/'.$temporaryfile_document_one->filename, 'public/uploads/supplier_documents/'.$temporaryfile_document_one->filename);
+            Storage::move('public/uploads/tmp/'.$folder_document_one.'/'.$temporaryfile_document_one->filename, 'public/uploads/supplier_documents/'.$temporaryfile_document_one->filename);
             $supplier->document_one = $temporaryfile_document_one->filename;
             $supplier->save();
-            rmdir(storage_path('app/public/uploads/tmp/'.$request->document_one));
+            rmdir(storage_path('app/public/uploads/tmp/'.$folder_document_one));
             $temporaryfile_document_one->delete();
         }
 
-        $temporaryfile_document_two = TemporaryFile::where('folder', $request->document_two)->first();
+        $folder_document_two = str_replace(['[', ']', '"'], '', $request->document_two);
+        $temporaryfile_document_two = TemporaryFile::where('folder', $folder_document_two)->first();
         if($temporaryfile_document_two){
-            Storage::move('public/uploads/tmp/'.$request->document_two.'/'.$temporaryfile_document_two->filename, 'public/uploads/supplier_documents/'.$temporaryfile_document_two->filename);
+            Storage::move('public/uploads/tmp/'.$folder_document_two.'/'.$temporaryfile_document_two->filename, 'public/uploads/supplier_documents/'.$temporaryfile_document_two->filename);
             $supplier->document_two = $temporaryfile_document_two->filename;
             $supplier->save();
-            rmdir(storage_path('app/public/uploads/tmp/'.$request->document_two));
+            rmdir(storage_path('app/public/uploads/tmp/'.$folder_document_two));
             $temporaryfile_document_two->delete();
         }
 
-        $temporaryfile_document_three = TemporaryFile::where('folder', $request->document_three)->first();
+        $folder_document_three = str_replace(['[', ']', '"'], '', $request->document_three);
+        $temporaryfile_document_three = TemporaryFile::where('folder', $folder_document_three)->first();
         if($temporaryfile_document_three){
-            Storage::move('public/uploads/tmp/'.$request->document_three.'/'.$temporaryfile_document_three->filename, 'public/uploads/supplier_documents/'.$temporaryfile_document_three->filename);
+            Storage::move('public/uploads/tmp/'.$folder_document_three.'/'.$temporaryfile_document_three->filename, 'public/uploads/supplier_documents/'.$temporaryfile_document_three->filename);
             $supplier->document_three = $temporaryfile_document_three->filename;
             $supplier->save();
-            rmdir(storage_path('app/public/uploads/tmp/'.$request->document_three));
+            rmdir(storage_path('app/public/uploads/tmp/'.$folder_document_three));
             $temporaryfile_document_three->delete();
         }
 
@@ -366,11 +369,14 @@ class SupplierController extends Controller implements HasMedia
      {
          // Validar los campos del proveedor
          $this->validate($request, [
-             'company_name' => 'required',
-             'company_address' => 'required',
-             'country_id' => 'required',
-             'state_id' => 'required',
-             'city' => 'required',
+            'company_name' => 'required',
+            'company_address' => 'required',
+            'country_id' => 'required',
+            'state_id' => 'required',
+            'city' => 'required',
+            'document_one' => 'nullable',
+            'document_two' => 'nullable',
+            'document_three' => 'nullable',
          ]);
      
          // Obtener el proveedor existente
@@ -388,32 +394,35 @@ class SupplierController extends Controller implements HasMedia
          $supplier->save();
      
          // Actualizar los documentos del proveedor
-         $temporaryfile_document_one = TemporaryFile::where('folder', $request->document_one)->first();
+         $folder_document_one = str_replace(['[', ']', '"'], '', $request->document_one);
+         $temporaryfile_document_one = TemporaryFile::where('folder', $folder_document_one)->first();
          if ($temporaryfile_document_one) {
-             Storage::move('public/uploads/tmp/' . $request->document_one . '/' . $temporaryfile_document_one->filename, 'public/uploads/supplier_documents/' . $temporaryfile_document_one->filename);
+             Storage::move('public/uploads/tmp/' . $folder_document_one . '/' . $temporaryfile_document_one->filename, 'public/uploads/supplier_documents/' . $temporaryfile_document_one->filename);
              $supplier->document_one = $temporaryfile_document_one->filename;
              $supplier->save();
-             rmdir(storage_path('app/public/uploads/tmp/' . $request->document_one));
+             rmdir(storage_path('app/public/uploads/tmp/' . $folder_document_one));
              $temporaryfile_document_one->delete();
          }
      
-         $temporaryfile_document_two = TemporaryFile::where('folder', $request->document_two)->first();
+        $folder_document_two = str_replace(['[', ']', '"'], '', $request->document_two);
+         $temporaryfile_document_two = TemporaryFile::where('folder', $folder_document_two)->first();
          if ($temporaryfile_document_two) {
-             Storage::move('public/uploads/tmp/' . $request->document_two . '/' . $temporaryfile_document_two->filename, 'public/uploads/supplier_documents/' . $temporaryfile_document_two->filename);
+             Storage::move('public/uploads/tmp/' . $folder_document_two . '/' . $temporaryfile_document_two->filename, 'public/uploads/supplier_documents/' . $temporaryfile_document_two->filename);
              $supplier->document_two = $temporaryfile_document_two->filename;
              $supplier->save();
-             rmdir(storage_path('app/public/uploads/tmp/' . $request->document_two));
+             rmdir(storage_path('app/public/uploads/tmp/' . $folder_document_two));
              $temporaryfile_document_two->delete();
          }
      
-         $temporaryfile_document_three = TemporaryFile::where('folder', $request->document_three)->first();
-         if ($temporaryfile_document_three) {
-            Storage::move('public/uploads/tmp/' . $request->document_three . '/' . $temporaryfile_document_three->filename, 'public/uploads/supplier_documents/' . $temporaryfile_document_three->filename);
+        $folder_document_three = str_replace(['[', ']', '"'], '', $request->document_three);
+        $temporaryfile_document_three = TemporaryFile::where('folder', $folder_document_three)->first();
+        if ($temporaryfile_document_three) {
+            Storage::move('public/uploads/tmp/' . $folder_document_three . '/' . $temporaryfile_document_three->filename, 'public/uploads/supplier_documents/' . $temporaryfile_document_three->filename);
             $supplier->document_three = $temporaryfile_document_three->filename;
             $supplier->save();
-             rmdir(storage_path('app/public/uploads/tmp/' . $request->document_three));
+                rmdir(storage_path('app/public/uploads/tmp/' . $folder_document_three));
             $temporaryfile_document_three->delete();
-         }
+        }
      
         $contact_name = $request->input('contact_name');
         $contact_email = $request->input('contact_email');

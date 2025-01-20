@@ -112,6 +112,8 @@
                                                                 $class_sb_sch = 'badge-light-success';
                                                             } elseif($status->quotation_status == 'Unqualified'){
                                                                 $class_sb_sch = 'badge-light-unqualified';
+                                                            } elseif($status->quotation_status == 'Deleted'){
+                                                                $class_sb_sch = 'badge-light-danger';
                                                             } else {
                                                                 $class_sb_sch = 'badge-light-unqualified';
                                                             }
@@ -427,6 +429,8 @@
                                                                 badge-light-success
                                                             @elseif ($quotation->quotation_status == 'Unqualified')
                                                                 badge-light-unqualified
+                                                            @elseif ($quotation->quotation_status == 'Deleted')
+                                                                badge-light-danger
                                                             @endif
                                                             inv-status">
                                                             @if($adminoremployee || in_array($quotation->quotation_status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))

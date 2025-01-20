@@ -266,3 +266,36 @@
   }
 
 }
+
+.btn-closef-lt{
+  background-color: transparent;
+    border: none;
+    height: 32px;
+    padding: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(50%, -50%);
+    width: 32px;
+
+  svg {
+    height: 100%;
+    -o-object-fit: contain;
+    object-fit: contain;
+    width: 100%;
+  }
+}
+
+.confirmdeletemodal{
+  h5{
+    color: #161515;
+    font-size: 23px;
+  }
+
+  .modal-body {
+    p{
+      color: #42403E;
+      font-size: 15px;
+    }
+  }
+}

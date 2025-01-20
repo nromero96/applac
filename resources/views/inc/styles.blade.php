@@ -119,6 +119,9 @@
             {{-- swal --}}
             <link rel="stylesheet" type="text/css" href="{{asset('plugins/src/sweetalerts2/sweetalerts2.css')}}">
 
+            <link href="{{ asset('assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css">
+            <link href="{{ asset('assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css">
+
             @break
 
         @case('suppliers')

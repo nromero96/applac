@@ -7,7 +7,7 @@
     $adminoremployee = Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Employee');
 @endphp
 
-<div class="layout-px-spacing">
+<div class="layout-px-spacing data_inquiry">
 
     <div class="middle-content container-xxl p-0">
 
@@ -184,9 +184,13 @@
                                                     <span>{{ __('Edit') }}</span>
                                                     <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                                 </a> --}}
-                                                <a class="dropdown-item" id="print_supplier" href="javascript:void(0);">
-                                                    <span>{{ __('Print') }}</span>
+                                                <a class="dropdown-item" id="print_inquiry" href="javascript:void(0);">
                                                     <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                                                    <span>{{ __('Print') }}</span>
+                                                </a>
+                                                <a class="dropdown-item delete_inquiry" href="javascript:void(0);" data-inquiry-id="{{ $quotation->id }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2  delete-multiple"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                                    <span>{{ __('Delete Inquiry') }}</span>
                                                 </a>
                                             </div>
                                         </div>
@@ -604,74 +608,6 @@
                             </div>
                         </div>
 
-
-
-
-                        <!-- Modal Service -->
-                        <div class="modal fade modal-lg" id="serviceModal" tabindex="-1" role="dialog" aria-labelledby="serviceModalTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content">
-                                    <form name="formservicesupplier" id="formservicesupplier" action="" method="POST" enctype="multipart/form-data">
-                                        <input type="hidden" name="service_supplier_id" value="">
-                                        <input type="hidden" name="supplier_id" value="">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title add-title">{{ __('Service Informations') }}</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                                                <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                                            </button>
-                                        </div>
-
-                                        <div class="modal-body">
-                                                    <div class="row">
-                                                        <div class="col-md-6 mb-3">
-                                                            <label for="servicecategory_id" class="form-label fw-bold mb-0">{{ __('Service') }}</label>
-                                                            <select class="form-control" name="servicecategory_id" id="servicecategory_id" required="">
-                                                                <option value="">{{ __('Select...') }}</option>
-
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-md-12 mb-3" id="services">
-                                                            <input name='services_list' value='' placeholder="{{ __('Select services') }}">
-                                                        </div>
-                                                    </div>
-
-                                                    <hr class="m-0">
-                                                    <div class="row">
-                                                        <div class="col-md-12" id="btnaddroute">
-                                                            <label class="form-label fw-bold">{{__("Routes")}}:</label>
-                                                            <button type="button" class="btn btn-primary mb-2 me-4" id="add_route">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
-                                                                <span class="btn-text-inner">{{ __('Add') }}</span>
-                                                            </button>
-                                                        </div>
-
-                                                        <div class="col-md-12 d-none" id="btnaddlocation">
-                                                            <label class="form-label fw-bold">{{__("Locations")}}:</label>
-                                                            <button type="button" class="btn btn-primary mb-2 me-4" id="add_location">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-map"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
-                                                                <span class="btn-text-inner">{{ __('Add') }}</span>
-                                                            </button>
-                                                        </div>
-
-                                                    </div>
-                                                    <hr class="mt-0 mb-2">
-
-                                                    <div class="row" id="listroutes">
-
-                                                    </div>
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <a class="btn discard_btn" data-bs-dismiss="modal"> <i class="flaticon-delete-1"></i>{{ __('Discard') }}</a>
-                                            <button id="btn-add" class="btn btn-primary">{{ __('Save') }}</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- End Modal Service -->
-
-
                     </div>
                 </div>
 
@@ -679,7 +615,7 @@
                 <div class="row mt-2">
                     @if($adminoremployee)
                     <div class="col-md-4">
-                        <div class="statbox widget box box-shadow mt-2">
+                        <div class="statbox widget box box-shadow mt-2 bxstatus">
                             <div class="widget-header px-2 pt-2 pb-0">
                                 <div class="mb-0 row">
                                     <div class="col">
@@ -701,6 +637,8 @@
                                                     badge-light-success
                                                 @elseif ($quotation->status == 'Unqualified')
                                                     badge-light-unqualified
+                                                @elseif ($quotation->status == 'Deleted')
+                                                    badge-light-danger
                                                 @endif
                                                 inv-status">
                                                 @if($adminoremployee || in_array($quotation->status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
@@ -755,7 +693,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div class="statbox widget box box-shadow mt-2">
+                        <div class="statbox widget box box-shadow mt-2 bxresult">
                             <div class="widget-header px-2 pt-2 pb-0">
                                 <div class="mb-0 row">
                                     <div class="col">
@@ -835,6 +773,8 @@
                                                     badge-light-success
                                                 @elseif ($quotation->status == 'Unqualified')
                                                     badge-light-unqualified
+                                                @elseif ($quotation->status == 'Deleted')
+                                                    badge-light-danger
                                                 @endif
                                                 inv-status">
                                                 @if($adminoremployee || in_array($quotation->status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
@@ -905,5 +845,49 @@
 
 </div>
 
+<!-- Modal Confirm Delete Inquiry -->
+<div class="modal confirmdeletemodal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <form name="delete-inquiry" action="{{ route('quotations.destroy', ['quotation' => $quotation->id]) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                
+
+                <div class="modal-body">
+                    <button type="button" class="btn-closef-lt" data-bs-dismiss="modal" aria-label="Close">
+                        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="16" cy="16" r="16" fill="#F5F5F5"/>
+                            <path d="M20 12L12 20" stroke="#161515" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 12L20 20" stroke="#161515" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+
+                    <div class="row">
+
+                        <div class="col-md-12 mb-3 text-center">
+                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 80 80" fill="none">
+                                <path d="M73.3337 36.9335V40.0001C73.3296 47.1882 71.002 54.1824 66.6981 59.9395C62.3942 65.6967 56.3446 69.9084 49.4515 71.9465C42.5584 73.9845 35.1912 73.7398 28.4486 71.2487C21.7059 68.7577 15.9492 64.1538 12.0369 58.1237C8.12455 52.0936 6.2663 44.9603 6.73925 37.7878C7.2122 30.6153 9.99102 23.7879 14.6613 18.3237C19.3315 12.8595 25.6429 9.05139 32.6543 7.46727C39.6656 5.88315 47.0012 6.60791 53.567 9.53345" stroke="#CC0000" stroke-width="4px" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                                <path d="M73.3333 13.3333L40 46.6999L30 36.6999" stroke="#CC0000" stroke-width="4px" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                            </svg>
+                        </div>
+
+                        <div class="col-md-12 mb-3 text-center">
+                            <h5>Delete Inquiry?</h5>
+                            <p class="text-center">Are you sure you want to delete this Inquiry?</p>
+                            <p class="text-center">You can't undo this action</p>
+                        </div>
+                        <div class="col-md-12 text-center mb-3">
+                            <a class="btn btn-outline-primary fw-bold" data-bs-dismiss="modal"> <i class="flaticon-delete-1"></i>{{ __('Cancel') }}</a>
+                            <input type="submit" class="btn btn-primary fw-bold" value="Delete">
+                        </div>
+                    </div>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Confirm Delete Inquiry -->
 
 @endsection

@@ -1339,7 +1339,7 @@ select.form-control.form-custom {
     }
 
     &:hover svg {
-      color: $info;
+      color: $primary;
     }
 
     &.active, &:active {
@@ -1349,8 +1349,7 @@ select.form-control.form-custom {
     }
 
     &:hover {
-      // color: $info;
-      color: $info;
+      color: $primary;
       background: rgb(248, 248, 248);
     }
   }

@@ -41,6 +41,8 @@
             @break
         @case('quotations_show')
             {{-- All quotes --}}
+            <script src="{{asset('plugins/src/html2canvas/html2canvas.min.js')}}"></script>
+            <script src="{{asset('plugins/src/print-js/print.min.js')}}"></script>
             {{-- swal --}}
             <script src="{{asset('plugins/src/sweetalerts2/sweetalerts2.min.js')}}"></script>
 
@@ -73,13 +75,12 @@
             <script src="{{ asset('plugins/src/filepond/FilePondPluginImageResize.min.js') }}"></script>
             <script src="{{ asset('plugins/src/filepond/FilePondPluginImageTransform.min.js') }}"></script>
             <script src="{{ asset('plugins/src/filepond/filepondPluginFileValidateSize.min.js') }}"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
             <script src="{{ asset('assets/js/apps/supplier-edit.js') }}"></script>
             @break
 
         @case('suppliershow')
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.js"></script>
+            <script src="{{asset('plugins/src/html2canvas/html2canvas.min.js')}}"></script>
+            <script src="{{asset('plugins/src/print-js/print.min.js')}}"></script>
             <script src="{{ asset('plugins/src/tagify/tagify.min.js') }}"></script>
             <script src="{{ asset('assets/js/apps/supplier-show.js') }}"></script>
             @break
@@ -91,8 +92,8 @@
             @break
 
         @case('organizationsshow')
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/print-js/1.6.0/print.min.js"></script>
+            <script src="{{asset('plugins/src/html2canvas/html2canvas.min.js')}}"></script>
+            <script src="{{asset('plugins/src/print-js/print.min.js')}}"></script>
             <script src="{{ asset('plugins/src/tagify/tagify.min.js') }}"></script>
             <script src="{{ asset('assets/js/apps/organization.js') }}?v={{ config('app.version') }}"></script>
             @break
