@@ -90,10 +90,8 @@ if (!function_exists('rateQuotation')) {
 
         $fecha_solicitud = Carbon::parse($quotation->created_at)->startOfDay();
 
-        $unasemanadespues = $fecha_solicitud->copy()->addDays(7);  // 7 días desde la fecha de solicitud
-        $dossemanasdespues = $fecha_solicitud->copy()->addDays(14); // 14 días desde la fecha de solicitud
-        $tressemanasdespues = $fecha_solicitud->copy()->addDays(21); // 21 días desde la fecha de solicitud
-
+        $catorcediasdespues = $fecha_solicitud->copy()->addDays(14); // 14 días desde la fecha de solicitud
+        $treintadiasdespues = $fecha_solicitud->copy()->addDays(30); // 30 días desde la fecha de solicitud
 
         //######## Correo electrónico :::::::::::
         $email = $quotation->customer_user_id
@@ -124,18 +122,13 @@ if (!function_exists('rateQuotation')) {
             //######## Fecha de envío :::::::::::
             if ($quotation->shipping_date) {
                 $fecha_envio = Carbon::parse(explode(' to ', $quotation->shipping_date)[0]);
-                if (in_array($quotationmodeoftransport, ['Air', 'Ground'])) {
-                    if ($fecha_envio->between($fecha_solicitud,  $unasemanadespues)) {
-                        $rating += 2;  //a una semana desde la fecha solicitud
-                    } elseif ($fecha_envio->between($unasemanadespues, $dossemanasdespues)){
-                        $rating += 1; //Desde el día 8-14
-                    }
-                } elseif (in_array($quotationmodeoftransport, ['Container', 'RoRo', 'Breakbulk'])) {
-                    if ($fecha_envio->between($fecha_solicitud, $unasemanadespues)) {
-                        $rating += 2; //a una semana desde la fecha solicitud
-                    } elseif($fecha_envio->between($unasemanadespues, $tressemanasdespues)){
-                        $rating += 1; //Hasta 3 semanas desde la fecha solicitud
-                    }
+
+                if ($fecha_envio->between($fecha_solicitud, $catorcediasdespues)) {
+                    $rating += 1;  //1 a 14 días desde la fecha solicitud
+                } elseif ($fecha_envio->between($catorcediasdespues, $treintadiasdespues)){
+                    $rating += 0.5; //Desde el día 15 al 30 desde la fecha solicitud
+                } elseif ($fecha_envio->gt($treintadiasdespues)){
+                    $rating += 0; //Más de 30 días desde la fecha solicitud
                 }
             }
 
@@ -159,17 +152,17 @@ if (!function_exists('rateQuotation')) {
             if ($isLocationInSpecialCountries) {
                 if ($isBusinessEmailAndNotEdu) {
                     if ($isOriginInScope && $isDestinationInScope) {
-                        $rating += 2;  // Tanto origen como destino están en el scope y el correo es de una empresa
+                        $rating += 3;  // Tanto origen como destino están en el scope y el correo es de una empresa
                     } elseif ($isOriginInScope || $isDestinationInScope) {
-                        $rating += 1; // Origen o destino están en el scope y el correo es de una empresa
+                        $rating += 2; // Origen o destino están en el scope y el correo es de una empresa
                     } else {
-                        $rating += 0.5; // Cualquier país fuera del scope
+                        $rating += 1; // Cualquier país fuera del scope
                     }
                 }
             // Si la ubicación está en los países del scope excluyendo los especiales
             } elseif ($isLocationInScopeExcludeSpecialCountries && $isBusinessEmailAndNotEdu) {
                 if (in_array($quotation->origin_country_id, $specialCountries) && in_array($quotation->destination_country_id, $scopeExcludeSpecialCountries)) {
-                    $rating += 1; // Origen en specialCountries y destino en scopeExcludeSpecialCountries y el correo es de una empresa
+                    $rating += 2; // Origen en specialCountries y destino en scopeExcludeSpecialCountries y el correo es de una empresa
                 }
             }
 

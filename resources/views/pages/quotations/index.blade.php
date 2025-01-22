@@ -319,6 +319,11 @@
                                         <th class="ps-2 pe-2 text-center">Flag</th>
                                         @endif
                                         <th class="ps-2 pe-2 sticky-column">{{ __('ID') }}</th>
+
+                                        @if($adminorsales)
+                                        <th class="px-1">{{ __('Readiness') }}</th>
+                                        @endif
+
                                         <th>{{ __('Requested') }}</th>
                                         <th class="px-2">
                                             {{ __('Status') }}
@@ -412,6 +417,34 @@
                                                         #{{ $quotation->quotation_id }}
                                                     @endif
                                                 </td>
+
+                                                @if($adminorsales)
+                                                    <td class="px-1">
+                                                        @php 
+                                                            
+                                                            $fecha_solicitud = Carbon\Carbon::parse($quotation->quotation_created_at)->startOfDay();
+                                                            $catorcediasdespues = $fecha_solicitud->copy()->addDays(14);
+                                                            $treintadiasdespues = $fecha_solicitud->copy()->addDays(30);
+                                                            if($quotation->quotation_shipping_date){
+                                                                $fecha_envio = Carbon\Carbon::parse(explode(' to ', $quotation->quotation_shipping_date)[0]);
+                                                                if ($fecha_envio->between($fecha_solicitud, $catorcediasdespues)) {
+                                                                    //1 a 14 días desde la fecha solicitud
+                                                                    $tagreadiness = '<span class="badge-readiness br-high">HIGH</span>';
+                                                                } elseif ($fecha_envio->between($catorcediasdespues, $treintadiasdespues)){
+                                                                    //Desde el día 15 al 30 desde la fecha solicitud
+                                                                    $tagreadiness = '<span class="badge-readiness br-medium">MID</span>';
+                                                                } elseif ($fecha_envio->gt($treintadiasdespues)){
+                                                                    //Más de 30 días desde la fecha solicitud
+                                                                    $tagreadiness = '<span class="badge-readiness br-low">LOW</span>';
+                                                                }
+                                                            } else {
+                                                                $tagreadiness = '<span class="badge-readiness br-low">LOW</span>';
+                                                            }
+                                                        @endphp
+                                                        {!! $tagreadiness !!}
+                                                    </td>
+                                                @endif
+
                                                 <td class="py-1 align-middle">
                                                     <div class="inv-date d-flex">
                                                         <span class="align-self-center">
