@@ -19,6 +19,9 @@ class GuestUser extends Model
         'location',
         'phone_code',
         'phone',
+        'job_title',
+        'business_role',
+        'ea_shipments',
         'source',
         'subscribed_to_newsletter',
     ];

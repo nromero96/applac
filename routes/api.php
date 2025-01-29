@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\QuotationController;
+use App\Http\Controllers\Api\CountryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +19,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+//Ruta listar paises
+Route::get('/countries', [CountryController::class, 'index']);
+
+//Ruta para manejar solicitudes Quotations
+Route::middleware('validate.web.quotation.api.token')->post('/web-quotation-store', [QuotationController::class, 'store']);

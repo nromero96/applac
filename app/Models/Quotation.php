@@ -47,6 +47,7 @@ class Quotation extends Model
         'created_at',
         'updated_at',
         'recovered_account',
+        'shipment_ready_date',
         'is_internal_inquiry',
         'cargo_description',
     ];
