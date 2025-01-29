@@ -8,10 +8,18 @@ use App\Models\Country;
 
 class CountryController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        //List all countries
+        // Verificar si la solicitud espera una respuesta en formato JSON
+        if (!$request->expectsJson()) {
+            return response()->json([
+                'error' => 'Unauthorized request. JSON expected.'
+            ], 406); // 406 Not Acceptable
+        }
+
+        // Obtener todos los países
         $countries = Country::all();
+
         return response()->json([
             'countries' => $countries,
         ], 200);
