@@ -26,7 +26,7 @@ class ValidateWebQuotationApiToken
         }
 
         // Validar si coincide con el token del .env
-        if ($token !== 'Bearer ' . env('WEB_QUOTATION_API_TOKEN')) {
+        if ($token !== 'Bearer ' . config('services.quotation_api_token')) {
             Log::warning('Intento fallido de acceso a Web Quotation API', ['ip' => $request->ip()]);
             //Mostrar env('WEB_QUOTATION_API_TOKEN')
             return response()->json(['error' => 'Token inválido o no autorizado.'], 401);

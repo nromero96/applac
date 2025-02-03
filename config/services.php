@@ -49,4 +49,6 @@ return [
         'secret' => env('RECAPTCHA_SECRET_KEY'),
     ],
 
+    'quotation_api_token' => env('WEB_QUOTATION_API_TOKEN'),
+
 ];
