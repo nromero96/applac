@@ -6,6 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Quotation;
 use App\Models\GuestUser;
+use App\Models\QuotationDocument;
+use App\Mail\WebQuotationCreated;
+use Illuminate\Support\Facades\Mail;
+
 
 class QuotationController extends Controller
 {
@@ -51,6 +55,7 @@ class QuotationController extends Controller
             'currency' => 'required|string',
             'shipment_ready_date' => 'required|string',
             'cargo_description' => 'required|string',
+            //Files
         ]);
 
         //Guarda a la tabla guest_users y retorna el id
@@ -83,8 +88,13 @@ class QuotationController extends Controller
             'created_at' => now(),
         ]);
 
+        $quotation_documents = QuotationDocument::where('quotation_id', $quotation->id)->get();
+
+        //Enviar correo
+        Mail::send(new WebQuotationCreated($quotation, $guest_user, $request->email, $quotation_documents));
+
         return response()->json([
-            'message' => 'Cotización guardada',
+            'message' => 'Quotation created',
             'quotation_id' => $quotation->id,
         ], 201);
 
