@@ -9,6 +9,8 @@ use App\Models\GuestUser;
 use App\Models\QuotationDocument;
 use App\Mail\WebQuotationCreated;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 
 class QuotationController extends Controller
@@ -56,9 +58,10 @@ class QuotationController extends Controller
             'shipment_ready_date' => 'required|string',
             'cargo_description' => 'required|string',
             //Files
+            'files.*' => 'nullable|file|mimes:txt,pdf,doc,docx,xls,xlsx,ppt,pptx,zip,csv,jpg,jpeg,gif,png,tif,tiff|max:10240', //10MB
         ]);
 
-        //Guarda a la tabla guest_users y retorna el id
+        //Guarda a la tabla guest_users
         $guest_user = GuestUser::create([
             'name' => $request->name,
             'lastname' => $request->lastname,
@@ -87,11 +90,35 @@ class QuotationController extends Controller
             'status' => 'Pending',
             'created_at' => now(),
         ]);
+        
 
+        //Guarda los archivos en la tabla quotation_documents
+        if ($request->hasFile('files')) {
+            foreach ($request->file('files') as $file) {
+                // Nombre único para el archivo
+                $file_name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                
+                // Mueve el archivo a la carpeta public/uploads/quotation_documents
+                $file_path = $file->storeAs('public/uploads/quotation_documents', $file_name);
+        
+                // Registrar en la base de datos
+                QuotationDocument::create([
+                    'quotation_id' => $quotation->id,
+                    'document_path' => $file_name,
+                ]);
+            }
+        }
+
+        //obtener los documentos de la cotización
         $quotation_documents = QuotationDocument::where('quotation_id', $quotation->id)->get();
 
-        //Enviar correo
-        Mail::send(new WebQuotationCreated($quotation, $guest_user, $request->email, $quotation_documents));
+        try {
+            // Enviar correo
+            Mail::send(new WebQuotationCreated($quotation, $guest_user, $request->email, $quotation_documents));
+        } catch (\Exception $e) {
+            // Puedes loguear el error o manejarlo como desees
+            Log::error("Error sending email Web Quotation Mail: " . $e->getMessage());
+        }
 
         return response()->json([
             'message' => 'Quotation created',

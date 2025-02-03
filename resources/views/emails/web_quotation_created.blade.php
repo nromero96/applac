@@ -64,13 +64,23 @@
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td colspan="2" style="padding: 7px 0px;">
                     <b>Cargo Description</b><br>
-                    {{ $quotation->cargo_description }}
+                    {!! nl2br(e($quotation->cargo_description)) !!}
                 </td>
             </tr>
             <tr>
                 <td colspan="2" style="padding: 7px 0px;">
                     <b>Attachments</b><br>
-                    ......
+                    @if(count($quotation_documents) > 0)
+                        <ul style="font-size: 14px; line-height: 1.4; margin-top: 2px; padding-left: 0px; list-style: none;">
+                            @foreach($quotation_documents as $index => $document)
+                                <li style="margin-left: 0px;">• <a href="{{ asset('storage/uploads/quotation_documents').'/'. urlencode($document['document_path']) }}">Attachment {{ $index + 1 }}</a></li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <ul style="font-size: 14px; line-height: 1.4; margin-top: 2px; padding-left: 0px; list-style: none;">
+                            <li style="margin-left: 0px;">• No documents</li>
+                        </ul>
+                    @endif
                 </td>
             </tr>
         </table>
