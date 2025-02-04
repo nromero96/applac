@@ -368,6 +368,9 @@ class QuotationController extends Controller
             DB::raw('COALESCE(users.location, guest_users.location) as customer_location'),
             DB::raw('COALESCE(users.phone_code, guest_users.phone_code) as customer_phone_code'),
             DB::raw('COALESCE(users.phone, guest_users.phone) as customer_phone'),
+            DB::raw('COALESCE(users.job_title, guest_users.job_title) as customer_job_title'),
+            DB::raw('COALESCE(users.business_role, guest_users.business_role) as customer_business_role'),
+            DB::raw('COALESCE(users.ea_shipments, guest_users.ea_shipments) as customer_ea_shipments'),
             DB::raw('COALESCE(users.source, guest_users.source) as customer_source'),
 
             //is user or guest user
