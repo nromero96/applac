@@ -201,6 +201,7 @@ class NewInquiry extends Component
                 'is_internal_inquiry' => true,
                 'recovered_account' => $this->recovered_account,
                 'cargo_description' => $this->cargo_description,
+                'type_inquiry' => 'internal',
                 'created_at' => now(),
             ]);
 
