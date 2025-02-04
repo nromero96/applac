@@ -77,6 +77,7 @@ class QuotationController extends Controller
 
         //Guarda a la tabla quotations
         $quotation = Quotation::create([
+            'type_inquiry' => 'External 2',
             'guest_user_id' => $guest_user->id,
             'origin_country_id' => $request->origin_country_id,
             'destination_country_id' => $request->destination_country_id,
