@@ -14,7 +14,7 @@ class AddTypeInquiryToQuotations extends Migration
     public function up()
     {
         Schema::table('quotations', function (Blueprint $table) {
-            $table->string('type_inquiry',15)->after('id')->default('External 1');
+            $table->string('type_inquiry',15)->after('id')->default('external 1');
         });
     }
 
