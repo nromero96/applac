@@ -204,6 +204,21 @@
                         <div class="row g-3 pt-3">
 
                             @if($quotation->type_inquiry == 'external 2')
+
+                            @php 
+                                $badgelow = 'badge-danger';
+                                $badgedmid = 'badge-warning';
+                                $badgedhigh = 'badge-success';
+
+                                if($quotation->customer_country_name == 'United States' || $quotation->customer_country_name == 'Canada'){
+                                    $etiqueta_ = $badgedmid;
+                                }else{
+                                    
+                                }
+
+
+                            @endphp
+
                             {{-- Data the inquiry external 2 --}}
                                 <div class="col-md-4 mt-0">
                                     <h6 class="text-primary mb-1">{{ __('Contact Info') }}</h6>
@@ -212,7 +227,7 @@
                                     <label class="fw-bold mb-0">{{__("Job Title")}}:</label> {{$quotation->customer_job_title}}<br>
                                     <label class="fw-bold mb-0">{{__("Email")}}:</label> {{ $quotation->customer_email }}<br>
                                     <label class="fw-bold mb-0">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}<br>
-                                    <label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }}<br>
+                                    <label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }} <br>
                                     <label class="fw-bold mb-0">{{__("Business type")}}:</label> {{ $quotation->customer_business_role }}<br>
                                     <label class="fw-bold mb-0">{{__("Annual Shipments")}}:</label> {{ $quotation->customer_ea_shipments }}<br>
                                 </div>
@@ -246,10 +261,6 @@
                                 </div>
                                 {{-- ..End Data the inquiry external 2 --}}
                             @else
-
-
-
-
 
                                 @if (!$quotation->is_internal_inquiry)
                                     <div class="col-md-12 mt-0">
@@ -558,7 +569,6 @@
                                     </div>
                                 @endif
 
-
                                 <div class="col-md-12 mt-2">
                                     @if (!$quotation->is_internal_inquiry)
                                         <h6 class="text-primary mb-1">{{ __('Additional Information') }}</h6>
@@ -659,7 +669,6 @@
                         </div>
                     </div>
                 </div>
-
 
                 <div class="row mt-2">
                     @if($adminorsales)

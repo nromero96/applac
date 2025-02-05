@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Quotation;
+use App\Models\User;
 use App\Models\GuestUser;
 use App\Models\QuotationDocument;
 use App\Mail\WebQuotationCreated;
@@ -110,12 +111,28 @@ class QuotationController extends Controller
             }
         }
 
+        // Calificar la cotización y asignar 
+        try {
+            $rating = rateQuotationWeb($quotation->id);
+            Log::info('Quote ' . $quotation->id . ' rated with ' . $rating . ' stars.');
+
+            // Recargar la cotización para reflejar los cambios en rating y assigned_user_id
+            $quotation->refresh();
+
+            //Buscar el usuario asignado solo obtener name y lastname
+            $assigned_user = optional(User::find($quotation->assigned_user_id))->only('name', 'lastname');
+            $assigned_user_full_name = $assigned_user ? $assigned_user['name'] . ' ' . $assigned_user['lastname'] : 'Not assigned';
+
+        } catch (\Exception $e) {
+            Log::error('Quote rating error ' . $quotation->id . ' - ' . $e->getMessage());
+        }
+
         //obtener los documentos de la cotización
         $quotation_documents = QuotationDocument::where('quotation_id', $quotation->id)->get();
 
         try {
             // Enviar correo
-            Mail::send(new WebQuotationCreated($quotation, $guest_user, $request->email, $quotation_documents));
+            Mail::send(new WebQuotationCreated($quotation, $guest_user, $request->email, $quotation_documents, $assigned_user_full_name));
         } catch (\Exception $e) {
             // Puedes loguear el error o manejarlo como desees
             Log::error("Error sending email Web Quotation Mail: " . $e->getMessage());

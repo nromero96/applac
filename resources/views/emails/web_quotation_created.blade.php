@@ -22,6 +22,10 @@
                 <td style="padding: 7px 0px;">{{ $reguser->company_name }}</td>
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
+                <td style="padding: 7px 0px;"><b>Job Title</b></td>
+                <td style="padding: 7px 0px;">{{ $reguser->job_title }}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Email</b></td>
                 <td style="padding: 7px 0px;">{{ $reguser->email }}</td>
             </tr>
@@ -55,7 +59,7 @@
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Declared Value</b></td>
-                <td style="padding: 7px 0px;">{{ $quotation->currency }} {{ $quotation->declared_value }}</td>
+                <td style="padding: 7px 0px;">{{ $quotation->declared_value }} {{ $quotation->currency }}</td>
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Shipment Readiness</b></td>
@@ -72,8 +76,14 @@
                     <b>Attachments</b><br>
                     @if(count($quotation_documents) > 0)
                         <ul style="font-size: 14px; line-height: 1.4; margin-top: 2px; padding-left: 0px; list-style: none;">
-                            @foreach($quotation_documents as $index => $document)
-                                <li style="margin-left: 0px;">• <a href="{{ asset('storage/uploads/quotation_documents').'/'. urlencode($document['document_path']) }}">Attachment {{ $index + 1 }}</a></li>
+                            @foreach($quotation_documents as $document)
+                                <li style="margin-left: 0px;">
+                                    • <a href="{{ asset('storage/uploads/quotation_documents').'/'. urlencode($document['document_path']) }}">
+                                        {{ strlen($document['document_path']) > 25 
+                                            ? substr($document['document_path'], 0, 12) . '...' . substr($document['document_path'], -9) 
+                                            : $document['document_path'] }}
+                                    </a>
+                                </li>
                             @endforeach
                         </ul>
                     @else
@@ -101,11 +111,11 @@
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Request Timestamp</b></td>
-                <td style="padding: 7px 0px;">{{ $quotation->created_at }}</td>
+                <td style="padding: 7px 0px;">{{ \Carbon\Carbon::parse($quotation->created_at)->format('F d, Y - H:i') }}</td>
             </tr>
             <tr>
                 <td style="padding: 7px 0px;"><b>Assigned To</b></td>
-                <td style="padding: 7px 0px;">{{ $quotation->assigned_user_id }}</td>
+                <td style="padding: 7px 0px;">{{ $assigned_user_full_name }}</td>
             </tr>
         </table>
     </div>
@@ -116,7 +126,7 @@
         <b style="color: #CC0000;">Next Steps:</b><br>
         1. Review the lead qualification details carefully.<br>
         2. Prioritize based on the request score and your current workload.<br>
-        3. Reach out to the lead within two business days to discuss their shipping needs and gather additional information for a quote.<br>
+        3. Reach out to the lead within the same day to discuss their shipping needs and gather additional information for a quote.<br>
         <hr style="opacity: 0.3;">
         <p style="text-align: center; font-weight: bold; color:#161515;">Remember: Providing a prompt and personalized response is crucial for converting leads into customers.</p>
     </div>

@@ -26,13 +26,14 @@ class WebQuotationCreated extends Mailable
      *
      * @return void
      */
-    public function __construct($quotation, $reguser, $email, $quotation_documents)
+    public function __construct($quotation, $reguser, $email, $quotation_documents, $assigned_user_full_name)
     {
         //
         $this->quotation = $quotation;
         $this->reguser = $reguser;
         $this->email = $email; // Pasamos el email del usuario
         $this->quotation_documents = $quotation_documents; // Pasamos el array de documentos de la cotización
+        $this->assigned_user_full_name = $assigned_user_full_name; // Pasamos el nombre completo del usuario asignado
     }
 
     /**
@@ -64,6 +65,7 @@ class WebQuotationCreated extends Mailable
             'quotation' => $this->quotation,
             'reguser' => $this->reguser,
             'quotation_documents' => $this->quotation_documents,
+            'assigned_user_full_name' => $this->assigned_user_full_name,
         ])->render();
 
         // Llama a tu función sendMailApi para enviar el correo
