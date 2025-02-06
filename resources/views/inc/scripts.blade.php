@@ -47,6 +47,12 @@
             <script src="{{asset('plugins/src/sweetalerts2/sweetalerts2.min.js')}}"></script>
 
             <script src="{{asset('assets/js/apps/quotations/commercial/show.js')}}?v={{ config('app.version') }}"></script>
+
+            <script>
+                //inicar tooltips
+                $(() => $('[data-toggle="tooltip"]').tooltip())
+            </script>
+
             @break
         @case('suppliers')
             <script src="{{ asset('plugins/src/jquery-ui/jquery-ui.min.js') }}"></script>

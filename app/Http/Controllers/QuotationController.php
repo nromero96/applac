@@ -380,7 +380,8 @@ class QuotationController extends Controller
             'dc.name as destination_country',
             'os.name as origin_state',
             'ds.name as destination_state',
-            DB::raw('COALESCE(loc_users.name, loc_guest_users.name) as customer_country_name')
+            DB::raw('COALESCE(loc_users.name, loc_guest_users.name) as customer_country_name'),
+            DB::raw('COALESCE(loc_users.id, loc_guest_users.id) as customer_country_id')
         )
 
         ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')

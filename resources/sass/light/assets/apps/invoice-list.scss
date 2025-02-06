@@ -480,31 +480,6 @@ a.dropdown-item:hover {
     color: #0077B5;
 }
 
-.badge-readiness{
-    border: 1px solid;
-    border-radius: 30px;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 2px 7px;
-    text-transform: uppercase;
-
-    &.br-high{
-        border-color: #4CBB17;
-        color: #4CBB17;
-    }
-
-    &.br-medium{
-        border-color: #EB6200;
-        color: #EB6200;
-    }
-
-    &.br-low{
-        border-color: #686868;
-        color: #686868;
-    }
-
-}
-
 .btn-exportdata{
   svg{
     height: 16px;

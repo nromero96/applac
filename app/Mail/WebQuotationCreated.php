@@ -56,16 +56,18 @@ class WebQuotationCreated extends Mailable
         $destination_country_name = $destination_country ? $destination_country->name : 'Unknown Country';
         $reguser_location_name = $reguser_location ? $reguser_location->name : 'Unknown Country';
 
-        $contviewblade = 'emails.web_quotation_created';
+
+        if($this->quotation->origin_country_id == '231' && $this->quotation->destination_country_id == '55' ){
+            $contviewblade = 'emails.web.quotation_created_usa_to_cuba';
+        } else if($this->quotation->origin_country_id != '231' && $this->quotation->destination_country_id == '55' ){
+            $contviewblade = 'emails.web.quotation_created_other_to_cuba';
+        } else {
+            $contviewblade = 'emails.web.quotation_created';
+        }
 
         $content = view($contviewblade, [
-            'origin_country_name' => $origin_country_name,
-            'destination_country_name' => $destination_country_name,
-            'reguser_location_name' => $reguser_location_name,
             'quotation' => $this->quotation,
             'reguser' => $this->reguser,
-            'quotation_documents' => $this->quotation_documents,
-            'assigned_user_full_name' => $this->assigned_user_full_name,
         ])->render();
 
         // Llama a tu función sendMailApi para enviar el correo
@@ -74,7 +76,30 @@ class WebQuotationCreated extends Mailable
             'Quote ID: #'. $this->quotation->id .' - Your Request with Latin American Cargo - ['. $origin_country_name .' - '. $destination_country_name .'].', 
             $content,
             [], 
-            [config('services.copymail.mail_1'), config('services.copymail.mail_2')]);
+            []
+        );
+
+        //Si el rating es mayor o igual a 4, enviar también un correo al administrador
+        if($this->quotation->rating >= 4){
+            $content_admin = view('emails.web.priority_lead_quotation', [
+                'origin_country_name' => $origin_country_name,
+                'destination_country_name' => $destination_country_name,
+                'reguser_location_name' => $reguser_location_name,
+                'quotation' => $this->quotation,
+                'reguser' => $this->reguser,
+                'quotation_documents' => $this->quotation_documents,
+                'assigned_user_full_name' => $this->assigned_user_full_name,
+            ])->render();
+    
+            sendMailApiLac(
+                config('services.copymail.mail_1'), 
+                'Quote ID: #'. $this->quotation->id .' - Priority Lead - ['. $origin_country_name .' - '. $destination_country_name .'].',
+                $content_admin,
+                [], 
+                []
+            );
+        }
+        
 
         // Retorna la vista utilizando la variable $content
         return $this->html($content);
