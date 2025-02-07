@@ -249,6 +249,9 @@ function submitSearch() {
     formData.set('listforpage', listforpage);
     formData.set('daterequest', daterequest);
 
+    //Limpiar los checkboxes anteriores de type_inquiry
+    formData.delete('type_inquiry[]');
+
     // Limpiar los checkboxes anteriores
     formData.delete('rating[]');
 

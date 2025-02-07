@@ -47,6 +47,7 @@ class QuotationController extends Controller
         ];
 
         $listforpage = request()->query('listforpage') ?? 50;
+        $type_inquiry = request()->query('type_inquiry');
         $result = request()->query('result');
         $status = request()->query('status');
         $source = request()->query('source');
@@ -110,7 +111,17 @@ class QuotationController extends Controller
         }
 
         // Aplicar filtros de búsqueda y fecha si hay términos de búsqueda y/o fecha solicitada
-        $quotations->where(function($query) use ($search, $result, $status, $source, $rating, $assignedto, $daterequest) {
+        $quotations->where(function($query) use ($search, $type_inquiry, $result, $status, $source, $rating, $assignedto, $daterequest) {
+
+            // Aplicar type_inquiry si está presente
+            if (!empty($type_inquiry)) {
+                //la data puede venir en un array
+                if(is_array($type_inquiry)){
+                    $query->whereIn('quotations.type_inquiry', $type_inquiry);
+                } else {
+                    $query->where('quotations.type_inquiry', $type_inquiry);
+                }
+            }
 
             // Aplicar result si está presente
             if (!empty($result)) {
@@ -250,6 +261,19 @@ class QuotationController extends Controller
             return array_search($status->quotation_status, $statusorderforlist);
         });
 
+        //Contar Type Inquiry
+        $typeinquiryorderforlist = ['internal', 'external 1', 'external 2', 'ext-auto'];
+        $listtypeinquiries = Quotation::select(
+            'quotations.type_inquiry as type_inquiry',
+            DB::raw('COUNT(quotations.id) as total')
+        )
+        ->whereIn('quotations.type_inquiry', $typeinquiryorderforlist) // Filtra por los type_inquiry en la lista
+        ->groupBy('quotations.type_inquiry') // Agrupa por el campo 'type_inquiry'
+        ->get()
+        ->sortBy(function ($typeinquiry) use ($typeinquiryorderforlist) {
+            return array_search($typeinquiry->type_inquiry, $typeinquiryorderforlist);
+        });
+
 
         //Contar Result
         $resultsorderforlist = ['Under Review', 'Won', 'Lost', 'N/A'];
@@ -322,7 +346,7 @@ class QuotationController extends Controller
 
 
         $data['listforpage'] = $listforpage;
-        return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users)->with('listsources', $listsources)->with('listratings', $listratings)->with('totalQuotation', $totalQuotation)->with('liststatus', $liststatus)->with('listresults', $listresults);
+        return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users)->with('listsources', $listsources)->with('listratings', $listratings)->with('totalQuotation', $totalQuotation)->with('liststatus', $liststatus)->with('listresults', $listresults)->with('listtypeinquiries', $listtypeinquiries);
     }
 
     public function onlineregister(Request $request){

@@ -62,6 +62,33 @@
 
 
                                     @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Sales'))
+                                        <!-- Dropdown Type -->
+                                        <div class="dropdown">
+                                            <button class="rounded-pill dropdown-toggle text-capitalize select-dropdown me-2" type="button" id="typeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {{ request('type_inquiry') ? implode(', ', request('type_inquiry')) : 'Type' }}
+                                            </button>
+                                            <ul class="dropdown-menu mt-3 pt-2 ps-2 pe-2 pb-0" aria-labelledby="typeDropdown">
+                                                @foreach ($listtypeinquiries as $inquiry)
+                                                    
+
+                                                    
+                                                        <li>
+                                                            <div class="form-check">
+                                                                <input class="form-check-input" type="checkbox" name="type_inquiry[]" value="{{ $inquiry->type_inquiry }}" id="type_inquiry{{ Str::slug($inquiry->type_inquiry, '_') }}" {{ in_array($inquiry->type_inquiry, request('type_inquiry', [])) ? 'checked' : '' }}>
+                                                                <label class="form-check-label text-capitalize w-100" for="type_inquiry{{ Str::slug($inquiry->type_inquiry, '_') }}">
+                                                                    {{-- Generar estrellas llenas y vacías --}}
+                                                                    {{$inquiry->type_inquiry}}
+
+                                                                    {{-- Mostrar total de cotizaciones --}}
+                                                                    <small class="ms-1 fw-light float-end">({{ $inquiry->total >= 1000 ? number_format($inquiry->total / 1000, 1) . 'K' : $inquiry->total }})</small>
+                                                                </label>
+                                                            </div>
+                                                        </li>
+                                                    
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    
                                         <!-- Dropdown Result -->
                                         <div class="dropdown">
                                             <button class="dropdown-toggle rounded-pill select-dropdown ms-1 me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
