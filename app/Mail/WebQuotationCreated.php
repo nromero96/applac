@@ -96,7 +96,7 @@ class WebQuotationCreated extends Mailable
                 'Quote ID: #'. $this->quotation->id .' - Priority Lead - ['. $origin_country_name .' - '. $destination_country_name .'].',
                 $content_admin,
                 [], 
-                []
+                [config('services.copymail.mail_2')]
             );
         }
         

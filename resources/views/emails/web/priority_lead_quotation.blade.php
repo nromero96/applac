@@ -5,6 +5,70 @@
 @section('header_image', 'https://app.latinamericancargo.com/assets/img/lac-ml-header.jpg') <!-- Asegúrate de que la imagen exista -->
 
 @section('content')
+
+   @php 
+
+   // Definir etiquetas
+    $labelhigh = '<span style="color:#4CBB17;float: right;">HIGH</span>';
+    $labelmid = '<span style="color:#EB6200;float: right;">MID</span>';
+    $labellow = '<span style="color:#686868;float: right;">LOW</span>';
+
+    $scopeCountries = scope_countries(); // Países en el scope
+    $specialCountries = special_countries(); // Países especiales
+
+    // Evaluar origen y destino
+    $isOriginInScope = in_array($quotation->origin_country_id, $scopeCountries);
+    $isDestinationInScope = in_array($quotation->destination_country_id, $scopeCountries);
+
+    $origindestination_label = $labellow;
+    if ($isOriginInScope && $isDestinationInScope) {
+        $origindestination_label = $labelhigh;
+    } elseif ($isOriginInScope || $isDestinationInScope) {
+        $origindestination_label = $labelmid;
+    }
+
+    // Evaluar ubicación
+    $isLocationInScope = in_array($reguser->location, $scopeCountries);
+    $scopeExcludeSpecialCountries = array_diff($scopeCountries, $specialCountries);
+    $isLocationInScopeExcludeSpecialCountries = in_array($reguser->location, $scopeExcludeSpecialCountries);
+
+    $location_label = $labellow;
+    if ($isLocationInScope) {
+        $location_label = $labelhigh;
+    } elseif ($isLocationInScopeExcludeSpecialCountries) {
+        $location_label = $labelmid;
+    }
+
+    // business type
+    $businessTypeMap = [
+        'Manufacturer' => $labelhigh,
+        'Import / Export Business' => $labelhigh,
+        'Retailer / Distributor' => $labelmid,
+        'Logistics Company / Freight Forwarder' => $labellow,
+        'Individual / Private Person' => $labellow,
+    ];
+    $business_type_label = $businessTypeMap[$reguser->business_role] ?? '';
+
+    // Annual Shipments
+    $shipmentMap = [
+        'Between 2-10' => $labelhigh,
+        'Between 11-50' => $labelhigh,
+        'Between 51-200' => $labelhigh,
+        'Between 201-500' => $labelmid,
+        'One-time shipment' => $labellow,
+        'More than 500' => $labellow,
+    ];
+    $ea_shipments_label = $shipmentMap[$reguser->ea_shipments] ?? '';
+
+    // Shipment Readiness
+    $readinessMap = [
+        'Ready to ship now' => $labelhigh,
+        'Ready within 1-3 months' => $labelmid,
+        'Not yet ready, just exploring options/budgeting' => $labellow,
+    ];
+    $shipment_ready_date_label = $readinessMap[$quotation->shipment_ready_date] ?? '';
+
+   @endphp
     
     <p style="font-size: 14px; line-height: 1.4;">A priority lead has requested a freight quote!</p>
 
@@ -35,15 +99,15 @@
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Country</b></td>
-                <td style="padding: 7px 0px;">{{ $reguser_location_name }}</td>
+                <td style="padding: 7px 0px;">{{ $reguser_location_name }} {!! $location_label !!}</td>
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Business Type</b></td>
-                <td style="padding: 7px 0px;">{{ $reguser->business_role }}</td>
+                <td style="padding: 7px 0px;">{{ $reguser->business_role }} {!! $business_type_label !!}</td>
             </tr>
             <tr>
                 <td style="padding: 7px 0px;"><b>Annual Shipments</b></td>
-                <td style="padding: 7px 0px;">{{ $reguser->ea_shipments }}</td>
+                <td style="padding: 7px 0px;">{{ $reguser->ea_shipments }} {!! $ea_shipments_label !!}</td>
             </tr>
         </table>
     </div>
@@ -55,7 +119,7 @@
 
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Origin/Destination</b></td>
-                <td style="padding: 7px 0px;">{{ $origin_country_name }} - {{ $destination_country_name }}</td>
+                <td style="padding: 7px 0px;">{{ $origin_country_name }} - {{ $destination_country_name }} {!! $origindestination_label !!}</td>
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Declared Value</b></td>
@@ -63,11 +127,11 @@
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Shipment Readiness</b></td>
-                <td style="padding: 7px 0px;">{{ $quotation->shipment_ready_date }}</td>
+                <td style="padding: 7px 0px;">{{ $quotation->shipment_ready_date }} {!! $shipment_ready_date_label !!}</td>
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td colspan="2" style="padding: 7px 0px;">
-                    <b>Cargo Description</b><br>
+                    <b>Shipment Details</b><br>
                     {!! nl2br(e($quotation->cargo_description)) !!}
                 </td>
             </tr>

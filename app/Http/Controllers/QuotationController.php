@@ -63,6 +63,7 @@ class QuotationController extends Controller
         // lista de cotizaciones para el usuario logueado si es Customer
         $quotations = Quotation::select(
             'quotations.id as quotation_id',
+            'quotations.type_inquiry as type_inquiry',
             'quotations.shipping_date as quotation_shipping_date',
             'quotations.is_internal_inquiry',
             DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
@@ -78,6 +79,7 @@ class QuotationController extends Controller
             'lc.name as location_name',
             'quotations.assigned_user_id as quotation_assigned_user_id',
             'users_assigned.name as assigned_user_name',
+            'quotations.shipment_ready_date as shipment_ready_date',
             'quotations.created_at as quotation_created_at',
             'quotations.updated_at as quotation_updated_at',
             'quotation_notes.created_at as quotation_note_created_at',

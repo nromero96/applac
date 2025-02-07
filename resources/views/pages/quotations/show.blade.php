@@ -7,6 +7,7 @@
     $adminorsales = Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Sales');
 
 
+    // Definir etiquetas
     $labelhigh = '<span class="badge-readiness br-high">High</span>';
     $labelmid = '<span class="badge-readiness br-medium">Mid</span>';
     $labellow = '<span class="badge-readiness br-low">Low</span>';
@@ -14,62 +15,57 @@
     $scopeCountries = scope_countries(); // Países en el scope
     $specialCountries = special_countries(); // Países especiales
 
+    // Evaluar origen y destino
     $isOriginInScope = in_array($quotation->origin_country_id, $scopeCountries);
     $isDestinationInScope = in_array($quotation->destination_country_id, $scopeCountries);
 
-    //Origin and Destination
+    $origindestination_label = $labellow;
     if ($isOriginInScope && $isDestinationInScope) {
-        $origindestination_label = $labelhigh;  // Tanto origen como destino están en el scope y el correo es de una empresa
+        $origindestination_label = $labelhigh;
     } elseif ($isOriginInScope || $isDestinationInScope) {
-        $origindestination_label = $labelmid; // Origen o destino están en el scope y el correo es de una empresa
-    } else {
-        $origindestination_label = $labellow;
+        $origindestination_label = $labelmid;
     }
 
-    // Location
+    // Evaluar ubicación
     $isLocationInScope = in_array($quotation->customer_country_id, $scopeCountries);
-    $scopeExcludeSpecialCountrie = array_diff($scopeCountries, $specialCountries);
-    $isLocationInScopeExcludeSpecialCountries = in_array($quotation->customer_country_id, $scopeExcludeSpecialCountrie);
-    if($isLocationInScope){
+    $scopeExcludeSpecialCountries = array_diff($scopeCountries, $specialCountries);
+    $isLocationInScopeExcludeSpecialCountries = in_array($quotation->customer_country_id, $scopeExcludeSpecialCountries);
+
+    $location_label = $labellow;
+    if ($isLocationInScope) {
         $location_label = $labelhigh;
-    }elseif($isLocationInScopeExcludeSpecialCountries){
+    } elseif ($isLocationInScopeExcludeSpecialCountries) {
         $location_label = $labelmid;
-    }else{
-        $location_label = $labellow;
     }
 
-    //Business type
-    if($quotation->customer_business_role == 'Manufacturer' || $quotation->customer_business_role == 'Import / Export Business'){
-        $business_type_label = $labelhigh;
-    }elseif($quotation->customer_business_role == 'Retailer / Distributor'){
-        $business_type_label = $labelmid;
-    }elseif($quotation->customer_business_role == 'Logistics Company / Freight Forwarder' || $quotation->customer_business_role == 'Individual / Private Person'){
-        $business_type_label = $labellow;
-    }else{
-        $business_type_label = '';
-    }
+    // business type
+    $businessTypeMap = [
+        'Manufacturer' => $labelhigh,
+        'Import / Export Business' => $labelhigh,
+        'Retailer / Distributor' => $labelmid,
+        'Logistics Company / Freight Forwarder' => $labellow,
+        'Individual / Private Person' => $labellow,
+    ];
+    $business_type_label = $businessTypeMap[$quotation->customer_business_role] ?? '';
 
-    //Annual Shipments
-    if($quotation->customer_ea_shipments == 'Between 2-10' || $quotation->customer_ea_shipments == 'Between 11-50' || $quotation->customer_ea_shipments == 'Between 51-200'){
-        $ea_shipments_label = $labelhigh;
-    }elseif($quotation->customer_ea_shipments == 'Between 201-500'){
-        $ea_shipments_label = $labelmid;
-    }elseif($quotation->customer_ea_shipments == 'One-time shipment' || $quotation->customer_ea_shipments == 'More than 500'){
-        $ea_shipments_label = $labellow;
-    }else{
-        $ea_shipments_label = '';
-    }
+    // Annual Shipments
+    $shipmentMap = [
+        'Between 2-10' => $labelhigh,
+        'Between 11-50' => $labelhigh,
+        'Between 51-200' => $labelhigh,
+        'Between 201-500' => $labelmid,
+        'One-time shipment' => $labellow,
+        'More than 500' => $labellow,
+    ];
+    $ea_shipments_label = $shipmentMap[$quotation->customer_ea_shipments] ?? '';
 
-    //Shipment readiness
-    if($quotation->shipment_ready_date == 'Ready to ship now'){
-        $shipment_ready_date_label = $labelhigh;
-    }elseif($quotation->shipment_ready_date == 'Ready within 1-3 months'){
-        $shipment_ready_date_label = $labelmid;
-    }elseif($quotation->shipment_ready_date == 'Not yet ready, just exploring options/budgeting'){
-        $shipment_ready_date_label = $labellow;
-    }else{
-        $shipment_ready_date_label = '';
-    }
+    // Shipment Readiness
+    $readinessMap = [
+        'Ready to ship now' => $labelhigh,
+        'Ready within 1-3 months' => $labelmid,
+        'Not yet ready, just exploring options/budgeting' => $labellow,
+    ];
+    $shipment_ready_date_label = $readinessMap[$quotation->shipment_ready_date] ?? '';
 
 
 @endphp
@@ -278,34 +274,35 @@
                                     
 
                                     <h6 class="text-primary mb-1">{{ __('Contact Info') }}</h6>
-                                    <label class="fw-bold mb-0">{{__("Contact name")}}:</label> {{ $quotation->customer_name }} {{ $quotation->customer_lastname }}<br>
-                                    <label class="fw-bold mb-0">{{__("Company")}}:</label> {{ $quotation->customer_company_name }}<br>
-                                    <label class="fw-bold mb-0">{{__("Job Title")}}:</label> {{$quotation->customer_job_title}}<br>
-                                    <label class="fw-bold mb-0">{{__("Email")}}:</label> {{ $quotation->customer_email }}<br>
-                                    <label class="fw-bold mb-0">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}<br>
-                                    <label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }} {!! $location_label !!}<br>
-                                    <label class="fw-bold mb-0">{{__("Business type")}}:</label> {{ $quotation->customer_business_role }} {!! $business_type_label !!}<br>
-                                    <label class="fw-bold mb-0">{{__("Annual Shipments")}}:</label> {{ $quotation->customer_ea_shipments }} {!! $ea_shipments_label !!}<br>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Contact name")}}:</label> {{ $quotation->customer_name }} {{ $quotation->customer_lastname }}</p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Company")}}:</label> {{ $quotation->customer_company_name }}</p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Job Title")}}:</label> {{$quotation->customer_job_title}}</p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Email")}}:</label> {{ $quotation->customer_email }}</p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}</p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }} {!! $location_label !!}</p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Business type")}}:</label> {{ $quotation->customer_business_role }} {!! $business_type_label !!}</p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Annual Shipments")}}:</label> {{ $quotation->customer_ea_shipments }} {!! $ea_shipments_label !!}</p>
                                 </div>
                                 <div class="col-md-5 mt-0">
                                     <h6 class="text-primary mb-1">{{ __('Shipment Info') }}</h6>
-                                    <label class="fw-bold mb-0">{{__("Origin")}}:</label> {{ $quotation->origin_country }} 
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Origin")}}:</label> {{ $quotation->origin_country }} 
                                         <svg width="15" height="15" fill="none" stroke="#595959" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path d="m9 18 6-6-6-6"></path>
                                         </svg> 
                                         <label class="fw-bold mb-0">{{__("Destination")}}:</label> {{ $quotation->destination_country }} 
-                                        {!! $origindestination_label !!}<br>
-                                    <label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ $quotation->declared_value }} {{ $quotation->currency }} 
-                                    <span data-toggle="tooltip" data-placement="top" title="...">
-                                        <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14.88" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-                                            <path d="M8 11.1667V8.5" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-                                            <path d="M8 5.83334H8.00667" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-                                        </svg>
-                                    </span>
-                                    <br>
-                                    <label class="fw-bold mb-0">{{__("Shipment readiness")}}:</label> {{ $quotation->shipment_ready_date }} {!! $shipment_ready_date_label !!}<br>
-                                    <label class="fw-bold mb-0">{{__("Cargo Description")}}:</label><br> {!! nl2br($quotation->cargo_description) ? : '-' !!}<br>
+                                        {!! $origindestination_label !!}
+                                    </p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ $quotation->declared_value }} {{ $quotation->currency }} 
+                                        <span data-toggle="tooltip" data-placement="top" title="...">
+                                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14.88" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                                                <path d="M8 11.1667V8.5" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                                                <path d="M8 5.83334H8.00667" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                                            </svg>
+                                        </span>
+                                    </p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Shipment readiness")}}:</label> {{ $quotation->shipment_ready_date }} {!! $shipment_ready_date_label !!}</p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Shipment Details")}}:</label><br> {!! nl2br($quotation->cargo_description) ? : '-' !!}</p>
                                 </div>
                                 <div class="col-md-3 mt-0">
                                     <div class="card py-2 px-2">
