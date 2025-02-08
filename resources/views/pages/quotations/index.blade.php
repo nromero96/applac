@@ -346,9 +346,6 @@
                                         <th class="ps-2 pe-2 text-center">Flag</th>
                                         @endif
                                         <th class="ps-2 pe-2 sticky-column">{{ __('ID') }}</th>
-                                        @if($adminorsales)
-                                        <th class="ps-2 pe-2">{{ __('Type') }}</th>
-                                        @endif
                                         <th>{{ __('Requested') }}</th>
                                         <th class="px-2">
                                             {{ __('Status') }}
@@ -389,6 +386,7 @@
                                         <th>{{ __('Transport') }}</th>
                                         @if($adminorsales)
                                         <th>{{ __('Assigned') }}</th>
+                                        <th class="ps-2 pe-2">{{ __('Type') }}</th>
                                         <th class="px-2">{{ __('Source') }}</th>
                                         @endif
                                         <th class="px-2">{{ __('Last Update') }}</th>
@@ -443,14 +441,6 @@
                                                         #{{ $quotation->quotation_id }}
                                                     @endif
                                                 </td>
-
-                                                @if($adminorsales)
-                                                <td class="ps-2 pe-2">
-                                                    <span class="badge badge-type-inquiry text-capitalize">
-                                                        {{ $quotation->type_inquiry }}
-                                                    </span>
-                                                </td>
-                                                @endif
 
                                                 <td class="py-1 align-middle">
                                                     <div class="inv-date d-flex">
@@ -546,7 +536,7 @@
 
                                                                 $readiness_levels = [
                                                                     'Ready to ship now' => 'br-high',
-                                                                    'Ready within 1-3 months' => 'br-medium',
+                                                                    'Ready within 1-3 months' => 'br-mid',
                                                                     'Not yet ready, just exploring options/budgeting' => 'br-low',
                                                                 ];
 
@@ -568,7 +558,7 @@
                                                                         $tagreadiness = '<span class="badge-readiness br-high">HIGH</span>';
                                                                     } elseif ($fecha_envio->between($catorcediasdespues, $treintadiasdespues)){
                                                                         //Desde el día 15 al 30 desde la fecha solicitud
-                                                                        $tagreadiness = '<span class="badge-readiness br-medium">MID</span>';
+                                                                        $tagreadiness = '<span class="badge-readiness br-mid">MID</span>';
                                                                     } elseif ($fecha_envio->gt($treintadiasdespues)){
                                                                         //Más de 30 días desde la fecha solicitud
                                                                         $tagreadiness = '<span class="badge-readiness br-low">LOW</span>';
@@ -641,6 +631,46 @@
 
                                                     @endif
 
+                                                </td>
+
+                                                <td class="ps-2 pe-2">
+                                                     
+                                                    @if($quotation->type_inquiry == 'internal')
+                                                        <span class="text-capitalize badge-type-inquiry internal"> 
+                                                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                                <g clip-path="url(#clip0_8656_5074)" fill="none" stroke-width="1.5px">
+                                                                <path d="M8.00065 14.6667C11.6825 14.6667 14.6673 11.6819 14.6673 8.00004C14.6673 4.31814 11.6825 1.33337 8.00065 1.33337C4.31875 1.33337 1.33398 4.31814 1.33398 8.00004C1.33398 11.6819 4.31875 14.6667 8.00065 14.6667Z" stroke="#0A6AB7" stroke-width="1.5px" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                                                                <path d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" stroke="#0A6AB7" stroke-width="1.5px" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                                                                </g>
+                                                                <defs>
+                                                                <clipPath id="clip0_8656_5074">
+                                                                <rect width="16" height="16" fill="white"></rect>
+                                                                </clipPath>
+                                                                </defs>
+                                                            </svg>
+                                                            {{ $quotation->type_inquiry }} </span>
+                                                    @elseif($quotation->type_inquiry == 'external 1')
+                                                        <span class="text-capitalize badge-type-inquiry external-1"> 
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                                <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#B28600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#B28600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                            {{ $quotation->type_inquiry }} </span>
+                                                    @elseif($quotation->type_inquiry == 'external 2')
+                                                        <span class="text-capitalize badge-type-inquiry external-2"> 
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                                <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                            {{ $quotation->type_inquiry }} </span>
+                                                    @elseif($quotation->type_inquiry == 'ext-auto')
+                                                        <span class="text-capitalize badge-type-inquiry ext-auto"> 
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                                <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                            {{ $quotation->type_inquiry }} </span>
+                                                    @endif
                                                 </td>
 
                                                 <td class="py-1 align-middle px-2">

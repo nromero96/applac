@@ -481,12 +481,34 @@ a.dropdown-item:hover {
 }
 
 .badge-type-inquiry{
-  background: #b8000036;
-  border-radius: 3px 10px 10px 3px;
-  color: #b80000;
-  font-size: 11px;
-  padding: 2px 8px 1px;
+  background: #F8F8F8;
+  color: #515365;
+  border-radius: 4px;
+  font-size: 12px;
   font-weight: 500;
+  padding: 4px 8px 5px;
+
+  &.internal{
+    background: #D3EAFD;
+    color: #0A6AB7
+    ;
+  }
+
+  &.external-1{
+    background: #FCF4D6;
+    color: #B28600;
+  }
+
+  &.external-2{
+    background: #FFF2E8;
+    color: #EB6200;
+  }
+
+  &.ext-auto{
+    background: #dc354536;
+    color: #dc3545;
+  }
+
 }
 
 .btn-exportdata{

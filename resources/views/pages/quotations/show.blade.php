@@ -9,7 +9,7 @@
 
     // Definir etiquetas
     $labelhigh = '<span class="badge-readiness br-high">High</span>';
-    $labelmid = '<span class="badge-readiness br-medium">Mid</span>';
+    $labelmid = '<span class="badge-readiness br-mid">Mid</span>';
     $labellow = '<span class="badge-readiness br-low">Low</span>';
 
     $scopeCountries = scope_countries(); // Países en el scope
