@@ -69,7 +69,11 @@ class QuotationController extends Controller
             'quotations.is_internal_inquiry',
             DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
             DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),
+            DB::raw('COALESCE(users.customer_type, guest_users.customer_type) as customer_type'),
             DB::raw('COALESCE(users.email, guest_users.email) as user_email'),
+            DB::raw('COALESCE(users.phone_code, guest_users.phone_code) as user_phone_code'),
+            DB::raw('COALESCE(users.phone, guest_users.phone) as user_phone'),
+            DB::raw('COALESCE(users.company_website, guest_users.company_website) as user_company_website'),
             'quotations.status as quotation_status',
             'quotations.mode_of_transport as quotation_mode_of_transport',
             'quotations.service_type as quotation_service_type',
@@ -207,8 +211,12 @@ class QuotationController extends Controller
         // Finalmente, ordenar por "created_at" para los restantes
         $quotations = $quotations->orderBy('quotations.created_at', 'desc');
 
-        // Paginación
-        $quotations = $quotations->paginate($listforpage);
+        // Verificar si la solicitud es para exportar
+        if ($export) {
+            $quotations = $quotations->get(); // Obtener todos los registros sin paginación
+        } else {
+            $quotations = $quotations->paginate($listforpage);
+        }
 
         //get users selected in dropdown
         $users_selected_dropdown_quotes = Setting::where('key', 'users_selected_dropdown_quotes')->first();
@@ -292,7 +300,7 @@ class QuotationController extends Controller
         // Si se requiere exportación a CSV
         if ($export === 'csv') {
             // Asegúrate de que quotations es una colección
-            if (method_exists($quotations, 'get')) {
+            if ($quotations instanceof \Illuminate\Database\Eloquent\Builder) {
                 $quotations = $quotations->get(); // Si es una consulta, conviértelo a colección
             }
         
@@ -305,16 +313,20 @@ class QuotationController extends Controller
         
             $columns = [
                 'ID',
+                'Inquiry Type',
                 'Request Date',
                 'Status',
                 'Rating',
+                'Customer Type',
+                'Company Name',
                 'User Email',
+                'Phone',
+                'Website',
                 'Location',
                 'Route',
                 'Transport',
                 'Assigned',
                 'Source',
-                'Last Updated',
             ];
         
             $callback = function () use ($quotations, $columns) {
@@ -324,16 +336,20 @@ class QuotationController extends Controller
                 foreach ($quotations as $quotation) {
                     fputcsv($file, [
                         $quotation->quotation_id ?? '', // Maneja valores nulos
+                        $quotation->type_inquiry ?? '',
                         $quotation->quotation_created_at ?? '',
                         $quotation->quotation_status ?? '',
                         $quotation->quotation_rating ?? '',
+                        $quotation->customer_type ?? '',
+                        $quotation->user_company_name ?? '',
                         $quotation->user_email ?? '',
+                        '+' . $quotation->user_phone_code . ' ' . $quotation->user_phone ?? '',
+                        $quotation->user_company_website ?? '',
                         $quotation->location_name ?? '',
                         $quotation->origin_country . ' - ' . $quotation->destination_country ?? '',
                         $quotation->quotation_mode_of_transport ?? '',
                         $quotation->assigned_user_name ?? '',
                         $quotation->user_source ?? '',
-                        $quotation->quotation_updated_at ?? '',
                     ]);
                 }
         
