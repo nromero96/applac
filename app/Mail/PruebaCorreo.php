@@ -35,7 +35,7 @@ class PruebaCorreo extends Mailable
     $content = view('emails.prueba')->render();
 
     // Llama a tu función sendMailApi desde Helpers para enviar el correo
-    $response = sendMailApiLac($toEmail, $subject, $content, [config('services.copymail.mail_1')]);
+    $response = sendMailApiLac($toEmail, $subject, $content, null, [config('services.copymail.mail_1')]);
 
     // Retorna la vista utilizando la variable $content
     return $this->html($content);

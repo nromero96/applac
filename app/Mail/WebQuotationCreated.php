@@ -76,6 +76,7 @@ class WebQuotationCreated extends Mailable
             $this->email, 
             'Quote ID: #'. $this->quotation->id .' - Your Request with Latin American Cargo - ['. $origin_country_name .' - '. $destination_country_name .'].', 
             $content,
+            null,
             [], 
             []
         );
@@ -93,10 +94,11 @@ class WebQuotationCreated extends Mailable
             ])->render();
     
             sendMailApiLac(
-                config('services.copymail.mail_1'), 
+                config('services.copymail.mail_marketing'), 
                 'Quote ID: #'. $this->quotation->id .' - Priority Lead - ['. $origin_country_name .' - '. $destination_country_name .'].',
                 $content_admin,
-                [], 
+                ['email' => config('services.sendgrid.sender_email_priority'), 'name' => config('services.sendgrid.sender_name_priority')],
+                [],
                 [$this->assigned_user_mail]
             );
         }

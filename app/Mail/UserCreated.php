@@ -46,6 +46,7 @@ class UserCreated extends Mailable
             $this->email, 
             'Welcome to Latin American Cargo – Your New Account', 
             $content,
+            null,
             [],
             []
         );

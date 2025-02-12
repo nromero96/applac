@@ -9,7 +9,7 @@ use App\Models\Setting;
 
 use Illuminate\Support\Facades\Log;
 
-function sendMailApiLac($toEmail, $subject, $content, $attachments, $ccEmails = [], $bccEmails = [])
+function sendMailApiLac($toEmail, $subject, $content, $from = null, $attachments, $ccEmails = [], $bccEmails = [])
 {
     $client = new Client();
 
@@ -33,11 +33,15 @@ function sendMailApiLac($toEmail, $subject, $content, $attachments, $ccEmails = 
         ];
     }
 
+    // Si se proporciona un `from`, usarlo; de lo contrario, tomar el del .env el predeterminado
+    $fromEmail = $from['email'] ?? config('services.sendgrid.sender_email');
+    $fromName = $from['name'] ?? config('services.sendgrid.sender_name');
+
     $data = [
         'personalizations' => $personalizations,
         'from' => [
-            'email' => config('services.sendgrid.sender_email'),
-            'name' => config('services.sendgrid.sender_name')
+            'email' => $fromEmail,
+            'name' => $fromName,
         ],
         'subject' => $subject,
         'content' => [

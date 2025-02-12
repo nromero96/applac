@@ -168,6 +168,7 @@ class QuotationCreated extends Mailable{
             $this->email, 
             'Quote ID: #'. $this->quotation->id .' - Your Request with Latin American Cargo - '. $this->quotation->mode_of_transport .' - ['. $origin_country_name .' - '. $destination_country_name .'].', 
             $content,
+            null,
             ($pdf !== null) ? [$pdf] : [],
             [], 
             [config('services.copymail.mail_1'), config('services.copymail.mail_2')]);

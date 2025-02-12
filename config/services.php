@@ -19,6 +19,8 @@ return [
         'api_key' => env('SENDGRID_API_KEY'),
         'sender_email' => env('SENDGRID_SENDER_EMAIL'),
         'sender_name' => env('SENDGRID_SENDER_NAME'),
+        'sender_email_priority' => env('SENDGRID_SENDER_EMAIL_PRIORITY'),
+        'sender_name_priority' => env('SENDGRID_SENDER_NAME_PRIORITY'),
     ],
 
     //copy mail
@@ -26,6 +28,7 @@ return [
         'mail_1' => env('MAILCOPY_MAIL_1'),
         'mail_2' => env('MAILCOPY_MAIL_2'),
         'mail_3' => env('MAILCOPY_MAIL_3'),
+        'mail_marketing' => env('MAILCOPY_MAIL_MARKETING'),
     ],
 
     'mailgun' => [
