@@ -26,7 +26,7 @@ class WebQuotationCreated extends Mailable
      *
      * @return void
      */
-    public function __construct($quotation, $reguser, $email, $quotation_documents, $assigned_user_full_name)
+    public function __construct($quotation, $reguser, $email, $quotation_documents, $assigned_user_full_name, $assigned_user_mail)
     {
         //
         $this->quotation = $quotation;
@@ -34,6 +34,7 @@ class WebQuotationCreated extends Mailable
         $this->email = $email; // Pasamos el email del usuario
         $this->quotation_documents = $quotation_documents; // Pasamos el array de documentos de la cotización
         $this->assigned_user_full_name = $assigned_user_full_name; // Pasamos el nombre completo del usuario asignado
+        $this->assigned_user_mail = $assigned_user_mail; // Pasamos el email del usuario asignado
     }
 
     /**
@@ -96,7 +97,7 @@ class WebQuotationCreated extends Mailable
                 'Quote ID: #'. $this->quotation->id .' - Priority Lead - ['. $origin_country_name .' - '. $destination_country_name .'].',
                 $content_admin,
                 [], 
-                [config('services.copymail.mail_2')]
+                [$this->assigned_user_mail]
             );
         }
         
