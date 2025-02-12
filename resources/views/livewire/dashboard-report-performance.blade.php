@@ -186,8 +186,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="">
+                    <tr class="row-shadow">
+                        <td>
                             @if (sizeof($type_inquiry) == sizeof($types_list))
                                 <button type="button" class="btn-open" data-group="global"><b>Global</b> {!! $icon_arrow_down !!}</button>
                             @else
@@ -227,7 +227,7 @@
 
 
                     @foreach ($info_sales as $index => $info)
-                        <tr class="{{ $index % 2 == 0 ? 'row-shadow' : '' }}">
+                        <tr class="row-shadow">
                             <td title="{{ $info['sale']->id }}">
                                 @if (sizeof($type_inquiry) == sizeof($types_list))
                                     <button type="button" class="btn-open" data-group="sale-{{ $index + 1 }}"><span>{{ $info['sale']->name }} {{ $info['sale']->lastname }}</span> {!! $icon_arrow_down !!}</button>
