@@ -122,6 +122,7 @@ class QuotationController extends Controller
             //Buscar el usuario asignado solo obtener name y lastname
             $assigned_user = optional(User::find($quotation->assigned_user_id))->only('name', 'lastname');
             $assigned_user_full_name = $assigned_user ? $assigned_user['name'] . ' ' . $assigned_user['lastname'] : 'Not assigned';
+            $assigned_user_mail = optional(User::find($quotation->assigned_user_id))->email;
 
         } catch (\Exception $e) {
             Log::error('Quote rating error ' . $quotation->id . ' - ' . $e->getMessage());
@@ -132,7 +133,7 @@ class QuotationController extends Controller
 
         try {
             // Enviar correo
-            Mail::send(new WebQuotationCreated($quotation, $guest_user, $request->email, $quotation_documents, $assigned_user_full_name));
+            Mail::send(new WebQuotationCreated($quotation, $guest_user, $request->email, $quotation_documents, $assigned_user_full_name, $assigned_user_mail));
         } catch (\Exception $e) {
             // Puedes loguear el error o manejarlo como desees
             Log::error("Error sending email Web Quotation Mail: " . $e->getMessage());
