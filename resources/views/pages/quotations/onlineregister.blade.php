@@ -14,12 +14,13 @@
     <meta name="title" content="Get a Freight Shipping Quote | LAC - Latin American Cargo">
     <meta name="description" content="Get competitive freight shipping quotes for LTL, FTL, ocean, air, breakbulk, and RORO. Ship your cargo worldwide with ease. Request your free quote today!">
     <meta name="keywords" content="freight shipping, freight quote, shipping quote, cargo shipping, international shipping, LTL, FTL, ocean shipping, air shipping, breakbulk shipping, RORO shipping">
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="noindex, follow">
     <meta name="language" content="English">
     <meta name="author" content="LAC - Latin American Cargo">
     <meta name="publisher" content="LAC - Latin American Cargo">
     <meta name="url" content="https://www.latinamericancargo.com/">
-    <meta name="canonical" content="https://www.latinamericancargo.com/">
+    <!-- In quotations-onlineregister page -->
+    <link rel="canonical" href="https://www.latinamericancargo.com/request-shipping-quote/" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:title" content="Get a Freight Shipping Quote | LAC - Latin American Cargo">

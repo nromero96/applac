@@ -25,6 +25,8 @@
     <meta name="msapplication-navbutton-color" content="#B80000">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+    <meta name="robots" content="noindex, follow">
+
     <!-- Styles -->
     @include('inc.styles')
 
