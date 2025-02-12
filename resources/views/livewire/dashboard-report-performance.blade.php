@@ -20,9 +20,9 @@
                 @endif
             </div>
         </div>
-        <div class="d-flex align-items-center gap-5">
-            <div class="d-flex gap-4">
-                @if ((sizeof($rating) != 6) or (sizeof($source) != sizeof($sources_list)))
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex gap-3">
+                @if ((sizeof($rating) != 6) or (sizeof($source) != sizeof($sources_list)) or (sizeof($type_inquiry) != sizeof($types_list)))
                     <button type="button" wire:click="restore_defaults" class="btn_restore_defaults">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M15.334 2.66675V6.66675H11.334" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
@@ -63,23 +63,43 @@
                         </div>
                     </div>
                 </div>
-                {{-- source --}}
+                @if (false)
+                    {{-- source --}}
+                    <div class="dash_field_select">
+                        <div class="form-select pe-5">{{ $source_field_label }}</div>
+                        <div class="dash_field_select_content" wire:ignore.self>
+                            @foreach ($sources_list as $key => $value)
+                                <label class="form-check d-flex align-items-center gap-2" style="margin-bottom: .5rem">
+                                    <input type="checkbox" class="form-check-input" wire:model.defer="source" value="{{ $key }}">
+                                    <div class="form-check-label d-flex align-items-center gap-1">
+                                        <span style="color: {{ $value['color'] }}; border: 2px solid {{ $value['color'] }};" class="dash_tag_source">
+                                            <b>{{ $value['key'] }}</b>
+                                        </span>
+                                        {{ $value['label'] }}
+                                    </div>
+                                </label>
+                            @endforeach
+                            <div class="dash_field_select_actions">
+                                <button type="button" class="__clear" wire:click="clear_source()">Clear</button>
+                                <button type="button" wire:click="render()" class="__apply">Apply</button>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                {{-- type inquiry --}}
                 <div class="dash_field_select">
-                    <div class="form-select pe-5">{{ $source_field_label }}</div>
+                    <div class="form-select pe-5">{{ $type_field_label }}</div>
                     <div class="dash_field_select_content" wire:ignore.self>
-                        @foreach ($sources_list as $key => $value)
+                        @foreach ($types_list as $key => $value)
                             <label class="form-check d-flex align-items-center gap-2" style="margin-bottom: .5rem">
-                                <input type="checkbox" class="form-check-input" wire:model.defer="source" value="{{ $key }}">
+                                <input type="checkbox" class="form-check-input" wire:model.defer="type_inquiry" value="{{ $key }}">
                                 <div class="form-check-label d-flex align-items-center gap-1">
-                                    <span style="color: {{ $value['color'] }}; border: 2px solid {{ $value['color'] }};" class="dash_tag_source">
-                                        <b>{{ $value['key'] }}</b>
-                                    </span>
-                                    {{ $value['label'] }}
+                                    {{ $value }}
                                 </div>
                             </label>
                         @endforeach
                         <div class="dash_field_select_actions">
-                            <button type="button" class="__clear" wire:click="clear_source()">Clear</button>
+                            <button type="button" class="__clear" wire:click="clear_type_inquiry()">Clear</button>
                             <button type="button" wire:click="render()" class="__apply">Apply</button>
                         </div>
                     </div>
@@ -141,8 +161,8 @@
                         </th>
                         <th class="ps-2 pe-2 text-center">
                             <div class="d-flex align-items-center gap-1 text-start">
-                                Quotes sent
-                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Number of quotes sent (includes automated quotes)">
+                                Quotes Sent
+                                <div data-toggle="tooltip" wire:ignore data-placement="top" title="Number of quotes sent (excludes auto-quotes)">
                                     {!! $icon_info !!}
                                 </div>
                             </div>
@@ -167,7 +187,13 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class=""><b>Global</b></td>
+                        <td class="">
+                            @if (sizeof($type_inquiry) == sizeof($types_list))
+                                <button type="button" class="btn-open" data-group="global"><b>Global</b> {!! $icon_arrow_down !!}</button>
+                            @else
+                                <b>Global</b>
+                            @endif
+                        </td>
                         <td class="ps-2 pe-2"><b>{{ $info_global['quotations'] }}</b></td>
                         @if (false)
                             <td class="ps-2 pe-2"><b>{{ $info_global['pre_qualified'] }}</b></td>
@@ -179,9 +205,36 @@
                         <td class="ps-2 pe-2"><b>{{ $info_global['avg_quote_time'] }}</b></td>
                         <td class="ps-2 pe-2"><b>{{ $info_global['closing_rate'] }}%</b></td>
                     </tr>
-                    @foreach ($info_sales as $info)
-                        <tr>
-                            <td title="{{ $info['sale']->id }}">{{ $info['sale']->name }} {{ $info['sale']->lastname }}</td>
+                    @if (sizeof($type_inquiry) == sizeof($types_list))
+                        @php $count_global = 0; @endphp
+                        @foreach ($info_global['types'] as $key => $item)
+                            <tr
+                                class="row-detail {{ $count_global + 1 == sizeof($info_global['types']) ? '__last' : '' }}"
+                                data-group="global"
+                            >
+                                <td>{{ ucfirst($key) }}</td>
+                                <td class="ps-2 pe-2">{{ $item['quotations'] }}</td>
+                                <td class="ps-2 pe-2">{{ $item['quotes_attended'] }}</td>
+                                <td class="ps-2 pe-2">{{ $item['attending_rate'] }}%</td>
+                                <td class="ps-2 pe-2">{{ $item['avg_attend_time'] }}</td>
+                                <td class="ps-2 pe-2">{{ $item['quotes_sent'] }}</td>
+                                <td class="ps-2 pe-2">{{ $item['avg_quote_time'] }}</td>
+                                <td class="ps-2 pe-2">{{ $item['closing_rate'] }}%</td>
+                            </tr>
+                            @php $count_global++ @endphp
+                        @endforeach
+                    @endif
+
+
+                    @foreach ($info_sales as $index => $info)
+                        <tr class="{{ $index % 2 == 0 ? 'row-shadow' : '' }}">
+                            <td title="{{ $info['sale']->id }}">
+                                @if (sizeof($type_inquiry) == sizeof($types_list))
+                                    <button type="button" class="btn-open" data-group="sale-{{ $index + 1 }}"><span>{{ $info['sale']->name }} {{ $info['sale']->lastname }}</span> {!! $icon_arrow_down !!}</button>
+                                @else
+                                    {{ $info['sale']->name }} {{ $info['sale']->lastname }}
+                                @endif
+                            </td>
                             <td class="ps-2 pe-2">{{ $info['requests_received'] }}</td>
                             @if (false)
                                 <td class="ps-2 pe-2">{{ $info['pre_qualified'] }}</td>
@@ -193,6 +246,23 @@
                             <td class="ps-2 pe-2">{{ $info['avg_quote_time'] }}</td>
                             <td class="ps-2 pe-2">{{ $info['closing_rate'] }}%</td>
                         </tr>
+                        @if (sizeof($type_inquiry) == sizeof($types_list))
+                            @foreach ($info['types'] as $index_2 => $item)
+                                <tr
+                                    class="row-detail {{ $index_2 + 1 == sizeof($info['types']) ? '__last' : '' }}"
+                                    data-group="sale-{{ $index +1 }}"
+                                >
+                                    <td>{{ $item['type'] }}</td>
+                                    <td class="ps-2 pe-2">{{ $item['requests_received'] }}</td>
+                                    <td class="ps-2 pe-2">{{ $item['quotes_attended'] }}</td>
+                                    <td class="ps-2 pe-2">{{ $item['attending_rate'] }}%</td>
+                                    <td class="ps-2 pe-2">{{ $item['avg_attend_time'] }}</td>
+                                    <td class="ps-2 pe-2">{{ $item['quotes_sent'] }}</td>
+                                    <td class="ps-2 pe-2">{{ $item['avg_quote_time'] }}</td>
+                                    <td class="ps-2 pe-2">{{ $item['closing_rate'] }}%</td>
+                                </tr>
+                            @endforeach
+                        @endif
                     @endforeach
                 </tbody>
             </table>

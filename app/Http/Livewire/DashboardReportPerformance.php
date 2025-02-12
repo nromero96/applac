@@ -14,8 +14,9 @@ use Maatwebsite\Excel\Facades\Excel;
 class DashboardReportPerformance extends Component
 {
     // parameteres
-    public $period = 'last_7_days';
+    public $period = 'last_7_days'; // default: last_7_days
     public $source;
+    public $type_inquiry = ['internal', 'external 1', 'external 2'];
     public $rating = [0, 1, 2, 3, 4, 5];
     public $date_from = null;
     public $date_to = null;
@@ -38,26 +39,19 @@ class DashboardReportPerformance extends Component
         'Linkedin' => ['key' => 'LNK', 'label' => 'Linkedin', 'color' => '#0077B5'],
         'Social Media' => ['key' => 'SOC', 'label' => 'Social Media', 'color' => '#1877F2'],
     ];
+    public $types_list = [
+        'internal' => 'Internal',
+        'external 1' => 'External 1',
+        'external 2' => 'External 2',
+    ];
     public $source_field_label = 'All Sources';
     public $rating_field_label = 'All Ratings';
-    public $icon_info = '
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <g clip-path="url(#clip0_6504_8076)">
-        <path d="M8.00065 14.6666C11.6825 14.6666 14.6673 11.6818 14.6673 7.99992C14.6673 4.31802 11.6825 1.33325 8.00065 1.33325C4.31875 1.33325 1.33398 4.31802 1.33398 7.99992C1.33398 11.6818 4.31875 14.6666 8.00065 14.6666Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M8 10.6667V8" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
-        <path d="M8 5.33325H8.00667" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
-        </g>
-        <defs>
-        <clipPath id="clip0_6504_8076">
-        <rect width="16" height="16" fill="white"/>
-        </clipPath>
-        </defs>
-        </svg>
-    ';
+    public $type_field_label = 'All Types';
+    public $icon_info = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_6504_8076)"><path d="M8.00065 14.6666C11.6825 14.6666 14.6673 11.6818 14.6673 7.99992C14.6673 4.31802 11.6825 1.33325 8.00065 1.33325C4.31875 1.33325 1.33398 4.31802 1.33398 7.99992C1.33398 11.6818 4.31875 14.6666 8.00065 14.6666Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 10.6667V8" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 5.33325H8.00667" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_6504_8076"><rect width="16" height="16" fill="white"/></clipPath></defs></svg>';
+    public $icon_arrow_down = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: rgba(0, 0, 0, 1);transform: ;msFilter:;"><path d="M11.178 19.569a.998.998 0 0 0 1.644 0l9-13A.999.999 0 0 0 21 5H3a1.002 1.002 0 0 0-.822 1.569l9 13z"></path></svg>';
 
     public function mount() {
         $this->source = array_keys($this->sources_list);
-        // $this->source = ['agt'];
     }
 
     public function render()
@@ -74,6 +68,19 @@ class DashboardReportPerformance extends Component
             $rating_to_sort =  $this->rating;
             rsort($rating_to_sort);
             $this->rating_field_label = 'Rating(s): ' . implode(', ', $rating_to_sort);
+        }
+        // type label field
+        if (sizeof($this->type_inquiry) == 0) {
+            $this->reset('type_inquiry');
+        }
+        if (sizeof($this->type_inquiry) ==  sizeof($this->types_list)) {
+            $this->reset('type_field_label');
+        } else {
+            $sources_selected = [];
+            foreach ($this->type_inquiry as $tp) {
+                $types_selected[] = $this->types_list[$tp];
+            }
+            $this->type_field_label = 'Type(s): ' . implode(', ', $types_selected);
         }
         // soure label field
         if (sizeof($this->source) == 0) {
@@ -101,6 +108,11 @@ class DashboardReportPerformance extends Component
         $this->skipRender();
     }
 
+    public function clear_type_inquiry(){
+        $this->type_inquiry = [];
+        $this->skipRender();
+    }
+
     private function performance_report(){
         // sales
         $sales = User::whereHas('roles', function($query){
@@ -122,11 +134,26 @@ class DashboardReportPerformance extends Component
         $info_global_avg_quote_time = 0;
         $info_global['closing_rate'] = 0;
         $global_closed = 0;
+        foreach ($this->types_list as $key => $value) {
+            $info_global['types'][$key] = [
+                'quotations' => 0,
+                'pre_qualified' => 0,
+                'quotes_attended' => 0,
+                'avg_attend_time' => 0,
+                'info_global_avg_attend_time' => 0,
+                'quotes_sent' => 0,
+                'info_global_avg_quote_time' => 0,
+                'closing_rate' => 0,
+                'global_closed' => 0,
+            ];
+        }
+
         if ($sales->count() > 0) {
             foreach ($sales as $sale) {
                 // para los attended. Considera estrellas y logica de cargo
                 $quotations_1 = Quotation::select(
                     'quotations.id',
+                    'quotations.type_inquiry',
                     'quotations.mode_of_transport',
                     'quotations.cargo_type as q_cargo_type',
                     'quotations.rating',
@@ -171,54 +198,64 @@ class DashboardReportPerformance extends Component
                     $query->where('is_internal_inquiry', 1);
                     $query->orWhere(function($q){
                         $q->where('is_internal_inquiry', 0);
-                        $q->where('quotations.cargo_type', '!=', 'Personal Vehicle')
-                                ->orWhere(function ($sq) {
-                                    $sq->whereNotIn('cargo_details.package_type', ['Automobile', 'Motorcycle (crated or palletized) / ATV']);
-                                });
+                        $q->where(function($q){
+                            $q->whereNull('quotations.cargo_type')
+                                ->orWhere('quotations.cargo_type', '!=', 'Personal Vehicle')
+                                    ->orWhere(function ($sq) {
+                                        $sq->whereNotIn('cargo_details.package_type', ['Automobile', 'Motorcycle (crated or palletized) / ATV']);
+                                    });
+                        });
                     });
                 })
                 ->get();
 
-                // quotes sent: no considera estrellas (? Consultar)
-                $quotations_2 = Quotation::select(
-                    'quotations.id',
-                    'quotations.rating',
-                    'quotations.status',
-                    'quotations.result',
-                    'quotations.assigned_user_id',
-                    'quotations.created_at',
-                    'quotations.is_internal_inquiry',
-                    DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
-                )
-                ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
-                ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
-                ->whereNotNull('quotations.assigned_user_id')
-                ->when($this->period != 'all', function($q) {
-                    switch ($this->period) {
-                        case 'today': $q->whereDate('quotations.created_at', Carbon::today()); break;
-                        case 'last_7_days': $q->whereDate('quotations.created_at', '>=', Carbon::now()->subDays(7)); break;
-                        case 'last_30_days': $q->whereDate('quotations.created_at', '>=', Carbon::now()->subDays(30)); break;
-                        case 'last_90_days': $q->whereDate('quotations.created_at', '>=', Carbon::now()->subDays(90)); break;
-                        case 'custom':
-                            if ($this->date_from and $this->date_to == null) {
-                                $q->whereDate('quotations.created_at', '=', $this->date_from);
-                            } else {
-                                if ($this->date_from == null and $this->date_to) {
-                                    $q->whereDate('quotations.created_at', '=', $this->date_to);
-                                } else {
-                                    if ($this->date_from and $this->date_to) {
-                                        $q->whereDate('quotations.created_at', '>=', $this->date_from);
-                                        $q->whereDate('quotations.created_at', '<=', $this->date_to);
-                                    }
-                                }
-                            }
-                            break;
-                        default: break;
-                    }
-                })
-                ->where('quotations.assigned_user_id', $sale->id)
-                ->groupBy('quotations.id')
-                ->get();
+                // if ($sale->id == 7) { // cris valencia
+                //     dd($quotations_1->where('type_inquiry', 'external 2')->toArray());
+                // }
+
+                // quotes sent: no considera estrellas
+                // se ha quitado xq tamoco considera los auto entonces solo esta usando el quotations 1
+                $quotations_2 = $quotations_1;
+                // $quotations_2 = Quotation::select(
+                //     'quotations.id',
+                //     'quotations.type_inquiry',
+                //     'quotations.rating',
+                //     'quotations.status',
+                //     'quotations.result',
+                //     'quotations.assigned_user_id',
+                //     'quotations.created_at',
+                //     'quotations.is_internal_inquiry',
+                //     DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
+                // )
+                // ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
+                // ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
+                // ->whereNotNull('quotations.assigned_user_id')
+                // ->when($this->period != 'all', function($q) {
+                //     switch ($this->period) {
+                //         case 'today': $q->whereDate('quotations.created_at', Carbon::today()); break;
+                //         case 'last_7_days': $q->whereDate('quotations.created_at', '>=', Carbon::now()->subDays(7)); break;
+                //         case 'last_30_days': $q->whereDate('quotations.created_at', '>=', Carbon::now()->subDays(30)); break;
+                //         case 'last_90_days': $q->whereDate('quotations.created_at', '>=', Carbon::now()->subDays(90)); break;
+                //         case 'custom':
+                //             if ($this->date_from and $this->date_to == null) {
+                //                 $q->whereDate('quotations.created_at', '=', $this->date_from);
+                //             } else {
+                //                 if ($this->date_from == null and $this->date_to) {
+                //                     $q->whereDate('quotations.created_at', '=', $this->date_to);
+                //                 } else {
+                //                     if ($this->date_from and $this->date_to) {
+                //                         $q->whereDate('quotations.created_at', '>=', $this->date_from);
+                //                         $q->whereDate('quotations.created_at', '<=', $this->date_to);
+                //                     }
+                //                 }
+                //             }
+                //             break;
+                //         default: break;
+                //     }
+                // })
+                // ->where('quotations.assigned_user_id', $sale->id)
+                // ->groupBy('quotations.id')
+                // ->get();
 
                 // rating
                 if (sizeof($this->rating) > 0) {
@@ -226,28 +263,54 @@ class DashboardReportPerformance extends Component
                     $quotations_2 = $quotations_2->whereIn('rating', $this->rating);
                 }
 
-                // sources
-                if (sizeof($this->source) > 0) {
-                    $quotations_1 = $quotations_1->whereIn('user_source', $this->source);
-                    $quotations_2 = $quotations_2->whereIn('user_source', $this->source);
+                // sources : PARA DESPUES, OCULTO TEMPORALMENTE
+                // if (sizeof($this->source) > 0) {
+                //     $quotations_1 = $quotations_1->whereIn('user_source', $this->source);
+                //     $quotations_2 = $quotations_2->whereIn('user_source', $this->source);
+                // }
+
+                // types
+                if (sizeof($this->type_inquiry) > 0) {
+                    $quotations_1 = $quotations_1->whereIn('type_inquiry', $this->type_inquiry);
+                    $quotations_2 = $quotations_2->whereIn('type_inquiry', $this->type_inquiry);
                 }
 
+                // quotations
                 $info_global['quotations'] += $quotations_1->count();
+                foreach ($this->types_list as $key => $value) {
+                    $info_global['types'][$key]['quotations'] += $quotations_1->where('type_inquiry', $key)->count();
+                }
 
                 // pre qualified
                 $info_global['pre_qualified'] += $quotations_1->count();
+                foreach ($this->types_list as $key => $value) {
+                    $info_global['types'][$key]['pre_qualified'] += $quotations_1->where('type_inquiry', $key)->count();
+                }
 
                 // quotes attended
                 $quotes_attended_no_internal = $quotations_1->where('status', '!=', 'Pending')->where('is_internal_inquiry', 0);
                 $quotes_attended_internal = $quotations_1->where('status', '!=', 'Processing')->where('is_internal_inquiry', 1);
                 $quotes_attended = $quotes_attended_no_internal->union($quotes_attended_internal);
+
                 $info_global['quotes_attended'] += $quotes_attended->count();
+                foreach ($this->types_list as $key => $value) {
+                    $info_global['types'][$key]['quotes_attended'] += $quotes_attended->where('type_inquiry', $key)->count();
+                }
 
                 // attending rate
+                $attending_rates = [];
                 if ($quotations_1->count() > 0) {
                     $attending_rate = round($quotes_attended->count() / $quotations_1->count() * 100, 2);
                 } else {
                     $attending_rate = 0;
+                }
+
+                foreach ($this->types_list as $key => $value) {
+                    $rate = 0;
+                    if ($quotations_1->where('type_inquiry', $key)->count() > 0) {
+                        $rate = round($quotes_attended->where('type_inquiry', $key)->count() / $quotations_1->where('type_inquiry', $key)->count() * 100, 2);
+                    }
+                    $attending_rates[$key] = $rate;
                 }
 
                 if ($info_global['pre_qualified'] > 0) {
@@ -255,6 +318,14 @@ class DashboardReportPerformance extends Component
                 } else {
                     $info_global['attending_rate'] = 0;
                 }
+                foreach ($this->types_list as $key => $value) {
+                    if ($info_global['types'][$key]['pre_qualified'] > 0) {
+                        $info_global['types'][$key]['attending_rate'] = round($info_global['types'][$key]['quotes_attended'] / $info_global['types'][$key]['pre_qualified'] * 100, 2);
+                    } else {
+                        $info_global['types'][$key]['attending_rate'] = 0;
+                    }
+                }
+
 
                 // avg attend time
                 $avg_attend_time_min = DB::table('quotation_notes')
@@ -273,7 +344,6 @@ class DashboardReportPerformance extends Component
                         });
                     })
                     ->where('quotations.assigned_user_id', $sale->id)
-                    ->whereIn('quotations.id', $quotations_1->pluck('id'))
                     ->when($this->period != 'all', function($q) {
                         switch ($this->period) {
                             case 'today':
@@ -307,26 +377,31 @@ class DashboardReportPerformance extends Component
                     })
                     // ->groupBy('quotation_notes.quotation_id')
                     // ->select(DB::raw('(TIMESTAMPDIFF(SECOND, quotations.created_at, quotation_notes.created_at)) as avg_diff_seconds'))
-                    ->select('quotations.created_at as date_start', 'quotation_notes.created_at as date_end')
+                    ->select('quotations.id as id', 'quotations.type_inquiry as type', 'quotations.created_at as date_start', 'quotation_notes.created_at as date_end')
                     ->get();
-                // if ($sale->id == 206) {
-                //     dd($avg_attend_time_min);
-                // }
-                $prom = 0;
-                if ($avg_attend_time_min->count()) {
-                    foreach ($avg_attend_time_min as $item) {
-                        $prom += $this->calcularSegundosLaborales($item->date_start, $item->date_end);
-                    }
-                    $avg_attend_time_prom = round($prom / $avg_attend_time_min->count());
-                } else {
-                    $avg_attend_time_prom = 0;
-                }
-                // $avg_attend_time_prom = $avg_attend_time_min->avg('avg_diff_seconds');
+
+                $avg_attend_time_min = $avg_attend_time_min->whereIn('id', $quotations_1->pluck('id'));
+
+                // promedio avg
+                $avg_attend_time_prom = $this->calc_avg_attend_time_prom($avg_attend_time_min);
+                // user
                 if ($quotes_attended->count() > 0) {
                     $avg_attend_time = CarbonInterval::seconds($avg_attend_time_prom)->cascade()->forHumans(['parts' => 2]);
                 } else {
                     $avg_attend_time = '-';
                 }
+                // user types
+                $avg_attend_time_types = [];
+                foreach ($this->types_list as $key => $value) {
+                    $avg_attend_type = '-';
+                    if ($quotes_attended->where('type_inquiry', $key)->count() > 0) {
+                        $avg_attend_type_prom = $this->calc_avg_attend_time_prom($avg_attend_time_min, $key);
+                        $avg_attend_type = CarbonInterval::seconds($avg_attend_type_prom)->cascade()->forHumans(['parts' => 2]);
+                    }
+                    $avg_attend_time_types[$key] = $avg_attend_type;
+                }
+
+                // global
                 $info_global_avg_attend_time += $avg_attend_time_prom;
                 if ($info_global_avg_attend_time) {
                     $info_global['avg_attend_time'] = round($info_global_avg_attend_time);
@@ -334,10 +409,22 @@ class DashboardReportPerformance extends Component
                 } else {
                     $info_global['avg_attend_time'] = '-';
                 }
+                foreach ($this->types_list as $key => $value) {
+                    $info_global['types'][$key]['info_global_avg_attend_time'] += $this->calc_avg_attend_time_prom($avg_attend_time_min, $key);
+                    if ($info_global['types'][$key]['info_global_avg_attend_time']) {
+                        $info_global['types'][$key]['avg_attend_time'] = round($info_global['types'][$key]['info_global_avg_attend_time']);
+                        $info_global['types'][$key]['avg_attend_time'] = CarbonInterval::seconds($info_global['types'][$key]['avg_attend_time'] / $sales->count())->cascade()->forHumans(['parts' => 2]);
+                    } else {
+                        $info_global['types'][$key]['avg_attend_time'] = '-';
+                    }
+                }
 
                 // quotes sent
                 $quotes_sent = $quotations_2->where('status', 'Quote Sent');
                 $info_global['quotes_sent'] += $quotes_sent->count();
+                foreach ($this->types_list as $key => $value) {
+                    $info_global['types'][$key]['quotes_sent'] += $quotes_sent->where('type_inquiry', $key)->count();
+                }
 
                 // avg quote time
                 $avg_quote_time_min = DB::table('quotation_notes')
@@ -345,7 +432,7 @@ class DashboardReportPerformance extends Component
                     ->where('quotation_notes.type', 'inquiry_status')
                     ->where('quotation_notes.action', 'LIKE', "%to 'Quote Sent'")
                     ->where('quotations.assigned_user_id', $sale->id)
-                    ->whereIn('quotations.id', $quotations_2->pluck('id'))
+                    // ->whereIn('quotations.id', $quotations_2->pluck('id'))
                     ->when($this->period != 'all', function($q) {
                         switch ($this->period) {
                             case 'today':
@@ -379,26 +466,31 @@ class DashboardReportPerformance extends Component
                     })
                     // ->groupBy('quotation_notes.quotation_id')
                     // ->select(DB::raw('(TIMESTAMPDIFF(SECOND, quotations.created_at, quotation_notes.created_at)) as avg_diff_seconds'))
-                    ->select('quotations.created_at as date_start', 'quotation_notes.created_at as date_end')
+                    ->select('quotations.id as id', 'quotations.type_inquiry as type', 'quotations.created_at as date_start', 'quotation_notes.created_at as date_end')
                     ->get();
 
-                $prom_q = 0;
-                if ($avg_quote_time_min->count()) {
-                    foreach ($avg_quote_time_min as $item) {
-                        $prom_q += $this->calcularSegundosLaborales($item->date_start, $item->date_end);
-                    }
-                    $avg_quote_time_prom = round($prom_q / $avg_quote_time_min->count());
-                } else {
-                    $avg_quote_time_prom = 0;
-                }
+                $avg_quote_time_min = $avg_quote_time_min->whereIn('id', $quotations_2->pluck('id'));
 
                 // $avg_quote_time_prom = $avg_quote_time_min->avg('avg_diff_seconds');
+                // user
+                $avg_quote_time_prom = $this->calc_avg_quote_time_prom($avg_quote_time_min); // promedio
                 if ($avg_quote_time_prom) {
                     $avg_quote_time = CarbonInterval::seconds($avg_quote_time_prom)->cascade()->forHumans(['parts' => 2]);
                 } else {
                     $avg_quote_time = '-';
                 }
+                // user types
+                $avg_quote_time_types = [];
+                foreach ($this->types_list as $key => $value) {
+                    $avg_quote_type = '-';
+                    $avg_quote_type_prom = $this->calc_avg_quote_time_prom($avg_quote_time_min, $key);
+                    if ($avg_quote_type_prom) {
+                        $avg_quote_type = CarbonInterval::seconds($avg_quote_type_prom)->cascade()->forHumans(['parts' => 2]);
+                    }
+                    $avg_quote_time_types[$key] = $avg_quote_type;
+                }
 
+                // global
                 $info_global_avg_quote_time += $avg_quote_time_prom;
                 if ($info_global_avg_quote_time > 0) {
                     $info_global['avg_quote_time'] = round($info_global_avg_quote_time);
@@ -406,16 +498,59 @@ class DashboardReportPerformance extends Component
                 } else {
                     $info_global['avg_quote_time'] = '-';
                 }
+                foreach ($this->types_list as $key => $value) {
+                    $info_global['types'][$key]['info_global_avg_quote_time'] += $this->calc_avg_quote_time_prom($avg_quote_time_min, $key);
+                    if ($info_global['types'][$key]['info_global_avg_quote_time']) {
+                        $info_global['types'][$key]['avg_quote_time'] = round($info_global['types'][$key]['info_global_avg_quote_time']);
+                        $info_global['types'][$key]['avg_quote_time'] = CarbonInterval::seconds($info_global['types'][$key]['avg_quote_time'] / $sales->count())->cascade()->forHumans(['parts' => 2]);
+                    } else {
+                        $info_global['types'][$key]['avg_quote_time'] = '-';
+                    }
+                }
 
                 //closing rate
                 $closed = $quotations_2->where('result', 'Won');
                 $global_closed += $closed->count();
+                foreach ($this->types_list as $key => $value) {
+                    $info_global['types'][$key]['global_closed'] += $closed->where('type_inquiry', $key)->count();
+                }
                 if ($quotes_sent->count() > 0) {
-                    $closing_rate = round($closed->count() / $quotes_sent->count() * 100, 2);
-                    $info_global['closing_rate'] = round($global_closed / $info_global['quotes_sent'] * 100, 2);
+                    $closing_rate = round($closed->count() / $quotes_sent->count() * 100, 2); // user
+                    $info_global['closing_rate'] = round($global_closed / $info_global['quotes_sent'] * 100, 2); // global
                 } else {
-                    $closing_rate = 0;
-                    $info_global['closing_rate'] = 0;
+                    $closing_rate = 0; // user
+                    $info_global['closing_rate'] = 0; // global
+                }
+                foreach ($this->types_list as $key => $value) {
+                    if ($info_global['types'][$key]['quotes_sent'] > 0) {
+                        $info_global['types'][$key]['closing_rate'] = round($info_global['types'][$key]['global_closed'] / $info_global['types'][$key]['quotes_sent'] * 100, 2); // global
+                    } else {
+                        $info_global['types'][$key]['closing_rate'] = 0;
+                    }
+                }
+
+                $closeds = [];
+                foreach ($this->types_list as $key => $value) {
+                    $close = 0;
+                    $closed_state = $quotations_2->where('result', 'Won')->where('type_inquiry', $key);
+                    if ($quotes_sent->where('type_inquiry', $key)->count() > 0) {
+                        $close = round($closed_state->count() / $quotes_sent->where('type_inquiry', $key)->count() * 100, 2); // user
+                    }
+                    $closeds[$key] = $close;
+                }
+
+                $info_sales_types = [];
+                foreach ($this->types_list as $key => $value) {
+                    $info_sales_types[] = [
+                        'type' => $value,
+                        'requests_received' => $quotations_1->where('type_inquiry', $key)->count(),
+                        'quotes_attended' => $quotes_attended->where('type_inquiry', $key)->count(),
+                        'attending_rate' => $attending_rates[$key],
+                        'avg_attend_time' => $avg_attend_time_types[$key],
+                        'quotes_sent' => $quotes_sent->where('type_inquiry', $key)->count(),
+                        'avg_quote_time' => $avg_quote_time_types[$key],
+                        'closing_rate' => $closeds[$key],
+                    ];
                 }
 
                 $info_sales[] = [
@@ -428,12 +563,15 @@ class DashboardReportPerformance extends Component
                     'quotes_sent' => $quotes_sent->count(),
                     'avg_quote_time' => $avg_quote_time,
                     'closing_rate' => $closing_rate,
+                    'types' => $info_sales_types,
                 ];
             }
         }
 
         $data['info_global'] = $info_global;
         $data['info_sales'] = $info_sales;
+        // dd($info_sales);
+        // dd($info_global);
 
         return $data;
     }
@@ -491,15 +629,18 @@ class DashboardReportPerformance extends Component
         $data['title_file'] = $title_file;
         $data['ratings_selected'] = $this->rating_field_label;
         $data['sources_selected'] = $this->source_field_label;
+        $data['types_selected'] = $this->type_field_label;
+        $data['show_groups_type'] = sizeof($this->type_inquiry) == sizeof($this->types_list);
         return Excel::download(new ReportPerformanceExport($data), 'MyLAC_Sales_Report.xlsx');
     }
 
     public function restore_defaults(){
         $this->reset('rating');
+        $this->reset('type_inquiry');
         $this->source = array_keys($this->sources_list);
     }
 
-    private function calcularSegundosLaborales($fechaInicio, $fechaFin){
+    public function calcularSegundosLaborales($fechaInicio, $fechaFin){
         // Convertir las fechas a instancias de Carbon
         $inicio = Carbon::parse($fechaInicio);
         $fin = Carbon::parse($fechaFin);
@@ -534,5 +675,35 @@ class DashboardReportPerformance extends Component
         }
 
         return $segundosTotales;
+    }
+
+    public function calc_avg_attend_time_prom($avg_attend_time_min, $type = null) {
+        $prom = 0;
+        $avg_attend_time_prom = 0;
+        if ($type) {
+            $avg_attend_time_min = $avg_attend_time_min->where('type', $type);
+        }
+        if ($avg_attend_time_min->count()) {
+            foreach ($avg_attend_time_min as $item) {
+                $prom += $this->calcularSegundosLaborales($item->date_start, $item->date_end);
+            }
+            $avg_attend_time_prom = round($prom / $avg_attend_time_min->count());
+        }
+        return $avg_attend_time_prom;
+    }
+
+    public function calc_avg_quote_time_prom($avg_quote_time_min, $type = null) {
+        $prom = 0;
+        $avg_quote_time_prom = 0;
+        if ($type) {
+            $avg_quote_time_min = $avg_quote_time_min->where('type', $type);
+        }
+        if ($avg_quote_time_min->count()) {
+            foreach ($avg_quote_time_min as $item) {
+                $prom += $this->calcularSegundosLaborales($item->date_start, $item->date_end);
+            }
+            $avg_quote_time_prom = round($prom / $avg_quote_time_min->count());
+        }
+        return $avg_quote_time_prom;
     }
 }

@@ -5,7 +5,7 @@
     background-color: #B80000;
     font-weight: normal;
     border-radius: 4px;
-    padding: 11px 16px;
+    padding: 9px 16px;
     border: none;
 }
 
@@ -62,6 +62,7 @@
         align-items: center;
         justify-content: space-between;
         margin-top: 16px;
+        gap: 8px;
 
         button {
             border: 1px solid transparent;
@@ -118,7 +119,7 @@
             padding: 16px 21px;
         }
 
-        tr:nth-child(even) {
+        tr.row-shadow {
             background-color: #F8F8F8;
         }
     }
@@ -136,3 +137,32 @@
     font-weight: 700;
     color: #B80000;
 }
+
+.btn-open {
+    background-color: transparent;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding-left: 0;
+    padding-right: 0;
+}
+.btn-open svg {
+    width: 12px !important;
+    height: 12px !important;
+    object-fit: contain;
+}
+.btn-open svg, .btn-open svg * {
+    fill: #B80000 !important;
+}
+.btn-open.active svg {
+    transform: rotateX(180deg);
+}
+.row-detail {
+    display: none;
+    background: white;
+}
+.row-detail.__last td {
+    border-bottom: 1px solid black;
+}
+

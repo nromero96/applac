@@ -878,3 +878,14 @@ document.addEventListener('livewire:load', function () {
         $('.dash_field_select_content').hide();
     })
 })
+
+$('.dashboard_reports').on('click', '.btn-open', function(){
+    const group = $(this).attr('data-group');
+    if ($(this).hasClass('active')) {
+        $(this).removeClass('active');
+        $(`.row-detail[data-group=${group}]`).hide();
+    } else {
+        $(this).addClass('active');
+        $(`.row-detail[data-group=${group}]`).show();
+    }
+})
