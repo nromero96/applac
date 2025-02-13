@@ -40,20 +40,31 @@
                         @for ($i = 5; $i >= 0; $i--)
                             <label class="form-check">
                                 <input type="checkbox" wire:model.defer="rating" value="{{ $i }}" class="form-check-input">
-                                <div class="form-check-label d-flex align-items-center gap-2">
-                                    <b>{{ $i }}</b>
+                                <div class="form-check-label d-flex align-items-center gap-2 justify-content-between">
                                     <div class="d-flex align-items-center">
                                         @for ($star = 0; $star < $i; $star++)
                                             <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M8.00065 1.83325L10.0607 6.00659L14.6673 6.67992L11.334 9.92659L12.1207 14.5133L8.00065 12.3466L3.88065 14.5133L4.66732 9.92659L1.33398 6.67992L5.94065 6.00659L8.00065 1.83325Z" fill="#EDB10C"/>
                                             </svg>
+                                            @if (($i != 5) and ($star == $i))
+
+                                            @else
+                                            @endif
                                         @endfor
                                         @for ($no_star = 0; $no_star < $starts_total - $i; $no_star++)
-                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M7.00065 0.833252L9.06065 5.00659L13.6673 5.67992L10.334 8.92659L11.1207 13.5133L7.00065 11.3466L2.88065 13.5133L3.66732 8.92659L0.333984 5.67992L4.94065 5.00659L7.00065 0.833252Z" fill="#E1E1E1"/>
-                                            </svg>
+                                            @if ($no_star == 0)
+                                                <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M8.00065 1.83337L10.0607 6.00671L14.6673 6.68004L11.334 9.92671L12.1207 14.5134L8.00065 12.3467L3.88065 14.5134L4.66732 9.92671L1.33398 6.68004L5.94065 6.00671L8.00065 1.83337Z" fill="#EDB10C"/>
+                                                    <path d="M8 1.83337L10.06 6.00671L14.6667 6.68004L11.3333 9.92671L12.12 14.5134L8 12.3467V1.83337Z" fill="#E1E1E1"/>
+                                                </svg>
+                                            @else
+                                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M7.00065 0.833252L9.06065 5.00659L13.6673 5.67992L10.334 8.92659L11.1207 13.5133L7.00065 11.3466L2.88065 13.5133L3.66732 8.92659L0.333984 5.67992L4.94065 5.00659L7.00065 0.833252Z" fill="#E1E1E1"/>
+                                                </svg>
+                                            @endif
                                         @endfor
                                     </div>
+                                    <b>{{ $i }}{!! $i != 5 ? '+' : '<span style="opacity:0">+</span>' !!}</b>
                                 </div>
                             </label>
                         @endfor
