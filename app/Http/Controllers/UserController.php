@@ -155,6 +155,23 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+
+        //validar si el email ya existe
+        $request->validate(
+            [
+                'name'              =>      'required|string',
+                'lastname'          =>      'required|string',
+                'company_name'      =>      'nullable|string',
+                'company_website'   =>      'nullable|string',
+                'email'             =>      'required|email|unique:users,email,'.$id,
+                'location'          =>      'nullable',
+                'phone_code'        =>      'required|string',
+                'phone'             =>      'nullable|string',
+                'source'            =>      'nullable|string',
+                'password'          =>      'nullable|alpha_num|min:6'
+            ]
+        );
+
         $user = User::findOrFail($id);
             if ($request->get('password') != '') {
                 $pass = bcrypt($request->get('password'));
@@ -179,6 +196,7 @@ class UserController extends Controller
             'lastname' => $request['lastname'],
             'company_name' => $request['company_name'],
             'company_website' => $request['company_website'],
+            'email' => $request['email'],
             'location' => $request['location'],
             'password' => $pass,
             'phone_code' => $request['phone_code'],
@@ -191,7 +209,8 @@ class UserController extends Controller
         $userinfo = User::find($id);
         $userinfo->roles()->sync($request->roles);
 
-        return redirect()->route('users.index');
+        //Retornar a la vista de edicion con mensaje de actualizacion
+        return redirect()->route('users.edit', $id)->with('success', 'User updated successfully');
     }
 
     public function destroy($id)

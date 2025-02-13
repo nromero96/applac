@@ -10,6 +10,19 @@
 
         <!-- BREADCRUMB -->
         <div class="page-meta">
+
+            @if(session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <nav class="breadcrumb-style-one" aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{route('users.index')}}">{{__("Users")}}</a></li>
@@ -55,7 +68,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="inputEmail" class="form-label mb-0 fw-bold">{{__("Email")}}</label>
-                                <input type="email" name="email" class="form-control" id="inputEmail" value="{{$user->email}}" readonly>
+                                <input type="email" name="email" class="form-control" id="inputEmail" value="{{$user->email}}">
                                 {!!$errors->first("email", "<span class='text-danger'>:message</span>")!!}
                             </div>
                             <div class="col-md-6">
