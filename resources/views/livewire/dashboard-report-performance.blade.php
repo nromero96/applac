@@ -46,10 +46,6 @@
                                             <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M8.00065 1.83325L10.0607 6.00659L14.6673 6.67992L11.334 9.92659L12.1207 14.5133L8.00065 12.3466L3.88065 14.5133L4.66732 9.92659L1.33398 6.67992L5.94065 6.00659L8.00065 1.83325Z" fill="#EDB10C"/>
                                             </svg>
-                                            @if (($i != 5) and ($star == $i))
-
-                                            @else
-                                            @endif
                                         @endfor
                                         @for ($no_star = 0; $no_star < $starts_total - $i; $no_star++)
                                             @if ($no_star == 0)

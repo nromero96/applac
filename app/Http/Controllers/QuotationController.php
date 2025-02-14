@@ -152,6 +152,12 @@ class QuotationController extends Controller
             if (!empty($rating)) {
                 //la data puede venir en un array
                 if(is_array($rating)){
+                    // agrega 0.5, 1.5, 2.5, 3.5 y 4.5
+                    for ($i=0; $i <= 4; $i++) {
+                        if (in_array($i, $rating)) {
+                            array_push($rating, $i + 0.5);
+                        }
+                    }
                     $query->whereIn('quotations.rating', $rating);
                 } else {
                     $query->where('quotations.rating', $rating);
@@ -303,14 +309,14 @@ class QuotationController extends Controller
             if ($quotations instanceof \Illuminate\Database\Eloquent\Builder) {
                 $quotations = $quotations->get(); // Si es una consulta, conviértelo a colección
             }
-        
+
             // Genera el archivo CSV
             $filename = 'quotations_' . now()->format('Ymd_His') . '.csv';
             $headers = [
                 'Content-Type' => 'text/csv',
                 'Content-Disposition' => "attachment; filename=\"$filename\"",
             ];
-        
+
             $columns = [
                 'ID',
                 'Inquiry Type',
@@ -328,11 +334,11 @@ class QuotationController extends Controller
                 'Assigned',
                 'Source',
             ];
-        
+
             $callback = function () use ($quotations, $columns) {
                 $file = fopen('php://output', 'w');
                 fputcsv($file, $columns); // Encabezados
-        
+
                 foreach ($quotations as $quotation) {
                     fputcsv($file, [
                         $quotation->quotation_id ?? '', // Maneja valores nulos
@@ -352,13 +358,13 @@ class QuotationController extends Controller
                         $quotation->user_source ?? '',
                     ]);
                 }
-        
+
                 fclose($file);
             };
-        
+
             return response()->stream($callback, 200, $headers);
         }
-        
+
 
 
         $data['listforpage'] = $listforpage;
@@ -504,7 +510,7 @@ class QuotationController extends Controller
             'note' => 'Quotation deleted',
             'user_id' => auth()->id(),
         ]);
-        
+
         //cambiar de estatus a Deleted
         $quotation->update([
             'status' => 'Deleted',
