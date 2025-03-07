@@ -43,7 +43,7 @@
                             @endrole
                         </select>
                         <input type="text" name="daterequest" id="daterequest" class="form-control rounded-pill ms-2 float-end daterequest" value="{{ request('daterequest') }}" placeholder="Date/Range" autocomplete="off">
-                        
+
                         @role('Administrator')
                         <button class="btn btn-outline-primary py-1 ms-2 fw-bold btn-exportdata" id="exportData">
                             Export
@@ -69,9 +69,9 @@
                                             </button>
                                             <ul class="dropdown-menu mt-3 pt-2 ps-2 pe-2 pb-0" aria-labelledby="typeDropdown">
                                                 @foreach ($listtypeinquiries as $inquiry)
-                                                    
 
-                                                    
+
+
                                                         <li>
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox" name="type_inquiry[]" value="{{ $inquiry->type_inquiry }}" id="type_inquiry{{ Str::slug($inquiry->type_inquiry, '_') }}" {{ in_array($inquiry->type_inquiry, request('type_inquiry', [])) ? 'checked' : '' }}>
@@ -84,11 +84,11 @@
                                                                 </label>
                                                             </div>
                                                         </li>
-                                                    
+
                                                 @endforeach
                                             </ul>
                                         </div>
-                                    
+
                                         <!-- Dropdown Result -->
                                         <div class="dropdown">
                                             <button class="dropdown-toggle rounded-pill select-dropdown ms-1 me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
@@ -245,12 +245,22 @@
                                                                                 </svg>
                                                                             </span>
                                                                         @else
-                                                                            {{-- Estrella vacía --}}
-                                                                            <span class="star">
-                                                                                <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                                    <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
-                                                                                </svg>
-                                                                            </span>
+                                                                            @if ($i == $fullStars)
+                                                                                {{-- Media Estrella --}}
+                                                                                <span class="star">
+                                                                                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                                        <path d="M8.00065 1.83337L10.0607 6.00671L14.6673 6.68004L11.334 9.92671L12.1207 14.5134L8.00065 12.3467L3.88065 14.5134L4.66732 9.92671L1.33398 6.68004L5.94065 6.00671L8.00065 1.83337Z" fill="#EDB10C"/>
+                                                                                        <path d="M8 1.83337L10.06 6.00671L14.6667 6.68004L11.3333 9.92671L12.12 14.5134L8 12.3467V1.83337Z" fill="#E1E1E1"/>
+                                                                                    </svg>
+                                                                                </span>
+                                                                            @else
+                                                                                {{-- Estrella vacía --}}
+                                                                                <span class="star">
+                                                                                    <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                                    </svg>
+                                                                                </span>
+                                                                            @endif
                                                                         @endif
                                                                     @endfor
 
@@ -531,7 +541,7 @@
                                                     </td>
 
                                                     <td class="ps-2 pe-1">
-                                                        @php 
+                                                        @php
                                                             if($quotation->type_inquiry == 'external 2'){
 
                                                                 $readiness_levels = [
@@ -634,9 +644,9 @@
                                                 </td>
 
                                                 <td class="ps-2 pe-2">
-                                                     
+
                                                     @if($quotation->type_inquiry == 'internal')
-                                                        <span class="text-capitalize badge-type-inquiry internal"> 
+                                                        <span class="text-capitalize badge-type-inquiry internal">
                                                             <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                                 <g clip-path="url(#clip0_8656_5074)" fill="none" stroke-width="1.5px">
                                                                 <path d="M8.00065 14.6667C11.6825 14.6667 14.6673 11.6819 14.6673 8.00004C14.6673 4.31814 11.6825 1.33337 8.00065 1.33337C4.31875 1.33337 1.33398 4.31814 1.33398 8.00004C1.33398 11.6819 4.31875 14.6667 8.00065 14.6667Z" stroke="#0A6AB7" stroke-width="1.5px" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
@@ -650,21 +660,21 @@
                                                             </svg>
                                                             {{ $quotation->type_inquiry }} </span>
                                                     @elseif($quotation->type_inquiry == 'external 1')
-                                                        <span class="text-capitalize badge-type-inquiry external-1"> 
+                                                        <span class="text-capitalize badge-type-inquiry external-1">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                                 <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#B28600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                                 <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#B28600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                             </svg>
                                                             {{ $quotation->type_inquiry }} </span>
                                                     @elseif($quotation->type_inquiry == 'external 2')
-                                                        <span class="text-capitalize badge-type-inquiry external-2"> 
+                                                        <span class="text-capitalize badge-type-inquiry external-2">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                                 <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                                 <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                             </svg>
                                                             {{ $quotation->type_inquiry }} </span>
                                                     @elseif($quotation->type_inquiry == 'ext-auto')
-                                                        <span class="text-capitalize badge-type-inquiry ext-auto"> 
+                                                        <span class="text-capitalize badge-type-inquiry ext-auto">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                                 <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                                 <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -713,7 +723,7 @@
                                                 </td>
 
                                                 @endif
-                                                
+
                                                 <td class="py-0 px-2">
                                                     <div class="rounded-1 btn-sm py-0 px-0">
 

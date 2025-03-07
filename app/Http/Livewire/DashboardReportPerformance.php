@@ -209,7 +209,7 @@ class DashboardReportPerformance extends Component
                 })
                 ->get();
 
-                // if ($sale->id == 7) { // cris valencia
+                // if ($sale->id == 6) { // fredy
                 //     dd($quotations_1->where('type_inquiry', 'external 2')->toArray());
                 // }
 
@@ -259,8 +259,26 @@ class DashboardReportPerformance extends Component
 
                 // rating
                 if (sizeof($this->rating) > 0) {
-                    $quotations_1 = $quotations_1->whereIn('rating', $this->rating);
-                    $quotations_2 = $quotations_2->whereIn('rating', $this->rating);
+                    $filter_rating = $this->rating;
+                    if (in_array(0, $filter_rating)) {
+                        array_push($filter_rating, 0.5);
+                    }
+                    if (in_array(1, $filter_rating)) {
+                        array_push($filter_rating, 1.5);
+                    }
+                    if (in_array(2, $filter_rating)) {
+                        array_push($filter_rating, 2.5);
+                    }
+                    if (in_array(3, $filter_rating)) {
+                        array_push($filter_rating, 3.5);
+                    }
+                    if (in_array(4, $filter_rating)) {
+                        array_push($filter_rating, 4.5);
+                    }
+                    $quotations_1 = $quotations_1->whereIn('rating', $filter_rating);
+                    $quotations_2 = $quotations_2->whereIn('rating', $filter_rating);
+                    // $quotations_1 = $quotations_1->whereIn('rating', $this->rating);
+                    // $quotations_2 = $quotations_2->whereIn('rating', $this->rating);
                 }
 
                 // sources : PARA DESPUES, OCULTO TEMPORALMENTE
@@ -274,6 +292,10 @@ class DashboardReportPerformance extends Component
                     $quotations_1 = $quotations_1->whereIn('type_inquiry', $this->type_inquiry);
                     $quotations_2 = $quotations_2->whereIn('type_inquiry', $this->type_inquiry);
                 }
+
+                // if ($sale->id == 6) { // fredy
+                //     dd($quotations_1->where('type_inquiry', 'external 2')->toArray());
+                // }
 
                 // quotations
                 $info_global['quotations'] += $quotations_1->count();
