@@ -42,7 +42,7 @@
     // business type
     $businessTypeMap = [
         'Manufacturer' => $labelhigh,
-        'Import / Export Business' => $labelhigh,
+        'Importer / Exporter (Owner of Goods)' => $labelhigh,
         'Retailer / Distributor' => $labelmid,
         'Logistics Company / Freight Forwarder' => $labellow,
         'Individual / Private Person' => $labellow,

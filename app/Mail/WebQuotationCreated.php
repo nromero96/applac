@@ -67,8 +67,12 @@ class WebQuotationCreated extends Mailable
         }
 
         $content = view($contviewblade, [
+            'origin_country_name' => $origin_country_name,
+            'destination_country_name' => $destination_country_name,
+            'reguser_location_name' => $reguser_location_name,
             'quotation' => $this->quotation,
             'reguser' => $this->reguser,
+            'quotation_documents' => $this->quotation_documents,
         ])->render();
 
         // Llama a tu función sendMailApi para enviar el correo
@@ -78,29 +82,49 @@ class WebQuotationCreated extends Mailable
             $content,
             null,
             [], 
-            []
+            [config('services.copymail.mail_1'), config('services.copymail.mail_2')]
         );
 
         //Si el rating es mayor o igual a 4, enviar también un correo al administrador
         if($this->quotation->rating >= 4){
-            $content_admin = view('emails.web.priority_lead_quotation', [
-                'origin_country_name' => $origin_country_name,
-                'destination_country_name' => $destination_country_name,
-                'reguser_location_name' => $reguser_location_name,
-                'quotation' => $this->quotation,
-                'reguser' => $this->reguser,
-                'quotation_documents' => $this->quotation_documents,
-                'assigned_user_full_name' => $this->assigned_user_full_name,
-            ])->render();
-    
-            sendMailApiLac(
-                config('services.copymail.mail_marketing'), 
-                'Quote ID: #'. $this->quotation->id .' - Priority Lead - ['. $origin_country_name .' - '. $destination_country_name .'].',
-                $content_admin,
-                ['email' => config('services.sendgrid.sender_email_priority'), 'name' => config('services.sendgrid.sender_name_priority')],
-                [],
-                [$this->assigned_user_mail]
-            );
+
+            // Obtener el valor declarado como número flotante
+            $declared_value = floatval($this->quotation->declared_value);
+            $currency = $this->quotation->currency;
+
+            // Definir tasas de cambio
+            $exchange_rates = [
+                'USD' => 1,     // Base
+                'CAD' => 0.74,  // 1 CAD ≈ 0.74 USD
+                'EUR' => 1.08,  // 1 EUR ≈ 1.08 USD
+            ];
+
+            // Convertir a USD si la moneda está en la lista, si no, mantener el valor original
+            $declared_value_in_usd = isset($exchange_rates[$currency]) ? $declared_value * $exchange_rates[$currency] : $declared_value;
+
+
+            if($declared_value_in_usd < 2500 || $this->reguser->ea_shipments == 'One-time shipment'){
+                //No enviar correo al admin
+            } else {
+                $content_admin = view('emails.web.priority_lead_quotation', [
+                    'origin_country_name' => $origin_country_name,
+                    'destination_country_name' => $destination_country_name,
+                    'reguser_location_name' => $reguser_location_name,
+                    'quotation' => $this->quotation,
+                    'reguser' => $this->reguser,
+                    'quotation_documents' => $this->quotation_documents,
+                    'assigned_user_full_name' => $this->assigned_user_full_name,
+                ])->render();
+        
+                sendMailApiLac(
+                    config('services.copymail.mail_marketing'), 
+                    'Quote ID: #'. $this->quotation->id .' - Priority Lead - ['. $origin_country_name .' - '. $destination_country_name .'].',
+                    $content_admin,
+                    ['email' => config('services.sendgrid.sender_email_priority'), 'name' => config('services.sendgrid.sender_name_priority')],
+                    [],
+                    [$this->assigned_user_mail]
+                );
+            }
         }
         
 

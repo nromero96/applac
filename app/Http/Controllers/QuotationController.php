@@ -66,6 +66,7 @@ class QuotationController extends Controller
             'quotations.id as quotation_id',
             'quotations.type_inquiry as type_inquiry',
             'quotations.shipping_date as quotation_shipping_date',
+            'quotations.no_shipping_date as quotation_no_shipping_date',
             'quotations.is_internal_inquiry',
             DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
             DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),

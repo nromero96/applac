@@ -90,23 +90,46 @@ if (!function_exists('personal_domains')) {
             'aol.com',
             'msn.com',
             'icloud.com',
+            'hotmail.es',
+            'proton.me',
+            'pm.me',
+            'fastmail.net'
         ];
     }
 }
 
+//Scope Países LATAM Y CARIBE
 if (!function_exists('scope_countries')) {
     function scope_countries()
     {
-        return ['7', '9', '10', '12', '16', '19', '22', '24', '26', '30', '38', '40', '43', '47', '52', '55', '60', '61', '63', '65', '76', '87', '88', '90', '94', '95', '97', '108', '138', '142', '147', '154', '158', '169', '171', '172', '177', '184', '185', '187', '208', '221', '225', '231', '233', '237', '239', '240'];
+        return ['7', '9', '10', '12', '16', '19', '22', '24', '26', '30', '40', '43', '47', '52', '55', '60', '61', '63', '65', '76', '87', '88', '90', '94', '95', '97', '108', '138', '142', '147', '154', '158', '169', '171', '172', '177', '184', '185', '187', '208', '221', '225', '233', '237', '239', '240'];
     }
 }
 
+//US/CA Países ESPECIALES
 if (!function_exists('special_countries')) {
     function special_countries()
     {
         return ['38', '231'];
     }
 }
+
+//Europe Países EUROPA
+if(!function_exists('europe_countries')) {
+    function europe_countries()
+    {
+        return ['2', '5', '11', '14', '15', '20', '21', '27', '33', '54', '56', '57', '58', '68', '74', '75', '81', '82', '84', '85', '99', '100', '105', '107', '112', '120', '125', '126', '127', '129', '135', '144', '145', '155', '164', '175', '176', '180', '181', '189', '193', '197', '198', '205', '211', '212', '223', '228', '230', '236', '244'];
+    }
+}
+
+//Other Resto de países
+if(!function_exists('other_countries')) {
+    function other_countries()
+    {
+        return ['1', '3', '4', '6', '8', '13', '17', '18', '23', '25', '28', '29', '31', '32', '34', '35', '36', '37', '39', '41', '42', '44', '45', '46', '48', '49', '50', '51', '53', '59', '62', '64', '66', '67', '69', '70', '71', '72', '73', '77', '78', '79', '80', '83', '86', '89', '91', '92', '93', '96', '98', '101', '102', '103', '104', '106', '109', '110', '111', '113', '114', '115', '116', '117', '118', '119', '121', '122', '123', '124', '128', '130', '131', '132', '133', '134', '136', '137', '139', '140', '141', '143', '146', '148', '149', '150', '151', '152', '153', '156', '157', '159', '160', '161', '162', '163', '165', '166', '167', '168', '170', '173', '174', '178', '179', '182', '183', '186', '188', '190', '191', '192', '194', '195', '196', '199', '200', '201', '202', '203', '204', '206', '207', '209', '210', '213', '214', '215', '216', '217', '218', '219', '220', '222', '224', '226', '227', '229', '232', '234', '235', '238', '241', '242', '243', '245', '246'];
+    }
+}
+
 
 //quotations calculate rating and assign to user
 if (!function_exists('rateQuotation')) {
@@ -130,7 +153,13 @@ if (!function_exists('rateQuotation')) {
         $fecha_solicitud = Carbon::parse($quotation->created_at)->startOfDay();
 
         $catorcediasdespues = $fecha_solicitud->copy()->addDays(14); // 14 días desde la fecha de solicitud
+        $veintiunadiasdespues = $fecha_solicitud->copy()->addDays(21); // 21 días desde la fecha de solicitud
         $treintadiasdespues = $fecha_solicitud->copy()->addDays(30); // 30 días desde la fecha de solicitud
+
+        //######## customer_type :::::::::::
+        $customer_type = $quotation->customer_user_id
+        ? \App\Models\User::find($quotation->customer_user_id)->customer_type
+        : \App\Models\GuestUser::find($quotation->guest_user_id)->customer_type;
 
         //######## Correo electrónico :::::::::::
         $email = $quotation->customer_user_id
@@ -138,7 +167,6 @@ if (!function_exists('rateQuotation')) {
         : \App\Models\GuestUser::find($quotation->guest_user_id)->email;
 
         $domain = substr(strrchr($email, "@"), 1);
-
         $personal_domains = personal_domains();
 
         $package_type = '';
@@ -148,72 +176,190 @@ if (!function_exists('rateQuotation')) {
             $package_type = isset($cargoDetails[0]['package_type']) ? $cargoDetails[0]['package_type'] : '';
         }
 
-        if($quotation->mode_of_transport == 'RoRo' && $quotation->cargo_type == 'Personal Vehicle' && ($package_type == 'Automobile' || $package_type == 'Motorcycle (crated or palletized) / ATV')){ 
-            $rating += 1;
-        } else {
+
+        //######## Origen/Destino, Ubicación y correo :::::::::::
+        $scopeCountries = scope_countries(); // Países en el scope
+        $specialCountries = special_countries(); // Países especiales
+        $europeCountries = europe_countries(); // Países en Europa
+        $otherCountries = other_countries(); // Resto de países
+
+
+        //Location
+        $location = $quotation->customer_user_id ? \App\Models\User::where('id', $quotation->customer_user_id)->value('location') : ($quotation->guest_user_id ? \App\Models\GuestUser::where('id', $quotation->guest_user_id)->value('location') : null);
+
+        $isLocationInSpecialCountries = in_array($location, $specialCountries);
+        $isLocationInEuropeCountries = in_array($location, $europeCountries);
+        $isLocationScopeCountries = in_array($location, $scopeCountries);
+        $isLocationInOtherCountries = in_array($location, $otherCountries);
+
+        //Origen
+        $isOriginInSpecialCountries = in_array($quotation->origin_country_id, $specialCountries);
+        $isOriginInEuropeCountries = in_array($quotation->origin_country_id, $europeCountries);
+        $isOriginInScopeCountries = in_array($quotation->origin_country_id, $scopeCountries);
+        $isOriginInOtherCountries = in_array($quotation->origin_country_id, $otherCountries);
+
+        //Destino
+        $isDestinationInSpecialCountries = in_array($quotation->destination_country_id, $specialCountries);
+        $isDestinationInEuropeCountries = in_array($quotation->destination_country_id, $europeCountries);
+        $isDestinationInScopeCountries = in_array($quotation->destination_country_id, $scopeCountries);
+        $isDestinationInOtherCountries = in_array($quotation->destination_country_id, $otherCountries);
+
+        //Correo de empresa y no de educación
+        $isBusinessEmailAndNotEdu = !in_array($domain, $personal_domains) && !preg_match('/\.edu(\.[a-z]{2,})?$/', $domain);
+
+        if($customer_type == 'Business'){
             //######## Fecha de envío :::::::::::
-            if ($quotation->shipping_date) {
-                $fecha_envio = Carbon::parse(explode(' to ', $quotation->shipping_date)[0]);
-
-                if ($fecha_envio->between($fecha_solicitud, $catorcediasdespues)) {
-                    $rating += 1;  //1 a 14 días desde la fecha solicitud
-                } elseif ($fecha_envio->between($catorcediasdespues, $treintadiasdespues)){
-                    $rating += 0.5; //Desde el día 15 al 30 desde la fecha solicitud
-                } elseif ($fecha_envio->gt($treintadiasdespues)){
-                    $rating += 0; //Más de 30 días desde la fecha solicitud
-                }
-            }
-
-            //######## Origen/Destino, Ubicación y correo :::::::::::
-            $scopeCountries = scope_countries(); // Países en el scope
-            $specialCountries = special_countries(); // Países especiales
-
-            $location = $quotation->customer_user_id ? \App\Models\User::find($quotation->customer_user_id)->location : \App\Models\GuestUser::find($quotation->guest_user_id)->location;
-
-            $isLocationInSpecialCountries = in_array($location, $specialCountries);
-
-            $isOriginInScope = in_array($quotation->origin_country_id, $scopeCountries);
-            $isDestinationInScope = in_array($quotation->destination_country_id, $scopeCountries);
-            $isBusinessEmailAndNotEdu = !in_array($domain, $personal_domains) && !preg_match('/\.edu(\.[a-z]{2,})?$/', $domain);
-
-            //scope exclude $specialCountries
-            $scopeExcludeSpecialCountries = array_diff($scopeCountries, $specialCountries);
-            //Location dentro del Scope $specialCountries
-            $isLocationInScopeExcludeSpecialCountries = in_array($location, $scopeExcludeSpecialCountries);
-
-            if ($isLocationInSpecialCountries) {
-                if ($isBusinessEmailAndNotEdu) {
-                    if ($isOriginInScope && $isDestinationInScope) {
-                        $rating += 3;  // Tanto origen como destino están en el scope y el correo es de una empresa
-                    } elseif ($isOriginInScope || $isDestinationInScope) {
-                        $rating += 2; // Origen o destino están en el scope y el correo es de una empresa
-                    } else {
-                        $rating += 1; // Cualquier país fuera del scope
+                if ($quotation->shipping_date && $quotation->no_shipping_date == 'no') {
+                    $fecha_envio = Carbon::parse(explode(' to ', $quotation->shipping_date)[0]);
+                    if ($fecha_envio->between($fecha_solicitud, $catorcediasdespues)) {
+                        $rating += 1;  //1 a 14 días desde la fecha solicitud
+                    } elseif ($fecha_envio->between($catorcediasdespues, $treintadiasdespues)){
+                        $rating += 0.5; //Desde el día 15 al 30 desde la fecha solicitud
+                    } elseif ($fecha_envio->gt($treintadiasdespues)){
+                        $rating += 0; //Más de 30 días desde la fecha solicitud
                     }
                 }
-            // Si la ubicación está en los países del scope excluyendo los especiales
-            } elseif ($isLocationInScopeExcludeSpecialCountries && $isBusinessEmailAndNotEdu) {
-                if (in_array($quotation->origin_country_id, $specialCountries) && in_array($quotation->destination_country_id, $scopeExcludeSpecialCountries)) {
-                    $rating += 2; // Origen en specialCountries y destino en scopeExcludeSpecialCountries y el correo es de una empresa
-                }
-            }
 
             //######## Valor ::::::::::::
-            if($cargotype == 'LCL' || $cargotype == 'LTL' || $quotationmodeoftransport == 'Air'){
-                if ($quotation->declared_value > 2500) {
-                    $rating += 1;
+                if($cargotype == 'LCL' || $cargotype == 'LTL' || $quotationmodeoftransport == 'Air'){
+                    if ($quotation->declared_value > 2500) {
+                        $rating += 1;
+                    }
+                } else if($cargotype == 'FCL' || $cargotype == 'FTL' || $quotationmodeoftransport == 'RoRo'){
+                    if ($quotation->declared_value > 25000) {
+                        $rating += 1;
+                    }
+                } else if($quotationmodeoftransport == 'Breakbulk'){
+                    if ($quotation->declared_value > 60000) {
+                        $rating += 1;
+                    }
                 }
-            } else if($cargotype == 'FCL' || $cargotype == 'FTL' || $quotationmodeoftransport == 'RoRo'){
-                if ($quotation->declared_value > 25000) {
-                    $rating += 1;
+
+            //######## Mail, Location, Origen y Destino :::::::::::
+                if($isBusinessEmailAndNotEdu){
+                    if ($isLocationInSpecialCountries) {
+                        if(($isOriginInSpecialCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInSpecialCountries)){
+                            //(Origin USA/CA - Destination Scope) o (Origin Scope -  Destination USA/CA)
+                            $rating += 3;
+                        } elseif($isOriginInScopeCountries && $isDestinationInScopeCountries){
+                            //(Origin Scope - Destination Scope)
+                            $rating += 2;
+                        } elseif(($isOriginInOtherCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInOtherCountries)){
+                            //(Origin Other - Destination Scope) o (Origin Scope - Destination Other)
+                            $rating += 2;
+                        } elseif($isOriginInOtherCountries && $isDestinationInOtherCountries){
+                            //(Origin Other - Destination Other)
+                            $rating += 1;
+                        } elseif( $isOriginInSpecialCountries && $isDestinationInSpecialCountries){
+                            //(Origin USA/CA - Destination USA/CA)
+                            $rating += 2;
+                        }
+                    } elseif ($isLocationInEuropeCountries) {
+                        if(($isOriginInSpecialCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInSpecialCountries)){
+                            //(Origin USA/CA - Destination Scope) o (Origin Scope -  Destination USA/CA)
+                            $rating += 2;
+                        }elseif(($isOriginInSpecialCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInSpecialCountries)){
+                            //((Origin USA/CA - Destination Other) o (Origin Other - Destination USA/CA))
+                            $rating += 2; 
+                        }elseif(($isOriginInScopeCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInScopeCountries)){
+                            //(Origin Scope - Destination Other) o (Origin Other - Destination Scope)
+                            $rating += 2;
+                        }elseif($isOriginInSpecialCountries && $isDestinationInEuropeCountries){
+                            //(Origin USA/CA - Destination Europe)
+                            $rating += 2;
+                        }elseif($isOriginInScopeCountries && $isDestinationInEuropeCountries){
+                            //(Origin Scope - Destination Europe)
+                            $rating += 2;
+                        }elseif($isOriginInOtherCountries && $isDestinationInEuropeCountries){
+                            //(Origin Other - Destination Europe)
+                            $rating += 2;
+                        }
+                    } elseif ($isLocationScopeCountries) {
+                        if($isOriginInSpecialCountries && $isDestinationInScopeCountries){
+                            //(Origin USA/CA - Destination Scope)
+                            $rating += 2;
+                        }
+                    }
                 }
-            } else if($quotationmodeoftransport == 'Breakbulk'){
-                if ($quotation->declared_value > 60000) {
-                    $rating += 1;
+        }elseif($customer_type == 'Logistics Company'){
+            //######## Fecha de envío :::::::::::
+                if ($quotation->shipping_date && $quotation->no_shipping_date == 'no') {
+                    $fecha_envio = Carbon::parse(explode(' to ', $quotation->shipping_date)[0]);
+
+                    if ($fecha_envio->between($fecha_solicitud, $catorcediasdespues)) {
+                        $rating += 1;  //1 a 14 días desde la fecha solicitud
+                    } elseif ($fecha_envio->between($catorcediasdespues, $treintadiasdespues)){
+                        $rating += 0.5; //Desde el día 15 al 30 desde la fecha solicitud
+                    } elseif ($fecha_envio->gt($treintadiasdespues)){
+                        $rating += 0; //Más de 30 días desde la fecha solicitud
+                    }
+                }
+
+            //######## Valor ::::::::::::
+                if($cargotype == 'LCL' || $cargotype == 'LTL' || $quotationmodeoftransport == 'Air'){
+                    if ($quotation->declared_value > 2500) {
+                        $rating += 1;
+                    }
+                } else if($cargotype == 'FCL' || $cargotype == 'FTL' || $quotationmodeoftransport == 'RoRo'){
+                    if ($quotation->declared_value > 25000) {
+                        $rating += 1;
+                    }
+                } else if($quotationmodeoftransport == 'Breakbulk'){
+                    if ($quotation->declared_value > 60000) {
+                        $rating += 1;
+                    }
+                }
+
+            //######## Mail, Location, Origen y Destino :::::::::::
+                if($isBusinessEmailAndNotEdu){
+                    if ($isLocationScopeCountries) {
+                        if(($isOriginInSpecialCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInSpecialCountries)){
+                            //(Origin USA/CA - Destination Other) o (Origin Other -  Destination USA/CA)
+                            $rating += 3;
+                        } elseif(($isOriginInSpecialCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInSpecialCountries)){
+                            //(Origin USA/CA - Destination Scope) O (Origin Scope - Destination USA/CA)
+                            $rating += 3;
+                        } elseif(($isOriginInSpecialCountries && $isDestinationInEuropeCountries) || ($isOriginInEuropeCountries && $isDestinationInSpecialCountries)){
+                            //(Origin USA/CA - Destination Europe) o (Origin Europe - Destination USA/CA)
+                            $rating += 3;
+                        }
+                    } elseif ($isLocationInEuropeCountries) {
+                        if(($isOriginInSpecialCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInSpecialCountries)){
+                            //(Origin USA/CA - Destination Other) o (Origin Other - Destination USA/CA)
+                            $rating += 3;
+                        }elseif(($isOriginInSpecialCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInSpecialCountries)){
+                            //(Origin USA/CA - Destination Scope) o (Origin Scope -  Destination USA/CA)
+                            $rating += 3;
+                        }elseif(($isOriginInSpecialCountries && $isDestinationInEuropeCountries) || ($isOriginInEuropeCountries && $isDestinationInSpecialCountries)){
+                            //(Origin USA/CA - Destination Europe) o (Origin Europe - Destination USA/CA)
+                            $rating += 3;
+                        }
+                    } elseif ($isLocationInOtherCountries) {
+                        if(($isOriginInSpecialCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInSpecialCountries)){
+                            //(Origin USA/CA - Destination Other) o (Origin Other - Destination USA/CA)
+                            $rating += 3;
+                        }elseif(($isOriginInSpecialCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInSpecialCountries)){
+                            //(Origin USA/CA - Destination Scope) o (Origin Scope -  Destination USA/CA)
+                            $rating += 3;
+                        }elseif(($isOriginInSpecialCountries && $isDestinationInEuropeCountries) || ($isOriginInEuropeCountries && $isDestinationInSpecialCountries)){
+                            //(Origin USA/CA - Destination Europe) o (Origin Europe - Destination USA/CA)
+                            $rating += 3;
+                        }
+                    }
+                }
+        }elseif($customer_type == 'Individual'){
+            if($quotation->mode_of_transport == 'RoRo' && $quotation->cargo_type == 'Personal Vehicle' && ($package_type == 'Automobile' || $package_type == 'Motorcycle (crated or palletized) / ATV')){ 
+                //######## Fecha de envío :::::::::::
+                if ($quotation->shipping_date && $quotation->no_shipping_date == 'no') {
+                    $fecha_envio = Carbon::parse(explode(' to ', $quotation->shipping_date)[0]);
+                    if ($fecha_envio->between($fecha_solicitud, $veintiunadiasdespues)) {
+                        $rating += 2;  //1 a 21 días desde la fecha solicitud
+                    } elseif ($fecha_envio->gt($veintiunadiasdespues)){
+                        $rating += 1; //Más de 22 días desde la fecha solicitud
+                    }
                 }
             }
         }
-
         // Guarda la calificación en la cotización
         $quotation->rating = $rating;
         $quotation->save();
@@ -224,10 +370,8 @@ if (!function_exists('rateQuotation')) {
             $users_auto_assigned_quotes = \App\Models\Setting::where('key', 'users_auto_assigned_quotes')->first()->value;
             $userIds = json_decode($users_auto_assigned_quotes);
 
-
             // Buscar si la cotización es con el mismo email
             if (in_array($domain, $personal_domains)) {
-
                 // Buscar el usuario con el correo electrónico proporcionado
                 $user = \App\Models\User::where('email', $email)->first();
                 $guestUser = \App\Models\GuestUser::where('email', $email)->first();
@@ -275,7 +419,6 @@ if (!function_exists('rateQuotation')) {
                     ->orderBy('quotations.id', 'desc') // Ordenar por ID descendente
                     ->select('quotations.assigned_user_id')
                     ->first();
-
                 // Buscar el último invitado registrado con el mismo dominio
                 $lastGuestQuotationWithDomain = \App\Models\Quotation::join('guest_users as guest', 'quotations.guest_user_id', '=', 'guest.id')
                     ->where('guest.email', 'like', "%@$domain")
@@ -283,7 +426,6 @@ if (!function_exists('rateQuotation')) {
                     ->orderBy('quotations.id', 'desc') // Ordenar por ID descendente
                     ->select('quotations.assigned_user_id')
                     ->first();
-
                 if($lastUserQuotationWithDomain){
                     $quotation->assigned_user_id = $lastUserQuotationWithDomain->assigned_user_id;
                     $quotation->save();
@@ -371,91 +513,185 @@ if (!function_exists('rateQuotationWeb')) {
         : GuestUser::find($quotation->guest_user_id)->ea_shipments;
 
         $domain = substr(strrchr($email, "@"), 1);
-
         $personal_domains = personal_domains();
-
-        //######## Business Type :::::::::::
-        if($business_role){
-            if($business_role == 'Manufacturer'){
-                $rating += 1;
-            }elseif($business_role == 'Import / Export Business'){
-                $rating += 1;
-            }elseif($business_role == 'Retailer / Distributor'){
-                $rating += 0.5;
-            }elseif($business_role == 'Logistics Company / Freight Forwarder'){
-                $rating += 0;
-            }elseif($business_role == 'Individual / Private Person'){
-                $rating += 0;
-            }elseif($business_role == 'Other'){
-                $rating += 0.5;
-            }
-        }
-
-        //######## Shipment ready date :::::::::::
-        if ($quotation->shipment_ready_date) {
-            if($quotation->shipment_ready_date == 'Ready to ship now'){
-                $rating += 1;
-            }elseif($quotation->shipment_ready_date == 'Ready within 1-3 months'){
-                $rating += 0.5;
-            }elseif($quotation->shipment_ready_date == 'Not yet ready, just exploring options/budgeting'){
-                $rating += 0;
-            }else{
-                $rating += 0;
-            }
-        }
-
-        //######## Annual Shipments :::::::::::
-        if($ea_shipments){
-            if($ea_shipments == 'One-time shipment'){
-                $rating += 0;
-            }elseif($ea_shipments == 'Between 2-10'){
-                $rating += 1;
-            }elseif($ea_shipments == 'Between 11-50'){
-                $rating += 1;
-            }elseif($ea_shipments == 'Between 51-200'){
-                $rating += 1;
-            }elseif($ea_shipments == 'Between 201-500'){
-                $rating += 0.5;
-            }elseif($ea_shipments == 'More than 500'){
-                $rating += 0;
-            }else{
-                $rating += 0;
-            }
-        }
-
-
 
         //######## Origen/Destino, Ubicación y correo :::::::::::
         $scopeCountries = scope_countries(); // Países en el scope
         $specialCountries = special_countries(); // Países especiales
+        $europeCountries = europe_countries(); // Países en Europa
+        $otherCountries = other_countries(); // Resto de países
 
-        $location = $quotation->customer_user_id ? User::find($quotation->customer_user_id)->location : GuestUser::find($quotation->guest_user_id)->location;
+
+        //Location
+        $location = $quotation->customer_user_id ? \App\Models\User::where('id', $quotation->customer_user_id)->value('location') : ($quotation->guest_user_id ? \App\Models\GuestUser::where('id', $quotation->guest_user_id)->value('location') : null);
 
         $isLocationInSpecialCountries = in_array($location, $specialCountries);
+        $isLocationInEuropeCountries = in_array($location, $europeCountries);
+        $isLocationScopeCountries = in_array($location, $scopeCountries);
+        $isLocationInOtherCountries = in_array($location, $otherCountries);
 
-        $isOriginInScope = in_array($quotation->origin_country_id, $scopeCountries);
-        $isDestinationInScope = in_array($quotation->destination_country_id, $scopeCountries);
+        //Origen
+        $isOriginInSpecialCountries = in_array($quotation->origin_country_id, $specialCountries);
+        $isOriginInEuropeCountries = in_array($quotation->origin_country_id, $europeCountries);
+        $isOriginInScopeCountries = in_array($quotation->origin_country_id, $scopeCountries);
+        $isOriginInOtherCountries = in_array($quotation->origin_country_id, $otherCountries);
+
+        //Destino
+        $isDestinationInSpecialCountries = in_array($quotation->destination_country_id, $specialCountries);
+        $isDestinationInEuropeCountries = in_array($quotation->destination_country_id, $europeCountries);
+        $isDestinationInScopeCountries = in_array($quotation->destination_country_id, $scopeCountries);
+        $isDestinationInOtherCountries = in_array($quotation->destination_country_id, $otherCountries);
+
+        //Correo de empresa y no de educación
         $isBusinessEmailAndNotEdu = !in_array($domain, $personal_domains) && !preg_match('/\.edu(\.[a-z]{2,})?$/', $domain);
 
-        //scope exclude $specialCountries
-        $scopeExcludeSpecialCountries = array_diff($scopeCountries, $specialCountries);
-        //Location dentro del Scope $specialCountries
-        $isLocationInScopeExcludeSpecialCountries = in_array($location, $scopeExcludeSpecialCountries);
+        //######## Business Type :::::::::::
+        if($business_role){
+            if($business_role == 'Manufacturer' || $business_role == 'Importer / Exporter (Owner of Goods)' || $business_role == 'Retailer / Distributor' || $business_role == 'Other'){
+                //######## Shipment ready date :::::::::::
+                    if ($quotation->shipment_ready_date) {
+                        if($quotation->shipment_ready_date == 'Ready to ship now'){
+                            $rating += 1;
+                        }elseif($quotation->shipment_ready_date == 'Ready within 1-3 months'){
+                            $rating += 0.5;
+                        }elseif($quotation->shipment_ready_date == 'Not yet ready, just exploring options/budgeting'){
+                            $rating += 0;
+                        }
+                    }
 
-        if ($isLocationInSpecialCountries) {
-            if ($isBusinessEmailAndNotEdu) {
-                if ($isOriginInScope && $isDestinationInScope) {
-                        $rating += 2;  // Tanto origen como destino están en el scope y el correo es de una empresa
-                } elseif ($isOriginInScope || $isDestinationInScope) {
-                        $rating += 1; // Origen o destino están en el scope y el correo es de una empresa
-                } else {
-                        $rating += 0.5; // Cualquier país fuera del scope
-                }
-            }
-            // Si la ubicación está en los países del scope excluyendo los especiales
-        } elseif ($isLocationInScopeExcludeSpecialCountries && $isBusinessEmailAndNotEdu) {
-            if (in_array($quotation->origin_country_id, $specialCountries) && in_array($quotation->destination_country_id, $scopeExcludeSpecialCountries)) {
-                $rating += 1; // Origen en specialCountries y destino en scopeExcludeSpecialCountries y el correo es de una empresa
+                //######## Annual Shipments :::::::::::
+                    if($ea_shipments){
+                        if($ea_shipments == 'One-time shipment'){
+                            $rating += 0;
+                        }elseif($ea_shipments == 'Between 2-10'){
+                            $rating += 0.5;
+                        }elseif($ea_shipments == 'Between 11-50'){
+                            $rating += 1;
+                        }elseif($ea_shipments == 'Between 51-200'){
+                            $rating += 1;
+                        }elseif($ea_shipments == 'Between 201-500'){
+                            $rating += 0.5;
+                        }elseif($ea_shipments == 'More than 500'){
+                            $rating += 0;
+                        }
+                    }
+
+                //######## Mail, Location, Origen y Destino :::::::::::
+                    if($isBusinessEmailAndNotEdu){
+                        if ($isLocationInSpecialCountries) {
+                            if(($isOriginInSpecialCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInSpecialCountries)){
+                                //(Origin USA/CA - Destination Scope) o (Origin Scope -  Destination USA/CA)
+                                $rating += 3;
+                            } elseif($isOriginInScopeCountries && $isDestinationInScopeCountries){
+                                //(Origin Scope - Destination Scope)
+                                $rating += 2;
+                            } elseif(($isOriginInOtherCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInOtherCountries)){
+                                //(Origin Other - Destination Scope) o (Origin Scope - Destination Other)
+                                $rating += 2;
+                            } elseif($isOriginInOtherCountries && $isDestinationInOtherCountries){
+                                //(Origin Other - Destination Other)
+                                $rating += 1;
+                            } elseif( $isOriginInSpecialCountries && $isDestinationInSpecialCountries){
+                                //(Origin USA/CA - Destination USA/CA)
+                                $rating += 2;
+                            }
+                        } elseif ($isLocationInEuropeCountries) {
+                            if(($isOriginInSpecialCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInSpecialCountries)){
+                                //(Origin USA/CA - Destination Scope) o (Origin Scope -  Destination USA/CA)
+                                $rating += 2;
+                            }elseif(($isOriginInSpecialCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInSpecialCountries)){
+                                //((Origin USA/CA - Destination Other) o (Origin Other - Destination USA/CA))
+                                $rating += 2; 
+                            }elseif(($isOriginInScopeCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInScopeCountries)){
+                                //(Origin Scope - Destination Other) o (Origin Other - Destination Scope)
+                                $rating += 2;
+                            }elseif($isOriginInSpecialCountries && $isDestinationInEuropeCountries){
+                                //(Origin USA/CA - Destination Europe)
+                                $rating += 2;
+                            }elseif($isOriginInScopeCountries && $isDestinationInEuropeCountries){
+                                //(Origin Scope - Destination Europe)
+                                $rating += 2;
+                            }elseif($isOriginInOtherCountries && $isDestinationInEuropeCountries){
+                                //(Origin Other - Destination Europe)
+                                $rating += 2;
+                            }
+                        } elseif ($isLocationScopeCountries) {
+                            if($isOriginInSpecialCountries && $isDestinationInScopeCountries){
+                                //(Origin USA/CA - Destination Scope)
+                                $rating += 2;
+                            }
+                        }
+                    }
+
+            }elseif($business_role == 'Logistics Company / Freight Forwarder'){
+                //######## Shipment ready date :::::::::::
+                    if ($quotation->shipment_ready_date) {
+                        if($quotation->shipment_ready_date == 'Ready to ship now'){
+                            $rating += 1;
+                        }elseif($quotation->shipment_ready_date == 'Ready within 1-3 months'){
+                            $rating += 0.5;
+                        }elseif($quotation->shipment_ready_date == 'Not yet ready, just exploring options/budgeting'){
+                            $rating += 0;
+                        }
+                    }
+
+                //######## Annual Shipments :::::::::::
+                    if($ea_shipments){
+                        if($ea_shipments == 'One-time shipment'){
+                            $rating += 0;
+                        }elseif($ea_shipments == 'Between 2-10'){
+                            $rating += 1;
+                        }elseif($ea_shipments == 'Between 11-50'){
+                            $rating += 1;
+                        }elseif($ea_shipments == 'Between 51-200'){
+                            $rating += 1;
+                        }elseif($ea_shipments == 'Between 201-500'){
+                            $rating += 0.5;
+                        }elseif($ea_shipments == 'More than 500'){
+                            $rating += 0;
+                        }
+                    }
+                
+                //######## Mail, Location, Origen y Destino :::::::::::
+                    if($isBusinessEmailAndNotEdu){
+                        if ($isLocationScopeCountries) {
+                            if(($isOriginInSpecialCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInSpecialCountries)){
+                                //(Origin USA/CA - Destination Other) o (Origin Other -  Destination USA/CA)
+                                $rating += 3;
+                            } elseif(($isOriginInSpecialCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInSpecialCountries)){
+                                //(Origin USA/CA - Destination Scope) O (Origin Scope - Destination USA/CA)
+                                $rating += 3;
+                            } elseif(($isOriginInSpecialCountries && $isDestinationInEuropeCountries) || ($isOriginInEuropeCountries && $isDestinationInSpecialCountries)){
+                                //(Origin USA/CA - Destination Europe) o (Origin Europe - Destination USA/CA)
+                                $rating += 3;
+                            }
+                        } elseif ($isLocationInEuropeCountries) {
+                            if(($isOriginInSpecialCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInSpecialCountries)){
+                                //(Origin USA/CA - Destination Other) o (Origin Other - Destination USA/CA)
+                                $rating += 3;
+                            }elseif(($isOriginInSpecialCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInSpecialCountries)){
+                                //(Origin USA/CA - Destination Scope) o (Origin Scope -  Destination USA/CA)
+                                $rating += 3;
+                            }elseif(($isOriginInSpecialCountries && $isDestinationInEuropeCountries) || ($isOriginInEuropeCountries && $isDestinationInSpecialCountries)){
+                                //(Origin USA/CA - Destination Europe) o (Origin Europe - Destination USA/CA)
+                                $rating += 3;
+                            }
+                        } elseif ($isLocationInOtherCountries) {
+                            if(($isOriginInSpecialCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInSpecialCountries)){
+                                //(Origin USA/CA - Destination Other) o (Origin Other - Destination USA/CA)
+                                $rating += 3;
+                            }elseif(($isOriginInSpecialCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInSpecialCountries)){
+                                //(Origin USA/CA - Destination Scope) o (Origin Scope -  Destination USA/CA)
+                                $rating += 3;
+                            }elseif(($isOriginInSpecialCountries && $isDestinationInEuropeCountries) || ($isOriginInEuropeCountries && $isDestinationInSpecialCountries)){
+                                //(Origin USA/CA - Destination Europe) o (Origin Europe - Destination USA/CA)
+                                $rating += 3;
+                            }
+                        }
+                    }
+
+            }elseif($business_role == 'Individual / Private Person'){
+                //No hay rating
             }
         }
 

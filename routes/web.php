@@ -43,6 +43,13 @@ use App\Mail\PruebaCorreo;
 //     }
 // });
 
+//Rating Test
+Route::get('/rating-for-quote/{id}', function ($id) {
+    //llmar al helper de rating
+    $rating = rateQuotationWeb($id);
+    return $rating;
+})->name('ratingforquote');
+
 
 
 //home

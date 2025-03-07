@@ -551,7 +551,7 @@
                                                                 $fecha_solicitud = Carbon\Carbon::parse($quotation->quotation_created_at)->startOfDay();
                                                                 $catorcediasdespues = $fecha_solicitud->clone()->addDays(14);
                                                                 $treintadiasdespues = $fecha_solicitud->clone()->addDays(30);
-                                                                if($quotation->quotation_shipping_date){
+                                                                if($quotation->quotation_shipping_date && $quotation->quotation_no_shipping_date == 'no'){
                                                                     $fecha_envio = Carbon\Carbon::parse(explode(' to ', $quotation->quotation_shipping_date)[0]);
                                                                     if ($fecha_envio->between($fecha_solicitud, $catorcediasdespues)) {
                                                                         //1 a 14 días desde la fecha solicitud
@@ -564,7 +564,7 @@
                                                                         $tagreadiness = '<span class="badge-readiness br-low">LOW</span>';
                                                                     }
                                                                 } else {
-                                                                    $tagreadiness = '<span class="badge-readiness br-low">LOW</span>';
+                                                                    $tagreadiness = '<span class="badge-readiness -- br-low">LOW</span>';
                                                                 }
                                                             }
 
