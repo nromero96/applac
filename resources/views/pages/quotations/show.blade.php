@@ -279,7 +279,7 @@
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Job Title")}}:</label> {{$quotation->customer_job_title}}</p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Email")}}:</label> {{ $quotation->customer_email }}</p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }} {!! $location_label !!}</p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }}</p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Business type")}}:</label> {{ $quotation->customer_business_role }} {!! $business_type_label !!}</p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Annual Shipments")}}:</label> {{ $quotation->customer_ea_shipments }} {!! $ea_shipments_label !!}</p>
                                 </div>
@@ -290,7 +290,7 @@
                                             <path d="m9 18 6-6-6-6"></path>
                                         </svg> 
                                         <label class="fw-bold mb-0">{{__("Destination")}}:</label> {{ $quotation->destination_country }} 
-                                        {!! $origindestination_label !!}
+                                        
                                     </p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ $quotation->declared_value }} {{ $quotation->currency }} 
                                         <span data-toggle="tooltip" data-placement="top" title="...">

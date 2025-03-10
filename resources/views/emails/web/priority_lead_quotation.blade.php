@@ -99,7 +99,7 @@
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Country</b></td>
-                <td style="padding: 7px 0px;">{{ $reguser_location_name }} {!! $location_label !!}</td>
+                <td style="padding: 7px 0px;">{{ $reguser_location_name }}</td>
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Business Type</b></td>
@@ -119,7 +119,7 @@
 
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Origin/Destination</b></td>
-                <td style="padding: 7px 0px;">{{ $origin_country_name }} - {{ $destination_country_name }} {!! $origindestination_label !!}</td>
+                <td style="padding: 7px 0px;">{{ $origin_country_name }} - {{ $destination_country_name }}</td>
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Declared Value</b></td>
