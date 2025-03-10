@@ -280,7 +280,7 @@
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Email")}}:</label> {{ $quotation->customer_email }}</p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}</p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Business type")}}:</label> {{ $quotation->customer_business_role }} {!! $business_type_label !!}</p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Business type")}}:</label> {{ $quotation->customer_business_role }}</p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Annual Shipments")}}:</label> {{ $quotation->customer_ea_shipments }} {!! $ea_shipments_label !!}</p>
                                 </div>
                                 <div class="col-md-5 mt-0">

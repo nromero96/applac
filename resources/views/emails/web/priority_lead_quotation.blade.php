@@ -103,7 +103,7 @@
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Business Type</b></td>
-                <td style="padding: 7px 0px;">{{ $reguser->business_role }} {!! $business_type_label !!}</td>
+                <td style="padding: 7px 0px;">{{ $reguser->business_role }}</td>
             </tr>
             <tr>
                 <td style="padding: 7px 0px;"><b>Annual Shipments</b></td>
