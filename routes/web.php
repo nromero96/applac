@@ -43,12 +43,19 @@ use App\Mail\PruebaCorreo;
 //     }
 // });
 
-//Rating Test
-Route::get('/rating-for-quote/{id}', function ($id) {
+//Rating Test Externa 1
+Route::get('/rating-for-quote-external-1/{id}', function ($id) {
+    //llmar al helper de rating
+    $rating = rateQuotation($id);
+    return $rating;
+})->name('ratingforquote-external-1');
+
+//Rating Test Externa 2
+Route::get('/rating-for-quote-external-2/{id}', function ($id) {
     //llmar al helper de rating
     $rating = rateQuotationWeb($id);
     return $rating;
-})->name('ratingforquote');
+})->name('ratingforquote-external-2');
 
 
 
