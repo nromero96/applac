@@ -282,6 +282,7 @@
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }}</p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Business type")}}:</label> {{ $quotation->customer_business_role }}</p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Annual Shipments")}}:</label> {{ $quotation->customer_ea_shipments }} {!! $ea_shipments_label !!}</p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Source")}}:</label> {{ $quotation->customer_source }}</p>
                                 </div>
                                 <div class="col-md-5 mt-0">
                                     <h6 class="text-primary mb-1">{{ __('Shipment Info') }}</h6>
@@ -292,6 +293,7 @@
                                         <label class="fw-bold mb-0">{{__("Destination")}}:</label> {{ $quotation->destination_country }} 
                                         
                                     </p>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Mode of transport")}}:</label> {{ $quotation->mode_of_transport }}</p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ $quotation->declared_value }} {{ $quotation->currency }} 
                                         <span data-toggle="tooltip" data-placement="top" title="...">
                                             <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14.88" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">

@@ -78,6 +78,10 @@
                 <td style="padding: 7px 0px;">{{ $origin_country_name }} - {{ $destination_country_name }}</td>
             </tr>
             <tr style="border-bottom: 1px solid #D8D8D8;">
+                <td style="padding: 7px 0px;"><b>Mode of transport</b></td>
+                <td style="padding: 7px 0px;">{{ $quotation->mode_of_transport }}</td>
+            </tr>
+            <tr style="border-bottom: 1px solid #D8D8D8;">
                 <td style="padding: 7px 0px;"><b>Declared Value</b></td>
                 <td style="padding: 7px 0px;">{{ $quotation->declared_value }} {{ $quotation->currency }}</td>
             </tr>
