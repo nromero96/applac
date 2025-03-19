@@ -51,9 +51,11 @@ class QuotationController extends Controller
             'job_title' => 'nullable|string|max:255',
             'business_role' => 'required|string|max:255',
             'ea_shipments' => 'required|string|max:255',
+            'source' => 'required|string|max:255',
             // Quotation
             'origin_country_id' => 'required|integer|exists:countries,id',
             'destination_country_id' => 'required|integer|exists:countries,id',
+            'mode_of_transport' => 'required|string',
             'declared_value' => 'required|string',
             'currency' => 'required|string',
             'shipment_ready_date' => 'required|string',
@@ -62,31 +64,36 @@ class QuotationController extends Controller
             'files.*' => 'nullable|file|mimes:txt,pdf,doc,docx,xls,xlsx,ppt,pptx,zip,csv,jpg,jpeg,gif,png,tif,tiff|max:10240', //10MB
         ]);
 
+        //Convertir a minúsculas email
+        $validatedData['email'] = strtolower($validatedData['email']);
+
         //Guarda a la tabla guest_users
         $guest_user = GuestUser::create([
-            'name' => $request->name,
-            'lastname' => $request->lastname,
-            'company_name' => $request->company_name,
-            'email' => $request->email,
-            'location' => $request->location,
-            'phone_code' => $request->phone_code,
-            'phone' => $request->phone,
-            'job_title' => $request->job_title,
-            'business_role' => $request->business_role,
-            'ea_shipments' => $request->ea_shipments,
+            'name' => $validatedData['name'],
+            'lastname' => $validatedData['lastname'],
+            'company_name' => $validatedData['company_name'],
+            'email' => $validatedData['email'],
+            'location' => $validatedData['location'],
+            'phone_code' => $validatedData['phone_code'],
+            'phone' => $validatedData['phone'],
+            'job_title' => $validatedData['job_title'],
+            'business_role' => $validatedData['business_role'],
+            'ea_shipments' => $validatedData['ea_shipments'],
+            'source' => $validatedData['source'],
         ]);
 
         //Guarda a la tabla quotations
         $quotation = Quotation::create([
             'type_inquiry' => 'external 2',
             'guest_user_id' => $guest_user->id,
-            'origin_country_id' => $request->origin_country_id,
-            'destination_country_id' => $request->destination_country_id,
-            'declared_value' => $request->declared_value,
-            'currency' => $request->currency,
+            'origin_country_id' => $validatedData['origin_country_id'],
+            'destination_country_id' => $validatedData['destination_country_id'],
+            'mode_of_transport' => $validatedData['mode_of_transport'],
+            'declared_value' => $validatedData['declared_value'],
+            'currency' => $validatedData['currency'],
 
-            'shipment_ready_date' => $request->shipment_ready_date,
-            'cargo_description' => $request->cargo_description,
+            'shipment_ready_date' => $validatedData['shipment_ready_date'],
+            'cargo_description' => $validatedData['cargo_description'],
 
             'no_shipping_date' => 'yes',
             'status' => 'Pending',
