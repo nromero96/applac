@@ -81,8 +81,9 @@ class WebQuotationCreated extends Mailable
             'Quote ID: #'. $this->quotation->id .' - Your Request with Latin American Cargo - ['. $origin_country_name .' - '. $destination_country_name .'].', 
             $content,
             null,
-            [], 
-            [config('services.copymail.mail_1'), config('services.copymail.mail_2')]
+            [],
+            [], //copias
+            [config('services.copymail.mail_1'), config('services.copymail.mail_2')] //copia oculta
         );
 
         //Si el rating es mayor o igual a 4, enviar también un correo al administrador
