@@ -170,8 +170,8 @@ class QuotationCreated extends Mailable{
             $content,
             null,
             ($pdf !== null) ? [$pdf] : [],
-            [],
-            [config('services.copymail.mail_1'), config('services.copymail.mail_2')]);
+            [], //Copia
+            [config('services.copymail.mail_1'), config('services.copymail.mail_2')]); //Copia oculta
 
         // Retorna la vista utilizando la variable $content
         return $this->html($content);
