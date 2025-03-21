@@ -200,7 +200,7 @@
                                             <select class="form-select @error('phone') is-invalid @enderror" name="source" id="source">
                                                 <option value="">Select...</option>
                                                 <option value="Google Search" {{ old('source') == 'Google Search' ? 'selected' : '' }}>Google Search</option>
-                                                <option value="Linkedin" {{ old('source') == 'Linkedin' ? 'selected' : '' }}>Linkedin</option>
+                                                <option value="LinkedIn" {{ old('source') == 'LinkedIn' ? 'selected' : '' }}>LinkedIn</option>
                                                 <option value="Social Media" {{ old('source') == 'Social Media' ? 'selected' : '' }}>Social Media (Facebook, Instagram, Youtube)</option>
                                                 <option value="Referral" {{ old('source') == 'Referral' ? 'selected' : '' }}>Referral</option>
                                                 <option value="Other" {{ old('source') == 'Other' ? 'selected' : '' }}>Other</option>

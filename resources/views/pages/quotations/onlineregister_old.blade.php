@@ -603,7 +603,7 @@
                                                             <option value="">{{ __('Select...') }}</option>
                                                             <option value="Direct Client">{{ __('Direct Client') }}</option>
                                                             <option value="Google Search">{{ __('Google Search') }}</option>
-                                                            <option value="Linkedin">{{ __('Linkedin') }}</option>
+                                                            <option value="LinkedIn">{{ __('LinkedIn') }}</option>
                                                             <option value="Social Media">{{ __('Social Media') }}</option>
                                                             <option value="Referral">{{ __('Referral') }}</option>
                                                             <option value="Other">{{ __('Other') }}</option>

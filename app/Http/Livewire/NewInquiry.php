@@ -61,7 +61,7 @@ class NewInquiry extends Component
         ],
         [
             'Google Search' => ['key' => 'SEO', 'label' => 'Google Search', 'color' => '#4CBB17'],
-            'Linkedin' => ['key' => 'LNK', 'label' => 'Linkedin', 'color' => '#0077B5'],
+            'LinkedIn' => ['key' => 'LNK', 'label' => 'LinkedIn', 'color' => '#0077B5'],
             'Social Media' => ['key' => 'SOC', 'label' => 'Social Media', 'color' => '#1877F2'],
         ]
     ];

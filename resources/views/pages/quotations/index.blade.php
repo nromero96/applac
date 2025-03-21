@@ -180,35 +180,28 @@
 
 
                                                             @php
-                                                            //color
-                                                            if($source->user_source == 'ppc') {
-                                                                $class_sb_sch = 'sb-color-ppc';
-                                                                $text_sb_sch = $source->user_source;
-                                                            } elseif($source->user_source == 'Direct Client'){
-                                                                $class_sb_sch = 'sb-color-dir';
-                                                                $text_sb_sch = 'dir';
-                                                            } elseif($source->user_source == 'Google Search') {
-                                                                $class_sb_sch = 'sb-color-seo';
-                                                                $text_sb_sch = 'seo';
-                                                            } elseif($source->user_source == 'Linkedin'){
-                                                                $class_sb_sch = 'sb-color-lnk';
-                                                                $text_sb_sch = 'lnk';
-                                                            } elseif($source->user_source == 'Social Media'){
-                                                                $class_sb_sch = 'sb-color-soc';
-                                                                $text_sb_sch = 'soc';
-                                                            } elseif($source->user_source == 'Referral'){
-                                                                $class_sb_sch = 'sb-color-ref';
-                                                                $text_sb_sch = 'ref';
-                                                            } elseif($source->user_source == 'Other'){
-                                                                $class_sb_sch = 'sb-color-oth';
-                                                                $text_sb_sch = 'oth';
-                                                            } elseif($source->user_source == 'agt'){
-                                                                $class_sb_sch = 'sb-color-agt';
-                                                                $text_sb_sch = 'agt';
-                                                            } else {
-                                                                $class_sb_sch = 'sb-color-oth';
-                                                                $text_sb_sch = 'N/A';
-                                                            }
+                                                            // color
+                                                            $sourceSearchMap = [
+                                                                'Google Search' => ['class' => 'sb-color-seo', 'text' => 'seo'],
+                                                                'Search Engine' => ['class' => 'sb-color-seo', 'text' => 'seo'],
+                                                                'LinkedIn' => ['class' => 'sb-color-lnk', 'text' => 'lnk'],
+                                                                'AI Assistant' => ['class' => 'sb-color-aia', 'text' => 'aia'],
+                                                                'Social Media' => ['class' => 'sb-color-soc', 'text' => 'soc'],
+                                                                'Referral' => ['class' => 'sb-color-ref', 'text' => 'ref'],
+                                                                'Industry Event' => ['class' => 'sb-color-evt', 'text' => 'evt'],
+                                                                'Other' => ['class' => 'sb-color-oth', 'text' => 'oth'],
+                                                                'ppc' => ['class' => 'sb-color-ppc', 'text' => 'ppc'],
+                                                                'Direct Client' => ['class' => 'sb-color-dir', 'text' => 'dir'],
+                                                                'agt' => ['class' => 'sb-color-agt', 'text' => 'agt'],
+                                                            ];
+
+                                                            $default = ['class' => 'sb-color-oth', 'text' => 'N/A'];
+                                                            $mapping = $sourceSearchMap[$source->user_source] ?? $default;
+
+                                                            $class_sb_sch = $mapping['class'];
+                                                            $text_sb_sch  = $mapping['text'];
+
+
                                                         @endphp
                                                         <span class="source-badge {{$class_sb_sch}}" title="{{$source->user_source}}">{{ $text_sb_sch }}</span>
                                                         <small class="float-end fw-light">({{ $source->total >= 1000 ? number_format($source->total / 1000, 1) . 'K' : $source->total }})</small>
@@ -686,35 +679,26 @@
                                                 <td class="py-1 align-middle px-2">
                                                     @if($quotation->user_source)
                                                         @php
-                                                            //color
-                                                            if($quotation->user_source == 'ppc') {
-                                                                $class_sb = 'sb-color-ppc';
-                                                                $text_sb = $quotation->user_source;
-                                                            } elseif($quotation->user_source == 'Direct Client'){
-                                                                $class_sb = 'sb-color-dir';
-                                                                $text_sb = 'dir';
-                                                            } elseif($quotation->user_source == 'Google Search') {
-                                                                $class_sb = 'sb-color-seo';
-                                                                $text_sb = 'seo';
-                                                            } elseif($quotation->user_source == 'Linkedin'){
-                                                                $class_sb = 'sb-color-lnk';
-                                                                $text_sb = 'lnk';
-                                                            } elseif($quotation->user_source == 'Social Media'){
-                                                                $class_sb = 'sb-color-soc';
-                                                                $text_sb = 'soc';
-                                                            } elseif($quotation->user_source == 'Referral'){
-                                                                $class_sb = 'sb-color-ref';
-                                                                $text_sb = 'ref';
-                                                            } elseif($quotation->user_source == 'Other'){
-                                                                $class_sb = 'sb-color-oth';
-                                                                $text_sb = 'oth';
-                                                            } elseif($quotation->user_source == 'agt'){
-                                                                $class_sb = 'sb-color-agt';
-                                                                $text_sb = 'agt';
-                                                            } else {
-                                                                $class_sb = 'sb-color-oth';
-                                                                $text_sb = 'N/A';
-                                                            }
+
+                                                            //Color
+                                                            $sourceMap = [
+                                                                'Google Search'  => ['class' => 'sb-color-seo', 'text' => 'seo'],
+                                                                'Search Engine'  => ['class' => 'sb-color-seo', 'text' => 'seo'],
+                                                                'LinkedIn'       => ['class' => 'sb-color-lnk', 'text' => 'lnk'],
+                                                                'AI Assistant'   => ['class' => 'sb-color-aia', 'text' => 'aia'],
+                                                                'Social Media'   => ['class' => 'sb-color-soc', 'text' => 'soc'],
+                                                                'Referral'       => ['class' => 'sb-color-ref', 'text' => 'ref'],
+                                                                'Industry Event' => ['class' => 'sb-color-evt', 'text' => 'evt'],
+                                                                'Other'          => ['class' => 'sb-color-oth', 'text' => 'oth'],
+                                                                'ppc'            => ['class' => 'sb-color-ppc', 'text' => 'ppc'],
+                                                                'Direct Client'  => ['class' => 'sb-color-dir', 'text' => 'dir'],
+                                                                'agt'            => ['class' => 'sb-color-agt', 'text' => 'agt'],
+                                                            ];
+
+                                                            $source = $quotation->user_source;
+                                                            $class_sb = $sourceMap[$source]['class'] ?? 'sb-color-oth';
+                                                            $text_sb  = $sourceMap[$source]['text']  ?? 'N/A';
+
                                                         @endphp
                                                         <span class="source-badge {{$class_sb}}" title="{{$quotation->user_source}}">{{ $text_sb }}</span>
                                                     @else

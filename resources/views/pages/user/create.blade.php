@@ -87,7 +87,7 @@
                                 <select name="source" id="source" class="form-select">
                                     <option value="">{{ __('Select...') }}</option>
                                     <option value="Google Search">{{ __('Google Search') }}</option>
-                                    <option value="Linkedin">{{ __('Linkedin') }}</option>
+                                    <option value="LinkedIn">{{ __('LinkedIn') }}</option>
                                     <option value="Social Media">{{ __('Social Media (Facebook, Instagram, Youtube)') }}</option>
                                     <option value="Referral">{{ __('Referral') }}</option>
                                     <option value="Other">{{ __('Other') }}</option>
