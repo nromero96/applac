@@ -602,7 +602,7 @@
                                                         <select name="source" id="source" class="form-select">
                                                             <option value="">{{ __('Select...') }}</option>
                                                             <option value="Direct Client">{{ __('Direct Client') }}</option>
-                                                            <option value="Google Search">{{ __('Google Search') }}</option>
+                                                            <option value="Search Engine">{{ __('Google Search / Bing Search') }}</option>
                                                             <option value="LinkedIn">{{ __('LinkedIn') }}</option>
                                                             <option value="Social Media">{{ __('Social Media') }}</option>
                                                             <option value="Referral">{{ __('Referral') }}</option>

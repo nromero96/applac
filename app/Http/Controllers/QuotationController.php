@@ -238,7 +238,7 @@ class QuotationController extends Controller
         $users = User::whereIn('id', $dropdownUserIds)->get();
 
         //Contar los sources de cotizaciones
-        $sourceorderforlist = ['Google Search', 'LinkedIn', 'AI Assistant', 'Social Media', 'Referral', 'Industry Event', 'Other', 'ppc', 'Direct Client', 'agt', 'Unknown'];
+        $sourceorderforlist = ['Search Engine', 'LinkedIn', 'AI Assistant', 'Social Media', 'Referral', 'Industry Event', 'Other', 'ppc', 'Direct Client', 'agt', 'Unknown'];
         $listsources = Quotation::select(
                 DB::raw('COALESCE(users.source, guest_users.source, "Unknown") as user_source'),
                 DB::raw('COUNT(DISTINCT quotations.id) as total')

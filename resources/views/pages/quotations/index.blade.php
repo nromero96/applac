@@ -182,7 +182,6 @@
                                                             @php
                                                             // color
                                                             $sourceSearchMap = [
-                                                                'Google Search' => ['class' => 'sb-color-seo', 'text' => 'seo'],
                                                                 'Search Engine' => ['class' => 'sb-color-seo', 'text' => 'seo'],
                                                                 'LinkedIn' => ['class' => 'sb-color-lnk', 'text' => 'lnk'],
                                                                 'AI Assistant' => ['class' => 'sb-color-aia', 'text' => 'aia'],
@@ -682,7 +681,6 @@
 
                                                             //Color
                                                             $sourceMap = [
-                                                                'Google Search'  => ['class' => 'sb-color-seo', 'text' => 'seo'],
                                                                 'Search Engine'  => ['class' => 'sb-color-seo', 'text' => 'seo'],
                                                                 'LinkedIn'       => ['class' => 'sb-color-lnk', 'text' => 'lnk'],
                                                                 'AI Assistant'   => ['class' => 'sb-color-aia', 'text' => 'aia'],

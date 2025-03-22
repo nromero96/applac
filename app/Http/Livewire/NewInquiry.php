@@ -60,7 +60,7 @@ class NewInquiry extends Component
             'Other' => ['key' => 'OTH', 'label' => 'Other', 'color' => '#595959'],
         ],
         [
-            'Google Search' => ['key' => 'SEO', 'label' => 'Google Search', 'color' => '#4CBB17'],
+            'Search Engine' => ['key' => 'SEO', 'label' => 'Search Engine', 'color' => '#4CBB17'],
             'LinkedIn' => ['key' => 'LNK', 'label' => 'LinkedIn', 'color' => '#0077B5'],
             'Social Media' => ['key' => 'SOC', 'label' => 'Social Media', 'color' => '#1877F2'],
         ]

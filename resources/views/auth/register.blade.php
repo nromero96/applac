@@ -199,7 +199,7 @@
                                             <label class="form-label mb-0">{{ __('How do you know about us?') }} </label>
                                             <select class="form-select @error('phone') is-invalid @enderror" name="source" id="source">
                                                 <option value="">Select...</option>
-                                                <option value="Google Search" {{ old('source') == 'Google Search' ? 'selected' : '' }}>Google Search</option>
+                                                <option value="Search Engine" {{ old('source') == 'Search Engine' ? 'selected' : '' }}>Google Search / Bing Search</option>
                                                 <option value="LinkedIn" {{ old('source') == 'LinkedIn' ? 'selected' : '' }}>LinkedIn</option>
                                                 <option value="Social Media" {{ old('source') == 'Social Media' ? 'selected' : '' }}>Social Media (Facebook, Instagram, Youtube)</option>
                                                 <option value="Referral" {{ old('source') == 'Referral' ? 'selected' : '' }}>Referral</option>
