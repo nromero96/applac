@@ -250,6 +250,12 @@ if (!function_exists('rateQuotation')) {
                         } elseif($isOriginInOtherCountries && $isDestinationInOtherCountries){
                             //(Origin Other - Destination Other)
                             $rating += 1;
+                        } elseif(($isOriginInOtherCountries && $isDestinationInEuropeCountries) || ($isOriginInEuropeCountries && $isDestinationInOtherCountries)){
+                            //(Origin Other - Destination Europe) o (Origin Europe - Destination Other)
+                            $rating += 1;
+                        } elseif($isOriginInEuropeCountries && $isDestinationInEuropeCountries){
+                            //(Origin Europe - Destination Europe)
+                            $rating += 1;
                         } elseif( $isOriginInSpecialCountries && $isDestinationInSpecialCountries){
                             //(Origin USA/CA - Destination USA/CA)
                             $rating += 2;
@@ -547,7 +553,8 @@ if (!function_exists('rateQuotationWeb')) {
 
         //######## Business Type :::::::::::
         if($business_role){
-            if($business_role == 'Manufacturer' || $business_role == 'Importer / Exporter (Owner of Goods)' || $business_role == 'Retailer / Distributor' || $business_role == 'Other'){
+            $business_role_clean = explode(' - ', $business_role)[0];
+            if($business_role_clean == 'Manufacturer' || $business_role_clean == 'Importer / Exporter (Owner of Goods)' || $business_role_clean == 'Retailer / Distributor' || $business_role_clean == 'Other'){
                 //######## Shipment ready date :::::::::::
                     if ($quotation->shipment_ready_date) {
                         if($quotation->shipment_ready_date == 'Ready to ship now'){
@@ -591,6 +598,12 @@ if (!function_exists('rateQuotationWeb')) {
                             } elseif($isOriginInOtherCountries && $isDestinationInOtherCountries){
                                 //(Origin Other - Destination Other)
                                 $rating += 1;
+                            } elseif(($isOriginInOtherCountries && $isDestinationInEuropeCountries) || ($isOriginInEuropeCountries && $isDestinationInOtherCountries)){
+                                //(Origin Other - Destination Europe) o (Origin Europe - Destination Other)
+                                $rating += 1;
+                            } elseif($isOriginInEuropeCountries && $isDestinationInEuropeCountries){
+                                //(Origin Europe - Destination Europe)
+                                $rating += 1;
                             } elseif( $isOriginInSpecialCountries && $isDestinationInSpecialCountries){
                                 //(Origin USA/CA - Destination USA/CA)
                                 $rating += 2;
@@ -623,7 +636,7 @@ if (!function_exists('rateQuotationWeb')) {
                         }
                     }
 
-            }elseif($business_role == 'Logistics Company / Freight Forwarder'){
+            }elseif($business_role_clean == 'Logistics Company / Freight Forwarder'){
                 //######## Shipment ready date :::::::::::
                     if ($quotation->shipment_ready_date) {
                         if($quotation->shipment_ready_date == 'Ready to ship now'){
@@ -690,7 +703,7 @@ if (!function_exists('rateQuotationWeb')) {
                         }
                     }
 
-            }elseif($business_role == 'Individual / Private Person'){
+            }elseif($business_role_clean == 'Individual / Private Person'){
                 //No hay rating
             }
         }
