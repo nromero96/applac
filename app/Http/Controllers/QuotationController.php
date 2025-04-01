@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Mail\QuotationCreated;
 use App\Mail\UserCreated;
+use App\Mail\QuoteUnqualifiedMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -636,6 +637,16 @@ class QuotationController extends Controller
                 'reason' => 'nullable|string',
                 'note' => 'nullable|string',
             ]);
+            
+            if($validatedData['action'] == 'Unqualified'){
+                if($validatedData['note'] == ''){
+                    $notesms = 'Auto-Decline Email Sent';
+                }else{
+                    $notesms = $validatedData['note'] . ' - Auto-Decline Email Sent';
+                }
+            }else{
+                $notesms = $validatedData['note'] ?? 'N/A';
+            }
 
             // Insertar la nota de estado
             QuotationNote::create([
@@ -643,7 +654,7 @@ class QuotationController extends Controller
                 'type' => 'inquiry_status',
                 'action' => "'{$quotation->status}' to '{$validatedData['action']}'",
                 'reason' => $validatedData['reason'] ?? '',
-                'note' => $validatedData['note'] ?? 'N/A',
+                'note' => $notesms,
                 'user_id' => auth()->id(),
             ]);
 
@@ -668,6 +679,19 @@ class QuotationController extends Controller
                     'note' => 'Result status auto-updated',
                     'user_id' => '1',
                 ]);
+            }
+
+            if ($validatedData['action'] == 'Unqualified') {
+                // Obtener el usuario (guest o registrado)
+                $customer = $quotation->customer_user_id
+                    ? User::find($quotation->customer_user_id)
+                    : GuestUser::find($quotation->guest_user_id);
+            
+                if ($customer && !empty($customer->email)) {
+                    $customer_name = trim(($customer->name ?? '') . ' ' . ($customer->lastname ?? ''));
+                    Mail::send(new QuoteUnqualifiedMail($quotation, $customer_name, $customer->email));
+                    Log::info('Auto-email sent: Unqualified for Quote ID #' . $id);
+                }
             }
 
 
