@@ -123,7 +123,7 @@
                                         <b><a href="https://www.latinamericancargo.com/request-shipping-quote/" class="getaquote" style="color:#D2CDC5; font-size: 14px; line-height: 1.5;text-decoration: underline;margin-right: 10px;">Get a Quote</a></b> 
                                     </td>
                                     <td style="padding: 0px">
-                                        <b><a href="https://quemtr.webtracker.wisegrid.net/Login/Login.aspx?ReturnUrl=%2fDefault.aspx" class="trackcarg" style="color:#D2CDC5; font-size: 14px; line-height: 1.5; text-decoration: underline;">Track a Shipment</a></b>
+                                        <b><a href="https://www-quemtr.wisegrid.net/Portals/NEO/Desktop#/login" class="trackcarg" style="color:#D2CDC5; font-size: 14px; line-height: 1.5; text-decoration: underline;">Track a Shipment</a></b>
                                     </td>
                                 </tr>
                             </table>
