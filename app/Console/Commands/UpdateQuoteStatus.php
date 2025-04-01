@@ -57,46 +57,47 @@ class UpdateQuoteStatus extends Command
             return;
         }
 
-        $limitTime = Carbon::now()->subHours(4);
-
+        $limitTime = $now->subHours(4);  // Restar 4 horas
+        Log::info('Limit Time: ' . $limitTime);
         $quotes = Quotation::where('status', 'Pending')
             ->where('rating', 0)
             ->where('created_at', '<=', $limitTime)
-            ->whereNot(function ($query) {
-                $query->where('mode_of_transport', 'RoRo')
-                    ->where('cargo_type', 'Personal Vehicle');
-            })
+            ->whereRaw("(mode_of_transport != 'RoRo' OR cargo_type != 'Personal Vehicle')")
             ->get();
 
         foreach ($quotes as $quote) {
 
-            //Obetener nombre y email del usuario guest
-            $customer = $quote->customer_user_id 
-                        ? User::find($quote->customer_user_id)
-                        : GuestUser::find($quote->guest_user_id);
+            Log::info('Prepared Auto-send Quote ID: #' . $quote->id . ' - Status: ' . $quote->status . ' - Rating: ' . $quote->rating . ' - Created At: ' . $quote->created_at);
 
-            if ($customer) {
-                $customer_name = trim(($customer->name ?? '') . ' ' . ($customer->lastname ?? ''));
-                $email = $customer->email ?? 'Correo no disponible';
-            }
+            // //Obetener nombre y email del usuario guest
+            // $customer = $quote->customer_user_id 
+            //             ? User::find($quote->customer_user_id)
+            //             : GuestUser::find($quote->guest_user_id);
+
+            // if ($customer) {
+            //     $customer_name = trim(($customer->name ?? '') . ' ' . ($customer->lastname ?? ''));
+            //     $email = $customer->email ?? 'Correo no disponible';
+            // }
             
-            //Registrar si el correo fue enviado
-            QuotationNote::create([
-                'quotation_id' => $quote->id,
-                'type' => 'inquiry_status',
-                'action' => "'{$quote->status}' to 'Unqualified'",
-                'reason' => 'Low Rating Auto-Decline',
-                'note' => 'Low Rating Request - Auto-Decline Email Sent',
-                'user_id' => 1,
-            ]);
-            //registrar nota
+            // //Registrar si el correo fue enviado
+            // QuotationNote::create([
+            //     'quotation_id' => $quote->id,
+            //     'type' => 'inquiry_status',
+            //     'action' => "'{$quote->status}' to 'Unqualified'",
+            //     'reason' => 'Low Rating Auto-Decline',
+            //     'note' => 'Low Rating Request - Auto-Decline Email Sent',
+            //     'user_id' => 1,
+            // ]);
+            // //registrar nota
 
-            $quote->update(['status' => 'Unqualified']);
+            // $quote->update(['status' => 'Unqualified']);
 
-            // Enviar correo
-            Mail::send(new QuoteUnqualifiedMail($quote, $customer_name, $email));
-            //Log
-            Log::info('Low Rating Request - Auto-Decline Email Sent for Quote ID: #' . $quote->id);
+            // try {
+            //     Mail::send(new QuoteUnqualifiedMail($quote, $customer_name, $email));
+            //     Log::info('Low Rating Request - Auto-Decline Email Sent for Quote ID: #' . $quote->id);
+            // } catch (\Exception $e) {
+            //     Log::error('Low Rating Request - Error sending email for Quote ID: #' . $quote->id . '. Error: ' . $e->getMessage());
+            // }
             
         }
 
