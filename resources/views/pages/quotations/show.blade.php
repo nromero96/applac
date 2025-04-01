@@ -775,7 +775,7 @@
                                 </div>
                             </div>
                             <div class="widget-content widget-content-area px-2 pb-3 pt-1">
-                                <form action="{{ route('quotationupdatestatus', ['id' => $quotation->id]) }}" method="POST">
+                                <form action="{{ route('quotationupdatestatus', ['id' => $quotation->id]) }}" method="POST" id="form-status">
                                     @csrf
                                     @method('PUT')
                                     <div class="mb-2">

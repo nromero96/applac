@@ -351,3 +351,16 @@ document
             });
         });
     });
+
+
+    //form-status animation submit and send
+    const formstatus = document.getElementById("form-status");
+    const formstatus_submitButton = formstatus.querySelector("button[type='submit']");
+
+        formstatus.addEventListener("submit", function () {
+            // Deshabilita el botón
+            formstatus_submitButton.disabled = true;
+            // Cambia el contenido a un spinner de Bootstrap
+            formstatus_submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...`;
+        });
+    
