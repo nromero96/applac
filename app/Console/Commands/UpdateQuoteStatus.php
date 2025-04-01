@@ -64,7 +64,7 @@ class UpdateQuoteStatus extends Command
             ->where('created_at', '<=', $limitTime)
             ->whereNot(function ($query) {
                 $query->where('mode_of_transport', 'RoRo')
-                    ->where('cargo_type', 'Personal Vehicles');
+                    ->where('cargo_type', 'Personal Vehicle');
             })
             ->get();
 
