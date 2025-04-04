@@ -58,10 +58,12 @@ class UpdateQuoteStatus extends Command
         }
 
         $limitTime = $now->subHours(4);  // Restar 4 horas
-        //Log::info('Limit Time: ' . $limitTime);
+
+        $cutoffDate = Carbon::create(2025, 4, 4, 0, 0, 0); // Fecha de corte
         
         $quotes = Quotation::where('status', 'Pending')
             ->where('rating', 0)
+            ->where('created_at', '>=', $cutoffDate)
             ->where('created_at', '<=', $limitTime)
             ->whereRaw("(mode_of_transport != 'RoRo' OR cargo_type != 'Personal Vehicle')")
             ->get();
@@ -89,7 +91,6 @@ class UpdateQuoteStatus extends Command
                 'note' => 'Low Rating Request - Auto-Decline Email Sent',
                 'user_id' => 1,
             ]);
-            //registrar nota
 
             $quote->update(['status' => 'Unqualified']);
 
