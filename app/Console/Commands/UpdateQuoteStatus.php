@@ -11,6 +11,7 @@ use App\Models\QuotationNote;
 use App\Mail\QuoteUnqualifiedMail;
 use App\Models\User;
 use App\Models\GuestUser;
+use App\Models\QuotePendingEmail;
 
 use Illuminate\Support\Facades\Log;
 
@@ -59,48 +60,27 @@ class UpdateQuoteStatus extends Command
 
         $limitTime = $now->subHours(4);  // Restar 4 horas
 
-        $cutoffDate = Carbon::create(2025, 4, 4, 0, 0, 0); // Fecha de corte
         
-        $quotes = Quotation::where('status', 'Pending')
-            ->where('rating', 0)
-            ->where('created_at', '>=', $cutoffDate)
-            ->where('created_at', '<=', $limitTime)
-            ->whereRaw("(mode_of_transport != 'RoRo' OR cargo_type != 'Personal Vehicle')")
+        $quotespendingemails = QuotePendingEmail::join('quotations', 'quote_pending_emails.quotation_id', '=', 'quotations.id')
+            ->where('quote_pending_emails.type', 'Unqualified')
+            ->where('quote_pending_emails.status', 'pending')
+            ->where('quotations.created_at', '<=', $limitTime)
+            ->select('quote_pending_emails.*')
+            ->limit(8) // Limitar a 8 registros
             ->get();
 
-        foreach ($quotes as $quote) {
-
-            //Log::info('Prepared Auto-send Quote ID: #' . $quote->id . ' - Status: ' . $quote->status . ' - Rating: ' . $quote->rating . ' - Created At: ' . $quote->created_at);
-
-            //Obetener nombre y email del usuario guest
-            $customer = $quote->customer_user_id 
-                        ? User::find($quote->customer_user_id)
-                        : GuestUser::find($quote->guest_user_id);
-
-            if ($customer) {
-                $customer_name = trim(($customer->name ?? '') . ' ' . ($customer->lastname ?? ''));
-                $email = $customer->email ?? 'Correo no disponible';
-            }
-            
-            //Registrar si el correo fue enviado
-            QuotationNote::create([
-                'quotation_id' => $quote->id,
-                'type' => 'inquiry_status',
-                'action' => "'{$quote->status}' to 'Unqualified'",
-                'reason' => 'Low Rating Auto-Decline',
-                'note' => 'Low Rating Request - Auto-Decline Email Sent',
-                'user_id' => 1,
-            ]);
-
-            $quote->update(['status' => 'Unqualified']);
-
+        foreach ($quotespendingemails as $quote) {
             try {
-                Mail::send(new QuoteUnqualifiedMail($quote, $customer_name, $email));
-                Log::info('Low Rating Request - Auto-Decline Email Sent for Quote ID: #' . $quote->id);
+                Mail::send(new QuoteUnqualifiedMail($quote, $quote->customer_name, $quote->email));
+                $quote->status = 'sent';
+                $quote->sent_at = Carbon::now();
+                $quote->error_message = null;
+                $quote->save();
             } catch (\Exception $e) {
-                Log::error('Low Rating Request - Error sending email for Quote ID: #' . $quote->id . '. Error: ' . $e->getMessage());
+                $quote->status = 'failed';
+                $quote->error_message = $e->getMessage();
+                $quote->save();
             }
-            
         }
 
         $this->info('Cotizaciones actualizadas correctamente.');

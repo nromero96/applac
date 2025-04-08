@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Mail\QuotationCreated;
 use App\Mail\UserCreated;
-use App\Mail\QuoteUnqualifiedMail;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -24,6 +23,8 @@ use App\Models\CargoDetail;
 use App\Models\GuestUser;
 use App\Models\User;
 use App\Models\Setting;
+
+use App\Models\QuotePendingEmail;
 
 use Carbon\Carbon;
 
@@ -612,18 +613,6 @@ class QuotationController extends Controller
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
     public function updateStatus(Request $request, $id)
     {
 
@@ -682,16 +671,25 @@ class QuotationController extends Controller
             }
 
             if ($validatedData['action'] == 'Unqualified') {
-                // Obtener el usuario (guest o registrado)
+                //Obtener el usuario (guest o registrado)
                 $customer = $quotation->customer_user_id
                     ? User::find($quotation->customer_user_id)
                     : GuestUser::find($quotation->guest_user_id);
             
                 if ($customer && !empty($customer->email)) {
                     $customer_name = trim(($customer->name ?? '') . ' ' . ($customer->lastname ?? ''));
-                    Mail::send(new QuoteUnqualifiedMail($quotation, $customer_name, $customer->email));
-                    Log::info('Auto-email sent: Unqualified for Quote ID #' . $id);
+
+                    //Registrar a la tabla QuotePendingEmail
+                    QuotePendingEmail::create([
+                        'quotation_id' => $id,
+                        'type' => 'Unqualified',
+                        'customer_name' => $customer_name,
+                        'email' => $customer->email,
+                        'status' => 'Pending',
+                        'created_at' => now(),
+                    ]);
                 }
+
             }
 
 
