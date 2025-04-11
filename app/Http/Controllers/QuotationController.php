@@ -80,6 +80,7 @@ class QuotationController extends Controller
             DB::raw('COALESCE(users.phone, guest_users.phone) as user_phone'),
             DB::raw('COALESCE(users.company_website, guest_users.company_website) as user_company_website'),
             'quotations.status as quotation_status',
+            'quotations.result as quotation_result',
             'quotations.mode_of_transport as quotation_mode_of_transport',
             'quotations.currency as quotation_currency',
             'quotations.declared_value as quotation_declared_value',
