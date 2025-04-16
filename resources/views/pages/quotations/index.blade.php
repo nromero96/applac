@@ -365,6 +365,7 @@
                                                 </svg>
                                             </a>
                                         </th>
+                                        <th class="ps-1 pe-2">{{ __('Readiness') }}</th>
                                         @endif
                                         <th class="px-2">
                                             {{ __('Status') }}
@@ -382,7 +383,6 @@
                                             </a>
                                         </th>
                                         @if($adminorsales)
-                                        <th class="ps-1 pe-2">{{ __('Readiness') }}</th>
                                         <th class="px-1">{{ __('Result') }}</th>
                                         @endif
                                         <th class="px-2">{{ __('Email') }}</th>
@@ -505,6 +505,50 @@
                                                         @endfor
                                                     </div>
                                                 </td>
+
+
+                                                <td class="ps-1 pe-2">
+                                                    @php
+                                                        if($quotation->type_inquiry == 'external 2'){
+
+                                                            $readiness_levels = [
+                                                                'Ready to ship now' => 'br-high',
+                                                                'Ready within 1-3 months' => 'br-mid',
+                                                                'Not yet ready, just exploring options/budgeting' => 'br-low',
+                                                            ];
+
+                                                            if (isset($readiness_levels[$quotation->shipment_ready_date])) {
+                                                                $tagreadiness = '<span class="badge-readiness ' . $readiness_levels[$quotation->shipment_ready_date] . '">' . strtoupper(str_replace('br-', '', $readiness_levels[$quotation->shipment_ready_date])) . '</span>';
+                                                            }
+
+                                                        }elseif($quotation->type_inquiry == 'internal'){
+                                                            $tagreadiness = '';
+                                                        }else{
+
+                                                            $fecha_solicitud = Carbon\Carbon::parse($quotation->quotation_created_at)->startOfDay();
+                                                            $catorcediasdespues = $fecha_solicitud->clone()->addDays(14);
+                                                            $treintadiasdespues = $fecha_solicitud->clone()->addDays(30);
+                                                            if($quotation->quotation_shipping_date && $quotation->quotation_no_shipping_date == 'no'){
+                                                                $fecha_envio = Carbon\Carbon::parse(explode(' to ', $quotation->quotation_shipping_date)[0]);
+                                                                if ($fecha_envio->between($fecha_solicitud, $catorcediasdespues)) {
+                                                                    //1 a 14 días desde la fecha solicitud
+                                                                    $tagreadiness = '<span class="badge-readiness br-high">HIGH</span>';
+                                                                } elseif ($fecha_envio->between($catorcediasdespues, $treintadiasdespues)){
+                                                                    //Desde el día 15 al 30 desde la fecha solicitud
+                                                                    $tagreadiness = '<span class="badge-readiness br-mid">MID</span>';
+                                                                } elseif ($fecha_envio->gt($treintadiasdespues)){
+                                                                    //Más de 30 días desde la fecha solicitud
+                                                                    $tagreadiness = '<span class="badge-readiness br-low">LOW</span>';
+                                                                }
+                                                            } else {
+                                                                $tagreadiness = '<span class="badge-readiness -- br-low">LOW</span>';
+                                                            }
+                                                        }
+
+                                                    @endphp
+                                                    {!! $tagreadiness !!}
+                                                </td>
+
                                                 @endif
 
                                                 <td class="px-2">
@@ -537,47 +581,7 @@
                                                 </td>
 
                                                 @if($adminorsales)
-                                                    <td class="ps-1 pe-2">
-                                                        @php
-                                                            if($quotation->type_inquiry == 'external 2'){
-
-                                                                $readiness_levels = [
-                                                                    'Ready to ship now' => 'br-high',
-                                                                    'Ready within 1-3 months' => 'br-mid',
-                                                                    'Not yet ready, just exploring options/budgeting' => 'br-low',
-                                                                ];
-
-                                                                if (isset($readiness_levels[$quotation->shipment_ready_date])) {
-                                                                    $tagreadiness = '<span class="badge-readiness ' . $readiness_levels[$quotation->shipment_ready_date] . '">' . strtoupper(str_replace('br-', '', $readiness_levels[$quotation->shipment_ready_date])) . '</span>';
-                                                                }
-
-                                                            }elseif($quotation->type_inquiry == 'internal'){
-                                                                $tagreadiness = '';
-                                                            }else{
-
-                                                                $fecha_solicitud = Carbon\Carbon::parse($quotation->quotation_created_at)->startOfDay();
-                                                                $catorcediasdespues = $fecha_solicitud->clone()->addDays(14);
-                                                                $treintadiasdespues = $fecha_solicitud->clone()->addDays(30);
-                                                                if($quotation->quotation_shipping_date && $quotation->quotation_no_shipping_date == 'no'){
-                                                                    $fecha_envio = Carbon\Carbon::parse(explode(' to ', $quotation->quotation_shipping_date)[0]);
-                                                                    if ($fecha_envio->between($fecha_solicitud, $catorcediasdespues)) {
-                                                                        //1 a 14 días desde la fecha solicitud
-                                                                        $tagreadiness = '<span class="badge-readiness br-high">HIGH</span>';
-                                                                    } elseif ($fecha_envio->between($catorcediasdespues, $treintadiasdespues)){
-                                                                        //Desde el día 15 al 30 desde la fecha solicitud
-                                                                        $tagreadiness = '<span class="badge-readiness br-mid">MID</span>';
-                                                                    } elseif ($fecha_envio->gt($treintadiasdespues)){
-                                                                        //Más de 30 días desde la fecha solicitud
-                                                                        $tagreadiness = '<span class="badge-readiness br-low">LOW</span>';
-                                                                    }
-                                                                } else {
-                                                                    $tagreadiness = '<span class="badge-readiness -- br-low">LOW</span>';
-                                                                }
-                                                            }
-
-                                                        @endphp
-                                                        {!! $tagreadiness !!}
-                                                    </td>
+                                                    
 
                                                     <td class="px-1">
                                                         <span class="cret-bge ms-0 w-100 align-middle badge @if ($quotation->quotation_result == 'Won')
