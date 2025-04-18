@@ -50,7 +50,7 @@
 
     // Annual Shipments
     $shipmentMap = [
-        'Between 2-10' => $labelhigh,
+        'Between 2-10' => $labelmid,
         'Between 11-50' => $labelhigh,
         'Between 51-200' => $labelhigh,
         'Between 201-500' => $labelmid,

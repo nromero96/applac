@@ -367,6 +367,10 @@ if (!function_exists('rateQuotation')) {
                         $rating += 1; //Más de 22 días desde la fecha solicitud
                     }
                 }
+
+                if($quotation->no_shipping_date == 'yes'){
+                    $rating += 1; //No shipping date
+                }
             }
         }
         // Guarda la calificación en la cotización
