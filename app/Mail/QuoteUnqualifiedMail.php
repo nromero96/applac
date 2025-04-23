@@ -50,7 +50,7 @@ class QuoteUnqualifiedMail extends Mailable
         // Llama a tu función sendMailApi para enviar el correo
         sendMailApiLac(
             $this->email, 
-            'Quote ID: #'. $this->quote->id .' - Update on your quote request', 
+            'Quote ID: #'. $this->quote->quotation_id .' - Update on your quote request', 
             $content,
             null,
             [],
