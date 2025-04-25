@@ -96,7 +96,9 @@ if (!function_exists('personal_domains')) {
             'hotmail.es',
             'proton.me',
             'pm.me',
-            'fastmail.net'
+            'fastmail.net',
+            'live.ca',
+            'me.com'
         ];
     }
 }
