@@ -55,7 +55,7 @@ class QuoteUnqualifiedMail extends Mailable
             null,
             [],
             [], //copias
-            [config('services.copymail.mail_1'), config('services.copymail.mail_2')] //copia oculta
+            [] //copia oculta
         );
 
         return $this->html($content);
