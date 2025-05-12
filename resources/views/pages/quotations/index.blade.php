@@ -509,6 +509,8 @@
 
                                                 <td class="ps-1 pe-2">
                                                     @php
+                                                        $tagreadiness = '';
+
                                                         if($quotation->type_inquiry == 'external 2'){
 
                                                             $readiness_levels = [
@@ -524,7 +526,6 @@
                                                         }elseif($quotation->type_inquiry == 'internal'){
                                                             $tagreadiness = '';
                                                         }else{
-
                                                             $fecha_solicitud = Carbon\Carbon::parse($quotation->quotation_created_at)->startOfDay();
                                                             $catorcediasdespues = $fecha_solicitud->clone()->addDays(14);
                                                             $treintadiasdespues = $fecha_solicitud->clone()->addDays(30);
