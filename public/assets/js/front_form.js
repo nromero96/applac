@@ -514,10 +514,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 return false;
             }
 
+            
             //shipping_date es un input debe tener un valor
+            const regexDateOrRange = /^(\d{4}-\d{2}-\d{2})(\s+to\s+(\d{4}-\d{2}-\d{2}))?$/;
+
             if (shipping_date.value === '' && no_shipping_date.checked === false) {
                 shipping_date.focus();
                 shipping_date_error.textContent = 'Required shipping date.';
+                return false;
+            } else if (!regexDateOrRange.test(shipping_date.value) && no_shipping_date.checked === false) {
+                shipping_date.focus();
+                shipping_date_error.textContent = 'Shipping date format is invalid. Use YYYY-MM-DD or YYYY-MM-DD to YYYY-MM-DD.';
                 return false;
             }
 

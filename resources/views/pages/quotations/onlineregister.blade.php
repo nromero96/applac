@@ -1996,8 +1996,10 @@
         });
 
         var f3 = flatpickr(document.getElementById('shipping_date'), {
+            locale: "en",
             mode: "range",
             minDate: "today",
+            allowInput: false,
         });
 
         //if click in no_shipping_date checkbox readonly shipping_date and delete value
@@ -2011,8 +2013,10 @@
                 $shippingDateInput.prop('readonly', false)
                                 .val('');
                 f3 = flatpickr($shippingDateInput[0], {
+                    locale: "en",
                     mode: "range",
                     minDate: "today",
+                    allowInput: false,
                 });
             }
         });
