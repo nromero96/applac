@@ -179,6 +179,21 @@ function listQuotationNotes(quotationId) {
                     `;
                 }
 
+                if(note.type == 'read'){
+                    noteElement.innerHTML = `
+                    <div class="activity-log border-0 mb-0 mt-2">
+                        <div class="al-action">
+                            <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_11627_9498)"><path d="M1.16797 8.50008C1.16797 8.50008 3.83464 3.16675 8.5013 3.16675C13.168 3.16675 15.8346 8.50008 15.8346 8.50008C15.8346 8.50008 13.168 13.8334 8.5013 13.8334C3.83464 13.8334 1.16797 8.50008 1.16797 8.50008Z" stroke="#1877F2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 10.5C9.60457 10.5 10.5 9.60457 10.5 8.5C10.5 7.39543 9.60457 6.5 8.5 6.5C7.39543 6.5 6.5 7.39543 6.5 8.5C6.5 9.60457 7.39543 10.5 8.5 10.5Z" stroke="#1877F2" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_11627_9498"><rect width="16" height="16" fill="white" transform="translate(0.5 0.5)"/></clipPath></defs></svg>
+                            <span class="text-result">Inquiry opened</span>
+                        </div>
+                        <div class="al-date">
+                            <small class="date">${formattedDate}</small> - <small class="time">${formattedTime}</small>
+                            <span class="badge rounded-pill badge-light-time">${note.time_diff}</span>
+                        </div>
+                    </div>
+                    `;
+                }
+
                 if(note.type == 'result_status'){
 
                     // ${badge_last_status}
@@ -237,6 +252,11 @@ function listQuotationNotes(quotationId) {
                                     </div>
                                     <div class="al-date">
                                         <small class="date">${formattedDate}</small> - <small class="time">${formattedTime}</small>
+                                        ${
+                                            note.note != 'Result status auto-updated'
+                                                ? `<span class="badge rounded-pill badge-light-time">${note.time_diff}</span>`
+                                                : ''
+                                        }
                                     </div>
 
                     `;
