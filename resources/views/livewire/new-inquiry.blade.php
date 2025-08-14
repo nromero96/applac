@@ -10,7 +10,7 @@
             </button>
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="newinquiry__title">Add Internal Inquiry</h2>
+                    <h2 class="newinquiry__title">Add Manual Inquiry</h2>
                 </div>
             </div>
 
@@ -294,7 +294,7 @@
                 </svg>
                 <h2>Inquiry Submitted</h2>
                 <p>You can now track its progress in the system.</p>
-                <a href="{{ route('quotations.index') }}">Okay</a>
+                <a href="{{ route($savedRouteTo) }}">Okay</a>
             </div>
         </div>
     @endif

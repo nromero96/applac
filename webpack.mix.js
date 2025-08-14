@@ -39,7 +39,7 @@ mix.sass('resources/sass/light/assets/main.scss', 'public/assets/css/light')
     // Authentication
     .sass('resources/sass/light/assets/authentication/auth-cover.scss', 'public/assets/css/light/authentication')
     .sass('resources/sass/dark/assets/authentication/auth-cover.scss', 'public/assets/css/dark/authentication')
-    
+
     .sass('resources/sass/light/assets/authentication/auth-boxed.scss', 'public/assets/css/light/authentication')
     .sass('resources/sass/dark/assets/authentication/auth-boxed.scss', 'public/assets/css/dark/authentication')
 
@@ -65,6 +65,9 @@ mix.sass('resources/sass/light/assets/main.scss', 'public/assets/css/light')
     .sass('resources/sass/dark/assets/dashboard/dash_1.scss','public/assets/css/dark/dashboard')
     .sass('resources/sass/light/assets/dashboard/dash_2.scss','public/assets/css/light/dashboard')
     .sass('resources/sass/dark/assets/dashboard/dash_2.scss','public/assets/css/dark/dashboard')
+
+    // Custom
+    .sass('resources/sass/light/assets/custom.scss','public/assets/css/light')
 
 
 

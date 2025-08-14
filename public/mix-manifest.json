@@ -21,6 +21,7 @@
     "/plugins/css/light/autocomplete/css/custom-autoComplete.css": "/plugins/css/light/autocomplete/css/custom-autoComplete.css",
     "/plugins/css/dark/apex/custom-apexcharts.css": "/plugins/css/dark/apex/custom-apexcharts.css",
     "/plugins/css/light/apex/custom-apexcharts.css": "/plugins/css/light/apex/custom-apexcharts.css",
+    "/assets/css/light/custom.css": "/assets/css/light/custom.css",
     "/assets/css/dark/dashboard/dash_2.css": "/assets/css/dark/dashboard/dash_2.css",
     "/assets/css/light/dashboard/dash_2.css": "/assets/css/light/dashboard/dash_2.css",
     "/assets/css/dark/dashboard/dash_1.css": "/assets/css/dark/dashboard/dash_1.css",

@@ -311,7 +311,7 @@ class DashboardReportPerformance extends Component
 
                 // quotes attended
                 $quotes_attended_no_internal = $quotations_1->where('status', '!=', 'Pending')->where('is_internal_inquiry', 0);
-                $quotes_attended_internal = $quotations_1->where('status', '!=', 'Processing')->where('is_internal_inquiry', 1);
+                $quotes_attended_internal = $quotations_1->where('status', '!=', 'Qualified')->where('is_internal_inquiry', 1);
                 $quotes_attended = $quotes_attended_no_internal->union($quotes_attended_internal);
 
                 $info_global['quotes_attended'] += $quotes_attended->count();
@@ -357,7 +357,7 @@ class DashboardReportPerformance extends Component
                     ->where(function($q){
                         $q->where([
                             ['quotations.is_internal_inquiry', 1],
-                            ['quotation_notes.action', 'LIKE', "'Processing' to%"],
+                            ['quotation_notes.action', 'LIKE', "'Qualified' to%"],
                         ])->orWhere(function($q){
                             $q->where([
                                 ['quotations.is_internal_inquiry', 0],

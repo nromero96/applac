@@ -141,9 +141,9 @@
                                                             //color
                                                             if($status->quotation_status == 'Pending') {
                                                                 $class_sb_sch = 'badge-light-pending';
-                                                            } elseif($status->quotation_status == 'Qualifying'){
+                                                            } elseif($status->quotation_status == 'Contacted'){
                                                                 $class_sb_sch = 'badge-light-warning';
-                                                            } elseif($status->quotation_status == 'Processing') {
+                                                            } elseif($status->quotation_status == 'Qualified') {
                                                                 $class_sb_sch = 'badge-light-info';
                                                             } elseif($status->quotation_status == 'Quote Sent'){
                                                                 $class_sb_sch = 'badge-light-success';
@@ -557,9 +557,9 @@
                                                     <span class="cret-bge ms-0 w-100 align-middle badge
                                                             @if ($quotation->quotation_status == 'Pending')
                                                                 badge-light-pending
-                                                            @elseif ($quotation->quotation_status == 'Qualifying')
+                                                            @elseif ($quotation->quotation_status == 'Contacted')
                                                                 badge-light-warning
-                                                            @elseif ($quotation->quotation_status == 'Processing')
+                                                            @elseif ($quotation->quotation_status == 'Qualified')
                                                                 badge-light-info
                                                             @elseif ($quotation->quotation_status == 'Attended')
                                                                 badge-light-info
@@ -571,9 +571,9 @@
                                                                 badge-light-danger
                                                             @endif
                                                             inv-status">
-                                                            @if($adminorsales || in_array($quotation->quotation_status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
+                                                            @if($adminorsales || in_array($quotation->quotation_status, ['Pending', 'Qualified', 'Attended', 'Quote Sent']))
                                                                 {{ $quotation->quotation_status }}
-                                                            @elseif ($quotation->quotation_status == 'Qualifying')
+                                                            @elseif ($quotation->quotation_status == 'Contacted')
                                                                 Attending
                                                             @elseif ($quotation->quotation_status == 'Unqualified')
                                                                 Unable to fulfill
@@ -582,7 +582,7 @@
                                                 </td>
 
                                                 @if($adminorsales)
-                                                    
+
 
                                                     <td class="px-1">
                                                         <span class="cret-bge ms-0 w-100 align-middle badge @if ($quotation->quotation_result == 'Won')

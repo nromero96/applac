@@ -52,6 +52,9 @@ if (!function_exists('setTitle')) :
         elseif ($page_name === 'organizationsedit'):
             echo __('Organization Edit') . $admin_name;
 
+        elseif ($page_name === 'deals'):
+            echo __('Deals') . $admin_name;
+
         elseif ($page_name === 'customers') :
             echo __('Customers') . $admin_name;
         // Apps

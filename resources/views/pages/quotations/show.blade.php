@@ -104,25 +104,38 @@
                         <div class="row">
                             <div class="col-xl-12 col-md-12 col-sm-12 col-12">
 
-                                <div class="d-flex pb-2">
-                                    <div class="flex-grow-1">
-                                        <h4 class="pt-3 pb-2 d-inline-block">{{__("Quotation")}}: <span class="text-primary">#{{ $quotation->id }}</span></h4>
-
-                                        @if(Auth::user()->hasRole('Administrator'))
-                                        <b class="me-1">Assigned to</b>
-                                        <select class="form-select rounded-pill px-2 py-1 assto_select d-inline-block user-select-assigned @if($quotation->assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->id }}">
-                                            <option value="">{{ __('Unassigned') }}</option>
-                                            @foreach ($users as $user)
-                                                <option value="{{ $user->id }}" @if($user->id == $quotation->assigned_user_id) selected @endif>{{ $user->name }}</option>
-                                            @endforeach
-                                        </select>
-                                        @else
-                                            <span class="badge bg-primary user-select-assigned d-none">Assigned to...</span>
-                                        @endif
+                                <div class="d-flex pb-2 pt-2">
+                                    <div class="flex-grow-1 d-flex align-items-center gap-5">
+                                        <div>
+                                            <h4 class="pt-3 pb-2 d-inline-block" style="padding-top:8px !important;">{{__("Quotation")}}: <span class="text-primary">#{{ $quotation->id }}</span></h4>
+                                            <span class="cret-bge align-middle badge
+                                                @if ($quotation->status == 'Pending')
+                                                    badge-light-pending
+                                                @elseif ($quotation->status == 'Contacted')
+                                                    badge-light-warning
+                                                @elseif ($quotation->status == 'Qualified')
+                                                    badge-light-info
+                                                @elseif ($quotation->status == 'Attended')
+                                                    badge-light-info
+                                                @elseif ($quotation->status == 'Quote Sent')
+                                                    badge-light-success
+                                                @elseif ($quotation->status == 'Unqualified')
+                                                    badge-light-unqualified
+                                                @elseif ($quotation->status == 'Deleted')
+                                                    badge-light-danger
+                                                @endif
+                                                inv-status">
+                                                @if($adminorsales || in_array($quotation->status, ['Pending', 'Qualified', 'Attended', 'Quote Sent']))
+                                                    {{ $quotation->status }}
+                                                @elseif ($quotation->status == 'Contacted')
+                                                    Attending
+                                                @elseif ($quotation->status == 'Unqualified')
+                                                    Unable to fulfill
+                                                @endif
+                                            </span>
+                                        </div>
 
                                         <input type="hidden" id="quotation_id" value="{{ $quotation->id }}">
-                                    </div>
-                                    <div class="flex-grow-1">
                                         @if($adminorsales)
 
                                             @php
@@ -139,106 +152,122 @@
                                                 }
                                             @endphp
 
-                                                <div class="mt-3 mb-1">
-                                                    {{-- Grupo de radios --}}
-                                                    <div class="rating-modify">
-                                                        <form action="{{ route('quotationupdaterating', ['id' => $quotation->id]) }}" method="POST">
+                                            <div class="">
+                                                {{-- Grupo de radios --}}
+                                                <div class="rating-modify">
+                                                    <form action="{{ route('quotationupdaterating', ['id' => $quotation->id]) }}" method="POST">
 
-                                                            <span class="qtrating {{$class_rtg_rating_stars}}" id="rtg_rating_stars">
-                                                                @php
-                                                                    $fullStars = floor($quotation->rating);
-                                                                    $hasHalfStar = ($quotation->rating - $fullStars) >= 0.5;
-                                                                @endphp
+                                                        <span class="qtrating {{$class_rtg_rating_stars}}" id="rtg_rating_stars">
+                                                            @php
+                                                                $fullStars = floor($quotation->rating);
+                                                                $hasHalfStar = ($quotation->rating - $fullStars) >= 0.5;
+                                                            @endphp
 
-                                                                @for ($i = 0; $i < $fullStars; $i++)
-                                                                    <span class="star">
-                                                                        <svg width="17" height="17" fill="#edb10c" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                @endfor
+                                                            @for ($i = 0; $i < $fullStars; $i++)
+                                                                <span class="star">
+                                                                    <svg width="17" height="17" fill="#edb10c" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                            @endfor
 
-                                                                @if ($hasHalfStar)
-                                                                    <span class="star">
-                                                                        <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                            <defs>
-                                                                                <clipPath id="halfStarClip">
-                                                                                    <rect x="0" y="0" width="12" height="24" />
-                                                                                </clipPath>
-                                                                            </defs>
-                                                                            <!-- Estrella completa en gris -->
-                                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#e1e1e1" />
-                                                                            <!-- Parte de la estrella en color original -->
-                                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#edb10c" clip-path="url(#halfStarClip)" />
-                                                                        </svg>
-                                                                    </span>
-                                                                @endif
+                                                            @if ($hasHalfStar)
+                                                                <span class="star">
+                                                                    <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                        <defs>
+                                                                            <clipPath id="halfStarClip">
+                                                                                <rect x="0" y="0" width="12" height="24" />
+                                                                            </clipPath>
+                                                                        </defs>
+                                                                        <!-- Estrella completa en gris -->
+                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#e1e1e1" />
+                                                                        <!-- Parte de la estrella en color original -->
+                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#edb10c" clip-path="url(#halfStarClip)" />
+                                                                    </svg>
+                                                                </span>
+                                                            @endif
 
-                                                                @for ($i = $fullStars + ($hasHalfStar ? 1 : 0); $i < 5; $i++)
-                                                                    <span class="star">
-                                                                        <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
-                                                                        </svg>
-                                                                    </span>
-                                                                @endfor
-                                                            </span>
+                                                            @for ($i = $fullStars + ($hasHalfStar ? 1 : 0); $i < 5; $i++)
+                                                                <span class="star">
+                                                                    <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                            @endfor
+                                                        </span>
 
-                                                            <div class="{{$class_rtg_modified_stars}}" id="rtg_modified_stars">
-                                                                @csrf
-                                                                @method('PUT')
-                                                                @php
-                                                                    $rating = $quotation->rating;
-                                                                    // verificar y agregar active class a los radio buttons
-                                                                    for ($i=1; $i <= 5; $i++) {
-                                                                        if($i <= $rating){
-                                                                            $classactive = "active";
-                                                                        }else{
-                                                                            $classactive = "";
-                                                                        }
-
-                                                                        if($i == $rating){
-                                                                            $checked = "checked";
-                                                                        }else{
-                                                                            $checked = "";
-                                                                        }
-
-                                                                        echo '<input type="radio" id="star'.$i.'" name="new_rating" value="'.$i.'" '.$checked.' disabled/>
-                                                                        <label for="star'.$i.'" class="'.$classactive.'">
-                                                                            <span class="star">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star">
-                                                                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                                                                </svg>
-                                                                            </span>
-                                                                        </label>';
+                                                        <div class="{{$class_rtg_modified_stars}}" id="rtg_modified_stars">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            @php
+                                                                $rating = $quotation->rating;
+                                                                // verificar y agregar active class a los radio buttons
+                                                                for ($i=1; $i <= 5; $i++) {
+                                                                    if($i <= $rating){
+                                                                        $classactive = "active";
+                                                                    }else{
+                                                                        $classactive = "";
                                                                     }
-                                                                @endphp
-                                                            </div>
 
-                                                            <div class="ms-2 d-none" id="rtg_comment_input">
-                                                                <input type="text" name="rating_comment" class="rating_comment" placeholder="Comment">
-                                                                <button type="submit" class="btn-outline-primary ms-2 btn-rtg-update">Update</button>
-                                                                <button type="button" class="ms-1 btn-rtg-cancel">
-                                                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                        <path d="M18 6 6 18"></path>
-                                                                        <path d="m6 6 12 12"></path>
-                                                                      </svg>
-                                                                </button>
-                                                            </div>
+                                                                    if($i == $rating){
+                                                                        $checked = "checked";
+                                                                    }else{
+                                                                        $checked = "";
+                                                                    }
 
-                                                            <div class="d-inline" id="rtg_modified_by">
-                                                                <span class="ms-2 {{$class_rtg_modified_by_name}}">(Modified by {{$modified_by}})</span>
-                                                                <a href="javascript:void(0);" class="btn-outline-primary ms-2 btn-modify">Modify</a>
-                                                            </div>
+                                                                    echo '<input type="radio" id="star'.$i.'" name="new_rating" value="'.$i.'" '.$checked.' disabled/>
+                                                                    <label for="star'.$i.'" class="'.$classactive.'">
+                                                                        <span class="star">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star">
+                                                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                                                            </svg>
+                                                                        </span>
+                                                                    </label>';
+                                                                }
+                                                            @endphp
+                                                        </div>
 
-                                                        </form>
-                                                    </div>
+                                                        <div class="ms-2 d-none" id="rtg_comment_input">
+                                                            <input type="text" name="rating_comment" class="rating_comment" placeholder="Comment">
+                                                            <button type="submit" class="btn-outline-primary ms-2 btn-rtg-update">Update</button>
+                                                            <button type="button" class="ms-1 btn-rtg-cancel">
+                                                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M18 6 6 18"></path>
+                                                                    <path d="m6 6 12 12"></path>
+                                                                    </svg>
+                                                            </button>
+                                                        </div>
+
+                                                        <div class="d-inline" id="rtg_modified_by">
+                                                            <span class="ms-2 {{$class_rtg_modified_by_name}}">(Modified by {{$modified_by}})</span>
+                                                            <a href="javascript:void(0);" class="btn-outline-primary ms-2 btn-modify">Modify</a>
+                                                        </div>
+
+                                                    </form>
                                                 </div>
+                                            </div>
 
 
                                         @endif
+
+                                        @if(Auth::user()->hasRole('Administrator'))
+                                            <div>
+                                                <b class="me-1">Assigned to</b>
+                                                <select class="form-select rounded-pill px-2 py-1 assto_select d-inline-block user-select-assigned @if($quotation->assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->id }}">
+                                                    <option value="">{{ __('Unassigned') }}</option>
+                                                    @foreach ($users as $user)
+                                                        <option value="{{ $user->id }}" @if($user->id == $quotation->assigned_user_id) selected @endif>{{ $user->name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        @else
+                                            <span class="badge bg-primary user-select-assigned d-none">Assigned to...</span>
+                                        @endif
                                     </div>
-                                    <div class="flex-grow-1 text-end">
-                                        <div class="dropdown-list dropdown text-end mt-3 pe-2" role="group">
+
+                                    <div class="flex-grow-1 text-end d-flex justify-content-end align-items-center gap-2">
+                                        <livewire:flag-follow-up :quotation-id="$quotation->id" />
+                                        <div class="dropdown-list dropdown text-end pe-2" role="group">
                                             <a href="javascript:void(0);" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
                                             </a>
@@ -271,7 +300,7 @@
                             {{-- Data the inquiry external 2 --}}
                                 <div class="col-md-4 mt-0">
 
-                                    
+
 
                                     <h6 class="text-primary mb-1">{{ __('Contact Info') }}</h6>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Contact name")}}:</label> {{ $quotation->customer_name }} {{ $quotation->customer_lastname }}</p>
@@ -286,15 +315,15 @@
                                 </div>
                                 <div class="col-md-5 mt-0">
                                     <h6 class="text-primary mb-1">{{ __('Shipment Info') }}</h6>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Origin")}}:</label> {{ $quotation->origin_country }} 
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Origin")}}:</label> {{ $quotation->origin_country }}
                                         <svg width="15" height="15" fill="none" stroke="#595959" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path d="m9 18 6-6-6-6"></path>
-                                        </svg> 
-                                        <label class="fw-bold mb-0">{{__("Destination")}}:</label> {{ $quotation->destination_country }} 
-                                        
+                                        </svg>
+                                        <label class="fw-bold mb-0">{{__("Destination")}}:</label> {{ $quotation->destination_country }}
+
                                     </p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Mode of transport")}}:</label> {{ $quotation->mode_of_transport }}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ $quotation->declared_value }} {{ $quotation->currency }} 
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ $quotation->declared_value }} {{ $quotation->currency }}
                                         <span data-toggle="tooltip" data-placement="top" title="...">
                                             <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14.88" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
@@ -318,7 +347,7 @@
                                         @else
                                             <ul class="mb-0 ps-3" id="ctdocuments">
                                                 <li>No documents</li>
-                                                
+
                                             </ul>
                                         @endif
                                     </div>
@@ -734,6 +763,10 @@
                     </div>
                 </div>
 
+                @if (false)
+                    <livewire:preliminary-quote />
+                @endif
+
                 <div class="row mt-2">
                     @if($adminorsales)
                     <div class="col-md-4">
@@ -749,9 +782,9 @@
                                         <span class="cret-bge align-middle badge
                                                 @if ($quotation->status == 'Pending')
                                                     badge-light-pending
-                                                @elseif ($quotation->status == 'Qualifying')
+                                                @elseif ($quotation->status == 'Contacted')
                                                     badge-light-warning
-                                                @elseif ($quotation->status == 'Processing')
+                                                @elseif ($quotation->status == 'Qualified')
                                                     badge-light-info
                                                 @elseif ($quotation->status == 'Attended')
                                                     badge-light-info
@@ -763,9 +796,9 @@
                                                     badge-light-danger
                                                 @endif
                                                 inv-status">
-                                                @if($adminorsales || in_array($quotation->status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
+                                                @if($adminorsales || in_array($quotation->status, ['Pending', 'Qualified', 'Attended', 'Quote Sent']))
                                                     {{ $quotation->status }}
-                                                @elseif ($quotation->status == 'Qualifying')
+                                                @elseif ($quotation->status == 'Contacted')
                                                     Attending
                                                 @elseif ($quotation->status == 'Unqualified')
                                                     Unable to fulfill
@@ -775,19 +808,50 @@
                                 </div>
                             </div>
                             <div class="widget-content widget-content-area px-2 pb-3 pt-1">
-                                <form action="{{ route('quotationupdatestatus', ['id' => $quotation->id]) }}" method="POST" id="form-status">
+                                <form
+                                    action="{{ route('quotationupdatestatus', ['id' => $quotation->id]) }}"
+                                    method="POST"
+                                    id="form-status"
+                                    x-data="{ status: '', contacted_via: '' }"
+                                >
                                     @csrf
                                     @method('PUT')
                                     <div class="mb-2">
                                         <label for="action" class="form-label mb-0">{{ __('Change status to') }}</label>
-                                        <select name="action" id="action" class="form-select" required>
+                                        <select
+                                            name="action"
+                                            id="action"
+                                            class="form-select"
+                                            required
+                                            x-model="status" @change="contacted_via = (status == 'Contacted' ? 'Email' : '')"
+                                        >
                                             <option value="">{{ __('Select status') }} </option>
                                             <option value="Pending" @if($quotation->status == 'Pending') selected disabled  @endif>Pending</option>
-                                            <option value="Qualifying" @if($quotation->status == 'Qualifying') selected disabled @endif>Qualifying</option>
-                                            <option value="Processing" @if($quotation->status == 'Processing') selected disabled @endif>Processing</option>
+                                            <option value="Contacted" @if($quotation->status == 'Contacted') selected disabled @endif>Contacted</option>
+                                            <option value="Qualified" @if($quotation->status == 'Qualified') selected disabled @endif>Qualified</option>
                                             <option value="Quote Sent" @if($quotation->status == 'Quote Sent') selected disabled @endif>Quote Sent</option>
                                             <option value="Unqualified" @if($quotation->status == 'Unqualified') selected disabled @endif>Unqualified</option>
                                         </select>
+                                    </div>
+                                    {{-- Contacted via --}}
+                                    <div class="mb-2" x-show="status === 'Contacted'" x-cloak>
+                                        <div class="d-flex gap-3">
+                                            <label for="action" class="form-label mb-0">{{ __('Contacted via:') }}</label>
+                                            <div class="d-flex gap-3">
+                                                <label class="form-check">
+                                                    <input type="radio" name="contacted_via" class="form-check-input" value="Email" x-model="contacted_via">
+                                                    <div class="form-check-label">Email</div>
+                                                </label>
+                                                <label class="form-check">
+                                                    <input type="radio" name="contacted_via" class="form-check-input" value="Call" x-model="contacted_via">
+                                                    <div class="form-check-label">Call</div>
+                                                </label>
+                                                <label class="form-check">
+                                                    <input type="radio" name="contacted_via" class="form-check-input" value="Text" x-model="contacted_via">
+                                                    <div class="form-check-label">Text</div>
+                                                </label>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="mb-2 @if($reason_unqualified) @else d-none @endif" id="dv_reason">
                                         <label for="reason" class="form-label mb-0">{{ __('Reason to decline') }} <span class="text-danger">*</span></label>
@@ -804,7 +868,7 @@
                                         </select>
                                     </div>
                                     <div class="mb-2" id="dv_inquiry_note">
-                                        <label for="note" class="form-label mb-0" id="label_note">{{ __('Comment (Optional)') }}</label>
+                                        <label for="note" class="form-label mb-0" id="label_note">{{ __('Notes') }}</label>
                                         <input type="text" class="form-control" name="note" id="note">
                                     </div>
                                     <div class="mt-3">
@@ -820,7 +884,7 @@
                                 <div class="mb-0 row">
                                     <div class="col">
                                         <span class="badge rounded-pill badge-secondary badge-numstatus">2</span>
-                                        <span class="title-cd-status">{{ __('Result Status') }}</span>
+                                        <span class="title-cd-status">{{ __('Outcome') }}</span>
                                     </div>
                                     <div class="col text-end">
                                         <span class="cret-txt align-middle">{{__('Current: ')}}</span>
@@ -839,20 +903,110 @@
                                 </div>
                             </div>
                             <div class="widget-content widget-content-area px-2 pb-3 pt-1">
-                                <form action="{{ route('quotationupdateresult', ['id' => $quotation->id]) }}" method="POST">
+                                <form
+                                    action="{{ route('quotationupdateresult', ['id' => $quotation->id]) }}"
+                                    method="POST"
+                                    x-data="{
+                                        followup_show: false,
+                                        followup_channel: '',
+                                        followup_feedback: '',
+                                        followup_comment_show: true,
+                                        followup_comment_required: false,
+                                        followup_comment: '',
+                                        result_action: '',
+                                        result_reason_lost: '',
+                                        result_reason_lost_show: false,
+                                        conditional_feedback() {
+                                            this.followup_comment_show = true;
+                                            this.followup_comment_required = false;
+                                            this.result_action = '';
+                                            this.result_reason_lost_show = false;
+                                            this.result_reason_lost = '';
+                                            switch (this.followup_feedback) {
+                                                case 'Won - Confirmed booking':
+                                                    this.result_action = 'Won';
+                                                    break;
+                                                case 'Other (specify in comment)':
+                                                    this.followup_comment_required = true;
+                                                    break;
+                                                case 'Price too high':
+                                                    this.result_action = 'Lost';
+                                                    this.result_reason_lost_show = true;
+                                                    this.result_reason_lost = 'Price too high';
+                                                    break;
+                                                case 'Received quote too late':
+                                                    this.result_action = 'Lost';
+                                                    this.result_reason_lost_show = true;
+                                                    this.result_reason_lost = 'Received quote too late';
+                                                    break;
+                                                case 'Chose another provider':
+                                                    this.result_action = 'Lost';
+                                                    this.result_reason_lost_show = true;
+                                                    this.result_reason_lost = 'Chose another provider';
+                                                    break;
+                                                case 'Canceled shipment':
+                                                    this.result_action = 'Lost';
+                                                    this.result_reason_lost_show = true;
+                                                    this.result_reason_lost = 'Canceled shipment';
+                                                    break;
+                                                case 'Lost - Other reason':
+                                                    this.result_action = 'Lost'
+                                                    this.result_reason_lost_show = true;
+                                                    this.result_reason_lost = 'Other (specify in notes)';
+                                                    this.followup_comment_show = false;
+                                                    this.followup_comment = '';
+                                                    break;
+                                                default:
+                                                    break;
+                                            }
+                                        },
+                                        conditional_result_action(){
+                                            switch (this.result_action) {
+                                                case 'Lost':
+                                                    this.result_reason_lost_show = true;
+                                                    break;
+                                                default:
+                                                    this.result_reason_lost = '';
+                                                    this.result_reason_lost_show = false;
+                                                    break;
+                                            }
+
+                                        }
+                                    }"
+                                >
                                     @csrf
                                     @method('PUT')
+                                    <input type="hidden" name="followup_show" x-bind:value="followup_show ? 'yes' : ''">
+                                    <input type="hidden" name="followup_comment_required" x-bind:value="followup_comment_required ? 'yes' : ''">
+                                    <input type="hidden" name="result_reason_lost_exists" x-bind:value="result_reason_lost_show ? 'yes' : ''">
+                                    {{-- jcmv: follow up --}}
+                                    <x-outcome-followup />
+
                                     <div class="mb-2">
                                         <label for="action" class="form-label mb-0">{{ __('Change status to') }}</label>
-                                        <select name="result_action" id="result_action" class="form-select">
+                                        <select name="result_action" id="result_action" class="form-select" x-model="result_action" @change="conditional_result_action">
                                             <option value="">{{ __('Select status') }}</option>
                                             <option value="Won" @if($quotation->result == 'Won') selected disabled @endif>Won</option>
                                             <option value="Lost" @if($quotation->result == 'Lost') selected disabled @endif>Lost</option>
                                             <option value="Under Review" @if($quotation->result == 'Under Review') selected disabled @endif>Under Review</option>
                                         </select>
                                     </div>
+                                    <div class="mb-2" x-show="result_reason_lost_show" x-cloak>
+                                        <label for="action" class="form-label mb-0">{{ __('Reason for losing deal') }}</label>
+                                        <select name="result_reason_lost" id="result_reason_lost" class="form-select" x-model="result_reason_lost">
+                                            <option value="">{{ __('Select status') }}</option>
+                                            <option value="Not specified">Not specified</option>
+                                            <option value="Price too high">Price too high</option>
+                                            <option value="Received quote too late">Received quote too late</option>
+                                            <option value="Chose another provider">Chose another provider</option>
+                                            <option value="Canceled shipment">Canceled shipment</option>
+                                            <option value="Service not available">Service not available</option>
+                                            <option value="Client unresponsive">Client unresponsive</option>
+                                            <option value="Other (specify in notes)">Other (specify in notes)</option>
+                                        </select>
+                                    </div>
                                     <div class="mb-3">
-                                        <label for="note" class="form-label mb-0">{{ __('Comment (Optional)') }}</label>
+                                        <label for="note" class="form-label mb-0">{{ __('Notes') }}</label>
                                         <input type="text" class="form-control" name="result_note" id="result_note">
                                     </div>
                                     <div class="">
@@ -885,9 +1039,9 @@
                                         <span class="cret-bge align-middle badge
                                                 @if ($quotation->status == 'Pending')
                                                     badge-light-pending
-                                                @elseif ($quotation->status == 'Qualifying')
+                                                @elseif ($quotation->status == 'Contacted')
                                                     badge-light-warning
-                                                @elseif ($quotation->status == 'Processing')
+                                                @elseif ($quotation->status == 'Qualified')
                                                     badge-light-info
                                                 @elseif ($quotation->status == 'Attended')
                                                     badge-light-info
@@ -899,9 +1053,9 @@
                                                     badge-light-danger
                                                 @endif
                                                 inv-status">
-                                                @if($adminorsales || in_array($quotation->status, ['Pending', 'Processing', 'Attended', 'Quote Sent']))
+                                                @if($adminorsales || in_array($quotation->status, ['Pending', 'Qualified', 'Attended', 'Quote Sent']))
                                                     {{ $quotation->status }}
-                                                @elseif ($quotation->status == 'Qualifying')
+                                                @elseif ($quotation->status == 'Contacted')
                                                     Attending
                                                 @elseif ($quotation->status == 'Unqualified')
                                                     Unable to fulfill
@@ -974,7 +1128,7 @@
             <form name="delete-inquiry" action="{{ route('quotations.destroy', ['quotation' => $quotation->id]) }}" method="POST">
                 @csrf
                 @method('DELETE')
-                
+
 
                 <div class="modal-body">
                     <button type="button" class="btn-closef-lt" data-bs-dismiss="modal" aria-label="Close">
@@ -1005,7 +1159,7 @@
                         </div>
                     </div>
                 </div>
-                
+
             </form>
         </div>
     </div>

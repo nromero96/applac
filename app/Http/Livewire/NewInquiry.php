@@ -8,6 +8,7 @@ use App\Models\OrganizationContact;
 use App\Models\Quotation;
 use App\Models\QuotationDocument;
 use App\Models\Setting;
+use App\Models\UnreadQuotation;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -57,15 +58,18 @@ class NewInquiry extends Component
             'Direct Client' => ['key' => 'DIR', 'label' => 'Direct Client', 'color' => '#CC0000'],
             'agt' => ['key' => 'AGT', 'label' => 'Agent', 'color' => '#FF5F1F'],
             'Referral' => ['key' => 'REF', 'label' => 'Referral', 'color' => '#FFCC00'],
-            'Other' => ['key' => 'OTH', 'label' => 'Other', 'color' => '#595959'],
         ],
         [
             'Search Engine' => ['key' => 'SEO', 'label' => 'Search Engine', 'color' => '#4CBB17'],
+            'AI Assistant' => ['key' => 'AIA', 'label' => 'AI Assistant', 'color' => '#FF00FF'],
             'LinkedIn' => ['key' => 'LNK', 'label' => 'LinkedIn', 'color' => '#0077B5'],
             'Social Media' => ['key' => 'SOC', 'label' => 'Social Media', 'color' => '#1877F2'],
+            'Industry Event' => ['key' => 'EVT', 'label' => 'Industry Event', 'color' => '#008080'],
+            'Other' => ['key' => 'OTH', 'label' => 'Other', 'color' => '#595959'],
         ]
     ];
     public $stored = false;
+    public $savedRouteTo = 'quotations.index';
 
     public $rules = [
         'org_name' => 'required|max:255',
@@ -76,7 +80,7 @@ class NewInquiry extends Component
         'contact.name' => 'required|max:255',
         'contact.job_title' => 'nullable|max:255',
         'contact.email' => 'required|max:255|email',
-        'contact.phone' => 'required|max:20',
+        'contact.phone' => 'nullable|max:20',
         'attachments.*' => 'max:2048',
     ];
 
@@ -196,13 +200,19 @@ class NewInquiry extends Component
                 'currency' => 'USD - US Dollar',
                 'rating' => $this->rating,
                 'rating_modified' => 0,
-                'status' => 'Processing',
+                'status' => 'Pending',
                 'assigned_user_id' => $this->member,
                 'is_internal_inquiry' => true,
                 'recovered_account' => $this->recovered_account,
                 'cargo_description' => $this->cargo_description,
                 'type_inquiry' => 'internal',
                 'created_at' => now(),
+            ]);
+
+            // set quoation as unread
+            UnreadQuotation::create([
+                'user_id'       => auth()->id(),
+                'quotation_id'  => $quotation->id,
             ]);
 
             // Subir adjuntos

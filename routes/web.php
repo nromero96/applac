@@ -13,6 +13,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\CountryStateController;
+use App\Http\Controllers\DealController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UsefullinkController;
@@ -172,6 +173,10 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
     Route::get('/organizations/{organization}/edit', [OrganizationController::class, 'edit'])->name('organization.edit');
     Route::get('/organizations/{organization}/show', [OrganizationController::class, 'show'])->name('organization.show');
     // Route::get('/organizations/import', [OrganizationController::class, 'import'])->name('organization.import');
+
+
+    // Deals
+    Route::get('/deals', [DealController::class, 'index'])->name('deals.index');
 
     //calendar
     Route::get('calendar', [CalendarController::class, 'index'])->name('calendars.index');

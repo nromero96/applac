@@ -9,7 +9,12 @@ class FeaturedQuotation extends Model
 {
     protected $table = 'featured_quotations';
 
-    protected $fillable = ['user_id', 'quotation_id'];
+    protected $fillable = [
+        'user_id',
+        'quotation_id',
+        'priority',
+        'notes',
+    ];
 
     // Relación con el modelo User
     public function user()

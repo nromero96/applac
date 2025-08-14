@@ -14,8 +14,14 @@ class QuotationNote extends Model
         'type',
         'action',
         'reason',
+        'contacted_via',
         'note',
         'user_id',
+        'followup_channel',
+        'followup_feedback',
+        'followup_comment',
+        'lost_reason',
+        'update_type',
     ];
 
 }

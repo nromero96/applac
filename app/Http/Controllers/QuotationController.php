@@ -29,7 +29,7 @@ use App\Models\QuotePendingEmail;
 use Carbon\Carbon;
 
 use App\Models\FeaturedQuotation;
-
+use App\Models\UnreadQuotation;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\DB;
@@ -270,7 +270,7 @@ class QuotationController extends Controller
         ->get();
 
         // Contar por status de cotizaciones
-        $statusorderforlist = ['Pending', 'Qualifying', 'Processing', 'Quote Sent', 'Unqualified', 'Deleted'];
+        $statusorderforlist = ['Pending', 'Contacted', 'Qualified', 'Quote Sent', 'Unqualified', 'Deleted'];
 
         $liststatus = Quotation::select(
             'quotations.status as quotation_status',
@@ -416,6 +416,21 @@ class QuotationController extends Controller
 
     public function show($id)
     {
+        // remove unread quotation
+        $quotation_unread = UnreadQuotation::where('quotation_id',$id)->first();
+        if ($quotation_unread) {
+            $quotation_unread->delete();
+            // register as read
+            QuotationNote::create([
+                'quotation_id' => $id,
+                'type' => 'read',
+                'action' => '',
+                'reason' => '',
+                'note' => '',
+                'user_id' => auth()->id(),
+            ]);
+        }
+
         $data = [
             'category_name' => 'quotations',
             'page_name' => 'quotations_show',
@@ -616,7 +631,6 @@ class QuotationController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
-
         try {
             // Obtener la inscripción actual
             $quotation = Quotation::findOrFail($id);
@@ -626,8 +640,9 @@ class QuotationController extends Controller
                 'action' => 'required',
                 'reason' => 'nullable|string',
                 'note' => 'nullable|string',
+                'contacted_via' => 'nullable|string',
             ]);
-            
+
             if($validatedData['action'] == 'Unqualified'){
                 if($validatedData['note'] == ''){
                     $notesms = 'Auto-Decline Email Sent';
@@ -637,13 +652,13 @@ class QuotationController extends Controller
             }else{
                 $notesms = $validatedData['note'] ?? 'N/A';
             }
-
             // Insertar la nota de estado
             QuotationNote::create([
                 'quotation_id' => $id,
                 'type' => 'inquiry_status',
                 'action' => "'{$quotation->status}' to '{$validatedData['action']}'",
                 'reason' => $validatedData['reason'] ?? '',
+                'contacted_via' => $validatedData['contacted_via'] ?? null,
                 'note' => $notesms,
                 'user_id' => auth()->id(),
             ]);
@@ -676,7 +691,7 @@ class QuotationController extends Controller
                 $customer = $quotation->customer_user_id
                     ? User::find($quotation->customer_user_id)
                     : GuestUser::find($quotation->guest_user_id);
-            
+
                 if ($customer && !empty($customer->email)) {
                     $customer_name = trim(($customer->name ?? '') . ' ' . ($customer->lastname ?? ''));
 
@@ -707,27 +722,69 @@ class QuotationController extends Controller
             // Obtener la inscripción actual
             $quotation = Quotation::findOrFail($id);
 
+            if ($request->input('followup_show') == 'yes') {
+                // existe follow up
+                $rules['result_action'] = 'nullable|max:100';
+                $rules['result_note'] = 'nullable|string';
+                $rules['followup_channel'] = 'required';
+                $rules['followup_feedback'] = 'required';
+                $rules['result_reason_lost'] = 'nullable';
+                if ($request->input('followup_comment_required') == 'yes') {
+                    $rules['followup_comment'] = 'required|max:100';
+                } else {
+                    $rules['followup_comment'] = 'nullable|max:100';
+                }
+            } else {
+                // no existe follow up
+                $rules = [
+                    'result_action' => 'required|max:100',
+                    'result_note' => 'nullable|string',
+                    'result_reason_lost' => 'nullable',
+                    'followup_channel' => 'nullable',
+                    'followup_feedback' => 'nullable',
+                    'followup_comment' => 'nullable',
+                ];
+            }
+            if ($request->input('result_reason_lost_exists') == 'yes') {
+                $rules['result_reason_lost'] = 'required';
+            }
+            // dd(['request' => $request->all(), 'rules' => $rules]);
+            // dd($request->all());
+            // dd($rules);
+
             // Validación de datos (ajusta estas reglas según tus necesidades)
-            $validatedData = $request->validate([
-                'result_action' => 'required|max:100',
-                'result_note' => 'nullable|string',
-            ]);
+            $validatedData = $request->validate($rules);
 
             // Insertar la nota de resultado
-            QuotationNote::create([
+            $result_data = [
                 'quotation_id' => $id,
                 'type' => 'result_status',
-                'action' => "'{$quotation->result}' to '{$validatedData['result_action']}'",
                 'reason' => '',
                 'note' => $validatedData['result_note'] ?? 'N/A',
                 'user_id' => auth()->id(),
-            ]);
+                'followup_channel' => $validatedData['followup_channel'],
+                'followup_feedback' => $validatedData['followup_feedback'],
+                'followup_comment' => $validatedData['followup_comment'],
+                'lost_reason' => $validatedData['result_reason_lost'],
+            ];
+
+            if ($validatedData['result_action'] == '') { // outcome unchanged
+                $result_data['action'] = "'' to '{$quotation->result}'";
+                $result_data['update_type'] = 'unchanged';
+            } else { // outcome changed
+                $result_data['action'] = "'{$quotation->result}' to '{$validatedData['result_action']}'";
+                $result_data['update_type'] = 'changed';
+            }
+
+            QuotationNote::create($result_data);
 
             // Actualizar el resultado de la inscripción después de registrar la nota
-            $quotation->update([
-                'result' => $validatedData['result_action'],
-                'updated_at' => now(),
-            ]);
+            if ($validatedData['result_action'] != '') {
+                $quotation->update([
+                    'result' => $validatedData['result_action'],
+                    'updated_at' => now(),
+                ]);
+            }
 
             return redirect()->route('quotations.show', ['quotation' => $id])->with('success', 'Updated result successfully quotation #'.$id);
         } catch (\Exception $e) {
@@ -922,6 +979,12 @@ class QuotationController extends Controller
                 ]);
 
                 $quotation_id = $quotation->id;
+
+                // set quoation as unread
+                UnreadQuotation::create([
+                    'user_id'       => auth()->id(),
+                    'quotation_id'  => $quotation_id,
+                ]);
 
                 //create cargo details
                 $cargo_type = $request->input('cargo_type');

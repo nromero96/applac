@@ -93,6 +93,7 @@
             @break
 
         @case('quotations_show')
+            <link rel="stylesheet" type="text/css" href="{{asset('plugins/src/daterangepicke/daterangepicker.css')}}">
             {{-- All quotes --}}
             <style>
                 .table tbody tr td {
@@ -122,6 +123,11 @@
             <link href="{{ asset('assets/css/light/components/modal.css') }}" rel="stylesheet" type="text/css">
             <link href="{{ asset('assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css">
 
+            @break
+
+        @case('deals')
+            <link rel="stylesheet" type="text/css" href="{{asset('assets/css/light/apps/invoice-list.css')}}?v={{ config('app.version') }}">
+            <link rel="stylesheet" type="text/css" href="{{asset('assets/css/dark/apps/invoice-list.css')}}?v={{ config('app.version') }}">
             @break
 
         @case('suppliers')
@@ -220,4 +226,5 @@
             <script>console.log('No custom Styles available.')</script>
     @endswitch
 
+    <link href="{{ asset('assets/css/light/custom.css') }}?v={{ config('app.version') }}" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->

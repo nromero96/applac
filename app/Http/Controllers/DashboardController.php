@@ -42,7 +42,7 @@ class DashboardController extends Controller{
         // foreach ($users as $user) {
         //     // Inicializar el array de cotizaciones por estado
         //     $quotes = [
-        //         'Processing' => 0,
+        //         'Qualified' => 0,
         //         'Attended' => 0,
         //         'Quote Sent' => 0,
         //         'Total' => 0,

@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\GuestUser;
 use App\Models\QuotationDocument;
 use App\Mail\WebQuotationCreated;
+use App\Models\UnreadQuotation;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -99,17 +100,25 @@ class QuotationController extends Controller
             'status' => 'Pending',
             'created_at' => now(),
         ]);
-        
+
+        $quotation_id = $quotation->id;
+
+        // set quoation as unread
+        UnreadQuotation::create([
+            'user_id'       => auth()->id(),
+            'quotation_id'  => $quotation_id,
+        ]);
+
 
         //Guarda los archivos en la tabla quotation_documents
         if ($request->hasFile('files')) {
             foreach ($request->file('files') as $file) {
                 // Nombre único para el archivo
                 $file_name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
-                
+
                 // Mueve el archivo a la carpeta public/uploads/quotation_documents
                 $file_path = $file->storeAs('public/uploads/quotation_documents', $file_name);
-        
+
                 // Registrar en la base de datos
                 QuotationDocument::create([
                     'quotation_id' => $quotation->id,
@@ -118,7 +127,7 @@ class QuotationController extends Controller
             }
         }
 
-        // Calificar la cotización y asignar 
+        // Calificar la cotización y asignar
         try {
             $rating = rateQuotationWeb($quotation->id);
             Log::info('Quote ' . $quotation->id . ' rated with ' . $rating . ' stars.');
