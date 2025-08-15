@@ -1340,3 +1340,19 @@
     border-radius: 4px;
     font-weight: 700;
 }
+
+.filter_dates {
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 8px;
+
+    .form-label {
+        margin-bottom: .15rem;
+    }
+
+    button {
+        padding-top: 8px;
+        padding-bottom: 8px;
+    }
+}

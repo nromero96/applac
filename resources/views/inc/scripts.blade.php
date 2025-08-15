@@ -17,6 +17,8 @@
     @switch($page_name)
         @case('dashboard')
             <script src="{{ asset('plugins/src/jquery-ui/jquery-ui.min.js') }}"></script>
+            <script src="{{asset('plugins/src/daterangepicke/moment.min.js')}}"></script>
+            <script src="{{asset('plugins/src/daterangepicke/daterangepicker.js')}}"></script>
             <script>
                 $(() => $('[data-toggle="tooltip"]').tooltip())
             </script>

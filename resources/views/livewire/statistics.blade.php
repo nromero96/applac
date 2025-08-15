@@ -3,6 +3,44 @@
     x-data="{
         tab: @entangle('tab').defer,
         show_filters: @entangle('show_filters').defer,
+        filters: @entangle('filters').defer,
+        lastPeriod: null,
+        dateFrom: '',
+        dateTo: '',
+        init() {
+            this.lastPeriod = this.filters.period;
+            this.$watch('filters.period', value => {
+                if (value !== this.lastPeriod) {
+                    this.lastPeriod = value;
+                    if (value !== 'custom') {
+                        this.updateParent();
+                    }
+                }
+            });
+
+            const $from = $('#customDateFrom');
+            $from.daterangepicker({
+                singleDatePicker: true,
+                autoApply: true,
+                autoUpdateInput: false,
+                locale: { format: 'DD-MM-YYYY', firstDay: 1 }
+            }).on('apply.daterangepicker', (ev, picker) => {
+                this.dateFrom = picker.startDate.format('DD-MM-YYYY');
+            });
+
+            const $to = $('#customDateTo');
+            $to.daterangepicker({
+                singleDatePicker: true,
+                autoApply: true,
+                autoUpdateInput: false,
+                locale: { format: 'DD-MM-YYYY', firstDay: 1 }
+            }).on('apply.daterangepicker', (ev, picker) => {
+                this.dateTo = picker.startDate.format('DD-MM-YYYY');
+            });
+        },
+        updateParent() {
+            @this.call('updateParent', this.dateFrom, this.dateTo);
+        }
     }"
     wire:loading.class="loading"
 >
@@ -21,12 +59,28 @@
             <div x-show="tab != 'sales'">
                 <x-deal-board-filters :show-btn-add-deal="false" :show-readiness="false" />
             </div>
-            <select class="form-select" style="width: 200px" wire:model="filters.period">
-                <option value="last_7_days">Last 7 days</option>
-                <option value="last_30_days">Last 30 days</option>
-                <option value="last_90_days">Last 90 days</option>
-                <option value="custom">Custom</option>
-            </select>
+            <div>
+                <select class="form-select" style="width: 200px" x-model="filters.period">
+                    <option value="last_7_days">Last 7 days</option>
+                    <option value="last_30_days">Last 30 days</option>
+                    <option value="last_90_days">Last 90 days</option>
+                    <option value="custom">Custom</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div wire:ignore x-show="filters.period === 'custom'" x-cloak class="filter_dates">
+        <div class="__item">
+            <label class="form-label">From:</label>
+            <input type="text" id="customDateFrom" x-model="dateFrom" class="form-control" placeholder="dd-mm-yyyy" autocomplete="off">
+        </div>
+        <div class="__item">
+            <label class="form-label">To:</label>
+            <input type="text" id="customDateTo" x-model="dateTo" class="form-control" placeholder="dd-mm-yyyy" autocomplete="off">
+        </div>
+        <div class="__item">
+            <button class="btn__primary" x-on:click="updateParent">Apply</button>
         </div>
     </div>
 

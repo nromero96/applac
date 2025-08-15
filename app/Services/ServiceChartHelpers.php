@@ -62,6 +62,12 @@ class ServiceChartHelpers {
                     $query->whereDate($key_date . '.created_at', '>=', Carbon::now()->subDays(180));
                     $range_period = ['from' => Carbon::now()->subDays(180), 'to' => Carbon::today()];
                     break;
+                case 'custom':
+                    $query->whereDate($key_date . '.created_at', '>=', $filters['date_from']);
+                    $query->whereDate($key_date . '.created_at', '<=', $filters['date_to']);
+                    $range_period = ['from' => $filters['date_from'], 'to' => $filters['date_to']];
+                    // dd($filters);
+                    break;
                 default:
                     break;
             }

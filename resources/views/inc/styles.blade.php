@@ -20,6 +20,7 @@
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     @switch($page_name)
         @case('dashboard')
+            <link rel="stylesheet" type="text/css" href="{{asset('plugins/src/daterangepicke/daterangepicker.css')}}">
             {{-- Dashboard --}}
             <link href="{{ asset('plugins/src/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
             <link href="{{ asset('assets/css/light/dashboard/dash_1.css') }}?v={{ config('app.version') }}" rel="stylesheet" type="text/css" />

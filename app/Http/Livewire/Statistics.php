@@ -8,6 +8,7 @@ use App\Services\ServiceChartHelpers;
 use App\Services\StatisticsChartsManage;
 use App\Services\StatisticsChartsMkt;
 use App\Services\StatisticsChartsSales;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -64,6 +65,8 @@ class Statistics extends Component
         'inquiry_type'  => [],
         'source'        => [],
         'period'        => 'last_30_days',
+        'date_from'     => '',
+        'date_to'       => '',
     ];
     public $is_filtering = false;
     public $user_sales;
@@ -319,7 +322,30 @@ class Statistics extends Component
         ];
     }
 
-    public function updateParent() {
+    public function updating($property){
+        if ($property == 'filters') {
+            $this->is_filtering = true;
+        }
+    }
+
+    public function updateParent($dateFrom = null, $dateTo = null) {
+        if ($dateFrom) $this->filters['date_from'] = Carbon::createFromFormat('d-m-Y', $dateFrom)->format('Y-m-d');
+        if ($dateTo) $this->filters['date_to'] = Carbon::createFromFormat('d-m-Y', $dateTo)->format('Y-m-d');
+        // dd($this->filters);
         // filter
+    }
+
+    public function clearFilters() {
+        $this->reset('filters', 'is_filtering');
+    }
+
+    public function setDateFrom($value)
+    {
+        $this->filters['date_from'] = $value;
+    }
+
+    public function setDateTo($value)
+    {
+        $this->filters['date_to'] = $value;
     }
 }
