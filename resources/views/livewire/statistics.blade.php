@@ -59,14 +59,12 @@
             <div x-show="tab != 'sales'">
                 <x-deal-board-filters :show-btn-add-deal="false" :show-readiness="false" />
             </div>
-            <div>
-                <select class="form-select" style="width: 200px" x-model="filters.period">
-                    <option value="last_7_days">Last 7 days</option>
-                    <option value="last_30_days">Last 30 days</option>
-                    <option value="last_90_days">Last 90 days</option>
-                    <option value="custom">Custom</option>
-                </select>
-            </div>
+            <select class="form-select" style="width: 200px" x-model="filters.period">
+                <option value="last_7_days">Last 7 days</option>
+                <option value="last_30_days">Last 30 days</option>
+                <option value="last_90_days">Last 90 days</option>
+                <option value="custom">Custom</option>
+            </select>
         </div>
     </div>
 
