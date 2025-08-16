@@ -16,7 +16,9 @@
 
         <div class="col-12 mt-3">
             <div class="card p-3">
-                <h2 class="stats__subtitle">{{ __('Lead Acquisition & Source Attribution') }}</h2>
+                <h2 class="stats__subtitle d-flex align-items-center gap-2" wire:ignore>
+                    {{ __('Lead Acquisition & Source Attribution') }}
+                </h2>
                 <div class="row">
                     <div class="col-5" wire:ignore>
                         <canvas id="chart_inquiry_volume_by_source"></canvas>
@@ -52,7 +54,12 @@
 
         <div class="col-12 mt-3">
             <div class="card p-3">
-                <h2 class="stats__subtitle">{{ __('Service Demand & Logistics Insight') }}</h2>
+                <h2 class="stats__subtitle d-flex align-items-center gap-2" wire:ignore>
+                    {{ __('Service Demand & Logistics Insight') }}
+                    <div data-toggle="tooltip" data-placement="top" title="Includes only inbound business inquiries">
+                        {!! $this->icon_info !!}
+                    </div>
+                </h2>
                 <div class="row">
                     <div class="col-md-6" wire:ignore>
                         <canvas id="chart_top_modes_of_transport" height="300"></canvas>

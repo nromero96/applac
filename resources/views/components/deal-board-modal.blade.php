@@ -33,13 +33,6 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                <div x-show="modal_deal_data?.status?.label != 'Unqualified'">
-                    <label clasS="form-label">Notes</label>
-                    <input type="text" class="form-control" x-model="modal_deal_data.notes">
-                    @error('modal_deal_data.notes')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
                 <div x-show="modal_deal_data?.status?.label == 'Contacted'">
                     <label class="form-label mb-0">{{ __('Contacted via') }} <span class="text-danger">*</span></label>
                     <div class="d-flex gap-3">
@@ -74,6 +67,13 @@
                         <option value="Other">Other</option>
                     </select>
                     @error('modal_deal_data.reason')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div x-show="modal_deal_data?.status?.label != 'Unqualified'">
+                    <label clasS="form-label">Notes</label>
+                    <input type="text" class="form-control" x-model="modal_deal_data.notes">
+                    @error('modal_deal_data.notes')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
