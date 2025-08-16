@@ -266,35 +266,37 @@
                                             </ul>
                                         </div>
 
-                                        <!-- Dropdown Team -->
-                                        <div class="dropdown">
-                                            <button class="dropdown-toggle rounded-pill select-dropdown me-2 assigned-to" type="button" id="dropdownTeamButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                @if(request('assignedto') == '')
-                                                    Member
-                                                @else
-                                                    @foreach ($users as $user)
-                                                        @if(request('assignedto') == $user->id)
-                                                            {{ $user->name }}
-                                                            @if(Auth::user()->id == $user->id) (Me) @endif
-                                                        @endif
-                                                    @endforeach
-                                                @endif
-                                            </button>
-                                            <input type="hidden" name="assignedto" id="inputsearchassignedto" value="{{ request('assignedto') }}">
-                                            <ul class="dropdown-menu mt-3" aria-labelledby="dropdownTeamButton">
-                                                <li>
-                                                    <a class="dropdown-item" href="#" onclick="selectTeam('')"><b>All Team</b></a>
-                                                </li>
-                                                @foreach ($users as $user)
-                                                    <li class="@if(Auth::user()->id == $user->id) as-to @endif">
-                                                        <a class="dropdown-item" href="#" onclick="selectTeam('{{ $user->id }}')">
-                                                            <span class="" title="{{ $user->name }}">{{ $user->name }}</span>
-                                                            @if(Auth::user()->id == $user->id) (Me) @endif
-                                                        </a>
+                                        @if (Auth::user()->hasRole('Administrator'))
+                                            <!-- Dropdown Team -->
+                                            <div class="dropdown">
+                                                <button class="dropdown-toggle rounded-pill select-dropdown me-2 assigned-to" type="button" id="dropdownTeamButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    @if(request('assignedto') == '')
+                                                        Member
+                                                    @else
+                                                        @foreach ($users as $user)
+                                                            @if(request('assignedto') == $user->id)
+                                                                {{ $user->name }}
+                                                                @if(Auth::user()->id == $user->id) (Me) @endif
+                                                            @endif
+                                                        @endforeach
+                                                    @endif
+                                                </button>
+                                                <input type="hidden" name="assignedto" id="inputsearchassignedto" value="{{ request('assignedto') }}">
+                                                <ul class="dropdown-menu mt-3" aria-labelledby="dropdownTeamButton">
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" onclick="selectTeam('')"><b>All Team</b></a>
                                                     </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
+                                                    @foreach ($users as $user)
+                                                        <li class="@if(Auth::user()->id == $user->id) as-to @endif">
+                                                            <a class="dropdown-item" href="#" onclick="selectTeam('{{ $user->id }}')">
+                                                                <span class="" title="{{ $user->name }}">{{ $user->name }}</span>
+                                                                @if(Auth::user()->id == $user->id) (Me) @endif
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
 
                                         @if(request('assignedto') != '' || request('result')!= '' || request('status')!= '' || request('source') != '' || request('rating') != '')
                                             <a href="{{ route('quotations.index') }}" class="ms-0 text-primary btn-clearfilter">
@@ -430,348 +432,348 @@
 
                                             @endphp
 
-                                            @if ($quotation->quotation_assigned_user_id == Auth::user()->id || Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Customer'))
-                                                <tr class="{{$trfeatured}}">
-                                                    @if($adminorsales)
-                                                    <td class="py-1 ps-2 pe-2 align-middle text-center">
-                                                        <label class="featured mb-0">
-                                                            <input type="checkbox" id="checkbox{{ $quotation->quotation_id }}" class="featured_check" value="{{ $quotation->quotation_id }}" {{$feact_active}}>
-                                                            <svg id="icon{{ $quotation->quotation_id }}" class="svg-icon {{$feact_active}}" width="46" height="46" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
-                                                            </svg>
-                                                        </label>
-                                                    </td>
-                                                    @endif
-                                                    <td class="ps-2 pe-2 sticky-column">
-                                                        <a href="{{ route('quotations.show', $quotation->quotation_id) }}"><span class="inv-number text-decoration-underline">#{{ $quotation->quotation_id }}</span></a>
-                                                    </td>
+                                            {{-- @if ($quotation->quotation_assigned_user_id == Auth::user()->id || Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Customer')) --}}
+                                            {{-- @endif --}}
+                                            <tr class="{{$trfeatured}}">
+                                                @if($adminorsales)
+                                                <td class="py-1 ps-2 pe-2 align-middle text-center">
+                                                    <label class="featured mb-0">
+                                                        <input type="checkbox" id="checkbox{{ $quotation->quotation_id }}" class="featured_check" value="{{ $quotation->quotation_id }}" {{$feact_active}}>
+                                                        <svg id="icon{{ $quotation->quotation_id }}" class="svg-icon {{$feact_active}}" width="46" height="46" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="m19 21-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                                        </svg>
+                                                    </label>
+                                                </td>
+                                                @endif
+                                                <td class="ps-2 pe-2 sticky-column">
+                                                    <a href="{{ route('quotations.show', $quotation->quotation_id) }}"><span class="inv-number text-decoration-underline">#{{ $quotation->quotation_id }}</span></a>
+                                                </td>
 
-                                                    <td class="py-1 align-middle">
-                                                        <div class="inv-date d-flex">
-                                                            <span class="align-self-center">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                                                            </span>
-                                                            <small class="align-self-center ps-1 lh-1">
-                                                                {{ date('d/m/Y', strtotime($quotation->quotation_created_at)) }}
-                                                                <small class="d-block text-muted">{{ date('H:i', strtotime($quotation->quotation_created_at)) }}</small>
-                                                            </small>
-                                                        </div>
-                                                    </td>
+                                                <td class="py-1 align-middle">
+                                                    <div class="inv-date d-flex">
+                                                        <span class="align-self-center">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                                                        </span>
+                                                        <small class="align-self-center ps-1 lh-1">
+                                                            {{ date('d/m/Y', strtotime($quotation->quotation_created_at)) }}
+                                                            <small class="d-block text-muted">{{ date('H:i', strtotime($quotation->quotation_created_at)) }}</small>
+                                                        </small>
+                                                    </div>
+                                                </td>
 
-                                                    @if($adminorsales)
-                                                    <td class="p-1 text-start">
-                                                        {{-- Rating aleatorio --}}
-                                                        <div class="qtrating">
-                                                            @php
-                                                                if($quotation->rating_modified) {
-                                                                    $starcolor = '#2196F3';
-                                                                } else {
-                                                                    $starcolor = '#edb10c';
-                                                                }
-
-                                                                $fullStars = floor($quotation->quotation_rating);
-                                                                $hasHalfStar = ($quotation->quotation_rating - $fullStars) >= 0.5;
-                                                            @endphp
-
-                                                            @for ($i = 0; $i < $fullStars; $i++)
-                                                                <span class="star">
-                                                                    <svg width="17" height="17" fill="{{$starcolor}}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                            @endfor
-
-                                                            @if ($hasHalfStar)
-                                                                <span class="star">
-                                                                    <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#e1e1e1" />
-                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#edb10c" clip-path="url(#halfStarClip)" />
-                                                                        <defs>
-                                                                            <clipPath id="halfStarClip">
-                                                                                <rect x="0" y="0" width="12" height="24" />
-                                                                            </clipPath>
-                                                                        </defs>
-                                                                    </svg>
-                                                                </span>
-                                                            @endif
-
-                                                            @for ($i = $fullStars + ($hasHalfStar ? 1 : 0); $i < 5; $i++)
-                                                                <span class="star">
-                                                                    <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                            @endfor
-                                                        </div>
-                                                    </td>
-
-
-                                                    <td class="ps-1 pe-2">
+                                                @if($adminorsales)
+                                                <td class="p-1 text-start">
+                                                    {{-- Rating aleatorio --}}
+                                                    <div class="qtrating">
                                                         @php
-                                                            $tagreadiness = '';
-
-                                                            if($quotation->type_inquiry == 'external 2'){
-
-                                                                $readiness_levels = [
-                                                                    'Ready to ship now' => 'br-high',
-                                                                    'Ready within 1-3 months' => 'br-mid',
-                                                                    'Not yet ready, just exploring options/budgeting' => 'br-low',
-                                                                ];
-
-                                                                if (isset($readiness_levels[$quotation->shipment_ready_date])) {
-                                                                    $tagreadiness = '<span class="badge-readiness ' . $readiness_levels[$quotation->shipment_ready_date] . '">' . strtoupper(str_replace('br-', '', $readiness_levels[$quotation->shipment_ready_date])) . '</span>';
-                                                                }
-
-                                                            }elseif($quotation->type_inquiry == 'internal'){
-                                                                $tagreadiness = '';
-                                                            }else{
-                                                                $fecha_solicitud = Carbon\Carbon::parse($quotation->quotation_created_at)->startOfDay();
-                                                                $catorcediasdespues = $fecha_solicitud->clone()->addDays(14);
-                                                                $treintadiasdespues = $fecha_solicitud->clone()->addDays(30);
-                                                                if($quotation->quotation_shipping_date && $quotation->quotation_no_shipping_date == 'no'){
-                                                                    $fecha_envio = Carbon\Carbon::parse(explode(' to ', $quotation->quotation_shipping_date)[0]);
-                                                                    if ($fecha_envio->between($fecha_solicitud, $catorcediasdespues)) {
-                                                                        //1 a 14 días desde la fecha solicitud
-                                                                        $tagreadiness = '<span class="badge-readiness br-high">HIGH</span>';
-                                                                    } elseif ($fecha_envio->between($catorcediasdespues, $treintadiasdespues)){
-                                                                        //Desde el día 15 al 30 desde la fecha solicitud
-                                                                        $tagreadiness = '<span class="badge-readiness br-mid">MID</span>';
-                                                                    } elseif ($fecha_envio->gt($treintadiasdespues)){
-                                                                        //Más de 30 días desde la fecha solicitud
-                                                                        $tagreadiness = '<span class="badge-readiness br-low">LOW</span>';
-                                                                    }
-                                                                } else {
-                                                                    $tagreadiness = '<span class="badge-readiness -- br-low">LOW</span>';
-                                                                }
+                                                            if($quotation->rating_modified) {
+                                                                $starcolor = '#2196F3';
+                                                            } else {
+                                                                $starcolor = '#edb10c';
                                                             }
 
+                                                            $fullStars = floor($quotation->quotation_rating);
+                                                            $hasHalfStar = ($quotation->quotation_rating - $fullStars) >= 0.5;
                                                         @endphp
-                                                        {!! $tagreadiness !!}
-                                                    </td>
 
-                                                    @endif
+                                                        @for ($i = 0; $i < $fullStars; $i++)
+                                                            <span class="star">
+                                                                <svg width="17" height="17" fill="{{$starcolor}}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                </svg>
+                                                            </span>
+                                                        @endfor
 
-                                                    <td class="px-2">
-
-                                                        <span class="cret-bge ms-0 w-100 align-middle badge
-                                                                @if ($quotation->quotation_status == 'Pending')
-                                                                    badge-light-pending
-                                                                @elseif ($quotation->quotation_status == 'Contacted')
-                                                                    badge-light-warning
-                                                                @elseif ($quotation->quotation_status == 'Qualified')
-                                                                    badge-light-info
-                                                                @elseif ($quotation->quotation_status == 'Attended')
-                                                                    badge-light-info
-                                                                @elseif ($quotation->quotation_status == 'Quote Sent')
-                                                                    badge-light-success
-                                                                @elseif ($quotation->quotation_status == 'Unqualified')
-                                                                    badge-light-unqualified
-                                                                @elseif ($quotation->quotation_status == 'Deleted')
-                                                                    badge-light-danger
-                                                                @endif
-                                                                inv-status">
-                                                                @if($adminorsales || in_array($quotation->quotation_status, ['Pending', 'Qualified', 'Attended', 'Quote Sent']))
-                                                                    {{ $quotation->quotation_status }}
-                                                                @elseif ($quotation->quotation_status == 'Contacted')
-                                                                    Attending
-                                                                @elseif ($quotation->quotation_status == 'Unqualified')
-                                                                    Unable to fulfill
-                                                                @endif
-                                                        </span>
-                                                    </td>
-
-                                                    @if($adminorsales)
-
-
-                                                        <td class="px-1">
-                                                            <span class="cret-bge ms-0 w-100 align-middle badge @if ($quotation->quotation_result == 'Won')
-                                                                    badge-light-won @elseif ($quotation->quotation_result == 'Lost')
-                                                                    badge-light-danger @elseif ($quotation->quotation_result == 'Under Review')
-                                                                    badge-light-warning @endif">
-                                                                {{ $quotation->quotation_result }}
-                                                        </span>
-
-                                                        </td>
-
-                                                    @endif
-
-                                                    <td class="px-2">
-                                                        <span class="inv-email">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                                                            {{ $quotation->user_email }}
-                                                        </span>
-                                                    </td>
-
-                                                    <td class="px-2">
-                                                        {{$quotation->location_name}}
-                                                    </td>
-
-                                                    <td class="px-2">
-                                                        <span class="inv-country">
-                                                            @if (!$quotation->is_internal_inquiry)
-                                                                {{ $quotation->origin_country }} - {{ $quotation->destination_country }}
-                                                            @else
-                                                                {{ __('Internal Inquiry') }}
-                                                            @endif
-                                                        </span>
-                                                    </td>
-
-                                                    <td class="px-2">
-                                                        {{ $quotation->quotation_mode_of_transport }}
-                                                    </td>
-
-                                                    @if($adminorsales)
-
-                                                    {{-- Select if user logged is admin spatie --}}
-                                                    @if (Auth::user()->hasRole('Administrator'))
-                                                        <td>
-
-                                                            <select class="user-select-assigned @if($quotation->quotation_assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->quotation_id }}">
-                                                                <option value="">{{ __('Unassigned') }}</option>
-                                                                @foreach ($users as $user)
-                                                                    <option value="{{ $user->id }}" @if($user->id == $quotation->quotation_assigned_user_id) selected @endif>{{ $user->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            @if (false)
-                                                                @if($quotation->quotation_assigned_user_id == null)
-
-                                                                    {{-- <a class="badge badge-primary text-start me-2 action-edit" href="{{ route('assignQuoteForMe', $quotation->quotation_id) }}">
-                                                                        {{ __('Make') }}
-                                                                    </a> --}}
-
-                                                                    {{ __('Unassigned') }}
-
-                                                                @else
-                                                                    @if ($quotation->quotation_assigned_user_id == Auth::user()->id)
-                                                                        <span class="badge badge-light-won">{{ __('You were assigned') }}</span>
-                                                                    @else
-                                                                        <span class="badge badge-light-danger">{{ __('Other user assigned') }}</span>
-                                                                    @endif
-                                                                @endif
-                                                            @endif
-                                                        </td>
-                                                    @endif
-
-                                                    <td class="ps-2 pe-2">
-
-                                                        @if($quotation->type_inquiry == 'internal')
-                                                            <span class="text-capitalize badge-type-inquiry internal">
-                                                                <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                                    <g clip-path="url(#clip0_8656_5074)" fill="none" stroke-width="1.5px">
-                                                                    <path d="M8.00065 14.6667C11.6825 14.6667 14.6673 11.6819 14.6673 8.00004C14.6673 4.31814 11.6825 1.33337 8.00065 1.33337C4.31875 1.33337 1.33398 4.31814 1.33398 8.00004C1.33398 11.6819 4.31875 14.6667 8.00065 14.6667Z" stroke="#0A6AB7" stroke-width="1.5px" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-                                                                    <path d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" stroke="#0A6AB7" stroke-width="1.5px" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-                                                                    </g>
+                                                        @if ($hasHalfStar)
+                                                            <span class="star">
+                                                                <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#e1e1e1" />
+                                                                    <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#edb10c" clip-path="url(#halfStarClip)" />
                                                                     <defs>
-                                                                    <clipPath id="clip0_8656_5074">
-                                                                    <rect width="16" height="16" fill="white"></rect>
-                                                                    </clipPath>
+                                                                        <clipPath id="halfStarClip">
+                                                                            <rect x="0" y="0" width="12" height="24" />
+                                                                        </clipPath>
                                                                     </defs>
                                                                 </svg>
-                                                                {{ $quotation->type_inquiry }} </span>
-                                                        @elseif($quotation->type_inquiry == 'external 1')
-                                                            <span class="text-capitalize badge-type-inquiry external-1">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                                    <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#B28600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                    <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#B28600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                </svg>
-                                                                {{ $quotation->type_inquiry }} </span>
-                                                        @elseif($quotation->type_inquiry == 'external 2')
-                                                            <span class="text-capitalize badge-type-inquiry external-2">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                                    <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                    <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                </svg>
-                                                                {{ $quotation->type_inquiry }} </span>
-                                                        @elseif($quotation->type_inquiry == 'ext-auto')
-                                                            <span class="text-capitalize badge-type-inquiry ext-auto">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                                    <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                    <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                </svg>
-                                                                {{ $quotation->type_inquiry }} </span>
+                                                            </span>
                                                         @endif
-                                                    </td>
 
-                                                    <td class="py-1 align-middle px-2">
-                                                        @if($quotation->user_source)
-                                                            @php
+                                                        @for ($i = $fullStars + ($hasHalfStar ? 1 : 0); $i < 5; $i++)
+                                                            <span class="star">
+                                                                <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                    <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                </svg>
+                                                            </span>
+                                                        @endfor
+                                                    </div>
+                                                </td>
 
-                                                                //Color
-                                                                $sourceMap = [
-                                                                    'Search Engine'  => ['class' => 'sb-color-seo', 'text' => 'seo'],
-                                                                    'LinkedIn'       => ['class' => 'sb-color-lnk', 'text' => 'lnk'],
-                                                                    'AI Assistant'   => ['class' => 'sb-color-aia', 'text' => 'aia'],
-                                                                    'Social Media'   => ['class' => 'sb-color-soc', 'text' => 'soc'],
-                                                                    'Referral'       => ['class' => 'sb-color-ref', 'text' => 'ref'],
-                                                                    'Industry Event' => ['class' => 'sb-color-evt', 'text' => 'evt'],
-                                                                    'Other'          => ['class' => 'sb-color-oth', 'text' => 'oth'],
-                                                                    'ppc'            => ['class' => 'sb-color-ppc', 'text' => 'ppc'],
-                                                                    'Direct Client'  => ['class' => 'sb-color-dir', 'text' => 'dir'],
-                                                                    'agt'            => ['class' => 'sb-color-agt', 'text' => 'agt'],
-                                                                ];
 
-                                                                $source = $quotation->user_source;
-                                                                $class_sb = $sourceMap[$source]['class'] ?? 'sb-color-oth';
-                                                                $text_sb  = $sourceMap[$source]['text']  ?? 'N/A';
+                                                <td class="ps-1 pe-2">
+                                                    @php
+                                                        $tagreadiness = '';
 
-                                                            @endphp
-                                                            <span class="source-badge {{$class_sb}}" title="{{$quotation->user_source}}">{{ $text_sb }}</span>
-                                                        @else
-                                                            <span>-</span>
-                                                        @endif
-                                                    </td>
+                                                        if($quotation->type_inquiry == 'external 2'){
 
-                                                    @endif
+                                                            $readiness_levels = [
+                                                                'Ready to ship now' => 'br-high',
+                                                                'Ready within 1-3 months' => 'br-mid',
+                                                                'Not yet ready, just exploring options/budgeting' => 'br-low',
+                                                            ];
 
-                                                    <td class="py-0 px-2">
-                                                        <div class="rounded-1 btn-sm py-0 px-0">
+                                                            if (isset($readiness_levels[$quotation->shipment_ready_date])) {
+                                                                $tagreadiness = '<span class="badge-readiness ' . $readiness_levels[$quotation->shipment_ready_date] . '">' . strtoupper(str_replace('br-', '', $readiness_levels[$quotation->shipment_ready_date])) . '</span>';
+                                                            }
 
-                                                            @if($quotation->quotation_updated_at)
-                                                            <span class="btn-text-inner text-center">{{ \Carbon\Carbon::parse($quotation->quotation_updated_at)->format('d-m-Y') }} </span> - <span class="btn-text-inner fw-light text-center">{{ \Carbon\Carbon::parse($quotation->quotation_updated_at)->format('H:i') }}</span>
-                                                            @else
-                                                                -
-                                                            @endif
-
-                                                            @php
-                                                                $date1 = new DateTime($quotation->quotation_created_at);
-
-                                                                if ($quotation->quotation_note_created_at) {
-                                                                    $date2 = new DateTime($quotation->quotation_note_created_at);
-                                                                    $diff = $date1->diff($date2);
-                                                                } else {
-                                                                    $diff = null; // Otra opción podría ser establecer $diff como un valor predeterminado o personalizado
+                                                        }elseif($quotation->type_inquiry == 'internal'){
+                                                            $tagreadiness = '';
+                                                        }else{
+                                                            $fecha_solicitud = Carbon\Carbon::parse($quotation->quotation_created_at)->startOfDay();
+                                                            $catorcediasdespues = $fecha_solicitud->clone()->addDays(14);
+                                                            $treintadiasdespues = $fecha_solicitud->clone()->addDays(30);
+                                                            if($quotation->quotation_shipping_date && $quotation->quotation_no_shipping_date == 'no'){
+                                                                $fecha_envio = Carbon\Carbon::parse(explode(' to ', $quotation->quotation_shipping_date)[0]);
+                                                                if ($fecha_envio->between($fecha_solicitud, $catorcediasdespues)) {
+                                                                    //1 a 14 días desde la fecha solicitud
+                                                                    $tagreadiness = '<span class="badge-readiness br-high">HIGH</span>';
+                                                                } elseif ($fecha_envio->between($catorcediasdespues, $treintadiasdespues)){
+                                                                    //Desde el día 15 al 30 desde la fecha solicitud
+                                                                    $tagreadiness = '<span class="badge-readiness br-mid">MID</span>';
+                                                                } elseif ($fecha_envio->gt($treintadiasdespues)){
+                                                                    //Más de 30 días desde la fecha solicitud
+                                                                    $tagreadiness = '<span class="badge-readiness br-low">LOW</span>';
                                                                 }
-                                                            @endphp
+                                                            } else {
+                                                                $tagreadiness = '<span class="badge-readiness -- br-low">LOW</span>';
+                                                            }
+                                                        }
 
-                                                            @if($diff)
-                                                                <span class="badge badge-light-time rounded-pill d-block infattended">
-                                                                    {{ __('in') }}
-                                                                    @if($diff->d > 0)
-                                                                        {{ $diff->d }} {{ __('days') }}
-                                                                    @elseif($diff->h > 0)
-                                                                        {{ $diff->h }} {{ __('hours') }}
-                                                                    @elseif($diff->i > 0 && $diff->i < 60)
-                                                                        {{ $diff->i }} {{ __('minutes') }}
-                                                                    @else
-                                                                        {{ __('less than 1 minute') }}
-                                                                    @endif
-                                                                </span>
+                                                    @endphp
+                                                    {!! $tagreadiness !!}
+                                                </td>
+
+                                                @endif
+
+                                                <td class="px-2">
+
+                                                    <span class="cret-bge ms-0 w-100 align-middle badge
+                                                            @if ($quotation->quotation_status == 'Pending')
+                                                                badge-light-pending
+                                                            @elseif ($quotation->quotation_status == 'Contacted')
+                                                                badge-light-warning
+                                                            @elseif ($quotation->quotation_status == 'Qualified')
+                                                                badge-light-info
+                                                            @elseif ($quotation->quotation_status == 'Attended')
+                                                                badge-light-info
+                                                            @elseif ($quotation->quotation_status == 'Quote Sent')
+                                                                badge-light-success
+                                                            @elseif ($quotation->quotation_status == 'Unqualified')
+                                                                badge-light-unqualified
+                                                            @elseif ($quotation->quotation_status == 'Deleted')
+                                                                badge-light-danger
                                                             @endif
+                                                            inv-status">
+                                                            @if($adminorsales || in_array($quotation->quotation_status, ['Pending', 'Qualified', 'Attended', 'Quote Sent']))
+                                                                {{ $quotation->quotation_status }}
+                                                            @elseif ($quotation->quotation_status == 'Contacted')
+                                                                Attending
+                                                            @elseif ($quotation->quotation_status == 'Unqualified')
+                                                                Unable to fulfill
+                                                            @endif
+                                                    </span>
+                                                </td>
 
-                                                        </div>
+                                                @if($adminorsales)
+
+
+                                                    <td class="px-1">
+                                                        <span class="cret-bge ms-0 w-100 align-middle badge @if ($quotation->quotation_result == 'Won')
+                                                                badge-light-won @elseif ($quotation->quotation_result == 'Lost')
+                                                                badge-light-danger @elseif ($quotation->quotation_result == 'Under Review')
+                                                                badge-light-warning @endif">
+                                                            {{ $quotation->quotation_result }}
+                                                    </span>
+
                                                     </td>
 
-                                                    <td>
-                                                        @if ($quotation->quotation_assigned_user_id == Auth::user()->id || Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Customer'))
-                                                            <a class="badge badge-light-primary text-start me-2 action-edit" href="{{ route('quotations.show', $quotation->quotation_id) }}">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye show"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                                            </a>
+                                                @endif
+
+                                                <td class="px-2">
+                                                    <span class="inv-email">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-mail"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                                                        {{ $quotation->user_email }}
+                                                    </span>
+                                                </td>
+
+                                                <td class="px-2">
+                                                    {{$quotation->location_name}}
+                                                </td>
+
+                                                <td class="px-2">
+                                                    <span class="inv-country">
+                                                        @if (!$quotation->is_internal_inquiry)
+                                                            {{ $quotation->origin_country }} - {{ $quotation->destination_country }}
                                                         @else
-                                                            <a class="badge badge-light-primary text-start me-2 action-edit disabled" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
+                                                            {{ __('Internal Inquiry') }}
+                                                        @endif
+                                                    </span>
+                                                </td>
+
+                                                <td class="px-2">
+                                                    {{ $quotation->quotation_mode_of_transport }}
+                                                </td>
+
+                                                @if($adminorsales)
+
+                                                {{-- Select if user logged is admin spatie --}}
+                                                @if (Auth::user()->hasRole('Administrator'))
+                                                    <td>
+
+                                                        <select class="user-select-assigned @if($quotation->quotation_assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->quotation_id }}">
+                                                            <option value="">{{ __('Unassigned') }}</option>
+                                                            @foreach ($users as $user)
+                                                                <option value="{{ $user->id }}" @if($user->id == $quotation->quotation_assigned_user_id) selected @endif>{{ $user->name }}</option>
+                                                            @endforeach
+                                                        </select>
+                                                        @if (false)
+                                                            @if($quotation->quotation_assigned_user_id == null)
+
+                                                                {{-- <a class="badge badge-primary text-start me-2 action-edit" href="{{ route('assignQuoteForMe', $quotation->quotation_id) }}">
+                                                                    {{ __('Make') }}
+                                                                </a> --}}
+
+                                                                {{ __('Unassigned') }}
+
+                                                            @else
+                                                                @if ($quotation->quotation_assigned_user_id == Auth::user()->id)
+                                                                    <span class="badge badge-light-won">{{ __('You were assigned') }}</span>
+                                                                @else
+                                                                    <span class="badge badge-light-danger">{{ __('Other user assigned') }}</span>
+                                                                @endif
+                                                            @endif
                                                         @endif
                                                     </td>
-                                                </tr>
-                                            @endif
+                                                @endif
+
+                                                <td class="ps-2 pe-2">
+
+                                                    @if($quotation->type_inquiry == 'internal')
+                                                        <span class="text-capitalize badge-type-inquiry internal">
+                                                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                                <g clip-path="url(#clip0_8656_5074)" fill="none" stroke-width="1.5px">
+                                                                <path d="M8.00065 14.6667C11.6825 14.6667 14.6673 11.6819 14.6673 8.00004C14.6673 4.31814 11.6825 1.33337 8.00065 1.33337C4.31875 1.33337 1.33398 4.31814 1.33398 8.00004C1.33398 11.6819 4.31875 14.6667 8.00065 14.6667Z" stroke="#0A6AB7" stroke-width="1.5px" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                                                                <path d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" stroke="#0A6AB7" stroke-width="1.5px" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                                                                </g>
+                                                                <defs>
+                                                                <clipPath id="clip0_8656_5074">
+                                                                <rect width="16" height="16" fill="white"></rect>
+                                                                </clipPath>
+                                                                </defs>
+                                                            </svg>
+                                                            {{ $quotation->type_inquiry }} </span>
+                                                    @elseif($quotation->type_inquiry == 'external 1')
+                                                        <span class="text-capitalize badge-type-inquiry external-1">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                                <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#B28600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#B28600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                            {{ $quotation->type_inquiry }} </span>
+                                                    @elseif($quotation->type_inquiry == 'external 2')
+                                                        <span class="text-capitalize badge-type-inquiry external-2">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                                <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                            {{ $quotation->type_inquiry }} </span>
+                                                    @elseif($quotation->type_inquiry == 'ext-auto')
+                                                        <span class="text-capitalize badge-type-inquiry ext-auto">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+                                                                <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                            {{ $quotation->type_inquiry }} </span>
+                                                    @endif
+                                                </td>
+
+                                                <td class="py-1 align-middle px-2">
+                                                    @if($quotation->user_source)
+                                                        @php
+
+                                                            //Color
+                                                            $sourceMap = [
+                                                                'Search Engine'  => ['class' => 'sb-color-seo', 'text' => 'seo'],
+                                                                'LinkedIn'       => ['class' => 'sb-color-lnk', 'text' => 'lnk'],
+                                                                'AI Assistant'   => ['class' => 'sb-color-aia', 'text' => 'aia'],
+                                                                'Social Media'   => ['class' => 'sb-color-soc', 'text' => 'soc'],
+                                                                'Referral'       => ['class' => 'sb-color-ref', 'text' => 'ref'],
+                                                                'Industry Event' => ['class' => 'sb-color-evt', 'text' => 'evt'],
+                                                                'Other'          => ['class' => 'sb-color-oth', 'text' => 'oth'],
+                                                                'ppc'            => ['class' => 'sb-color-ppc', 'text' => 'ppc'],
+                                                                'Direct Client'  => ['class' => 'sb-color-dir', 'text' => 'dir'],
+                                                                'agt'            => ['class' => 'sb-color-agt', 'text' => 'agt'],
+                                                            ];
+
+                                                            $source = $quotation->user_source;
+                                                            $class_sb = $sourceMap[$source]['class'] ?? 'sb-color-oth';
+                                                            $text_sb  = $sourceMap[$source]['text']  ?? 'N/A';
+
+                                                        @endphp
+                                                        <span class="source-badge {{$class_sb}}" title="{{$quotation->user_source}}">{{ $text_sb }}</span>
+                                                    @else
+                                                        <span>-</span>
+                                                    @endif
+                                                </td>
+
+                                                @endif
+
+                                                <td class="py-0 px-2">
+                                                    <div class="rounded-1 btn-sm py-0 px-0">
+
+                                                        @if($quotation->quotation_updated_at)
+                                                        <span class="btn-text-inner text-center">{{ \Carbon\Carbon::parse($quotation->quotation_updated_at)->format('d-m-Y') }} </span> - <span class="btn-text-inner fw-light text-center">{{ \Carbon\Carbon::parse($quotation->quotation_updated_at)->format('H:i') }}</span>
+                                                        @else
+                                                            -
+                                                        @endif
+
+                                                        @php
+                                                            $date1 = new DateTime($quotation->quotation_created_at);
+
+                                                            if ($quotation->quotation_note_created_at) {
+                                                                $date2 = new DateTime($quotation->quotation_note_created_at);
+                                                                $diff = $date1->diff($date2);
+                                                            } else {
+                                                                $diff = null; // Otra opción podría ser establecer $diff como un valor predeterminado o personalizado
+                                                            }
+                                                        @endphp
+
+                                                        @if($diff)
+                                                            <span class="badge badge-light-time rounded-pill d-block infattended">
+                                                                {{ __('in') }}
+                                                                @if($diff->d > 0)
+                                                                    {{ $diff->d }} {{ __('days') }}
+                                                                @elseif($diff->h > 0)
+                                                                    {{ $diff->h }} {{ __('hours') }}
+                                                                @elseif($diff->i > 0 && $diff->i < 60)
+                                                                    {{ $diff->i }} {{ __('minutes') }}
+                                                                @else
+                                                                    {{ __('less than 1 minute') }}
+                                                                @endif
+                                                            </span>
+                                                        @endif
+
+                                                    </div>
+                                                </td>
+
+                                                <td>
+                                                    @if ($quotation->quotation_assigned_user_id == Auth::user()->id || Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Customer'))
+                                                        <a class="badge badge-light-primary text-start me-2 action-edit" href="{{ route('quotations.show', $quotation->quotation_id) }}">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye show"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                                        </a>
+                                                    @else
+                                                        <a class="badge badge-light-primary text-start me-2 action-edit disabled" href="#"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-3"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg></a>
+                                                    @endif
+                                                </td>
+                                            </tr>
 
                                         @endforeach
                                     @endif

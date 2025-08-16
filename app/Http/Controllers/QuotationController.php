@@ -175,6 +175,10 @@ class QuotationController extends Controller
             // Aplicar assigned-to si está presente
             if (!empty($assignedto) && !auth()->user()->hasRole('Customer')) {
                 $query->where('quotations.assigned_user_id', $assignedto);
+            } else {
+                if (Auth::user()->hasRole('Sales') || Auth::user()->hasRole('Customer')) {
+                    $query->where('quotations.assigned_user_id', auth()->id());
+                }
             }
 
             // Aplicar la fecha si está presente
