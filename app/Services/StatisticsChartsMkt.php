@@ -34,11 +34,11 @@ class StatisticsChartsMkt {
             })
             ->groupBy('day')
             ;
-        $filtering = new ServiceChartHelpers();
+        $filtering = new ServiceChartHelpers(false, true);
         $range_period = $filtering->filtering($query, $this->filters);
 
         // dd($query->get()->toArray());
-
+        // ------- RANGO ACTUAL
         $from = Carbon::parse($range_period['from'])->startOfDay();
         $to = Carbon::parse($range_period['to'])->endOfDay(); // Para incluir el día actual completo
 
@@ -50,7 +50,7 @@ class StatisticsChartsMkt {
         }
         // dd($dates->toArray());
 
-        $result = $query->get();
+        $result = (clone $query)->whereBetween('quotations.created_at', [$from, $to])->get();
         // dd($result->toArray());
         // dd(['result' => $result->toArray(), 'dates' => $dates->toArray()]);
 
@@ -64,23 +64,54 @@ class StatisticsChartsMkt {
         });
         // dd($calendar->toArray());
 
+        // ------- RANGO ANTERIOR
+        // duración del rango actual en días
+        $diffInDays = $from->diffInDays($to);
+        // periodo anterior
+        $prevFrom = $from->copy()->subDays($diffInDays);
+        $prevTo   = $to->copy()->subDays($diffInDays);
+        // listado de fechas del rango anterior
+        $prevDates = collect();
+        $current = $prevFrom->copy();
+        while ($current <= $prevTo) {
+            $prevDates->push($current->format('d M Y'));
+            $current->addDay();
+        }
+        // resultados del rango anterior
+        $prevResult = (clone $query)
+            ->whereBetween('quotations.created_at', [$prevFrom, $prevTo])
+            ->get();
+        $dataPrevByDate = $prevResult->keyBy('date');
+        $calendarPrev = $prevDates->map(function ($date) use ($dataPrevByDate) {
+            return [
+                'date' => $date,
+                'day'  => Carbon::createFromFormat('d M Y', $date)->format('d M'),
+                'qty'  => $dataPrevByDate->has($date) ? $dataPrevByDate[$date]['qty'] : 0,
+            ];
+        });
+        // dd($calendarPrev->toArray());
+
         return [
+            'meta' => [
+                'dates_current' => $calendar->pluck('date')->toArray(),
+                'dates_previous' => $calendarPrev->pluck('date')->toArray(),
+            ],
             'type' => 'line',
             'data' => [
                 'labels' => $calendar->pluck('day')->toArray(),
                 'datasets' => [
                     [
-                        // 'label' => 'Last',
+                        'label' => 'Last',
                         'data' => $calendar->pluck('qty')->toArray(),
                         'borderColor' => '#34ABF0',
                         'backgroundColor' => '#34ABF0',
                     ],
-                    // [
-                    //     'label' => 'Last Before',
-                    //     'data' => $prevData,
-                    //     'borderColor' => '#ADDDF9',
-                    //     'backgroundColor' => '#ADDDF9',
-                    // ],
+                    [
+                        'label' => 'Last Before',
+                        'data' => $calendarPrev->pluck('qty')->toArray(),
+                        'borderColor' => '#ADDDF9',
+                        'backgroundColor' => '#ADDDF9',
+                    ],
                 ]
             ],
             'options' => [
@@ -94,7 +125,7 @@ class StatisticsChartsMkt {
                         ],
                     ],
                     'legend' => [
-                        'display' => false,
+                        'display' => true,
                     ]
                 ],
                 'scales' => [

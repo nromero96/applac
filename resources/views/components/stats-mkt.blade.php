@@ -72,10 +72,51 @@
         document.addEventListener('livewire:load', function () {
             // chart_requests_received
             const ctx_requests_received = document.getElementById('chart_requests_received').getContext('2d');
-            const chart_requests_received = new Chart(ctx_requests_received, @json($this->area_mkt['charts']['requests_received']));
+            const config_requests_received = @json($this->area_mkt['charts']['requests_received']);
+            // añadimos el callback de tooltip usando las fechas de meta
+            const metaDatesCurrent = config_requests_received.meta.dates_current;
+            const metaDatesPrevious = config_requests_received.meta.dates_previous;
+            config_requests_received.options.plugins.tooltip = {
+                callbacks: {
+                    title: function(tooltipItems) {
+                        let item = tooltipItems[0];
+                        let index = item.dataIndex;
+                        let datasetLabel = item.dataset.label;
+
+                        if (datasetLabel === 'Last') {
+                            return metaDatesCurrent[index];
+                        } else if (datasetLabel === 'Last Before') {
+                            return metaDatesPrevious[index];
+                        }
+                        return item.label;
+                    }
+                }
+            };
+            // const chart_requests_received = new Chart(ctx_requests_received, @json($this->area_mkt['charts']['requests_received']));
+            const chart_requests_received = new Chart(ctx_requests_received, config_requests_received);
             window.addEventListener('chart_requests_received', event => {
                 const data = event.detail;
-                chart_requests_received.data = data;
+                // console.log(data);
+                const metaDatesCurrent = data.meta.dates_current;
+                const metaDatesPrevious = data.meta.dates_previous;
+                data.options.plugins.tooltip = {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            let item = tooltipItems[0];
+                            let index = item.dataIndex;
+                            let datasetLabel = item.dataset.label;
+
+                            if (datasetLabel === 'Last') {
+                                return metaDatesCurrent[index];
+                            } else if (datasetLabel === 'Last Before') {
+                                return metaDatesPrevious[index];
+                            }
+                            return item.label;
+                        }
+                    }
+                };
+                chart_requests_received.data = data.data;
+                chart_requests_received.options = data.options;
                 chart_requests_received.update();
             });
 

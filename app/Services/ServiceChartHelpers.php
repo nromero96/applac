@@ -6,9 +6,11 @@ use Carbon\Carbon;
 class ServiceChartHelpers {
 
     public $only_date;
+    public $special_dates;
 
-    function __construct($only_date = false) {
+    function __construct($only_date = false, $special_dates = false) {
         $this->only_date = $only_date;
+        $this->special_dates = $special_dates;
     }
 
     public function filtering($query, $filters, $key_date = 'quotations') {
@@ -43,28 +45,40 @@ class ServiceChartHelpers {
         if ($filters['period'] != 'all') {
             switch ($filters['period']) {
                 case 'today':
-                    $query->whereDate($key_date . '.created_at', Carbon::today());
+                    if (!$this->special_dates) {
+                        $query->whereDate($key_date . '.created_at', Carbon::today());
+                    }
                     $range_period = ['from' => Carbon::today(), 'to' => Carbon::today()];
                     break;
                 case 'last_7_days':
-                    $query->whereDate($key_date . '.created_at', '>=', Carbon::now()->subDays(7));
+                    if (!$this->special_dates) {
+                        $query->whereDate($key_date . '.created_at', '>=', Carbon::now()->subDays(7));
+                    }
                     $range_period = ['from' => Carbon::now()->subDays(7), 'to' => Carbon::today()];
                     break;
                 case 'last_30_days':
-                    $query->whereDate($key_date . '.created_at', '>=', Carbon::now()->subDays(30));
+                    if (!$this->special_dates) {
+                        $query->whereDate($key_date . '.created_at', '>=', Carbon::now()->subDays(30));
+                    }
                     $range_period = ['from' => Carbon::now()->subDays(30), 'to' => Carbon::today()];
                     break;
                 case 'last_90_days':
-                    $query->whereDate($key_date . '.created_at', '>=', Carbon::now()->subDays(90));
+                    if (!$this->special_dates) {
+                        $query->whereDate($key_date . '.created_at', '>=', Carbon::now()->subDays(90));
+                    }
                     $range_period = ['from' => Carbon::now()->subDays(90), 'to' => Carbon::today()];
                     break;
                 case 'last_180_days':
-                    $query->whereDate($key_date . '.created_at', '>=', Carbon::now()->subDays(180));
+                    if (!$this->special_dates) {
+                        $query->whereDate($key_date . '.created_at', '>=', Carbon::now()->subDays(180));
+                    }
                     $range_period = ['from' => Carbon::now()->subDays(180), 'to' => Carbon::today()];
                     break;
                 case 'custom':
-                    $query->whereDate($key_date . '.created_at', '>=', $filters['date_from']);
-                    $query->whereDate($key_date . '.created_at', '<=', $filters['date_to']);
+                    if (!$this->special_dates) {
+                        $query->whereDate($key_date . '.created_at', '>=', $filters['date_from']);
+                        $query->whereDate($key_date . '.created_at', '<=', $filters['date_to']);
+                    }
                     $range_period = ['from' => $filters['date_from'], 'to' => $filters['date_to']];
                     // dd($filters);
                     break;

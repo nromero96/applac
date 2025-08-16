@@ -126,7 +126,7 @@ class Statistics extends Component
             'chart_quote_outcome_breakdown_per_rep' => $manageCharts->quote_outcome_breakdown_per_rep()['data'],
             'chart_quotes_won_by_follow_up_channel' => $manageCharts->quotes_won_by_follow_up_channel()['data'],
             // mkt
-            'chart_requests_received' => $mktCharts->requests_received()['data'],
+            'chart_requests_received' => $mktCharts->requests_received(),
             'chart_inquiry_volume_by_source' => $mktCharts->inquiry_volume_by_source()['data'],
             'chart_top_lead_locations' => $mktCharts->top_lead_locations()['data'],
             'chart_lead_rating_distribution' => $mktCharts->lead_rating_distribution()['data'],
