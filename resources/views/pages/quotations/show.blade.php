@@ -90,7 +90,7 @@
 
             <nav class="breadcrumb-style-one" aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{route('quotations.index')}}">{{__("Quotations")}}</a></li>
+                    <li class="breadcrumb-item"><a href="{{route('deals.index')}}">{{__("Deals")}}</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{__("Detail")}}</li>
                 </ol>
             </nav>
@@ -894,7 +894,7 @@
                                                 @elseif ($quotation->result == 'Lost')
                                                             badge-light-danger
                                                 @elseif ($quotation->result == 'Won')
-                                                            badge-light-success
+                                                            badge-light-won
                                                 @endif
                                                 inv-status">
                                                 {{$quotation->result}}
@@ -1071,7 +1071,7 @@
                                                 @elseif ($quotation->result == 'Lost')
                                                             badge-light-danger
                                                 @elseif ($quotation->result == 'Won')
-                                                            badge-light-success
+                                                            badge-light-won
                                                 @endif
                                                 inv-status">
                                                 @if($adminorsales || in_array($quotation->status, ['Under Review']))

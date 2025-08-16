@@ -2708,10 +2708,16 @@ fieldset:disabled .btn {
   border: 1px solid #FFF2E8;
 }
 
-.badge-light-success {
+.badge-light-won {
   color: #1D813A;
   background-color: #E9F6ED;
   border: 1px solid #E9F6ED;
+}
+
+.badge-light-success {
+  color: #6200EE;
+  background-color: #EFE6FD;
+  border: 1px solid #EFE6FD;
 }
 
 .badge-light-danger {

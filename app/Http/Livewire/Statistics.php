@@ -80,7 +80,7 @@ class Statistics extends Component
 
     public function mount() {
         if (Auth::user()->hasRole('Administrator')) {
-            $this->tab = 'sales';
+            $this->tab = 'manage';
             $this->user_sales = User::whereHas('roles', function($query){
                     $query->where('role_id', 2);
                 })

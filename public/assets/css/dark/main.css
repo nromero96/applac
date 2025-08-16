@@ -1303,7 +1303,7 @@ body.dark .open > .dropdown-toggle.btn-warning.focus, body.dark .open > .dropdow
 /*      Default Buttons       */
 body.dark {
   /* Light Buttons  */
-  /*  
+  /*
       ====================
           Table
       ====================
@@ -1313,15 +1313,15 @@ body.dark {
       Hover
 
   */
-  /* 
+  /*
       Hover and Striped
   */
-  /* 
+  /*
 
       Striped
 
   */
-  /* 
+  /*
       Striped and Bordered
   */
 }
@@ -3272,7 +3272,7 @@ body.dark .position-relative {
 */
 /*      Avatar      */
 /* .search-form-control { border-radius: .25rem; } */
-/*  
+/*
     ====================
         Table
     ====================
@@ -3282,23 +3282,23 @@ body.dark .position-relative {
     Hover
 
 */
-/* 
+/*
     Hover and Striped
 */
-/* 
+/*
 
     Striped
 
 */
-/* 
+/*
     Striped and Bordered
 */
-/* 
+/*
 
     Bordered
 
 */
-/* 
+/*
     Bordered and Hover
 */
 @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
@@ -3315,21 +3315,21 @@ body.dark .position-relative {
     transform: rotate(359deg);
   }
 }
-/*  
+/*
     ==========================
-        Background Colors  
+        Background Colors
     ==========================
 */
-/*  
-    Default  
+/*
+    Default
 */
-/*  
-    Light Background  
+/*
+    Light Background
 */
-/*  
+/*
     Progress Bar
 */
-/* 
+/*
     =====================
         BreadCrumbs
     =====================

@@ -786,7 +786,11 @@ class QuotationController extends Controller
                 ]);
             }
 
-            return redirect()->route('quotations.show', ['quotation' => $id])->with('success', 'Updated result successfully quotation #'.$id);
+            if (isset($validatedData['followup_channel'])) {
+                return redirect()->route('quotations.show', ['quotation' => $id])->with('success', 'Updated outcome successfully quotation #'.$id);
+            } else {
+                return redirect()->route('quotations.show', ['quotation' => $id])->with('success', 'Updated result successfully quotation #'.$id);
+            }
         } catch (\Exception $e) {
             // Manejo de errores
             return redirect()->back()->with('error', 'Error updating result quotation #'.$id);

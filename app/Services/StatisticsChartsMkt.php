@@ -115,7 +115,22 @@ class StatisticsChartsMkt {
     public function inquiry_volume_by_source() {
         $query = Quotation::select(
                 DB::raw("COALESCE(users.source, guest_users.source) as source"),
-                DB::raw('COUNT(quotations.id) as qty')
+                DB::raw('COUNT(quotations.id) as qty'),
+                DB::raw("
+                    CASE
+                        WHEN COALESCE(users.source, guest_users.source) = 'Search Engine' THEN '#4CBB17'
+                        WHEN COALESCE(users.source, guest_users.source) = 'AI Assistant' THEN '#FF00FF'
+                        WHEN COALESCE(users.source, guest_users.source) = 'LinkedIn' THEN '#0077B5'
+                        WHEN COALESCE(users.source, guest_users.source) = 'Social Media' THEN '#1877F2'
+                        WHEN COALESCE(users.source, guest_users.source) = 'ppc' THEN '#6200EE'
+                        WHEN COALESCE(users.source, guest_users.source) = 'Industry Event' THEN '#008080'
+                        WHEN COALESCE(users.source, guest_users.source) = 'Referral' THEN '#FFCC00'
+                        WHEN COALESCE(users.source, guest_users.source) = 'Other' THEN '#595959'
+                        WHEN COALESCE(users.source, guest_users.source) = 'Direct Client' THEN '#CC0000'
+                        WHEN COALESCE(users.source, guest_users.source) = 'agt' THEN '#FF5F1F'
+                        ELSE '#CCCCCC'
+                    END as color
+                ")
             )
             ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
             ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
@@ -143,6 +158,7 @@ class StatisticsChartsMkt {
                     [
                         'data' => $result->pluck('qty')->toArray(),
                         'borderWidth' => 0,
+                        'backgroundColor' => $result->pluck('color')->toArray(),
                     ],
                 ]
             ],

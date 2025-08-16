@@ -125,6 +125,7 @@ class DealsBoard extends Component
         } else {
             $this->assignedUserId = auth()->id();
         }
+        // $this->assignedUserId = 2731; // felipe testing
     }
 
     public function render() {

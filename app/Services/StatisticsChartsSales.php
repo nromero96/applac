@@ -100,8 +100,10 @@ class StatisticsChartsSales
 
     // done
     public function reasons_for_losing_deals() {
+        $raw_pct = "ROUND((COUNT(quotation_notes.id) * 100.0 / SUM(COUNT(quotation_notes.id)) OVER()), 0)";
         $query = QuotationNote::select(
                 'quotation_notes.lost_reason',
+                DB::raw("CONCAT(quotation_notes.lost_reason, ' (', ".$raw_pct." , '%)') as label"),
                 DB::raw('COUNT(quotation_notes.id) as qty'),
             )
             ->join('quotations', 'quotations.id', '=', 'quotation_notes.quotation_id')
@@ -124,7 +126,7 @@ class StatisticsChartsSales
         return [
             'type' => 'doughnut',
             'data' => [
-                'labels' => $result->pluck('lost_reason')->toArray(),
+                'labels' => $result->pluck('label')->toArray(),
                 'datasets' => [
                     [
                         'data' => $result->pluck('qty')->toArray(),

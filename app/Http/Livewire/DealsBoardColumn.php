@@ -82,9 +82,9 @@ class DealsBoardColumn extends Component
             $quotations->where('quotations.result', $this->result);
         }
 
-        // if ($this->status == 'Quote Sent') {
-            // $quotations->where('quotations.result', 'Under Review');
-        // }
+        if ($this->status == 'Quote Sent') {
+            $quotations->where('quotations.result', 'Under Review');
+        }
 
         // filtering
         if (count($this->filters['rating']) > 0) {

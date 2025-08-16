@@ -36,7 +36,7 @@
                     <option value="Won - Confirmed booking">Won - Confirmed booking</option>
                 </optgroup>
                 <optgroup label="Neutral">
-                    <option value="Follow-up sent - No response yet">Follow-up sent - No response yet</option>
+                    <option value="Follow-up made - No response yet">Follow-up made - No response yet</option>
                     <option value="Call scheduled / Follow-up planned">Call scheduled / Follow-up planned</option>
                     <option value="Cargo is not ready yet">Cargo is not ready yet</option>
                     <option value="Client delayed decision">Client delayed decision</option>
