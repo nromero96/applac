@@ -323,7 +323,7 @@ function getBadge(status) {
         'Unqualified': 'badge-light-unqualified',
         'Under Review': 'badge-light-warning',
         'Lost': 'badge-light-danger',
-        'Won': 'badge-light-success',
+        'Won': 'badge-light-won',
         'Deleted': 'badge-light-danger',
     };
 

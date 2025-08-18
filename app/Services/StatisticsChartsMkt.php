@@ -101,13 +101,13 @@ class StatisticsChartsMkt {
                 'labels' => $calendar->pluck('day')->toArray(),
                 'datasets' => [
                     [
-                        'label' => 'Last',
+                        'label' => 'Current Period',
                         'data' => $calendar->pluck('qty')->toArray(),
                         'borderColor' => '#34ABF0',
                         'backgroundColor' => '#34ABF0',
                     ],
                     [
-                        'label' => 'Last Before',
+                        'label' => 'Preceding Period',
                         'data' => $calendarPrev->pluck('qty')->toArray(),
                         'borderColor' => '#ADDDF9',
                         'backgroundColor' => '#ADDDF9',
@@ -119,7 +119,7 @@ class StatisticsChartsMkt {
                 'plugins' => [
                     'title' => [
                         'display' => true,
-                        'text' => 'Requests Received',
+                        'text' => 'Inquiries Received',
                         'font' => [
                             'size' => 14
                         ],
@@ -169,6 +169,7 @@ class StatisticsChartsMkt {
                 $query->whereNotNull('users.source')
                     ->orWhereNotNull('guest_users.source');
             })
+            ->where('quotations.type_inquiry', 'external 2')
             ->groupBy('source')
             ->orderBy('qty', 'desc')
         ;
@@ -225,7 +226,7 @@ class StatisticsChartsMkt {
                 DB::raw('COALESCE(users.source, guest_users.source) as source'),
             )
             ->join('countries', 'countries.id', '=', 'quotations.origin_country_id')
-            ->where('quotations.type_inquiry', '!=', 'internal')
+            ->where('quotations.type_inquiry', 'external 2')
             ->groupBy('countries.id')
             ->orderBy('qty', 'DESC')
             ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
@@ -515,6 +516,7 @@ class StatisticsChartsMkt {
             ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
             // ->where('quotations.status', '!=', 'Attended')
             ->whereNotIn('mode_of_transport', ['Contenedor', 'Aire', ''])
+            ->where('quotations.type_inquiry', 'external 2')
             ->groupBy('mode_of_transport')
             ->orderBy('qty', 'DESC')
             ->limit(10)
@@ -574,7 +576,7 @@ class StatisticsChartsMkt {
             ->join('countries as cd', 'cd.id', '=', 'quotations.destination_country_id')
             ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
             ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
-            ->where('type_inquiry', '!=', 'internal')
+            ->where('quotations.type_inquiry', 'external 2')
             ->groupBy('route')
             ->orderBy('qty', 'DESC')
             ->limit(10)

@@ -422,7 +422,7 @@ class QuotationController extends Controller
     {
         // remove unread quotation
         $quotation_unread = UnreadQuotation::where('quotation_id',$id)->first();
-        if ($quotation_unread) {
+        if ($quotation_unread and $quotation_unread->user_id == auth()->id()) {
             $quotation_unread->delete();
             // register as read
             QuotationNote::create([

@@ -18,6 +18,9 @@
             <div class="card p-3">
                 <h2 class="stats__subtitle d-flex align-items-center gap-2" wire:ignore>
                     {{ __('Lead Acquisition & Source Attribution') }}
+                    <div data-toggle="tooltip" data-placement="top" title="Includes only inbound business inquiries">
+                        {!! $this->icon_info !!}
+                    </div>
                 </h2>
                 <div class="row">
                     <div class="col-5" wire:ignore>
