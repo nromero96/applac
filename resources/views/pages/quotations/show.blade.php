@@ -323,14 +323,16 @@
 
                                     </p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Mode of transport")}}:</label> {{ $quotation->mode_of_transport }}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ $quotation->declared_value }} {{ $quotation->currency }}
-                                        <span data-toggle="tooltip" data-placement="top" title="...">
-                                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14.88" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-                                                <path d="M8 11.1667V8.5" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-                                                <path d="M8 5.83334H8.00667" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-                                            </svg>
-                                        </span>
+                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Estimated value")}}:</label> {{ number_format($quotation->declared_value) }} {{ $quotation->currency }}
+                                        @if (false)
+                                            <span data-toggle="tooltip" data-placement="top" title="...">
+                                                <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14.88" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                                                    <path d="M8 11.1667V8.5" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                                                    <path d="M8 5.83334H8.00667" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
+                                                </svg>
+                                            </span>
+                                        @endif
                                     </p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Shipment readiness")}}:</label> {{ $quotation->shipment_ready_date }} {!! $shipment_ready_date_label !!}</p>
                                     <p class="mb-1"><label class="fw-bold mb-0">{{__("Shipment Details")}}:</label><br> {!! nl2br($quotation->cargo_description) ? : '-' !!}</p>
@@ -673,7 +675,7 @@
                                 <div class="col-md-6 mt-0">
                                     @if (!$quotation->is_internal_inquiry)
                                         <label class="fw-bold mb-0">{{__("Shipping date")}}:</label> @if($quotation->no_shipping_date == 'yes') {{ __('I don’t have a shipping date yet.') }} @else {{ $quotation->shipping_date }}@endif<br>
-                                        <label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ $quotation->declared_value }}<br>
+                                        <label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ number_format($quotation->declared_value) }}<br>
                                         <label class="fw-bold mb-0">{{__("Insurance required")}}:</label> {{ $quotation->insurance_required }}<br>
                                         <label class="fw-bold mb-0">{{__("Currency")}}:</label> {{ $quotation->currency }}<br>
                                     @else
