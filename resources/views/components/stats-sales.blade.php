@@ -29,10 +29,10 @@
 
     <div class="row">
 
-        <div class="col-md-6" wire:ignore>
+        <div class="col-md-6" id="dash-agenda">
             <div class="card p-3">
                 <h2 class="stats__subtitle">{{ __('My Agenda') }}</h2>
-                <livewire:agenda :modal_mode="false" />
+                <livewire:agenda :modal_mode="false" :user_id="$this->assignedUserId" :key="'agenda-'.$this->assignedUserId" />
             </div>
         </div>
 

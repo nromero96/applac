@@ -5,7 +5,7 @@
 
         <div class="col-12">
             <div class="card p-3">
-                <h2 class="stats__subtitle">{{ __('RFQs Received') }}</h2>
+                <h2 class="stats__subtitle">{{ __('Inquiries Received') }}</h2>
                 <div class="row">
                     <div class="col" wire:ignore>
                         <canvas id="chart_requests_received" height="100"></canvas>

@@ -19,13 +19,18 @@ class Agenda extends Component
     public $scheduled;
     public $scheduled_today;
 
+    public $user_id = null;
+
     public function render() {
+        if (!isset($this->user_id)) {
+            $this->user_id = auth()->id();
+        }
         $this->agenda_update();
         return view('livewire.agenda');
     }
 
     public function agenda_update() {
-        $this->flagged = FeaturedQuotation::where('user_id', auth()->id())
+        $this->flagged = FeaturedQuotation::where('user_id', $this->user_id)
             ->select(
                 '*',
                 'featured_quotations.*',
@@ -48,7 +53,7 @@ class Agenda extends Component
             ->orderBy('featured_quotations.created_at', 'DESC')
             ->get();
 
-        $scheduled = ScheduledQuotation::where('user_id', auth()->id())
+        $scheduled = ScheduledQuotation::where('user_id', $this->user_id)
             ->select(
                 '*',
                 'scheduled_quotations.*',

@@ -1,5 +1,6 @@
 <div
     class="stats"
+    id="charts-printable"
     x-data="{
         tab: @entangle('tab').defer,
         show_filters: @entangle('show_filters').defer,
@@ -79,6 +80,7 @@
                         <option value="custom">Custom</option>
                     </select>
                 </div>
+                <button type="button" onclick="window.print()" class="btn__primary">Export</button>
             </div>
         </div>
     </div>

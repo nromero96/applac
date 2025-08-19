@@ -30,6 +30,26 @@
     <!-- Styles -->
     @include('inc.styles')
 
+    <style>
+        @media print {
+            body * {
+                visibility: hidden; /* Ocultar todo por defecto */
+            }
+            #dash-agenda {
+                visibility: hidden !important; /* Ocultar todo por defecto */
+            }
+            #charts-printable, #charts-printable * {
+                visibility: visible; /* Mostrar solo el div contenido */
+            }
+            #charts-printable {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+    </style>
+
     @if(app()->environment('production'))
         @include('partials.gtm_head')
     @endif
