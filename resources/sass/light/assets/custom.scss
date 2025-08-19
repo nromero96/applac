@@ -556,6 +556,7 @@
             border-radius: 4px;
             position: sticky;
             top: 72px;
+            z-index: 2;
 
             &.__pending {
                 background-color: #FFF2E8;
@@ -729,6 +730,35 @@
                 }
             }
 
+            .__dots-options {
+                position: relative;
+                ul {
+                    position: absolute;
+                    top: 0;
+                    left: calc(100% + 8px);
+                    border: 1px solid #D8D8D8;
+                    padding: 12px !important;
+                    background-color: white;
+                    border-radius: 4px;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 12px;
+                    li {
+                        width: max-content;
+                        button {
+                            display: flex;
+                            gap: 8px;
+                            width: 100%;
+                            border: none;
+                            background-color: transparent;
+                            color: #161515;
+                            font-size: 13px;
+                            font-family: 'Nunito Sans', sans-serif;;
+                        }
+                    }
+                }
+            }
+
             .__change-status {
                 border: 1px solid #D8D8D8;
                 background-color: white;
@@ -739,7 +769,7 @@
                 gap: 3px;
                 align-items: center;
                 justify-content: center;
-                &:hover {
+                &:hover, &.__active {
                     border-color: #595959;
                     background-color: #F5F5F5;
                     svg, svg * {

@@ -69,6 +69,8 @@
                 <a
                     class="deals__board__card {{ $class_notification }}"
                     href="{{ route('quotations.show', $quotation->id) }}"
+                    x-data="{ show_card_options: false }"
+                    @click.away="show_card_options = false"
                 >
                     <div class="__head">
                         <h3>
@@ -90,15 +92,32 @@
                             @endif
 
                             @if ($type === 'open')
-                                <button
-                                    class="__change-status"
-                                    type="button"
-                                    @click.stop.prevent
-                                    @click="openDealModal('{{ $label }}', {{ $quotation->id }})"
-                                >
-                                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 1L1 4L4 7" stroke="#D8D8D8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                    <svg width="5" height="8" viewBox="0 0 5 8" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M1 7L4 4L1 1" stroke="#D8D8D8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                                </button>
+                                <div class="__dots-options" @click.stop.prevent>
+                                    <button
+                                        class="__change-status"
+                                        :class="{
+                                            '__active': show_card_options
+                                        }"
+                                        type="button"
+                                        @click="show_card_options = !show_card_options"
+                                    >
+                                        <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 7C6.27614 7 6.5 6.77614 6.5 6.5C6.5 6.22386 6.27614 6 6 6C5.72386 6 5.5 6.22386 5.5 6.5C5.5 6.77614 5.72386 7 6 7Z" stroke="#D8D8D8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 7C9.77614 7 10 6.77614 10 6.5C10 6.22386 9.77614 6 9.5 6C9.22386 6 9 6.22386 9 6.5C9 6.77614 9.22386 7 9.5 7Z" stroke="#D8D8D8" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 7C2.77614 7 3 6.77614 3 6.5C3 6.22386 2.77614 6 2.5 6C2.22386 6 2 6.22386 2 6.5C2 6.77614 2.22386 7 2.5 7Z" stroke="#D8D8D8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    </button>
+                                    <ul x-show="show_card_options" x-cloak>
+                                        <li>
+                                            <button @click="show_card_options = false; navigator.clipboard.writeText('#{{ $quotation->id }}').then(() => alert('ID copied!'))">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_11710_12851)"><path d="M13.3333 6H7.33333C6.59695 6 6 6.59695 6 7.33333V13.3333C6 14.0697 6.59695 14.6667 7.33333 14.6667H13.3333C14.0697 14.6667 14.6667 14.0697 14.6667 13.3333V7.33333C14.6667 6.59695 14.0697 6 13.3333 6Z" stroke="#1877F2" stroke-linecap="round" stroke-linejoin="round"/><path d="M3.33203 9.99992H2.66536C2.31174 9.99992 1.9726 9.85944 1.72256 9.60939C1.47251 9.35935 1.33203 9.02021 1.33203 8.66659V2.66659C1.33203 2.31296 1.47251 1.97382 1.72256 1.72378C1.9726 1.47373 2.31174 1.33325 2.66536 1.33325H8.66536C9.01899 1.33325 9.35813 1.47373 9.60817 1.72378C9.85822 1.97382 9.9987 2.31296 9.9987 2.66659V3.33325" stroke="#1877F2" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_11710_12851"><rect width="16" height="16" fill="white"/></clipPath></defs></svg>
+                                                Copy ID
+                                            </button>
+                                        </li>
+                                        <li>
+                                            <button @click="show_card_options = false; openDealModal('{{ $label }}', {{ $quotation->id }})">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.668 12L14.668 8L10.668 4" stroke="#1877F2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.33203 4L1.33203 8L5.33203 12" stroke="#1877F2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                Change Status
+                                            </button>
+                                        </li>
+                                    </ul>
+                                </div>
                             @endif
                         </h3>
 
