@@ -80,7 +80,9 @@
                         <option value="custom">Custom</option>
                     </select>
                 </div>
-                <button type="button" onclick="window.print()" class="btn__primary">Export</button>
+                @if(\Auth::user()->hasRole('Administrator'))
+                    <button type="button" onclick="window.print()" class="btn__primary" style="font-size: 13px">Export</button>
+                @endif
             </div>
         </div>
     </div>
