@@ -1,4 +1,4 @@
-<div class="deals" wire:loading.class="loading" wire:target="updateParent,clearFilters" x-data="{
+<div class="deals" wire:loading.class="loading" x-data="{
     board_active: @entangle('board_active').defer,
     show_filters: @entangle('show_filters').defer,
     statuses: @entangle('filters_data.statuses'),

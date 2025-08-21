@@ -19,8 +19,7 @@ use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UsefullinkController;
 
 use App\Mail\PruebaCorreo;
-
-
+use App\Services\AutoUpdateOutcomes;
 
 /*
 |--------------------------------------------------------------------------
@@ -123,6 +122,12 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
         return 'Cache todo.';
     });
 
+    // test route auto update outcomes
+    Route::get('/auto-update-outcomes', function(AutoUpdateOutcomes $service){
+        return $service->update_outcomes();
+    });
+
+
     //storage link
     Route::get('/storage-link', function () {
         Artisan::call('storage:link');
@@ -212,4 +217,3 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 //Localization Route
 Route::get("locale/{lange}", [LocalizationController::class,'setLang']);
-

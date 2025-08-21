@@ -128,6 +128,11 @@
             <script src="{{asset('assets/js/apps/notes.js')}}?v={{ config('app.version') }}"></script>
             @break
 
+        @case('deals')
+            <script src="{{asset('plugins/src/daterangepicke/moment.min.js')}}"></script>
+            <script src="{{asset('plugins/src/daterangepicke/daterangepicker.js')}}"></script>
+            @break
+
         @default
             <script>console.log('No custom script available.')</script>
     @endswitch

@@ -204,6 +204,13 @@
                                 </div>
                                 @error('rating') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
+                            <div class="col-md-12 mt-1">
+                                <label for="shipping_date" class="form-label d-flex align-items-center justify-content-between">
+                                    Shipping Date *
+                                </label>
+                                <input id="shipping_date" type="text" class="form-control" autocomplete="off" wire:model="shipping_date">
+                                @error('shipping_date') <span class='text-danger'>{{ $message }}</span> @enderror
+                            </div>
                             <div class="col-md-12 mt-3">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" id="recovered-account" wire:model.defer="recovered_account">
@@ -221,9 +228,9 @@
                             </div>
                             <div class="col-md-12 mt-1">
                                 <label for="organization_code" class="form-label">
-                                    Additional Information (Optional)
+                                    Cargo Description (Optional)
                                 </label>
-                                <textarea rows="6" wire:model.defer="cargo_description" class="form-control"></textarea>
+                                <textarea rows="3" wire:model.defer="cargo_description" class="form-control"></textarea>
                                 @error('cargo_description') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
                         </div>
@@ -299,3 +306,22 @@
         </div>
     @endif
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener('livewire:load', function () {
+            $('#shipping_date').daterangepicker({
+                singleDatePicker: true,
+                autoApply: true,
+                autoUpdateInput: false,
+                locale: {
+                    format: 'DD-MM-YYYY',
+                    firstDay: 1
+                }
+            });
+            $('#shipping_date').on('apply.daterangepicker', function(ev, picker) {
+                @this.set('shipping_date', picker.startDate.format('DD-MM-YYYY'));
+            });
+        });
+    </script>
+@endpush

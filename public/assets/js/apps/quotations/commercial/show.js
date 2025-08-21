@@ -321,6 +321,7 @@ function getBadge(status) {
         'Attended': 'badge-light-info',
         'Quote Sent': 'badge-light-success',
         'Unqualified': 'badge-light-unqualified',
+        'Stalled': 'badge-light-stalled',
         'Under Review': 'badge-light-warning',
         'Lost': 'badge-light-danger',
         'Won': 'badge-light-won',

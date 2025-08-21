@@ -3257,6 +3257,11 @@ fieldset:disabled .btn {
   background-color: #00ab55;
 }
 
+.badge-stalled {
+  color: #fff;
+  background-color: #68C0FF;
+}
+
 .badge-danger {
   color: #fff;
   background-color: $danger;
@@ -3292,6 +3297,12 @@ fieldset:disabled .btn {
   color: #00ab55;
   background-color: transparent;
   border: 1px solid #00ab55;
+}
+
+.outline-badge-stalled {
+  color: #68C0FF;
+  background-color: transparent;
+  border: 1px solid #68C0FF;
 }
 
 .outline-badge-danger {
@@ -3336,6 +3347,13 @@ fieldset:disabled .btn {
   &:focus, &:hover {
     color: #fff;
     background-color: #00ab55;
+  }
+}
+
+.outline-badge-stalled {
+  &:focus, &:hover {
+    color: #fff;
+    background-color: #68C0FF;
   }
 }
 
@@ -3389,6 +3407,12 @@ fieldset:disabled .btn {
     color: #1D813A;
     background-color: #E9F6ED;
     border: 1px solid #E9F6ED;
+}
+
+.badge-light-stalled {
+    color: #68C0FF;
+    background-color: #EEF8FF;
+    border: 1px solid #EEF8FF;
 }
 
 .badge-light-success {
@@ -3457,6 +3481,12 @@ fieldset:disabled .btn {
   border: 1px solid transparent;
 }
 
+.link-badge-stalled {
+  color: #68C0FF;
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
 .link-badge-danger {
   color: $danger;
   background-color: transparent;
@@ -3498,6 +3528,13 @@ fieldset:disabled .btn {
 .link-badge-success {
   &:focus, &:hover {
     color: #2ea37d;
+    background-color: transparent;
+  }
+}
+
+.link-badge-stalled {
+  &:focus, &:hover {
+    color: #68C0FF;
     background-color: transparent;
   }
 }

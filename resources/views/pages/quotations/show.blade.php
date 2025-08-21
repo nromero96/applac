@@ -111,6 +111,8 @@
                                             <span class="cret-bge align-middle badge
                                                 @if ($quotation->status == 'Pending')
                                                     badge-light-pending
+                                                @elseif ($quotation->status == 'Stalled')
+                                                    badge-light-stalled
                                                 @elseif ($quotation->status == 'Contacted')
                                                     badge-light-warning
                                                 @elseif ($quotation->status == 'Qualified')
@@ -674,11 +676,11 @@
 
                                 <div class="col-md-6 mt-0">
                                     @if (!$quotation->is_internal_inquiry)
-                                        <label class="fw-bold mb-0">{{__("Shipping date")}}:</label> @if($quotation->no_shipping_date == 'yes') {{ __('I don’t have a shipping date yet.') }} @else {{ $quotation->shipping_date }}@endif<br>
                                         <label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ number_format($quotation->declared_value) }}<br>
                                         <label class="fw-bold mb-0">{{__("Insurance required")}}:</label> {{ $quotation->insurance_required }}<br>
                                         <label class="fw-bold mb-0">{{__("Currency")}}:</label> {{ $quotation->currency }}<br>
                                     @else
+                                        <label class="fw-bold mb-0">{{__("Shipping date")}}:</label> {{ ($quotation->shipping_date == '') ? __('I don’t have a shipping date yet.') : $quotation->shipping_date }}<br>
                                         <label class="fw-bold mb-0">{{__("Cargo Description")}}:</label> <br> {!! nl2br($quotation->cargo_description) ? : '-' !!}<br>
                                     @endif
                                 </div>
@@ -784,6 +786,8 @@
                                         <span class="cret-bge align-middle badge
                                                 @if ($quotation->status == 'Pending')
                                                     badge-light-pending
+                                                @elseif ($quotation->status == 'Stalled')
+                                                    badge-light-stalled
                                                 @elseif ($quotation->status == 'Contacted')
                                                     badge-light-warning
                                                 @elseif ($quotation->status == 'Qualified')
@@ -1041,6 +1045,8 @@
                                         <span class="cret-bge align-middle badge
                                                 @if ($quotation->status == 'Pending')
                                                     badge-light-pending
+                                                @elseif ($quotation->status == 'Stalled')
+                                                    badge-light-stalled
                                                 @elseif ($quotation->status == 'Contacted')
                                                     badge-light-warning
                                                 @elseif ($quotation->status == 'Qualified')

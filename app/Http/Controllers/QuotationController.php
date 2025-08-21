@@ -274,7 +274,7 @@ class QuotationController extends Controller
         ->get();
 
         // Contar por status de cotizaciones
-        $statusorderforlist = ['Pending', 'Contacted', 'Qualified', 'Quote Sent', 'Unqualified', 'Deleted'];
+        $statusorderforlist = ['Pending', 'Stalled', 'Contacted', 'Qualified', 'Quote Sent', 'Unqualified', 'Deleted'];
 
         $liststatus = Quotation::select(
             'quotations.status as quotation_status',

@@ -39,6 +39,7 @@ class NewInquiry extends Component
     public $member;
     public $source;
     public $rating;
+    public $shipping_date;
     public $recovered_account = false;
     public $cargo_description;
     public $attachments = [];
@@ -77,6 +78,7 @@ class NewInquiry extends Component
         'member' => 'required',
         'source' => 'required',
         'rating' => 'required',
+        'shipping_date' => 'nullable',
         'contact.name' => 'required|max:255',
         'contact.job_title' => 'nullable|max:255',
         'contact.email' => 'required|max:255|email',
@@ -199,6 +201,7 @@ class NewInquiry extends Component
                 'insurance_required' => 'no',
                 'currency' => 'USD - US Dollar',
                 'rating' => $this->rating,
+                'shipping_date' => $this->shipping_date,
                 'rating_modified' => 0,
                 'status' => 'Pending',
                 'assigned_user_id' => $this->member,

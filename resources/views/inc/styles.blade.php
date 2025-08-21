@@ -129,6 +129,7 @@
         @case('deals')
             <link rel="stylesheet" type="text/css" href="{{asset('assets/css/light/apps/invoice-list.css')}}?v={{ config('app.version') }}">
             <link rel="stylesheet" type="text/css" href="{{asset('assets/css/dark/apps/invoice-list.css')}}?v={{ config('app.version') }}">
+            <link rel="stylesheet" type="text/css" href="{{asset('plugins/src/daterangepicke/daterangepicker.css')}}">
             @break
 
         @case('suppliers')
@@ -221,7 +222,6 @@
             <link href="{{ asset('assets/css/dark/components/modal.css') }}" rel="stylesheet" type="text/css">
             <link href="{{ asset('assets/css/dark/apps/notes.css') }}" rel="stylesheet" type="text/css" />
             @break
-
 
         @default
             <script>console.log('No custom Styles available.')</script>

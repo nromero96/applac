@@ -143,6 +143,8 @@
                                                                 $class_sb_sch = 'badge-light-pending';
                                                             } elseif($status->quotation_status == 'Contacted'){
                                                                 $class_sb_sch = 'badge-light-warning';
+                                                            } elseif($status->quotation_status == 'Stalled'){
+                                                                $class_sb_sch = 'badge-light-stalled';
                                                             } elseif($status->quotation_status == 'Qualified') {
                                                                 $class_sb_sch = 'badge-light-info';
                                                             } elseif($status->quotation_status == 'Quote Sent'){
@@ -559,6 +561,8 @@
                                                     <span class="cret-bge ms-0 w-100 align-middle badge
                                                             @if ($quotation->quotation_status == 'Pending')
                                                                 badge-light-pending
+                                                            @elseif ($quotation->quotation_status == 'Stalled')
+                                                                badge-light-stalled
                                                             @elseif ($quotation->quotation_status == 'Contacted')
                                                                 badge-light-warning
                                                             @elseif ($quotation->quotation_status == 'Qualified')
