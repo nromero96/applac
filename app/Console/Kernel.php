@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -18,6 +19,10 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('quotes:update-status')->hourly();
         $schedule->command('quotes:update-outcomes')->dailyAt('05:00');
+
+        $schedule->call(function () {
+            Log::info('CRON funcionando: ' . now());
+        })->everyMinute();
     }
 
     /**
