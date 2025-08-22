@@ -41,6 +41,6 @@ class AutoUpdateOutcomes extends Command
     public function handle(ServicesAutoUpdateOutcomes $service) {
         $res = $service->update_outcomes();
         $this->info($res);
-        Log::info("Cron ejecutado: quotes:update-outcomes", ['hora' => now()]);
+        Log::info("Cron ejecutado: quotes:update-outcomes. " . $$res, ['hora' => now()]);
     }
 }
