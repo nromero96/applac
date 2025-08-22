@@ -18,11 +18,11 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('quotes:update-status')->hourly();
-        $schedule->command('quotes:update-outcomes')->dailyAt('05:00');
+        $schedule->command('quotes:update-outcomes')->everyMinute();
 
-        $schedule->call(function () {
-            Log::info('CRON funcionando: ' . now());
-        })->everyMinute();
+        // $schedule->call(function () {
+        //     Log::info('CRON funcionando: ' . now());
+        // })->everyMinute();
     }
 
     /**
