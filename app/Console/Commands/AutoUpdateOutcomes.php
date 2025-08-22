@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Services\AutoUpdateOutcomes as ServicesAutoUpdateOutcomes;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class AutoUpdateOutcomes extends Command
 {
@@ -40,6 +41,6 @@ class AutoUpdateOutcomes extends Command
     public function handle(ServicesAutoUpdateOutcomes $service) {
         $res = $service->update_outcomes();
         $this->info($res);
-        // $this->info("Update succesful.");
+        Log::info("Cron ejecutado: quotes:update-outcomes", ['hora' => now()]);
     }
 }
