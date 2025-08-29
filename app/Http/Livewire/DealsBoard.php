@@ -24,10 +24,6 @@ class DealsBoard extends Component
         'source'        => [],
     ];
 
-    protected $queryString = [
-        'filters' => ['except' => []],
-    ];
-
     public $show_modal = false;
     public $show_filters = false;
     public $is_filtering = false;
@@ -92,6 +88,18 @@ class DealsBoard extends Component
         'lost'          => ['label' => 'Lost', 'result' => 'Lost'],
     ];
 
+    protected function queryString() {
+        $query = [
+            'filters' => ['except' => []],
+        ];
+
+        if (auth()->user()->hasRole('Administrator')) {
+            $query[] = 'assignedUserId';
+        }
+
+        return $query;
+    }
+
     public function mount() {
         // Asegurar todas las llaves
         $this->filters = array_merge([
@@ -121,7 +129,9 @@ class DealsBoard extends Component
                 ->where('users.status', 'active')
                 ->select('users.id as id', 'name', 'lastname')
                 ->get();
-            $this->assignedUserId = $this->user_sales[0]->id;
+            if (empty($this->assignedUserId)) {
+                $this->assignedUserId = $this->user_sales[0]->id ?? null;
+            }
         } else {
             $this->assignedUserId = auth()->id();
         }

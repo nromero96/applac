@@ -9,7 +9,9 @@
             @if ($type === 'awaiting')
                 <div class="__info__detail">
                     <p>{{ $quotations->count() }} Deals</p>
-                    <strong>$ {{ number_format($result_total) }}</strong>
+                    @if (false)
+                        <strong>$ {{ number_format($result_total) }}</strong>
+                    @endif
                 </div>
             @endif
         </div>

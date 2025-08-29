@@ -78,7 +78,6 @@ class StatisticsChartsManage {
         $filtering->filtering($query, $this->filters);
 
         $result = $query->get();
-        // dd($result->toArray());
 
         // Agrupar por user_id y calcular promedio
         $grouped = $result->groupBy('name')->map(function ($items) {
@@ -86,7 +85,10 @@ class StatisticsChartsManage {
             foreach ($items as $item) {
                 $start = Carbon::parse($item->quotation_created_at);
                 $end = Carbon::parse($item->note_created_at);
-                $total += $this->calculateBusinessHours($start, $end);
+                // Diferencia en segundos
+                $diffMinutes = $start->diffInSeconds($end);
+                // Convertir a horas con decimales
+                $total += $diffMinutes / 3600;
             }
             return round($total / count($items), 2);
         });
@@ -128,6 +130,9 @@ class StatisticsChartsManage {
                 ],
                 'scales' => [
                     'y' => [
+                        'beginAtZero' => true,
+                        'suggestedMax' => 1,
+                        'suggestedMin' => 0,
                         'title' => [
                             'display' => true,
                             'text' => 'Hours',

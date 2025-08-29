@@ -78,6 +78,6 @@ class Agenda extends Component
         $today = Carbon::today();
 
         $this->scheduled = (clone $scheduled)->whereDate('date', '!=', $today)->get();
-        $this->scheduled_today = (clone $scheduled)->whereDate('date', $today)->get();
+        $this->scheduled_today = (clone $scheduled)->whereBetween('date', [$today, $today->copy()->addDays(7)])->get();;
     }
 }
