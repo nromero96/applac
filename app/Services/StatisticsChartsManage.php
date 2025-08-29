@@ -92,16 +92,16 @@ class StatisticsChartsManage {
             }
             return round($total / count($items), 2);
         });
+        // dd($grouped->toArray());
 
         $info = [];
         foreach ($this->representants->toArray() as $rep) {
-            foreach ($grouped as $user => $avgHours) {
-                $info[] = [
-                    'name' => $rep['name'],
-                    'avg' => $user == $rep['name'] ? $avgHours : 0,
-                ];
-            }
+            $info[] = [
+                'name' => $rep['name'],
+                'avg' => isset( $grouped->toArray()[$rep['name']]) ?  $grouped->toArray()[$rep['name']] : 0,
+            ];
         }
+        // dd($info);
 
         return [
             'type' => 'bar',
