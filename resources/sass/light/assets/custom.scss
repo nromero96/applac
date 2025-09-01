@@ -335,6 +335,11 @@
         &__options {
             display: flex;
             align-items: center;
+            gap: 32px;
+
+            .form-check {
+                margin-bottom: 0;
+            }
 
             button {
                 font-size: 16px;
@@ -531,21 +536,26 @@
             .btn__primary {
                 font-size: 13px;
                 padding: 10px 16px;
+                border: 1px solid #D8D8D8;
+                background-color: #F5F5F5;
+                color: #B80000;
             }
         }
     }
 
     &__board {
         display: flex;
-        gap: 24px;
-        flex-wrap: wrap;
+        gap: 16px;
 
         &__col {
-            flex: 1;
+            // flex: 1;
+            flex-grow: 1;
+            // flex-shrink: 0;
+            // flex-basis: 20%;
             display: flex;
             flex-direction: column;
             gap: 12px;
-            width: 25%;
+            width: 20%;
         }
 
         &__thead {
@@ -566,6 +576,11 @@
             &.__contacted {
                 background-color: #FCF4D6;
                 border-left: 4px solid #B28600;
+            }
+
+            &.__stalled {
+                background-color: #EEF8FF;
+                border-left: 4px solid #68C0FF;
             }
 
             &.__qualified {
@@ -821,6 +836,8 @@
                     color: #161515;
                     font-size: 14px;
                     margin-bottom: 0;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
                 }
             }
 
@@ -836,7 +853,7 @@
                 }
 
                 .__value {
-                    font-size: 14px;
+                    font-size: 12px;
                     color: #999999;
                     margin-bottom: 0;
                 }
@@ -844,9 +861,9 @@
                 .__readinesss {
                     font-weight: 700;
                     margin-bottom: 0;
-                    padding: 2px 8px;
+                    padding: 2px 4px;
                     font-size: 10px;
-                    border-radius: 10000px;
+                    border-radius: 8px;
                     &.__ready {
                         color: #4CBB17;
                         border: 1px solid #4CBB17;

@@ -67,8 +67,9 @@ class DealsBoardColumn extends Component
                 "),
                 DB::raw("
                     CASE quotations.currency
-                        WHEN 'USD - US Dollar' THEN 'USD'
-                        WHEN 'EUR - Euro' THEN 'EUR'
+                        WHEN 'USD - US Dollar' THEN '$'
+                        WHEN 'USD' THEN '$'
+                        WHEN 'EUR - Euro' THEN '€'
                         ELSE quotations.currency -- para valores no contemplados
                     END as currency
                 "),

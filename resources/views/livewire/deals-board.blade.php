@@ -1,6 +1,7 @@
 <div class="deals" wire:loading.class="loading" x-data="{
     board_active: @entangle('board_active').defer,
     show_filters: @entangle('show_filters').defer,
+    show_stalled: false,
     statuses: @entangle('filters_data.statuses'),
     // modal
     show_statuses: false,
@@ -29,12 +30,18 @@
 
     <div class="deals__actions">
         <div class="deals__actions__options">
-            <button type="button" :class="board_active == 'open' ? '__active' : ''" @click="board_active = 'open'">
-                Open Deals
-            </button>
-            <button type="button" :class="board_active == 'awaiting' ? '__active' : ''" @click="board_active = 'awaiting'">
-                Awaiting Outcome
-            </button>
+            <div>
+                <button type="button" :class="board_active == 'open' ? '__active' : ''" @click="board_active = 'open'">
+                    Open Deals
+                </button>
+                <button type="button" :class="board_active == 'awaiting' ? '__active' : ''" @click="board_active = 'awaiting'">
+                    Closed
+                </button>
+            </div>
+            <label class="form-check">
+                <input type="checkbox" class="form-check-input" x-model="show_stalled">
+                <div class="form-check-label">Show Stalled</div>
+            </label>
         </div>
         <x-deal-board-filters />
     </div>

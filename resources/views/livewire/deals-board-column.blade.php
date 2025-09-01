@@ -1,4 +1,4 @@
-<div class="deals__board__col" x-data="{ show_options: false }">
+<div class="deals__board__col" x-data="{ show_options: false }" x-show="{{ $statusKey === 'stalled' ? 'show_stalled' : 'true' }}" x-cloak>
     {{-- thead --}}
     <div class="deals__board__thead __{{ $statusKey }}">
         <div class="__info">
@@ -143,7 +143,7 @@
                         <div class="__value_readiness">
                             @if ($quotation->type_inquiry != 'internal')
                                 @if (isset($quotation->declared_value))
-                                    <p class="__value">{{ $quotation->currency  }} {{ number_format($quotation->declared_value) }}</p>
+                                    <p class="__value">{{ $quotation->currency  }}{{ number_format($quotation->declared_value) }}</p>
                                 @endif
                             @endif
                             @if (isset($this->readinessMap[$quotation->shipment_ready_date]))

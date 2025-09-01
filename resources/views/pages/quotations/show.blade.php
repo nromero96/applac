@@ -679,10 +679,9 @@
                                         <label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ number_format($quotation->declared_value) }}<br>
                                         <label class="fw-bold mb-0">{{__("Insurance required")}}:</label> {{ $quotation->insurance_required }}<br>
                                         <label class="fw-bold mb-0">{{__("Currency")}}:</label> {{ $quotation->currency }}<br>
-                                    @else
-                                        <label class="fw-bold mb-0">{{__("Shipping date")}}:</label> {{ ($quotation->shipping_date == '') ? __('I don’t have a shipping date yet.') : $quotation->shipping_date }}<br>
-                                        <label class="fw-bold mb-0">{{__("Cargo Description")}}:</label> <br> {!! nl2br($quotation->cargo_description) ? : '-' !!}<br>
                                     @endif
+                                    <label class="fw-bold mb-0">{{__("Shipping date")}}:</label> {{ ($quotation->shipping_date == '') ? __('I don’t have a shipping date yet.') : $quotation->shipping_date }}<br>
+                                    <label class="fw-bold mb-0">{{__("Cargo Description")}}:</label> <br> {!! nl2br($quotation->cargo_description) ? : '-' !!}<br>
                                 </div>
 
                                 <div class="col-md-6 mt-0">
@@ -834,6 +833,7 @@
                                             <option value="">{{ __('Select status') }} </option>
                                             <option value="Pending" @if($quotation->status == 'Pending') selected disabled  @endif>Pending</option>
                                             <option value="Contacted" @if($quotation->status == 'Contacted') selected disabled @endif>Contacted</option>
+                                            <option value="Stalled" @if($quotation->status == 'Stalled') selected disabled @endif>Stalled</option>
                                             <option value="Qualified" @if($quotation->status == 'Qualified') selected disabled @endif>Qualified</option>
                                             <option value="Quote Sent" @if($quotation->status == 'Quote Sent') selected disabled @endif>Quote Sent</option>
                                             <option value="Unqualified" @if($quotation->status == 'Unqualified') selected disabled @endif>Unqualified</option>

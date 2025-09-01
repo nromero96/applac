@@ -32,6 +32,7 @@ class DealsBoard extends Component
     public $icons = [
         'pending'       => '<svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24.5 44.5C35.5457 44.5 44.5 35.5457 44.5 24.5C44.5 13.4543 35.5457 4.5 24.5 4.5C13.4543 4.5 4.5 13.4543 4.5 24.5C4.5 35.5457 13.4543 44.5 24.5 44.5Z" stroke="#EB6200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M24.5 12.5V24.5L32.5 28.5" stroke="#EB6200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
         'contacted'     => '<svg width="48" height="49" viewBox="0 0 48 49" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M42 23.5001C42.0069 26.1398 41.3901 28.7438 40.2 31.1001C38.7889 33.9235 36.6195 36.2984 33.9349 37.9586C31.2503 39.6188 28.1565 40.4988 25 40.5001C22.3603 40.5069 19.7562 39.8902 17.4 38.7001L6 42.5001L9.8 31.1001C8.60986 28.7438 7.99312 26.1398 8 23.5001C8.00122 20.3436 8.88122 17.2498 10.5414 14.5652C12.2017 11.8806 14.5765 9.71119 17.4 8.30006C19.7562 7.10992 22.3603 6.49317 25 6.50006H26C30.1687 6.73004 34.1061 8.48958 37.0583 11.4418C40.0105 14.394 41.77 18.3314 42 22.5001V23.5001Z" stroke="#B28600" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+        'stalled'       => '<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M19.9987 36.6666C29.2034 36.6666 36.6654 29.2047 36.6654 19.9999C36.6654 10.7952 29.2034 3.33325 19.9987 3.33325C10.794 3.33325 3.33203 10.7952 3.33203 19.9999C3.33203 29.2047 10.794 36.6666 19.9987 36.6666Z" stroke="#68C0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.668 25V15" stroke="#68C0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M23.332 25V15" stroke="#68C0FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
         'qualified'     => '<svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M44.5 22.66V24.5C44.4975 28.8128 43.101 33.0093 40.5187 36.4636C37.9363 39.9179 34.3066 42.4449 30.1707 43.6678C26.0349 44.8906 21.6145 44.7438 17.5689 43.2491C13.5234 41.7545 10.0693 38.9922 7.72192 35.3741C5.37453 31.756 4.25958 27.4761 4.54335 23.1726C4.82712 18.8691 6.49441 14.7726 9.29656 11.4941C12.0987 8.21561 15.8856 5.93074 20.0924 4.98026C24.2992 4.02979 28.7005 4.46465 32.64 6.21997" stroke="#0A6AB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M44.5 8.5L24.5 28.52L18.5 22.52" stroke="#0A6AB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
         'quote_sent'    => '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M44 4L22 26" stroke="#6200EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M44 4L30 44L22 26L4 18L44 4Z" stroke="#6200EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     ];
@@ -45,6 +46,7 @@ class DealsBoard extends Component
         'statuses' => [
             'Pending'       => ['style' => 'color: #EB6200; background-color: #FFF2E8', 'label' => 'Pending'],
             'Contacted'     => ['style' => 'color: #B28600; background-color: #FCF4D6', 'label' => 'Contacted'],
+            'Stalled'       => ['style' => 'color: #68C0FF; background-color: #EEF8FF', 'label' => 'Stalled'],
             'Qualified'     => ['style' => 'color: #0A6AB7; background-color: #D3EAFD', 'label' => 'Qualified'],
             'Quote Sent'    => ['style' => 'color: #1D813A; background-color: #E9F6ED', 'label' => 'Quote Sent'],
             'Unqualified'   => ['style' => 'color: #686868; background-color: #E8E8E8', 'label' => 'Unqualified'],
@@ -79,6 +81,7 @@ class DealsBoard extends Component
     public $statuses = [
         'pending'       => ['label' => 'Pending', 'status' => 'Pending'],
         'contacted'     => ['label' => 'Contacted', 'status' => 'Contacted'],
+        'stalled'       => ['label' => 'Stalled', 'status' => 'Stalled'],
         'qualified'     => ['label' => 'Qualified', 'status' => 'Qualified'],
         'quote_sent'    => ['label' => 'Quote Sent', 'status' => 'Quote Sent'],
     ];
