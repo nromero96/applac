@@ -128,7 +128,7 @@
                         @endif
                     </div>
 
-                    <div class="__body" style="max-width: 12vw;">
+                    <div class="__body" :style="show_stalled ? 'max-width: 12vw' : '' ">
                         @if (isset($quotation->customer_name) or isset($quotation->last_name))
                             <h3>
                                 {{ isset($quotation->customer_name) ? $quotation->customer_name : '' }}
