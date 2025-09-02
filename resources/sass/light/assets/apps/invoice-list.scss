@@ -43,6 +43,10 @@ div.dataTables_wrapper button:hover {
         color: #D8D8D8 !important;
         cursor: pointer;
 
+        .stroke {
+            fill: #D8D8D8;
+        }
+
         &:hover{
             color:#b80000 !important;
         }
@@ -51,6 +55,9 @@ div.dataTables_wrapper button:hover {
     .checked {
         color: #b80000 !important; /* Color cuando está marcado */
         fill: #b80000 !important;
+        .stroke {
+            fill: #b80000;
+        }
     }
     input[type="checkbox"] {
         display: none; /* Ocultar el checkbox */
