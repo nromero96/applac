@@ -163,9 +163,9 @@ class Statistics extends Component
             ->where('assigned_user_id', $this->assignedUserId)
             ->groupBy('quotations.status');
 
-        // filtering
-        // $filtering = new ServiceChartHelpers(true);
-        // $filtering->filtering($pipeline, $this->filters);
+        // filtering: antes dijeron que no filtre pero ahora si
+        $filtering = new ServiceChartHelpers(true);
+        $filtering->filtering($pipeline, $this->filters);
 
         $pipeline_result = $pipeline->get();
         $pipeline_result = $pipeline_result->pluck('qty', 'status')->toArray();
@@ -173,9 +173,10 @@ class Statistics extends Component
         // quote sent:
         $quotes_sent = Quotation::select('id')
             ->where('status', 'Quote Sent')
-            ->where('result', 'Under Review')
-            ->where('assigned_user_id', $this->assignedUserId)
-            ->get();
+            //->where('result', 'Under Review')
+            ->where('assigned_user_id', $this->assignedUserId);
+
+        $filtering->filtering($quotes_sent, $this->filters);
 
         $this->area_sales['deals_pipeline'] = [
             [
@@ -206,7 +207,7 @@ class Statistics extends Component
                 'status'    => 'quote_sent',
                 'title'     => 'Quote Sent',
                 'icon'      => $this->icons['quote_sent'],
-                'total'     => $quotes_sent->count(),
+                'total'     => $quotes_sent->get()->count(),
             ],
         ];
 
