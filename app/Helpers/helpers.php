@@ -142,7 +142,7 @@ if (!function_exists('rateQuotation')) {
     function rateQuotation($quotation_id) {
 
         $quotation = Quotation::find($quotation_id);
-        
+
         if (!$quotation) {
             throw new \Exception("Quotation not found");
         }
@@ -271,7 +271,7 @@ if (!function_exists('rateQuotation')) {
                             $rating += 2;
                         }elseif(($isOriginInSpecialCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInSpecialCountries)){
                             //((Origin USA/CA - Destination Other) o (Origin Other - Destination USA/CA))
-                            $rating += 2; 
+                            $rating += 2;
                         }elseif(($isOriginInScopeCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInScopeCountries)){
                             //(Origin Scope - Destination Other) o (Origin Other - Destination Scope)
                             $rating += 2;
@@ -359,7 +359,7 @@ if (!function_exists('rateQuotation')) {
                     }
                 }
         }elseif($customer_type == 'Individual'){
-            if($quotation->mode_of_transport == 'RoRo' && $quotation->cargo_type == 'Personal Vehicle' && ($package_type == 'Automobile' || $package_type == 'Motorcycle (crated or palletized) / ATV')){ 
+            if($quotation->mode_of_transport == 'RoRo' && $quotation->cargo_type == 'Personal Vehicle' && ($package_type == 'Automobile' || $package_type == 'Motorcycle (crated or palletized) / ATV')){
                 //######## Fecha de envío :::::::::::
                 if ($quotation->shipping_date && $quotation->no_shipping_date == 'no') {
                     $fecha_envio = Carbon::parse(explode(' to ', $quotation->shipping_date)[0]);
@@ -396,7 +396,7 @@ if (!function_exists('rateQuotation')) {
                 'updated_at' => Carbon::now(),
             ]);
 
-            $customer_qt = $quotation->customer_user_id 
+            $customer_qt = $quotation->customer_user_id
                         ? User::find($quotation->customer_user_id)
                         : GuestUser::find($quotation->guest_user_id);
 
@@ -428,7 +428,7 @@ if (!function_exists('rateQuotation')) {
                 $guestUser = GuestUser::where('email', $email)
                             ->orderBy('id', 'desc') // Ordenar por ID descendente
                             ->offset(1) // <- Antepenúltimo GuestUser con ese email
-                            ->limit(1) 
+                            ->limit(1)
                             ->first();
 
                 // Inicializar variables para almacenar las cotizaciones
@@ -452,7 +452,7 @@ if (!function_exists('rateQuotation')) {
                 if ($guestUser) {
                     $quotationWithGuest = Quotation::where('guest_user_id', $guestUser->id)
                         ->whereNotNull('assigned_user_id') // Asegúrate de que assigned_user_id no sea nulo
-                        ->first(); 
+                        ->first();
 
                     if($quotationWithGuest && in_array($quotationWithGuest->assigned_user_id, $userIdsArray)){
                         $quotation->assigned_user_id = $quotationWithGuest->assigned_user_id;
@@ -469,7 +469,7 @@ if (!function_exists('rateQuotation')) {
                 $guestUserWithDomain = GuestUser::where('email', 'like', "%@$domain")
                             ->orderBy('id', 'desc') // Ordenar por ID descendente
                             ->offset(1) // <- Antepenúltimo GuestUser con ese email
-                            ->limit(1) 
+                            ->limit(1)
                             ->first();
 
                 // Inicializar variables para almacenar las cotizaciones
@@ -493,7 +493,7 @@ if (!function_exists('rateQuotation')) {
                 if ($guestUserWithDomain) {
                     $quotationWithGuestDomain = Quotation::where('guest_user_id', $guestUserWithDomain->id)
                         ->whereNotNull('assigned_user_id') // Asegúrate de que assigned_user_id no sea nulo
-                        ->first(); 
+                        ->first();
 
                     if($quotationWithGuestDomain && in_array($quotationWithGuestDomain->assigned_user_id, $userIdsArray)){
                         $quotation->assigned_user_id = $quotationWithGuestDomain->assigned_user_id;
@@ -614,6 +614,7 @@ if (!function_exists('rateQuotationWeb')) {
             $business_role_clean = explode(' - ', $business_role)[0];
             if($business_role_clean == 'Manufacturer' || $business_role_clean == 'Importer / Exporter (Owner of Goods)' || $business_role_clean == 'Retailer / Distributor' || $business_role_clean == 'Other'){
                 //######## Shipment ready date :::::::::::
+                    /*
                     if ($quotation->shipment_ready_date) {
                         if($quotation->shipment_ready_date == 'Ready to ship now'){
                             $rating += 1;
@@ -623,6 +624,7 @@ if (!function_exists('rateQuotationWeb')) {
                             $rating += 0;
                         }
                     }
+                    */
 
                 //######## Annual Shipments :::::::::::
                     if($ea_shipments){
@@ -650,6 +652,12 @@ if (!function_exists('rateQuotationWeb')) {
                             } elseif($isOriginInScopeCountries && $isDestinationInScopeCountries){
                                 //(Origin Scope - Destination Scope)
                                 $rating += 2;
+                            } elseif($isOriginInEuropeCountries && $isDestinationInScopeCountries){
+                                //(Origin Europe - Destination Scope)
+                                $rating += 2;
+                            } elseif($isOriginInEuropeCountries && $isDestinationInSpecialCountries){
+                                //(Origin Europe - Destination USA/CA)
+                                $rating += 2;
                             } elseif(($isOriginInOtherCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInOtherCountries)){
                                 //(Origin Other - Destination Scope) o (Origin Scope - Destination Other)
                                 $rating += 2;
@@ -672,7 +680,7 @@ if (!function_exists('rateQuotationWeb')) {
                                 $rating += 2;
                             }elseif(($isOriginInSpecialCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInSpecialCountries)){
                                 //((Origin USA/CA - Destination Other) o (Origin Other - Destination USA/CA))
-                                $rating += 2; 
+                                $rating += 2;
                             }elseif(($isOriginInScopeCountries && $isDestinationInOtherCountries) || ($isOriginInOtherCountries && $isDestinationInScopeCountries)){
                                 //(Origin Scope - Destination Other) o (Origin Other - Destination Scope)
                                 $rating += 2;
@@ -696,6 +704,7 @@ if (!function_exists('rateQuotationWeb')) {
 
             }elseif($business_role_clean == 'Logistics Company / Freight Forwarder'){
                 //######## Shipment ready date :::::::::::
+                /*
                     if ($quotation->shipment_ready_date) {
                         if($quotation->shipment_ready_date == 'Ready to ship now'){
                             $rating += 1;
@@ -705,6 +714,7 @@ if (!function_exists('rateQuotationWeb')) {
                             $rating += 0;
                         }
                     }
+                */
 
                 //######## Annual Shipments :::::::::::
                     if($ea_shipments){
@@ -722,7 +732,7 @@ if (!function_exists('rateQuotationWeb')) {
                             $rating += 0;
                         }
                     }
-                
+
                 //######## Mail, Location, Origen y Destino :::::::::::
                     if($isBusinessEmailAndNotEdu){
                         if ($isLocationScopeCountries) {
@@ -766,6 +776,38 @@ if (!function_exists('rateQuotationWeb')) {
             }
         }
 
+        $mode_of_transport = $quotation->mode_of_transport;
+        $declared_value = $quotation->declared_value;
+
+        $umbrales = [
+            'FCL (Full Container Load)'   => 25000,
+            'RORO (Roll-On/Roll-Off)'     => 25000,
+            'FTL (Full Truckload)'        => 25000,
+            'Bulk Liquid Transport'       => 25000,
+
+            'LCL (Less-than-Container Load)' => 2500,
+            'LTL (Less-than-Truckload)'      => 2500,
+            'Standard Air Freight'           => 2500,
+
+            'Breakbulk'                  => 60000,
+            'Heavy Haul / Oversized'     => 60000,
+            'Project Cargo'              => 60000,
+
+            'Charter Flight'             => 100000,
+        ];
+
+        // Verificar si el modo de transporte tiene un threshold definido
+        if (isset($umbrales[$mode_of_transport])) {
+            $umbral = $umbrales[$mode_of_transport];
+            $tolerance = $umbral * 0.10; // 10%
+
+            if ($declared_value > $umbral) {
+                $rating += 1;
+            } elseif ($declared_value > ($umbral - $tolerance)) {
+                $rating += 0.5;
+            }
+        }
+
         // Guarda la calificación en la cotización
         $quotation->rating = $rating;
         $quotation->save();
@@ -787,7 +829,7 @@ if (!function_exists('rateQuotationWeb')) {
                 'updated_at' => Carbon::now(),
             ]);
 
-            $customer_qt = $quotation->customer_user_id 
+            $customer_qt = $quotation->customer_user_id
                         ? User::find($quotation->customer_user_id)
                         : GuestUser::find($quotation->guest_user_id);
 
@@ -819,7 +861,7 @@ if (!function_exists('rateQuotationWeb')) {
                 $guestUser = GuestUser::where('email', $email)
                             ->orderBy('id', 'desc') // Ordenar por ID descendente
                             ->offset(1) // <- Antepenúltimo GuestUser con ese email
-                            ->limit(1) 
+                            ->limit(1)
                             ->first();
 
                 // Inicializar variables para almacenar las cotizaciones
@@ -843,7 +885,7 @@ if (!function_exists('rateQuotationWeb')) {
                 if ($guestUser) {
                     $quotationWithGuest = Quotation::where('guest_user_id', $guestUser->id)
                         ->whereNotNull('assigned_user_id') // Asegúrate de que assigned_user_id no sea nulo
-                        ->first(); 
+                        ->first();
 
                     if($quotationWithGuest && in_array($quotationWithGuest->assigned_user_id, $userIdsArray)){
                         $quotation->assigned_user_id = $quotationWithGuest->assigned_user_id;
@@ -860,7 +902,7 @@ if (!function_exists('rateQuotationWeb')) {
                 $guestUserWithDomain = GuestUser::where('email', 'like', "%@$domain")
                             ->orderBy('id', 'desc') // Ordenar por ID descendente
                             ->offset(1) // <- Antepenúltimo GuestUser con ese email
-                            ->limit(1) 
+                            ->limit(1)
                             ->first();
 
                 // Inicializar variables para almacenar las cotizaciones
@@ -884,7 +926,7 @@ if (!function_exists('rateQuotationWeb')) {
                 if ($guestUserWithDomain) {
                     $quotationWithGuestDomain = Quotation::where('guest_user_id', $guestUserWithDomain->id)
                         ->whereNotNull('assigned_user_id') // Asegúrate de que assigned_user_id no sea nulo
-                        ->first(); 
+                        ->first();
 
                     if($quotationWithGuestDomain && in_array($quotationWithGuestDomain->assigned_user_id, $userIdsArray)){
                         $quotation->assigned_user_id = $quotationWithGuestDomain->assigned_user_id;
