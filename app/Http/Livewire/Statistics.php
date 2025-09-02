@@ -173,7 +173,8 @@ class Statistics extends Component
         // quote sent:
         $quotes_sent = Quotation::select('id')
             ->where('status', 'Quote Sent')
-            //->where('result', 'Under Review')
+            ->where('result', '!=', 'Won')
+            ->where('result', '!=', 'Lost')
             ->where('assigned_user_id', $this->assignedUserId);
 
         // $filtering->filtering($quotes_sent, $this->filters);
