@@ -163,9 +163,9 @@ class Statistics extends Component
             ->where('assigned_user_id', $this->assignedUserId)
             ->groupBy('quotations.status');
 
-        // filtering: antes dijeron que no filtre pero ahora si
-        $filtering = new ServiceChartHelpers(true);
-        $filtering->filtering($pipeline, $this->filters);
+        // filtering: esto no afecta
+        // $filtering = new ServiceChartHelpers(true);
+        // $filtering->filtering($pipeline, $this->filters);
 
         $pipeline_result = $pipeline->get();
         $pipeline_result = $pipeline_result->pluck('qty', 'status')->toArray();
@@ -176,7 +176,7 @@ class Statistics extends Component
             //->where('result', 'Under Review')
             ->where('assigned_user_id', $this->assignedUserId);
 
-        $filtering->filtering($quotes_sent, $this->filters);
+        // $filtering->filtering($quotes_sent, $this->filters);
 
         $this->area_sales['deals_pipeline'] = [
             [
@@ -230,7 +230,14 @@ class Statistics extends Component
         $records_result = $records->get();
         $records_result = $records_result->pluck('qty', 'result')->toArray();
 
-        $deal_record_quote_sent     = isset($pipeline_result['Quote Sent']) ? $pipeline_result['Quote Sent'] : 0;
+        // $deal_record_quote_sent     = isset($pipeline_result['Quote Sent']) ? $pipeline_result['Quote Sent'] : 0;
+        $deal_record_quote_sent = Quotation::select('id')
+            ->where('status', 'Quote Sent')
+            ->where('assigned_user_id', $this->assignedUserId);
+
+        $filtering->filtering($deal_record_quote_sent, $this->filters);
+        $deal_record_quote_sent = $deal_record_quote_sent->get()->count();
+
         $deal_record_won            = isset($records_result['Won']) ? $records_result['Won'] : 0;
         $deal_record_lost           = isset($records_result['Lost']) ? $records_result['Lost'] : 0;
         $deal_record_under_review   = isset($records_result['Under Review']) ? $records_result['Under Review'] : 0;
