@@ -65,60 +65,42 @@
                                         <!-- Dropdown Type -->
                                         <div class="dropdown">
                                             <button class="rounded-pill dropdown-toggle text-capitalize select-dropdown me-2" type="button" id="typeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                                                {{ request('type_inquiry') ? implode(', ', request('type_inquiry')) : 'Type' }}
+                                                @php
+                                                $labels_type_filter = [
+                                                    'internal'   => 'Manual',
+                                                    'external 1' => 'Personal',
+                                                    'external 2' => 'Business',
+                                                ];
+                                                $types_filter = request('type_inquiry');
+                                                $mapped_types_filter = $types_filter
+                                                    ? array_map(fn($t) => $labels_type_filter[$t] ?? $t, $types_filter)
+                                                    : null;
+                                            @endphp
+
+                                                {{ $mapped_types_filter ? implode(', ', $mapped_types_filter) : 'Type' }}
+
                                             </button>
                                             <ul class="dropdown-menu mt-3 pt-2 ps-2 pe-2 pb-0" aria-labelledby="typeDropdown">
                                                 @foreach ($listtypeinquiries as $inquiry)
-
-
 
                                                         <li>
                                                             <div class="form-check">
                                                                 <input class="form-check-input" type="checkbox" name="type_inquiry[]" value="{{ $inquiry->type_inquiry }}" id="type_inquiry{{ Str::slug($inquiry->type_inquiry, '_') }}" {{ in_array($inquiry->type_inquiry, request('type_inquiry', [])) ? 'checked' : '' }}>
                                                                 <label class="form-check-label text-capitalize w-100" for="type_inquiry{{ Str::slug($inquiry->type_inquiry, '_') }}">
                                                                     {{-- Generar estrellas llenas y vacías --}}
-                                                                    {{$inquiry->type_inquiry}}
-
+                                                                    @if ($inquiry->type_inquiry == 'internal')
+                                                                        Manual
+                                                                    @elseif ($inquiry->type_inquiry == 'external 1')
+                                                                        Personal
+                                                                    @elseif ($inquiry->type_inquiry == 'external 2')
+                                                                        Business
+                                                                    @endif
                                                                     {{-- Mostrar total de cotizaciones --}}
                                                                     <small class="ms-1 fw-light float-end">({{ $inquiry->total >= 1000 ? number_format($inquiry->total / 1000, 1) . 'K' : $inquiry->total }})</small>
                                                                 </label>
                                                             </div>
                                                         </li>
 
-                                                @endforeach
-                                            </ul>
-                                        </div>
-
-                                        <!-- Dropdown Result -->
-                                        <div class="dropdown">
-                                            <button class="dropdown-toggle rounded-pill select-dropdown ms-1 me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                {{ request('result') ? request('result') : 'Result' }}
-                                            </button>
-                                            <input type="hidden" name="result" id="inputsearchresult" value="{{ request('result') }}">
-                                            <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuButton">
-                                                <li>
-                                                    <a class="dropdown-item" href="#" onclick="selectResult('')"><b>All Result</b> <small class="float-end fw-light">({{$totalQuotation}})</small></a>
-                                                </li>
-                                                @foreach ($listresults as $result)
-                                                    <li>
-                                                        <a class="dropdown-item" href="#" onclick="selectResult('{{ $result->quotation_result }}')">
-
-                                                            @php
-                                                            //color
-                                                            if($result->quotation_result == 'Under Review') {
-                                                                $class_sb_sch = 'badge-light-warning';
-                                                            } elseif($result->quotation_result == 'Won'){
-                                                                $class_sb_sch = 'badge-light-won';
-                                                            } elseif($result->quotation_result == 'Lost') {
-                                                                $class_sb_sch = 'badge-light-danger';
-                                                            } else {
-                                                                $class_sb_sch = 'badge-light-unqualified';
-                                                            }
-                                                        @endphp
-                                                        <span class="cret-bge ms-0 align-middle badge {{$class_sb_sch}}" title="{{$result->quotation_result}}">{{ $result->quotation_result }}</span>
-                                                        <small class="float-end fw-light">({{ $result->total >= 1000 ? number_format($result->total / 1000, 1) . 'K' : $result->total }})</small>
-                                                        </a>
-                                                    </li>
                                                 @endforeach
                                             </ul>
                                         </div>
@@ -159,6 +141,40 @@
                                                         @endphp
                                                         <span class="cret-bge ms-0 align-middle badge {{$class_sb_sch}}" title="{{$status->quotation_status}}">{{ $status->quotation_status }}</span>
                                                         <small class="float-end fw-light">({{ $status->total >= 1000 ? number_format($status->total / 1000, 1) . 'K' : $status->total }})</small>
+                                                        </a>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+
+                                        <!-- Dropdown Outcome -->
+                                        <div class="dropdown">
+                                            <button class="dropdown-toggle rounded-pill select-dropdown ms-1 me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {{ request('result') ? request('result') : 'Outcome' }}
+                                            </button>
+                                            <input type="hidden" name="result" id="inputsearchresult" value="{{ request('result') }}">
+                                            <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuButton">
+                                                <li>
+                                                    <a class="dropdown-item" href="#" onclick="selectResult('')"><b>All Outcomes</b> <small class="float-end fw-light">({{$totalQuotation}})</small></a>
+                                                </li>
+                                                @foreach ($listresults as $result)
+                                                    <li>
+                                                        <a class="dropdown-item" href="#" onclick="selectResult('{{ $result->quotation_result }}')">
+
+                                                            @php
+                                                            //color
+                                                            if($result->quotation_result == 'Under Review') {
+                                                                $class_sb_sch = 'badge-light-warning';
+                                                            } elseif($result->quotation_result == 'Won'){
+                                                                $class_sb_sch = 'badge-light-won';
+                                                            } elseif($result->quotation_result == 'Lost') {
+                                                                $class_sb_sch = 'badge-light-danger';
+                                                            } else {
+                                                                $class_sb_sch = 'badge-light-unqualified';
+                                                            }
+                                                        @endphp
+                                                        <span class="cret-bge ms-0 align-middle badge {{$class_sb_sch}}" title="{{$result->quotation_result}}">{{ $result->quotation_result }}</span>
+                                                        <small class="float-end fw-light">({{ $result->total >= 1000 ? number_format($result->total / 1000, 1) . 'K' : $result->total }})</small>
                                                         </a>
                                                     </li>
                                                 @endforeach
@@ -387,7 +403,7 @@
                                             </a>
                                         </th>
                                         @if($adminorsales)
-                                        <th class="px-1">{{ __('Result') }}</th>
+                                        <th class="px-1">{{ __('Outcome') }}</th>
                                         @endif
                                         <th class="px-2">{{ __('Email') }}</th>
                                         <th class="px-2">{{ __('Location') }}</th>
@@ -681,21 +697,21 @@
                                                                 </clipPath>
                                                                 </defs>
                                                             </svg>
-                                                            {{ $quotation->type_inquiry }} </span>
+                                                            Manual </span>
                                                     @elseif($quotation->type_inquiry == 'external 1')
                                                         <span class="text-capitalize badge-type-inquiry external-1">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                                 <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#B28600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                                 <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#B28600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                             </svg>
-                                                            {{ $quotation->type_inquiry }} </span>
+                                                            Personal </span>
                                                     @elseif($quotation->type_inquiry == 'external 2')
                                                         <span class="text-capitalize badge-type-inquiry external-2">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                                                 <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                                 <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                                                             </svg>
-                                                            {{ $quotation->type_inquiry }} </span>
+                                                            Business </span>
                                                     @elseif($quotation->type_inquiry == 'ext-auto')
                                                         <span class="text-capitalize badge-type-inquiry ext-auto">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
