@@ -212,12 +212,12 @@ class NewInquiry extends Component
                 'created_at' => now(),
             ]);
 
-            // set quoation as unread
-            UnreadQuotation::create([
-                // 'user_id'       => auth()->id(),
-                'user_id'       => $this->member,
-                'quotation_id'  => $quotation->id,
-            ]);
+            // set quotation as unread (solo testing en internal)
+            // UnreadQuotation::create([
+            //     // 'user_id'       => auth()->id(),
+            //     'user_id'       => $this->member,
+            //     'quotation_id'  => $quotation->id,
+            // ]);
 
             // Subir adjuntos
             if (sizeof($this->attachments) > 0) {
