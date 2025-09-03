@@ -134,6 +134,14 @@ class QuotationController extends Controller
             $assigned_user_full_name = $assigned_user ? $assigned_user['name'] . ' ' . $assigned_user['lastname'] : 'Not assigned';
             $assigned_user_mail = optional(User::find($quotation->assigned_user_id))->email;
 
+            // set quoation as unread
+            if ($assigned_user) {
+                UnreadQuotation::create([
+                    'user_id'       => $quotation->assigned_user_id,
+                    'quotation_id'  => $quotation->id,
+                ]);
+            }
+
         } catch (\Exception $e) {
             Log::error('Quote rating error ' . $quotation->id . ' - ' . $e->getMessage());
         }
