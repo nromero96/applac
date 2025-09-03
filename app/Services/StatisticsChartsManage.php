@@ -15,7 +15,8 @@ class StatisticsChartsManage {
     function __construct($filters) {
         $this->filters = $filters;
         $this->representants = User::whereHas('roles', function($query){
-                    $query->where('role_id', 2);
+                    // $query->where('role_id', 2);
+                    $query->whereIn('role_id', [1, 2]);
                 })
                 ->join('quotations', 'quotations.assigned_user_id', '=', 'users.id')
                 ->groupBy('users.id')

@@ -125,7 +125,7 @@ class DealsBoard extends Component
         // get first user result
         if (Auth::user()->hasRole('Administrator')) {
             $this->user_sales = User::whereHas('roles', function($query){
-                    $query->where('role_id', 2);
+                    $query->whereIn('role_id', [1, 2]);
                 })
                 ->join('quotations', 'quotations.assigned_user_id', '=', 'users.id')
                 ->groupBy('users.id')
