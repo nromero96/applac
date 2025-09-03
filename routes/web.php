@@ -95,7 +95,8 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
 
     //Ejecutar migración
     Route::get('/ejecutar-migraciones', function () {
-        Artisan::call('migrate');
+        // Artisan::call('migrate');
+        Artisan::call('migrate', ['--force' => true]);
         return 'Migraciones ejecutadas con éxito.';
     });
 
