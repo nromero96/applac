@@ -126,6 +126,25 @@
     }
 }
 
+// Badges
+.badge-light-won {
+    color: #1D813A !important;
+    background-color: #E9F6ED !important;
+    border: 1px solid #E9F6ED !important;
+}
+
+.badge-light-stalled {
+    color: #68C0FF !important;
+    background-color: #EEF8FF !important;
+    border: 1px solid #EEF8FF !important;
+}
+
+.badge-light-success {
+    color: #6200EE !important;
+    background-color: #EFE6FD !important;
+    border: 1px solid #EFE6FD !important;
+}
+
 // other
 [x-cloak] {
     display: none;
