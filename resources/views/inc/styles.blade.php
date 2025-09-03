@@ -1,3 +1,4 @@
+    <link href="{{ asset('assets/css/light/main.css') }}?v={{ config('app.version') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('layouts/vertical-light-menu/css/light/loader.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('layouts/vertical-light-menu/css/dark/loader.css') }}" rel="stylesheet" type="text/css" />
     <script src="{{ asset('layouts/vertical-light-menu/loader.js') }}"></script>
