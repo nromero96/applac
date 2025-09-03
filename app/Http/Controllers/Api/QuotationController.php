@@ -103,12 +103,6 @@ class QuotationController extends Controller
 
         $quotation_id = $quotation->id;
 
-        // set quoation as unread
-        UnreadQuotation::create([
-            'user_id'       => auth()->id(),
-            'quotation_id'  => $quotation_id,
-        ]);
-
 
         //Guarda los archivos en la tabla quotation_documents
         if ($request->hasFile('files')) {

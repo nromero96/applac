@@ -988,12 +988,6 @@ class QuotationController extends Controller
 
                 $quotation_id = $quotation->id;
 
-                // set quoation as unread
-                UnreadQuotation::create([
-                    'user_id'       => auth()->id(),
-                    'quotation_id'  => $quotation_id,
-                ]);
-
                 //create cargo details
                 $cargo_type = $request->input('cargo_type');
                 $cargoDetails = [];
@@ -1372,6 +1366,12 @@ class QuotationController extends Controller
             $quotation->assigned_user_id = $request->input('user_id');
             $quotation->save();
 
+            // set quoation as unread
+            UnreadQuotation::create([
+                'user_id'       => $quotation->assigned_user_id,
+                'quotation_id'  => $quotation->id,
+            ]);
+
             return response()->json(['success' => 'Usuario asignado con éxito']);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
@@ -1397,6 +1397,11 @@ class QuotationController extends Controller
             // Asignar la cotización al usuario autenticado
             $quotation->assigned_user_id = auth()->id();
             $quotation->save();
+
+            UnreadQuotation::create([
+                'user_id'       => $quotation->assigned_user_id,
+                'quotation_id'  => $quotation->id,
+            ]);
 
             // Redireccionar a la cotización
             return redirect()->route('quotations.show', ['quotation' => $cotizacionId])
