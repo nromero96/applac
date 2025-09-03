@@ -52,4 +52,17 @@ class Quotation extends Model
         'is_internal_inquiry',
         'cargo_description',
     ];
+
+    // Accessor: cada vez que accedas a $quotation->declared_value
+    // se devolverá como float limpio.
+    public function getDeclaredValueAttribute($value) {
+        // Quitar comas y convertir a float
+        return (float) str_replace(',', '', $value);
+    }
+
+    // Mutator: cada vez que guardes declared_value
+    // se grabará limpio en la BD (sin comas).
+    public function setDeclaredValueAttribute($value) {
+        $this->attributes['declared_value'] = (float) str_replace(',', '', $value);
+    }
 }
