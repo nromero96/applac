@@ -8,15 +8,13 @@
 
     <p style="font-size: 14px; line-height: 1.4;">Dear {{$customer_name}},</p>
 
-    <p style="font-size: 14px; line-height: 1.4;">Thank you for your interest in LAC's freight forwarding services.</p>
+    <p style="font-size: 14px; line-height: 1.4;">Thank you for reaching out to LAC. We appreciate the opportunity to be considered for your freight shipping needs.</p>
 
-    <p style="font-size: 14px; line-height: 1.4;">After reviewing your request, we regret to inform you that we are unable to provide a quote at this time. We are currently operating at full capacity and have temporarily paused the onboarding of new clients to ensure we maintain our service quality standards for existing customers.</p>
+    <p style="font-size: 14px; line-height: 1.4;">After carefully reviewing your request, we’ve determined that we are not the best fit for your current logistics requirements. As part of our commitment to delivering exceptional service, we occasionally need to make the difficult decision to decline requests that fall outside the focus of our specialized operations.</p>
 
-    <p style="font-size: 14px; line-height: 1.4;">We appreciate your understanding and apologize for any inconvenience this may cause. Should our capacity situation change in the future, we would be happy to reconsider your request.</p>
-    
-    <p style="font-size: 14px; line-height: 1.4;">Thank you for considering LAC for your logistics needs.</p>
+    <p style="font-size: 14px; line-height: 1.4;">We truly value your interest, and should your needs evolve in the future, we would be happy to revisit your request.</p>
 
-    <p style="font-size: 14px; line-height: 1.4;">Best regards,</p>
+    <p style="font-size: 14px; line-height: 1.4;">Kind regards,</p>
 
     <p style="font-size: 14px; line-height: 1.4;"><b>The LAC Team</b></p>
 

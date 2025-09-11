@@ -656,8 +656,7 @@ class QuotationController extends Controller
             }else{
                 $notesms = $validatedData['note'] ?? 'N/A';
             }
-            // Insertar la nota de estado
-            QuotationNote::create([
+            $result_data = [
                 'quotation_id' => $id,
                 'type' => 'inquiry_status',
                 'action' => "'{$quotation->status}' to '{$validatedData['action']}'",
@@ -665,7 +664,17 @@ class QuotationController extends Controller
                 'contacted_via' => $validatedData['contacted_via'] ?? null,
                 'note' => $notesms,
                 'user_id' => auth()->id(),
-            ]);
+            ];
+
+            if ($validatedData['action'] == $quotation->status) { // status unchanged
+                $result_data['action'] = "'' to '{$quotation->status}'";
+                $result_data['update_type'] = 'unchanged';
+            } else { // status changed
+                $result_data['action'] = "'{$quotation->status}' to '{$validatedData['action']}'";
+                $result_data['update_type'] = 'changed';
+            }
+            // Insertar la nota de estado
+            QuotationNote::create($result_data);
 
             // Actualizar el estado de la inscripción después de registrar la nota
             $quotation->update([

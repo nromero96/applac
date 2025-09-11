@@ -140,7 +140,7 @@ function listQuotationNotes(quotationId) {
                 if(note.type == 'inquiry_status'){
                     noteElement.innerHTML = `
                                     <div class="al-action d-flex align-items-center">
-                                        <span class="text-result">Status changed</span> ${badge_last_status}
+                                        <span class="text-result" style="padding-right:4px">Status ${note.update_type} </span> ${badge_last_status}
                                         <svg width="15" height="15" fill="none" stroke="#595959" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path d="m9 18 6-6-6-6"></path>
                                           </svg>

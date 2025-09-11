@@ -831,12 +831,12 @@
                                             x-model="status" @change="contacted_via = (status == 'Contacted' ? 'Email' : '')"
                                         >
                                             <option value="">{{ __('Select status') }} </option>
-                                            <option value="Pending" @if($quotation->status == 'Pending') selected disabled  @endif>Pending</option>
-                                            <option value="Contacted" @if($quotation->status == 'Contacted') selected disabled @endif>Contacted</option>
-                                            <option value="Stalled" @if($quotation->status == 'Stalled') selected disabled @endif>Stalled</option>
-                                            <option value="Qualified" @if($quotation->status == 'Qualified') selected disabled @endif>Qualified</option>
-                                            <option value="Quote Sent" @if($quotation->status == 'Quote Sent') selected disabled @endif>Quote Sent</option>
-                                            <option value="Unqualified" @if($quotation->status == 'Unqualified') selected disabled @endif>Unqualified</option>
+                                            <option value="Pending" @if($quotation->status == 'Pending') selected {{--disabled--}}  @endif>Pending</option>
+                                            <option value="Contacted" @if($quotation->status == 'Contacted') selected {{--disabled--}} @endif>Contacted</option>
+                                            <option value="Stalled" @if($quotation->status == 'Stalled') selected {{--disabled--}} @endif>Stalled</option>
+                                            <option value="Qualified" @if($quotation->status == 'Qualified') selected {{--disabled--}} @endif>Qualified</option>
+                                            <option value="Quote Sent" @if($quotation->status == 'Quote Sent') selected {{--disabled--}} @endif>Quote Sent</option>
+                                            <option value="Unqualified" @if($quotation->status == 'Unqualified') selected {{--disabled--}} @endif>Unqualified</option>
                                         </select>
                                     </div>
                                     {{-- Contacted via --}}
