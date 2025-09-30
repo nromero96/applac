@@ -379,7 +379,8 @@ if (!function_exists('rateQuotation')) {
         $quotation->rating = $rating;
         $quotation->save();
 
-        if($rating == 0 && !($quotation->mode_of_transport == 'RoRo' && $quotation->cargo_type == 'Personal Vehicle')){
+        // if($rating == 0 && !($quotation->mode_of_transport == 'RoRo' && $quotation->cargo_type == 'Personal Vehicle')){
+        if($rating >= 0 && $rating <= 2.5 && !($quotation->mode_of_transport == 'RoRo' && $quotation->cargo_type == 'Personal Vehicle')){
             //Registrar QuotationNote
             QuotationNote::create([
                 'quotation_id' => $quotation->id,
@@ -505,27 +506,46 @@ if (!function_exists('rateQuotation')) {
 
             //ver si la cotización cumple con 4 y 5 rating
             if($rating >= 4){
-                $userQuotationFourRatingCounts = [];
-
-                $now = Carbon::now();
-                $yesterday = $now->copy()->subDay();
-
-                foreach ($userIds as $userId) {
-                    $userQuotationFourRatingCounts[$userId] = Quotation::where('assigned_user_id', $userId)
-                    ->where('rating', '>=', 4)
-                    ->whereBetween('created_at', [$yesterday, $now])
-                    ->count();
+                // usuarios temporalmente
+                $stephanieId = 2733;
+                $nicholasId  = 3;
+                $counterFile = 'quotations_rating_4-5.txt';
+                $counter = (int)Storage::get($counterFile);
+                // Patrón S-S-S-S-N
+                if ($counter < 4) {
+                    $quotation->assigned_user_id = $stephanieId;
+                } else {
+                    $quotation->assigned_user_id = $nicholasId;
                 }
-                $minCountFourRating = min($userQuotationFourRatingCounts);
-                $usersWithMinCountFourRating = array_filter($userQuotationFourRatingCounts, function($count) use ($minCountFourRating) {
-                    return $count == $minCountFourRating;
-                });
-                $minUserIdFourRating = array_rand($usersWithMinCountFourRating);
-                $quotation->assigned_user_id = $minUserIdFourRating;
+                // Incrementar contador (0 a 4) y reiniciar
+                $counter = ($counter + 1) % 5;
+                Storage::put($counterFile, $counter);
 
                 $quotation->save();
                 return $rating;
-            } else if($rating < 4){
+                // $userQuotationFourRatingCounts = [];
+
+                // $now = Carbon::now();
+                // $yesterday = $now->copy()->subDay();
+
+                // foreach ($userIds as $userId) {
+                //     $userQuotationFourRatingCounts[$userId] = Quotation::where('assigned_user_id', $userId)
+                //     ->where('rating', '>=', 4)
+                //     ->whereBetween('created_at', [$yesterday, $now])
+                //     ->count();
+                // }
+                // $minCountFourRating = min($userQuotationFourRatingCounts);
+                // $usersWithMinCountFourRating = array_filter($userQuotationFourRatingCounts, function($count) use ($minCountFourRating) {
+                //     return $count == $minCountFourRating;
+                // });
+                // $minUserIdFourRating = array_rand($usersWithMinCountFourRating);
+                // $quotation->assigned_user_id = $minUserIdFourRating;
+
+                // $quotation->save();
+                // return $rating;
+            }
+            // } else if($rating < 4){
+            if ($rating >= 3 && $rating <= 3.5) {
 
                 $indexFile = 'current_index.txt';
                 $currentIndex = (int)Storage::get($indexFile);
@@ -812,7 +832,7 @@ if (!function_exists('rateQuotationWeb')) {
         $quotation->rating = $rating;
         $quotation->save();
 
-        if($rating == 0){
+        if ($rating >= 0 && $rating <= 2.5) { // nueva regla
             //Registrar QuotationNote
             QuotationNote::create([
                 'quotation_id' => $quotation->id,
@@ -938,28 +958,43 @@ if (!function_exists('rateQuotationWeb')) {
 
             //ver si la cotización cumple con 4 y 5 rating
             if($rating >= 4){
-                $userQuotationFourRatingCounts = [];
-
-                $now = Carbon::now();
-                $yesterday = $now->copy()->subDay();
-
-
-                foreach ($userIds as $userId) {
-                    $userQuotationFourRatingCounts[$userId] = Quotation::where('assigned_user_id', $userId)
-                    ->where('rating', '>=', 4)
-                    ->whereBetween('created_at', [$yesterday, $now])
-                    ->count();
+                // usuarios temporalmente
+                $stephanieId = 2733;
+                $nicholasId  = 3;
+                $counterFile = 'quotations_rating_4-5.txt';
+                $counter = (int)Storage::get($counterFile);
+                // Patrón S-S-S-S-N
+                if ($counter < 4) {
+                    $quotation->assigned_user_id = $stephanieId;
+                } else {
+                    $quotation->assigned_user_id = $nicholasId;
                 }
-                $minCountFourRating = min($userQuotationFourRatingCounts);
-                $usersWithMinCountFourRating = array_filter($userQuotationFourRatingCounts, function($count) use ($minCountFourRating) {
-                    return $count == $minCountFourRating;
-                });
-                $minUserIdFourRating = array_rand($usersWithMinCountFourRating);
-                $quotation->assigned_user_id = $minUserIdFourRating;
+                // Incrementar contador (0 a 4) y reiniciar
+                $counter = ($counter + 1) % 5;
+                Storage::put($counterFile, $counter);
 
                 $quotation->save();
                 return $rating;
-            } else if($rating < 4){
+                // $userQuotationFourRatingCounts = [];
+                // $now = Carbon::now();
+                // $yesterday = $now->copy()->subDay();
+                // foreach ($userIds as $userId) {
+                //     $userQuotationFourRatingCounts[$userId] = Quotation::where('assigned_user_id', $userId)
+                //     ->where('rating', '>=', 4)
+                //     ->whereBetween('created_at', [$yesterday, $now])
+                //     ->count();
+                // }
+                // $minCountFourRating = min($userQuotationFourRatingCounts);
+                // $usersWithMinCountFourRating = array_filter($userQuotationFourRatingCounts, function($count) use ($minCountFourRating) {
+                //     return $count == $minCountFourRating;
+                // });
+                // $minUserIdFourRating = array_rand($usersWithMinCountFourRating);
+                // $quotation->assigned_user_id = $minUserIdFourRating;
+                // $quotation->save();
+                // return $rating;
+            }
+            // } else if($rating < 4){
+            if ($rating >= 3 && $rating <= 3.5) {
 
                 $indexFile = 'current_index.txt';
                 $currentIndex = (int)Storage::get($indexFile);
