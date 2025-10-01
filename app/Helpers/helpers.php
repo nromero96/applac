@@ -543,9 +543,9 @@ if (!function_exists('rateQuotation')) {
 
                 // $quotation->save();
                 // return $rating;
-            }
+            } else {
             // } else if($rating < 4){
-            if ($rating >= 3 && $rating <= 3.5) {
+            // if ($rating >= 3 && $rating <= 3.5) {
 
                 $indexFile = 'current_index.txt';
                 $currentIndex = (int)Storage::get($indexFile);
@@ -992,9 +992,9 @@ if (!function_exists('rateQuotationWeb')) {
                 // $quotation->assigned_user_id = $minUserIdFourRating;
                 // $quotation->save();
                 // return $rating;
-            }
             // } else if($rating < 4){
-            if ($rating >= 3 && $rating <= 3.5) {
+            // if ($rating >= 3 && $rating <= 3.5) {
+            } else {
 
                 $indexFile = 'current_index.txt';
                 $currentIndex = (int)Storage::get($indexFile);
