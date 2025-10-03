@@ -46,6 +46,7 @@ class LoginController extends Controller
     /** Login with reCAPTCHA */
     public function login(Request $request)
     {
+        // temp
         // $this->validateCaptcha($request);
 
         $this->validateLogin($request);

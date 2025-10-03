@@ -5,6 +5,7 @@ use App\Models\Quotation;
 use App\Models\QuotationNote;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class StatisticsChartsManage {
@@ -15,15 +16,18 @@ class StatisticsChartsManage {
     function __construct($filters) {
         $this->filters = $filters;
         $this->representants = User::whereHas('roles', function($query){
-                    // $query->where('role_id', 2);
                     $query->whereIn('role_id', [1, 2]);
                 })
                 ->join('quotations', 'quotations.assigned_user_id', '=', 'users.id')
                 ->groupBy('users.id')
                 ->where('users.status', 'active')
-                ->select('users.id as id', 'name', 'lastname')
-                ->orderBy('users.name')
-                ->get();
+                ->select('users.id as id', 'name', 'lastname', 'department_id')
+                ->orderBy('users.name');
+        if (Auth::user()->hasRole('Leader')) {
+            $this->representants->where('department_id', auth()->user()->department_id);
+        }
+
+        $this->representants = $this->representants->get();
     }
 
     /** */

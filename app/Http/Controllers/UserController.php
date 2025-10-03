@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use App\Models\Country;
-
+use App\Models\Department;
 use Image;
 
 class UserController extends Controller
@@ -37,21 +37,25 @@ class UserController extends Controller
             //get users with role administrator
             $users = User::role('administrator')
                             ->where('status', '!=', 'deleted')
+                            ->with('department')
                             ->get();
         }elseif($type == 2){
             //get users with role sales
             $users = User::role('sales')
                             ->where('status', '!=', 'deleted')
+                            ->with('department')
                             ->get();
         }elseif($type == 3){
             //get users with role customer
             $users = User::role('customer')
                             ->where('status', '!=', 'deleted')
+                            ->with('department')
                             ->get();
         }elseif($type == 4){
             //get users with role customer
             $users = User::role('operations')
                             ->where('status', '!=', 'deleted')
+                            ->with('department')
                             ->get();
         }else{
             $users = User::where('status', '!=', 'deleted')->get();
@@ -72,10 +76,11 @@ class UserController extends Controller
         ];
 
         $roles = Role::all();
+        $departments = Department::all();
         $contries = Country::all();
 
         // $pageName = 'analytics';
-        return view('pages.user.create')->with($data)->with('roles',$roles)->with('contries',$contries);
+        return view('pages.user.create')->with($data)->with('roles',$roles)->with('departments', $departments)->with('contries',$contries);
     }
 
     public function store(Request $request)
@@ -93,7 +98,8 @@ class UserController extends Controller
                 'phone_code'        =>      'required|string',
                 'phone'             =>      'nullable|string',
                 'source'            =>      'nullable|string',
-                'password'          =>      'required|alpha_num|min:6'
+                'password'          =>      'required|alpha_num|min:6',
+                'department_id'     =>      'nullable',
             ]
         );
 
@@ -121,6 +127,7 @@ class UserController extends Controller
         $users->password = bcrypt($request->password);
         $users->photo = $photouser;
         $users->status = $request->get('status');
+        $users->department_id = ($request['department_id'] == '') ? null : $request['department_id'];
 
         $users->save();
 
@@ -147,10 +154,11 @@ class UserController extends Controller
 
         $user = User::find($id);
         $roles = Role::all();
+        $departments = Department::all();
         $contries = Country::all();
 
         // $pageName = 'analytics';
-        return view('pages.user.edit')->with($data)->with('user',$user)->with('roles',$roles)->with('contries',$contries);
+        return view('pages.user.edit')->with($data)->with('user',$user)->with('roles',$roles)->with('departments', $departments)->with('contries',$contries);
     }
 
     public function update(Request $request, $id)
@@ -168,7 +176,8 @@ class UserController extends Controller
                 'phone_code'        =>      'required|string',
                 'phone'             =>      'nullable|string',
                 'source'            =>      'nullable|string',
-                'password'          =>      'nullable|alpha_num|min:6'
+                'password'          =>      'nullable|alpha_num|min:6',
+                'department_id'     =>      'nullable',
             ]
         );
 
@@ -204,6 +213,7 @@ class UserController extends Controller
             'source' => $request['source'],
             'photo' => $photouser,
             'status' => $request['status'],
+            'department_id' => ($request['department_id'] == '') ? null : $request['department_id'],
         ]);
 
         $userinfo = User::find($id);

@@ -514,10 +514,19 @@ class QuotationController extends Controller
         $users = User::whereIn('id', $dropdownUserIds)->get();
 
         //verificate if quotation is assigned to user logged or is Administator
-        if($quotation->assigned_user_id == auth()->id() || auth()->user()->hasRole('Administrator') || ($quotation->customer_user_id == auth()->id()  && auth()->user()->hasRole('Customer')) ){
-            return view('pages.quotations.show')->with($data)->with('quotation', $quotation)->with('is_ratinginnote', $is_ratinginnote)->with('cargo_details', $cargo_details)->with('quotation_documents', $quotation_documents)->with('users', $users)->with('reason_unqualified', $reason_unqualified);
+        if($quotation->assigned_user_id == auth()->id() || auth()->user()->hasRole('Administrator') || (auth()->user()->hasRole('Sales') && auth()->user()->hasRole('Leader')) || ($quotation->customer_user_id == auth()->id()  && auth()->user()->hasRole('Customer')) ){
+            return view('pages.quotations.show')
+                        ->with($data)
+                        ->with('quotation', $quotation)
+                        ->with('is_ratinginnote', $is_ratinginnote)
+                        ->with('cargo_details', $cargo_details)
+                        ->with('quotation_documents', $quotation_documents)
+                        ->with('users', $users)
+                        ->with('reason_unqualified', $reason_unqualified);
         }else{
-            return redirect()->route('quotations.index')->with('error', 'You do not have permission to view this quote.');
+            return redirect()
+                ->route('quotations.index')
+                ->with('error', 'You do not have permission to view this quote.');
         }
 
     }

@@ -96,7 +96,7 @@ class DealsBoard extends Component
             'filters' => ['except' => []],
         ];
 
-        if (auth()->user()->hasRole('Administrator')) {
+        if (auth()->user()->hasRole('Administrator') || auth()->user()->hasRole('Leader')) {
             $query[] = 'assignedUserId';
         }
 
@@ -123,17 +123,60 @@ class DealsBoard extends Component
         }
 
         // get first user result
-        if (Auth::user()->hasRole('Administrator')) {
-            $this->user_sales = User::whereHas('roles', function($query){
-                    $query->whereIn('role_id', [1, 2]);
+        if (Auth::user()->hasRole('Administrator') or Auth::user()->hasRole('Leader')) {
+            $user_sales_dpto = User::whereHas('roles', function($query) {
+                    if (Auth::user()->hasRole('Administrator')) {
+                        $query->whereIn('role_id', [1, 2]); // admin, sales
+                    } else {
+                        $query->whereIn('role_id', [6]); // quoter
+                    }
                 })
                 ->join('quotations', 'quotations.assigned_user_id', '=', 'users.id')
                 ->groupBy('users.id')
                 ->where('users.status', 'active')
-                ->select('users.id as id', 'name', 'lastname')
-                ->get();
+                ->select('users.id as id', 'name', 'lastname', 'department_id')
+                ->with('department');
+
+            if (Auth::user()->hasRole('Leader')) {
+                $user_sales_dpto->where('department_id', auth()->user()->department_id); // del mismo dpto
+            }
+
+            $user_sales_dpto = $user_sales_dpto->get();
+            if (Auth::user()->hasRole('Administrator')) {
+                $user_sales_dpto_arr = [];
+            } else {
+                if (Auth::user()->hasRole('Leader')) {
+                    $user_sales_dpto_arr[auth()->user()->department->name][] = [
+                        'id' => auth()->id(),
+                        'name' => auth()->user()->name,
+                        'lastname' => auth()->user()->lastname,
+                    ];
+                }
+            }
+
+            if (count($user_sales_dpto->toArray()) > 0) {
+                foreach ($user_sales_dpto->toArray() as $user) {
+                    $user_data = [
+                        'id' => $user['id'],
+                        'name' => $user['name'],
+                        'lastname' => $user['lastname'],
+                    ];
+                    if (isset($user['department']['name'])) {
+                        $user_sales_dpto_arr[$user['department']['name']][] = $user_data;
+                    } else {
+                        $user_sales_dpto_arr['Other'][] = $user_data;
+                    }
+                }
+            }
+            $this->user_sales = $user_sales_dpto_arr;
             if (empty($this->assignedUserId)) {
-                $this->assignedUserId = $this->user_sales[0]->id ?? null;
+                if (Auth::user()->hasRole('Administrator')) {
+                    $this->assignedUserId = $user_sales_dpto[0]->id ?? null;
+                } else {
+                    if (Auth::user()->hasRole('Leader')) {
+                        $this->assignedUserId = auth()->id();
+                    }
+                }
             }
         } else {
             $this->assignedUserId = auth()->id();

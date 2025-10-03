@@ -24,7 +24,7 @@
 
     @if ($type === 'open')
         {{-- sort by --}}
-        <div class="deals__board__filter" wire:loading.class="loading">
+        <div class="deals__board__filter" style="z-index: 5" wire:loading.class="loading">
             <button type="button" class="__sort" @click="show_options = !show_options" @click.away="show_options = false">
                 <span>Sort by</span>
                 <svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.5 3.33325V12.6666" stroke="#999999" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.1654 8L8.4987 12.6667L3.83203 8" stroke="#999999" stroke-linecap="round" stroke-linejoin="round"/></svg>

@@ -37,6 +37,7 @@ class User extends Authenticatable
         'status',
         'photo',
         'subscribed_to_newsletter',
+        'department_id',
     ];
 
     /**
@@ -64,6 +65,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Quotation::class, 'featured_quotations')
                     ->withTimestamps();
+    }
+
+    public function department() {
+        return $this->belongsTo(Department::class);
     }
 
 }

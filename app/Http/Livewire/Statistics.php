@@ -82,16 +82,32 @@ class Statistics extends Component
     public function mount() {
         if (Auth::user()->hasRole('Administrator')) {
             $this->tab = 'manage';
-            $this->user_sales = User::whereHas('roles', function($query){
-                    // $query->where('role_id', 2);
+            $user_sales_dpto = User::whereHas('roles', function($query){
                     $query->whereIn('role_id', [1, 2]);
                 })
                 ->join('quotations', 'quotations.assigned_user_id', '=', 'users.id')
                 ->groupBy('users.id')
                 ->where('users.status', 'active')
-                ->select('users.id as id', 'name', 'lastname')
-                ->get();
-            $this->assignedUserId = $this->user_sales[0]->id;
+                ->select('users.id as id', 'name', 'lastname', 'department_id')
+                ->with('department');
+            $user_sales_dpto = $user_sales_dpto->get();
+            $user_sales_dpto_arr = [];
+            if (count($user_sales_dpto->toArray()) > 0) {
+                foreach ($user_sales_dpto->toArray() as $user) {
+                    $user_data = [
+                        'id' => $user['id'],
+                        'name' => $user['name'],
+                        'lastname' => $user['lastname'],
+                    ];
+                    if (isset($user['department']['name'])) {
+                        $user_sales_dpto_arr[$user['department']['name']][] = $user_data;
+                    } else {
+                        $user_sales_dpto_arr['Other'][] = $user_data;
+                    }
+                }
+            }
+            $this->user_sales = $user_sales_dpto_arr;
+            $this->assignedUserId = $user_sales_dpto[0]->id ?? null;
         } else {
             $this->assignedUserId = auth()->id();
         }
@@ -146,7 +162,12 @@ class Statistics extends Component
             $this->manage();
             $this->mkt();
         } else {
-            $this->sales();
+            if (Auth::user()->hasRole('Leader')) {
+                $this->sales();
+                $this->manage();
+            } else {
+                $this->sales();
+            }
         }
         return view('livewire.statistics');
     }

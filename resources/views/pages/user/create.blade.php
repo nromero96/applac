@@ -121,6 +121,20 @@
                                     @endphp
                                 @endforeach
                             </div>
+                            <div class="col-md-12">
+                                <label for="department" class="form-label fw-bold">{{__("Department")}}</label>
+                                <br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input cursor-pointer" type="radio" name="department_id" id="department-none" value="" checked>
+                                    <label class="form-check-label cursor-pointer" for="department-none">{{ __('None') }}</label>
+                                </div>
+                                @foreach ($departments as $item)
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input cursor-pointer" type="radio" name="department_id" id="department-{{$item->id}}" value="{{$item->id}}">
+                                        <label class="form-check-label cursor-pointer" for="department-{{$item->id}}">{{$item->name}}</label>
+                                    </div>
+                                @endforeach
+                            </div>
                             <div class="col-md-6">
                                 <label for="inputPhoto" class="form-label fw-bold">{{__("Photo")}}</label>
                                 <input type="file" name="photo" class="form-control" id="inputPhoto">
@@ -151,7 +165,7 @@
     var togglePasswordButton = document.getElementById('togglePassword');
     var showPasswordIcon = togglePasswordButton.querySelector('svg.icon-show');
     var hidePasswordIcon = togglePasswordButton.querySelector('svg.icon-noshow');
-    
+
     togglePasswordButton.addEventListener('click', function() {
         if (passwordInput.type === 'password') {
             passwordInput.type = 'text';

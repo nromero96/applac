@@ -10,7 +10,7 @@
 
         <div class="row layout-spacing">
             <div class="col-lg-12 layout-top-spacing">
-                
+
                 <div class="row" style="margin-bottom: -2px;">
                     <div class="col-md-8">
 
@@ -30,12 +30,12 @@
                     </div>
                 </div>
 
-                
+
 
                 <div class="statbox widget box box-shadow">
                     <div class="widget-header pt-3">
                         <div class="row">
-                            
+
                         </div>
                     </div>
                     <div class="widget-content widget-content-area pt-0">
@@ -46,6 +46,7 @@
                                     <tr>
                                         <th scope="col">{{__("Name")}}</th>
                                         <th scope="col">{{__("Role")}}</th>
+                                        <th scope="col">{{__("Department")}}</th>
                                         <th class="text-center" scope="col">{{__("Status")}}</th>
                                         <th class="text-center" scope="col"></th>
                                     </tr>
@@ -71,6 +72,7 @@
                                                     @endforeach
                                                 @endif
                                             </td>
+                                            <td>{{ $item->department ? $item->department->name : '-' }}</td>
                                             <td class="text-center">
                                                 <span class="badge {{$item->status == 'active' ? 'badge-light-success' : 'badge-light-danger'}} text-capitalize">{{$item->status}}</span>
                                             </td>

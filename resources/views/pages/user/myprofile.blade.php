@@ -89,14 +89,11 @@
                                 <label for="roleuser" class="form-label fw-bold">{{__("User Role")}}</label>
                                 <br>
                                 @php
-                                    $namerole = '';
-                                    if(!empty($user->getRoleNames())){
-                                        foreach ($user->getRoleNames() as $name) {
-                                            $namerole = $name;
-                                        }
-                                    }
+                                    $userRoles = $user->getRoleNames(); // devuelve colección de nombres
                                 @endphp
-                                <label><span class="badge badge-light-dark mb-2 me-4">{{$namerole}}</span> </label>
+                                @foreach ($userRoles as $role)
+                                    <span class="badge badge-light-dark mb-2 me-2">{{ $role }}</span>
+                                @endforeach
                             </div>
                             <div class="col-md-6">
                                 <label for="inputPhoto" class="form-label fw-bold">{{__("Photo")}}</label>

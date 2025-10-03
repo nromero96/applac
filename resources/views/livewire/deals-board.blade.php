@@ -15,13 +15,17 @@
     }
 }">
 
-    @if(\Auth::user()->hasRole('Administrator'))
+    @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Leader'))
         <div class="row">
             <div class="col-3">
-                <label for="assignedUserId" class="form-label">User Sale</label>
+                <label for="assignedUserId" class="form-label">User</label>
                 <select wire:model="assignedUserId" class="form-select" id="assignedUserId">
-                    @foreach ($user_sales as $usr)
-                        <option value="{{ $usr->id }}">{{ $usr->name }} {{ $usr->lastname }}</option>
+                    @foreach ($user_sales as $dpto => $users)
+                        <optgroup label="{{ $dpto }} Dept.">
+                            @foreach ($users as $user)
+                                <option value="{{ $user['id'] }}">{{ $user['name'] }} {{ $user['lastname'] }}</option>
+                            @endforeach
+                        </optgroup>
                     @endforeach
                 </select>
             </div>

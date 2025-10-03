@@ -50,8 +50,10 @@
             @if(\Auth::user()->hasRole('Administrator') or \Auth::user()->hasRole('Sales'))
                 <li><button type="button" @click="tab = 'sales'" :class="tab == 'sales' ? '__active' : ''">Sales</button></li>
             @endif
-            @if(\Auth::user()->hasRole('Administrator'))
+            @if(\Auth::user()->hasRole('Administrator') or (\Auth::user()->hasRole('Sales') and \Auth::user()->hasRole('Leader')))
                 <li><button type="button" @click="tab = 'manage'" :class="tab == 'manage' ? '__active' : ''">Manager</button></li>
+            @endif
+            @if(\Auth::user()->hasRole('Administrator'))
                 <li><button type="button" @click="tab = 'mkt'" :class="tab == 'mkt' ? '__active' : ''">Marketing</button></li>
             @endif
         </ul>
@@ -59,10 +61,13 @@
         <div class="d-flex gap-3">
             @if(\Auth::user()->hasRole('Administrator'))
                 <div x-show="tab == 'sales'">
-                    {{-- <label style="margin-bottom: .25rem" for="assignedUserId" class="form-label">Member</label> --}}
-                    <select wire:model="assignedUserId" class="form-select" id="assignedUserId" style="height: 100%">
-                        @foreach ($user_sales as $usr)
-                            <option value="{{ $usr->id }}">{{ $usr->name }} {{ $usr->lastname }}</option>
+                    <select wire:model="assignedUserId" class="form-select" id="assignedUserId" style="width: 170px">
+                        @foreach ($user_sales as $dpto => $users)
+                            <optgroup label="{{ $dpto }} Dept.">
+                                @foreach ($users as $user)
+                                    <option value="{{ $user['id'] }}">{{ $user['name'] }} {{ $user['lastname'] }}</option>
+                                @endforeach
+                            </optgroup>
                         @endforeach
                     </select>
                 </div>
@@ -108,7 +113,7 @@
         </div>
     @endif
 
-    @if(\Auth::user()->hasRole('Administrator'))
+    @if(\Auth::user()->hasRole('Administrator') or \Auth::user()->hasRole('Leader'))
         <div class="stats__area" x-show="tab == 'manage'">
             <x-stats-manage />
         </div>

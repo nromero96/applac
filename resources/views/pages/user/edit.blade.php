@@ -114,16 +114,26 @@
                                 <label for="roleuser" class="form-label fw-bold">{{__("User Role")}}</label>
                                 <br>
                                 @php
-                                    if(!empty($user->getRoleNames())){
-                                        foreach ($user->getRoleNames() as $name) {
-                                            $namerole = $name;
-                                        }
-                                    }
+                                    $userRoles = !empty($user->getRoleNames()) ? $user->getRoleNames()->toArray() : [];
                                 @endphp
                                 @foreach ($roles as $item)
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input cursor-pointer" type="radio" name="roles[]" id="inlineRadio{{$item->id}}" value="{{$item->id}}"  @if ($item->name == $namerole) checked @endif>
+                                        <input class="form-check-input cursor-pointer" type="checkbox" name="roles[]" id="inlineRadio{{$item->id}}" value="{{$item->id}}"  @if (in_array($item->name, $userRoles)) checked @endif>
                                         <label class="form-check-label cursor-pointer" for="inlineRadio{{$item->id}}">{{$item->name}}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            <div class="col-md-12">
+                                <label for="department" class="form-label fw-bold">{{__("Department")}}</label>
+                                <br>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input cursor-pointer" type="radio" name="department_id" id="department-none" value=""  @if (!$user->department_id) checked @endif>
+                                    <label class="form-check-label cursor-pointer" for="department-none">{{ __('None') }}</label>
+                                </div>
+                                @foreach ($departments as $item)
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input cursor-pointer" type="radio" name="department_id" id="department-{{$item->id}}" value="{{$item->id}}"  @if ($user->department_id == $item->id) checked @endif>
+                                        <label class="form-check-label cursor-pointer" for="department-{{$item->id}}">{{$item->name}}</label>
                                     </div>
                                 @endforeach
                             </div>

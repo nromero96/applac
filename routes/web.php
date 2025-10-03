@@ -136,6 +136,21 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
     });
 
 
+    Route::get('/db-seed/{class}', function ($class) {
+        $class = preg_replace('/[^A-Za-z0-9_\\\\]/', '', $class);
+        try {
+            Artisan::call('db:seed', [
+                '--class' => $class,
+            ]);
+            return "Seeder {$class} ejecutado correctamente.";
+        } catch (\Exception $e) {
+            return "Error al ejecutar Seeder: " . $e->getMessage();
+        }
+    });
+
+
+
+
     // dashboard
     Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard.index');
 
