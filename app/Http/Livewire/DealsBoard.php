@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Enums\TypeInquiry;
 use App\Models\GuestUser;
 use App\Models\Quotation;
 use App\Models\QuotationNote;
@@ -36,47 +37,7 @@ class DealsBoard extends Component
         'qualified'     => '<svg width="49" height="49" viewBox="0 0 49 49" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M44.5 22.66V24.5C44.4975 28.8128 43.101 33.0093 40.5187 36.4636C37.9363 39.9179 34.3066 42.4449 30.1707 43.6678C26.0349 44.8906 21.6145 44.7438 17.5689 43.2491C13.5234 41.7545 10.0693 38.9922 7.72192 35.3741C5.37453 31.756 4.25958 27.4761 4.54335 23.1726C4.82712 18.8691 6.49441 14.7726 9.29656 11.4941C12.0987 8.21561 15.8856 5.93074 20.0924 4.98026C24.2992 4.02979 28.7005 4.46465 32.64 6.21997" stroke="#0A6AB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M44.5 8.5L24.5 28.52L18.5 22.52" stroke="#0A6AB7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
         'quote_sent'    => '<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M44 4L22 26" stroke="#6200EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M44 4L30 44L22 26L4 18L44 4Z" stroke="#6200EE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>',
     ];
-    public $filters_data = [
-        'readiness' => [
-            ['label' => 'ready now', 'style' => 'color: #4CBB17; border-color: #4CBB17', 'key' => 'Ready to ship now'],
-            ['label' => '1-3 months', 'style' => 'color: #EB6200; border-color: #EB6200', 'key' => 'Ready within 1-3 months'],
-            ['label' => 'budgeting', 'style' => 'color: #B28600; border-color: #B28600', 'key' => 'Not yet ready, just exploring options/budgeting'],
-            // ['label' => 'N/A', 'style' => 'color: #686868; border-color: #686868', 'key' => 'null'],
-        ],
-        'statuses' => [
-            'Pending'       => ['style' => 'color: #EB6200; background-color: #FFF2E8', 'label' => 'Pending'],
-            'Contacted'     => ['style' => 'color: #B28600; background-color: #FCF4D6', 'label' => 'Contacted'],
-            'Stalled'       => ['style' => 'color: #68C0FF; background-color: #EEF8FF', 'label' => 'Stalled'],
-            'Qualified'     => ['style' => 'color: #0A6AB7; background-color: #D3EAFD', 'label' => 'Qualified'],
-            'Quote Sent'    => ['style' => 'color: #1D813A; background-color: #E9F6ED', 'label' => 'Quote Sent'],
-            'Unqualified'   => ['style' => 'color: #686868; background-color: #E8E8E8', 'label' => 'Unqualified'],
-        ],
-        'inquiry_type' => [
-            'Manual' => [
-                ['label' => 'Internal', 'key' => 'internal'],
-            ],
-            'Inbound' => [
-                ['label' => 'Business', 'key' => 'external 2'],
-                ['label' => 'Personal', 'key' => 'external 1'],
-            ]
-        ],
-        'source' => [
-            'External' => [
-                ['label' => 'SEO', 'style' => 'color: #4CBB17; border-color: #4CBB17', 'key' => 'Search Engine'],
-                ['label' => 'AIA', 'style' => 'color: #FF00FF; border-color: #FF00FF', 'key' => 'AI Assistant'],
-                ['label' => 'LNK', 'style' => 'color: #0077B5; border-color: #0077B5', 'key' => 'LinkedIn'],
-                ['label' => 'SOC', 'style' => 'color: #1877F2; border-color: #1877F2', 'key' => 'Social Media'],
-                ['label' => 'PPC', 'style' => 'color: #6200EE; border-color: #6200EE', 'key' => 'ppc'],
-                ['label' => 'EVT', 'style' => 'color: #008080; border-color: #008080', 'key' => 'Industry Event'],
-                ['label' => 'REF', 'style' => 'color: #FFCC00; border-color: #FFCC00', 'key' => 'Referral'],
-                ['label' => 'OTH', 'style' => 'color: #595959; border-color: #595959', 'key' => 'Other'],
-            ],
-            'Internal' => [
-                ['label' => 'DIR', 'style' => 'color: #CC0000; border-color: #CC0000', 'key' => 'Direct Client'],
-                ['label' => 'AGT', 'style' => 'color: #FF5F1F; border-color: #FF5F1F', 'key' => 'agt'],
-            ],
-        ],
-    ];
+    public $filters_data;
 
     public $statuses = [
         'pending'       => ['label' => 'Pending', 'status' => 'Pending'],
@@ -104,6 +65,47 @@ class DealsBoard extends Component
     }
 
     public function mount() {
+        $this->filters_data = [
+            'readiness' => [
+                ['label' => 'ready now', 'style' => 'color: #4CBB17; border-color: #4CBB17', 'key' => 'Ready to ship now'],
+                ['label' => '1-3 months', 'style' => 'color: #EB6200; border-color: #EB6200', 'key' => 'Ready within 1-3 months'],
+                ['label' => 'budgeting', 'style' => 'color: #B28600; border-color: #B28600', 'key' => 'Not yet ready, just exploring options/budgeting'],
+                // ['label' => 'N/A', 'style' => 'color: #686868; border-color: #686868', 'key' => 'null'],
+            ],
+            'statuses' => [
+                'Pending'       => ['style' => 'color: #EB6200; background-color: #FFF2E8', 'label' => 'Pending'],
+                'Contacted'     => ['style' => 'color: #B28600; background-color: #FCF4D6', 'label' => 'Contacted'],
+                'Stalled'       => ['style' => 'color: #68C0FF; background-color: #EEF8FF', 'label' => 'Stalled'],
+                'Qualified'     => ['style' => 'color: #0A6AB7; background-color: #D3EAFD', 'label' => 'Qualified'],
+                'Quote Sent'    => ['style' => 'color: #1D813A; background-color: #E9F6ED', 'label' => 'Quote Sent'],
+                'Unqualified'   => ['style' => 'color: #686868; background-color: #E8E8E8', 'label' => 'Unqualified'],
+            ],
+            'inquiry_type' => [
+                'Manual' => [
+                    ['label' => TypeInquiry::INTERNAL->label(), 'key' => TypeInquiry::INTERNAL->value],
+                ],
+                'Inbound' => [
+                    ['label' => TypeInquiry::EXTERNAL_2->label(), 'key' => TypeInquiry::EXTERNAL_2->value],
+                    ['label' => TypeInquiry::EXTERNAL_1->label(), 'key' => TypeInquiry::EXTERNAL_1->value],
+                ]
+            ],
+            'source' => [
+                'External' => [
+                    ['label' => 'SEO', 'style' => 'color: #4CBB17; border-color: #4CBB17', 'key' => 'Search Engine'],
+                    ['label' => 'AIA', 'style' => 'color: #FF00FF; border-color: #FF00FF', 'key' => 'AI Assistant'],
+                    ['label' => 'LNK', 'style' => 'color: #0077B5; border-color: #0077B5', 'key' => 'LinkedIn'],
+                    ['label' => 'SOC', 'style' => 'color: #1877F2; border-color: #1877F2', 'key' => 'Social Media'],
+                    ['label' => 'PPC', 'style' => 'color: #6200EE; border-color: #6200EE', 'key' => 'ppc'],
+                    ['label' => 'EVT', 'style' => 'color: #008080; border-color: #008080', 'key' => 'Industry Event'],
+                    ['label' => 'REF', 'style' => 'color: #FFCC00; border-color: #FFCC00', 'key' => 'Referral'],
+                    ['label' => 'OTH', 'style' => 'color: #595959; border-color: #595959', 'key' => 'Other'],
+                ],
+                'Internal' => [
+                    ['label' => 'DIR', 'style' => 'color: #CC0000; border-color: #CC0000', 'key' => 'Direct Client'],
+                    ['label' => 'AGT', 'style' => 'color: #FF5F1F; border-color: #FF5F1F', 'key' => 'agt'],
+                ],
+            ],
+        ];
         // Asegurar todas las llaves
         $this->filters = array_merge([
             'rating'        => [],

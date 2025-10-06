@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use App\Enums\TypeInquiry;
 use App\Models\Quotation;
 use App\Models\User;
 use App\Services\ServiceChartHelpers;
@@ -19,47 +20,7 @@ class Statistics extends Component
     public $tab = 'sales'; // sales | manage | mkt
     public $icon_info = '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_11490_12281)"><path d="M10.0013 18.3333C14.6037 18.3333 18.3346 14.6023 18.3346 9.99996C18.3346 5.39759 14.6037 1.66663 10.0013 1.66663C5.39893 1.66663 1.66797 5.39759 1.66797 9.99996C1.66797 14.6023 5.39893 18.3333 10.0013 18.3333Z" stroke="#0A6AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 13.3333V10" stroke="#0A6AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10 6.66663H10.0083" stroke="#0A6AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_11490_12281"><rect width="20" height="20" fill="white"/></clipPath></defs></svg>';
     public $show_filters = false;
-    public $filters_data = [
-        'readiness' => [
-            ['label' => 'ready now', 'style' => 'color: #4CBB17; border-color: #4CBB17', 'key' => 'Ready to ship now'],
-            ['label' => '1-3 months', 'style' => 'color: #EB6200; border-color: #EB6200', 'key' => 'Ready within 1-3 months'],
-            ['label' => 'budgeting', 'style' => 'color: #B28600; border-color: #B28600', 'key' => 'Not yet ready, just exploring options/budgeting'],
-            // ['label' => 'N/A', 'style' => 'color: #686868; border-color: #686868', 'key' => 'null'],
-        ],
-        'statuses' => [
-            'Pending'       => ['style' => 'color: #EB6200; background-color: #FFF2E8', 'label' => 'Pending'],
-            'Contacted'     => ['style' => 'color: #B28600; background-color: #FCF4D6', 'label' => 'Contacted'],
-            'Stalled'       => ['style' => 'color: #68C0FF; background-color: #EEF8FF', 'label' => 'Stalled'],
-            'Qualified'     => ['style' => 'color: #0A6AB7; background-color: #D3EAFD', 'label' => 'Qualified'],
-            'Quote Sent'    => ['style' => 'color: #1D813A; background-color: #E9F6ED', 'label' => 'Quote Sent'],
-            'Unqualified'   => ['style' => 'color: #686868; background-color: #E8E8E8', 'label' => 'Unqualified'],
-        ],
-        'inquiry_type' => [
-            'Manual' => [
-                ['label' => 'Internal', 'key' => 'internal'],
-            ],
-            'Inbound' => [
-                ['label' => 'Business', 'key' => 'external 2'],
-                ['label' => 'Personal', 'key' => 'external 1'],
-            ]
-        ],
-        'source' => [
-            'External' => [
-                ['label' => 'SEO', 'style' => 'color: #4CBB17; border-color: #4CBB17', 'key' => 'Search Engine'],
-                ['label' => 'AIA', 'style' => 'color: #FF00FF; border-color: #FF00FF', 'key' => 'AI Assistant'],
-                ['label' => 'LNK', 'style' => 'color: #0077B5; border-color: #0077B5', 'key' => 'LinkedIn'],
-                ['label' => 'SOC', 'style' => 'color: #1877F2; border-color: #1877F2', 'key' => 'Social Media'],
-                ['label' => 'PPC', 'style' => 'color: #6200EE; border-color: #6200EE', 'key' => 'ppc'],
-                ['label' => 'EVT', 'style' => 'color: #008080; border-color: #008080', 'key' => 'Industry Event'],
-                ['label' => 'REF', 'style' => 'color: #FFCC00; border-color: #FFCC00', 'key' => 'Referral'],
-                ['label' => 'OTH', 'style' => 'color: #595959; border-color: #595959', 'key' => 'Other'],
-            ],
-            'Internal' => [
-                ['label' => 'DIR', 'style' => 'color: #CC0000; border-color: #CC0000', 'key' => 'Direct Client'],
-                ['label' => 'AGT', 'style' => 'color: #FF5F1F; border-color: #FF5F1F', 'key' => 'agt'],
-            ],
-        ],
-    ];
+    public $filters_data;
     public $filters = [
         'rating'        => [],
         'readiness'     => [],
@@ -80,6 +41,48 @@ class Statistics extends Component
     public $area_mkt;
 
     public function mount() {
+        $this->filters_data = [
+            'readiness' => [
+                ['label' => 'ready now', 'style' => 'color: #4CBB17; border-color: #4CBB17', 'key' => 'Ready to ship now'],
+                ['label' => '1-3 months', 'style' => 'color: #EB6200; border-color: #EB6200', 'key' => 'Ready within 1-3 months'],
+                ['label' => 'budgeting', 'style' => 'color: #B28600; border-color: #B28600', 'key' => 'Not yet ready, just exploring options/budgeting'],
+                // ['label' => 'N/A', 'style' => 'color: #686868; border-color: #686868', 'key' => 'null'],
+            ],
+            'statuses' => [
+                'Pending'       => ['style' => 'color: #EB6200; background-color: #FFF2E8', 'label' => 'Pending'],
+                'Contacted'     => ['style' => 'color: #B28600; background-color: #FCF4D6', 'label' => 'Contacted'],
+                'Stalled'       => ['style' => 'color: #68C0FF; background-color: #EEF8FF', 'label' => 'Stalled'],
+                'Qualified'     => ['style' => 'color: #0A6AB7; background-color: #D3EAFD', 'label' => 'Qualified'],
+                'Quote Sent'    => ['style' => 'color: #1D813A; background-color: #E9F6ED', 'label' => 'Quote Sent'],
+                'Unqualified'   => ['style' => 'color: #686868; background-color: #E8E8E8', 'label' => 'Unqualified'],
+            ],
+            'inquiry_type' => [
+                'Manual' => [
+                    ['label' => TypeInquiry::INTERNAL->label(), 'key' => TypeInquiry::INTERNAL->value],
+                ],
+                'Inbound' => [
+                    ['label' => TypeInquiry::EXTERNAL_2->label(), 'key' => TypeInquiry::EXTERNAL_2->value],
+                    ['label' => TypeInquiry::EXTERNAL_1->label(), 'key' => TypeInquiry::EXTERNAL_1->value],
+                ]
+            ],
+            'source' => [
+                'External' => [
+                    ['label' => 'SEO', 'style' => 'color: #4CBB17; border-color: #4CBB17', 'key' => 'Search Engine'],
+                    ['label' => 'AIA', 'style' => 'color: #FF00FF; border-color: #FF00FF', 'key' => 'AI Assistant'],
+                    ['label' => 'LNK', 'style' => 'color: #0077B5; border-color: #0077B5', 'key' => 'LinkedIn'],
+                    ['label' => 'SOC', 'style' => 'color: #1877F2; border-color: #1877F2', 'key' => 'Social Media'],
+                    ['label' => 'PPC', 'style' => 'color: #6200EE; border-color: #6200EE', 'key' => 'ppc'],
+                    ['label' => 'EVT', 'style' => 'color: #008080; border-color: #008080', 'key' => 'Industry Event'],
+                    ['label' => 'REF', 'style' => 'color: #FFCC00; border-color: #FFCC00', 'key' => 'Referral'],
+                    ['label' => 'OTH', 'style' => 'color: #595959; border-color: #595959', 'key' => 'Other'],
+                ],
+                'Internal' => [
+                    ['label' => 'DIR', 'style' => 'color: #CC0000; border-color: #CC0000', 'key' => 'Direct Client'],
+                    ['label' => 'AGT', 'style' => 'color: #FF5F1F; border-color: #FF5F1F', 'key' => 'agt'],
+                ],
+            ],
+        ];
+
         if (Auth::user()->hasRole('Administrator')) {
             $this->tab = 'manage';
             $user_sales_dpto = User::whereHas('roles', function($query){

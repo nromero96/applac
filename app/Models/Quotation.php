@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\TypeInquiry;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -51,6 +52,10 @@ class Quotation extends Model
         'shipment_ready_date',
         'is_internal_inquiry',
         'cargo_description',
+    ];
+
+    protected $casts = [
+        'type_inquiry' => TypeInquiry::class,
     ];
 
     // Accessor: cada vez que accedas a $quotation->declared_value

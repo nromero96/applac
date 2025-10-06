@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TypeInquiry;
 use App\Mail\QuotationCreated;
 use App\Mail\UserCreated;
 use Illuminate\Support\Facades\Mail;
@@ -288,7 +289,12 @@ class QuotationController extends Controller
         });
 
         //Contar Type Inquiry
-        $typeinquiryorderforlist = ['internal', 'external 1', 'external 2', 'ext-auto'];
+        $typeinquiryorderforlist = [
+            TypeInquiry::INTERNAL->value,
+            TypeInquiry::EXTERNAL_1->value,
+            TypeInquiry::EXTERNAL_2->value,
+            TypeInquiry::EXT_AUTO->value
+        ];
         $listtypeinquiries = Quotation::select(
             'quotations.type_inquiry as type_inquiry',
             DB::raw('COUNT(quotations.id) as total')

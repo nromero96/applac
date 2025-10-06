@@ -297,7 +297,7 @@
                     <div class="widget-content widget-content-area pt-2">
                         <div class="row g-3 pt-3">
 
-                            @if($quotation->type_inquiry == 'external 2')
+                            @if($quotation->type_inquiry->value == 'external 2')
 
                             {{-- Data the inquiry external 2 --}}
                                 <div class="col-md-4 mt-0">

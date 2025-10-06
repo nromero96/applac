@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 
+use App\Enums\TypeInquiry;
 use App\Models\Quotation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -169,7 +170,7 @@ class StatisticsChartsMkt {
                 $query->whereNotNull('users.source')
                     ->orWhereNotNull('guest_users.source');
             })
-            ->where('quotations.type_inquiry', 'external 2')
+            ->where('quotations.type_inquiry', TypeInquiry::EXTERNAL_2->value)
             ->groupBy('source')
             ->orderBy('qty', 'desc')
         ;
@@ -226,7 +227,7 @@ class StatisticsChartsMkt {
                 DB::raw('COALESCE(users.source, guest_users.source) as source'),
             )
             ->join('countries', 'countries.id', '=', 'quotations.origin_country_id')
-            ->where('quotations.type_inquiry', 'external 2')
+            ->where('quotations.type_inquiry', TypeInquiry::EXTERNAL_2->value)
             ->groupBy('countries.id')
             ->orderBy('qty', 'DESC')
             ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
@@ -297,7 +298,7 @@ class StatisticsChartsMkt {
             ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
             ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
             // ->where('quotations.status', '!=', 'Attended')
-            ->where('type_inquiry', '=', 'external 2')
+            ->where('type_inquiry', '=', TypeInquiry::EXTERNAL_2->value)
             ->where('rating', '!=', null)
             ->orderBy('grouped_rating')
             ->groupBy('grouped_rating');
@@ -356,7 +357,7 @@ class StatisticsChartsMkt {
             ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
             ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
             ->where('shipment_ready_date', '!=', '')
-            ->where('type_inquiry', '=', 'external 2')
+            ->where('type_inquiry', '=', TypeInquiry::EXTERNAL_2->value)
             ->groupBy('shipment_ready_date')
             ->orderBy('qty', 'desc');
 
@@ -441,7 +442,7 @@ class StatisticsChartsMkt {
                 $query->whereNotNull('users.business_role')
                     ->orWhereNotNull('guest_users.business_role');
             })
-            ->where('type_inquiry', '=', 'external 2')
+            ->where('type_inquiry', '=', TypeInquiry::EXTERNAL_2->value)
             ->groupBy('business_role')
             ->orderByRaw("
                 CASE
@@ -516,7 +517,7 @@ class StatisticsChartsMkt {
             ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
             // ->where('quotations.status', '!=', 'Attended')
             ->whereNotIn('mode_of_transport', ['Contenedor', 'Aire', ''])
-            ->where('quotations.type_inquiry', 'external 2')
+            ->where('quotations.type_inquiry', TypeInquiry::EXTERNAL_2->value)
             ->groupBy('mode_of_transport')
             ->orderBy('qty', 'DESC')
             ->limit(10)
@@ -576,7 +577,7 @@ class StatisticsChartsMkt {
             ->join('countries as cd', 'cd.id', '=', 'quotations.destination_country_id')
             ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
             ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
-            ->where('quotations.type_inquiry', 'external 2')
+            ->where('quotations.type_inquiry', TypeInquiry::EXTERNAL_2->value)
             ->groupBy('route')
             ->orderBy('qty', 'DESC')
             ->limit(10)

@@ -66,11 +66,7 @@
                                         <div class="dropdown">
                                             <button class="rounded-pill dropdown-toggle text-capitalize select-dropdown me-2" type="button" id="typeDropdown" data-bs-toggle="dropdown" aria-expanded="false">
                                                 @php
-                                                $labels_type_filter = [
-                                                    'internal'   => 'Manual',
-                                                    'external 1' => 'Personal',
-                                                    'external 2' => 'Business',
-                                                ];
+                                                $labels_type_filter = \App\Enums\TypeInquiry::labels();
                                                 $types_filter = request('type_inquiry');
                                                 $mapped_types_filter = $types_filter
                                                     ? array_map(fn($t) => $labels_type_filter[$t] ?? $t, $types_filter)
@@ -80,21 +76,14 @@
                                                 {{ $mapped_types_filter ? implode(', ', $mapped_types_filter) : 'Type' }}
 
                                             </button>
-                                            <ul class="dropdown-menu mt-3 pt-2 ps-2 pe-2 pb-0" aria-labelledby="typeDropdown">
+                                            <ul class="dropdown-menu mt-3 pt-2 ps-2 pe-2 pb-0" style="width: max-content" aria-labelledby="typeDropdown">
                                                 @foreach ($listtypeinquiries as $inquiry)
 
                                                         <li>
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" name="type_inquiry[]" value="{{ $inquiry->type_inquiry }}" id="type_inquiry{{ Str::slug($inquiry->type_inquiry, '_') }}" {{ in_array($inquiry->type_inquiry, request('type_inquiry', [])) ? 'checked' : '' }}>
-                                                                <label class="form-check-label text-capitalize w-100" for="type_inquiry{{ Str::slug($inquiry->type_inquiry, '_') }}">
-                                                                    {{-- Generar estrellas llenas y vacías --}}
-                                                                    @if ($inquiry->type_inquiry == 'internal')
-                                                                        Manual
-                                                                    @elseif ($inquiry->type_inquiry == 'external 1')
-                                                                        Personal
-                                                                    @elseif ($inquiry->type_inquiry == 'external 2')
-                                                                        Business
-                                                                    @endif
+                                                                <input class="form-check-input" type="checkbox" name="type_inquiry[]" value="{{ $inquiry->type_inquiry->value }}" id="type_inquiry{{ Str::slug($inquiry->type_inquiry->value, '_') }}" {{ in_array($inquiry->type_inquiry->value, request('type_inquiry', [])) ? 'checked' : '' }}>
+                                                                <label class="form-check-label text-capitalize w-100" for="type_inquiry{{ Str::slug($inquiry->type_inquiry->value, '_') }}">
+                                                                    {{ $inquiry->type_inquiry->label() }}
                                                                     {{-- Mostrar total de cotizaciones --}}
                                                                     <small class="ms-1 fw-light float-end">({{ $inquiry->total >= 1000 ? number_format($inquiry->total / 1000, 1) . 'K' : $inquiry->total }})</small>
                                                                 </label>
@@ -538,7 +527,7 @@
                                                     @php
                                                         $tagreadiness = '';
 
-                                                        if($quotation->type_inquiry == 'external 2'){
+                                                        if($quotation->type_inquiry->value == 'external 2'){
 
                                                             $readiness_levels = [
                                                                 'Ready to ship now' => 'br-high',
@@ -550,7 +539,7 @@
                                                                 $tagreadiness = '<span class="badge-readiness ' . $readiness_levels[$quotation->shipment_ready_date] . '">' . strtoupper(str_replace('br-', '', $readiness_levels[$quotation->shipment_ready_date])) . '</span>';
                                                             }
 
-                                                        }elseif($quotation->type_inquiry == 'internal'){
+                                                        }elseif($quotation->type_inquiry->value == 'internal'){
                                                             $tagreadiness = '';
                                                         }else{
                                                             $fecha_solicitud = Carbon\Carbon::parse($quotation->quotation_created_at)->startOfDay();
@@ -683,43 +672,10 @@
                                                 @endif
 
                                                 <td class="ps-2 pe-2">
-
-                                                    @if($quotation->type_inquiry == 'internal')
-                                                        <span class="text-capitalize badge-type-inquiry internal">
-                                                            <svg xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                                <g clip-path="url(#clip0_8656_5074)" fill="none" stroke-width="1.5px">
-                                                                <path d="M8.00065 14.6667C11.6825 14.6667 14.6673 11.6819 14.6673 8.00004C14.6673 4.31814 11.6825 1.33337 8.00065 1.33337C4.31875 1.33337 1.33398 4.31814 1.33398 8.00004C1.33398 11.6819 4.31875 14.6667 8.00065 14.6667Z" stroke="#0A6AB7" stroke-width="1.5px" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-                                                                <path d="M8 10C9.10457 10 10 9.10457 10 8C10 6.89543 9.10457 6 8 6C6.89543 6 6 6.89543 6 8C6 9.10457 6.89543 10 8 10Z" stroke="#0A6AB7" stroke-width="1.5px" stroke-linecap="round" stroke-linejoin="round" fill="none"></path>
-                                                                </g>
-                                                                <defs>
-                                                                <clipPath id="clip0_8656_5074">
-                                                                <rect width="16" height="16" fill="white"></rect>
-                                                                </clipPath>
-                                                                </defs>
-                                                            </svg>
-                                                            Manual </span>
-                                                    @elseif($quotation->type_inquiry == 'external 1')
-                                                        <span class="text-capitalize badge-type-inquiry external-1">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                                <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#B28600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#B28600" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                            </svg>
-                                                            Personal </span>
-                                                    @elseif($quotation->type_inquiry == 'external 2')
-                                                        <span class="text-capitalize badge-type-inquiry external-2">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                                <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                            </svg>
-                                                            Business </span>
-                                                    @elseif($quotation->type_inquiry == 'ext-auto')
-                                                        <span class="text-capitalize badge-type-inquiry ext-auto">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                                                <path d="M4.66602 4.66663L11.3327 11.3333" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                                <path d="M11.3327 4.66663V11.3333H4.66602" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                                            </svg>
-                                                            {{ $quotation->type_inquiry }} </span>
-                                                    @endif
+                                                    <span class="text-capitalize badge-type-inquiry {{ $quotation->type_inquiry->list_class() }}">
+                                                        {!! $quotation->type_inquiry->list_icon() !!}
+                                                        {{ $quotation->type_inquiry->label() }}
+                                                    </span>
                                                 </td>
 
                                                 <td class="py-1 align-middle px-2">
