@@ -693,6 +693,9 @@ if (!function_exists('rateQuotationWeb')) {
                             } elseif( $isOriginInSpecialCountries && $isDestinationInSpecialCountries){
                                 //(Origin USA/CA - Destination USA/CA)
                                 $rating += 2;
+                            } elseif ( $isOriginInOtherCountries && $isDestinationInSpecialCountries) {
+                                //(Origin Other - Destination USA/CA)
+                                $rating += 2;
                             }
                         } elseif ($isLocationInEuropeCountries) {
                             if(($isOriginInSpecialCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInSpecialCountries)){
