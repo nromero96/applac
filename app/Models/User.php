@@ -43,6 +43,7 @@ class User extends Authenticatable
         'photo',
         'subscribed_to_newsletter',
         'department_id',
+        'priority_countries',
     ];
 
     /**
@@ -65,7 +66,12 @@ class User extends Authenticatable
         'network' => 'array',
         'recovered_account' => 'boolean',
         'referred_by' => 'boolean',
+        'priority_countries' => 'array',
     ];
+
+    public function getPriorityCountriesAttribute($value) {
+        return $value ? json_decode($value, true) : [];
+    }
 
 
     // Relación con FeaturedQuotation

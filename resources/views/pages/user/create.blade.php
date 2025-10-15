@@ -136,10 +136,22 @@
                                 @endforeach
                             </div>
                             <div class="col-md-6">
+                                <label for="priority_countries" class="form-label fw-bold">{{__("Priority Countries")}}</label>
+                                <br>
+                                <select name="priority_countries[]" id="priority_countries" class="form-select" multiple autocomplete="off">
+                                    <option value="" disabled >Select</option>
+                                    @foreach ($contries as $item)
+                                        <option
+                                            value="{{ $item->id }}"
+                                        >{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-7">
                                 <label for="inputPhoto" class="form-label fw-bold">{{__("Photo")}}</label>
                                 <input type="file" name="photo" class="form-control" id="inputPhoto">
                             </div>
-                            <div class="col-md-12 mb-2">
+                            <div class="col-md-5 mb-2">
                                 <label for="inputStatus" class="form-label fw-bold">{{__("Status")}}</label><br>
                                 <div class="switch form-switch-custom switch-inline form-switch-primary">
                                     <input type="hidden" name="status" value="inactive">
@@ -181,3 +193,11 @@
 
 
 @endsection
+
+@push('scripts')
+<script>
+    new TomSelect('#priority_countries', {
+        plugins: ['remove_button']
+    });
+</script>
+@endpush

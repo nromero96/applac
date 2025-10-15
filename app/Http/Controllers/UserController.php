@@ -128,6 +128,7 @@ class UserController extends Controller
         $users->photo = $photouser;
         $users->status = $request->get('status');
         $users->department_id = ($request['department_id'] == '') ? null : $request['department_id'];
+        $users->priority_countries = $request['priority_countries'];
 
         $users->save();
 
@@ -163,7 +164,6 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-
         //validar si el email ya existe
         $request->validate(
             [
@@ -214,6 +214,7 @@ class UserController extends Controller
             'photo' => $photouser,
             'status' => $request['status'],
             'department_id' => ($request['department_id'] == '') ? null : $request['department_id'],
+            'priority_countries' => $request['priority_countries'],
         ]);
 
         $userinfo = User::find($id);

@@ -269,6 +269,10 @@ class InternalInquiryService {
         $points = 0;
 
         // location
+        $user_countries = auth()->user()->priority_countries;
+        if (in_array($_this->location, $user_countries)) {
+            $points = $points + 1;
+        }
 
         // cargo details
         if (sizeof($_this->cargo_details) > 0) {
@@ -316,23 +320,25 @@ class InternalInquiryService {
 
     // ----------------------------------------------
     public function relationTransportAndCargoDetails($_this){
-        switch ($_this->mode_of_transport) {
-            case TypeModeTransport::GROUND_FTL->value:
-            case TypeModeTransport::OCEAN_FCL->value:
-                $_this->cargo_details_options = ["HS Code", "Cargo Weight", "DG Details (MSDS/UN/Class)", "Reefer (Temp)"];
-                break;
-            case TypeModeTransport::GROUND_LTL->value:
-            case TypeModeTransport::OCEAN_LCL->value:
-            case TypeModeTransport::AIR_FREIGHT->value:
-            case TypeModeTransport::OCEAN_BREAKBULK->value:
-                $_this->cargo_details_options = ["Dimensions/Weight"];
-                break;
-            case TypeModeTransport::OCEAN_RORO->value:
-                $_this->cargo_details_options = ["Vehicle Type/Dimensions/Weight"];
-                break;
-            default:
-                $_this->cargo_details_options = [];
-                break;
+        if ($_this->type_inquiry === TypeInquiry::INTERNAL_OTHER_AGT->value) {
+            switch ($_this->mode_of_transport) {
+                case TypeModeTransport::GROUND_FTL->value:
+                case TypeModeTransport::OCEAN_FCL->value:
+                    $_this->cargo_details_options = ["HS Code", "Cargo Weight", "DG Details (MSDS/UN/Class)", "Reefer (Temp)"];
+                    break;
+                case TypeModeTransport::GROUND_LTL->value:
+                case TypeModeTransport::OCEAN_LCL->value:
+                case TypeModeTransport::AIR_FREIGHT->value:
+                case TypeModeTransport::OCEAN_BREAKBULK->value:
+                    $_this->cargo_details_options = ["Dimensions/Weight"];
+                    break;
+                case TypeModeTransport::OCEAN_RORO->value:
+                    $_this->cargo_details_options = ["Vehicle Type/Dimensions/Weight"];
+                    break;
+                default:
+                    $_this->cargo_details_options = [];
+                    break;
+            }
         }
     }
 

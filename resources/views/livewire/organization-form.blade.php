@@ -4,7 +4,6 @@
             Organization Updated!
         </div>
     @endif
-
     @if (!$showing)
         <form class="row g-3" wire:submit.prevent="{{ $org_editing ? 'update()' : 'store()' }} ">
     @else
@@ -116,8 +115,7 @@
                         {{__("Network")}} @if (!$showing) <span class="text-danger"></span> @endif
                     </label>
                     @if (!$showing)
-                        <select name="organization_network" id="organization_network" class="form-select" wire:model.defer="network" multiple>
-                            <option value="">Select an option</option>
+                        <select name="organization_network" id="organization_network" class="" wire:model.defer="network" multiple>
                             @foreach ($network_options as $key => $value)
                                 <option value="{{ $key }}">{{ $value }}</option>
                             @endforeach
@@ -257,3 +255,37 @@
         </div>
     @endif
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener('livewire:load', function () {
+            let selectNetwork;
+
+            function initTomSelect() {
+                if (selectNetwork) {
+                    selectNetwork.destroy();
+                }
+
+                const el = document.querySelector('#organization_network');
+                if (el) {
+                    selectNetwork = new TomSelect(el, {
+                        plugins: ['remove_button']
+                    });
+                }
+            }
+
+            initTomSelect();
+
+            Livewire.hook('message.processed', () => {
+                initTomSelect();
+            });
+
+            Livewire.on('send-network-tom-select', (data) => {
+                setTimeout(() => {
+                    selectNetwork.clear();
+                    selectNetwork.addItems(data);
+                }, 0);
+            });
+        });
+    </script>
+@endpush

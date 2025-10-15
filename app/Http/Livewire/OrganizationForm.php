@@ -56,10 +56,10 @@ class OrganizationForm extends Component
     public $changed = false;
 
     public function mount(){
+        // meta
+        $this->countries_options = Country::orderBy('name')->get();
+        $this->network_options = TypeNetwork::options();
         if ($this->org_editing) {
-            // meta
-            $this->countries_options = Country::orderBy('name')->get();
-            $this->network_options = TypeNetwork::options();
             // data
             $this->code = $this->org_editing->code;
             $this->name = $this->org_editing->name;
@@ -92,6 +92,7 @@ class OrganizationForm extends Component
     }
 
     public function store(){
+        $this->emit('send-network-tom-select', $this->network);
         $data = $this->validate($this->rules, [], $this->attributes);
 
         if (sizeof($this->addresses) == 0) {
@@ -122,6 +123,7 @@ class OrganizationForm extends Component
             }
         }
         $this->changed = true;
+        $this->emit('send-network-tom-select', $this->network);
     }
 
     public function add_contact(){

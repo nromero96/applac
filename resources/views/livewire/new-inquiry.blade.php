@@ -14,7 +14,7 @@
             </button>
 
             {{-- header --}}
-            <div class="row mb-4 align-items-center">
+            <div class="row mb-3 align-items-center">
                 <div class="col-6">
                     {{-- title --}}
                     <div class="d-flex align-items-center gap-2">
@@ -41,7 +41,7 @@
                             @error('type_inquiry') <span class='text-danger'>{{ $message }}</span> @enderror
                         </div>
                         <div class="col-8 d-flex align-items-start gap-2">
-                                <label class="form-label flex-shrink-0 pt-2">Assigned to</label>
+                                <label class="form-label flex-shrink-0" style="padding-top: 8px">Assigned to</label>
                                 @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Leader'))
                                 <div class="w-100">
                                     <select class="form-select" wire:model.defer="member">
@@ -77,7 +77,7 @@
                         <div class="row">
                             <div class="col">
                                 <label for="organization_code" class="form-label">
-                                    Organization Name *
+                                    Organization Name <span class="text-danger">*</span>
                                 </label>
                                 <div class="newinquiry__org-name">
                                     <input type="text" class="form-control text-uppercase" wire:model.debounce.500ms="org_name" {{ $org_selected ? 'disabled' : '' }} />
@@ -104,7 +104,7 @@
                         </div>
 
                         @if ($type_inquiry == TypeInquiry::INTERNAL_LEGACY->value or $type_inquiry == TypeInquiry::INTERNAL_OTHER_AGT->value)
-                            <div class="row mt-3">
+                            <div class="row mt-2">
                                 <div class="col-6">
                                     <label class="form-label">Location</label>
                                     <select class="form-select" wire:model.defer="location">
@@ -114,10 +114,9 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-6" wire:ignore>
                                     <label class="form-label">Network</label>
-                                    <select class="form-select" wire:model.defer="network" multiple>
-                                        <option value="">Select an option</option>
+                                    <select wire:model.defer="network" multiple id="select-network">
                                         @foreach ($network_options as $value => $label)
                                             <option value="{{ $value }}">{{ $label }}</option>
                                         @endforeach
@@ -127,7 +126,7 @@
                         @endif
 
                         @if ($type_inquiry == TypeInquiry::INTERNAL->value or $type_inquiry == TypeInquiry::INTERNAL_LEGACY->value)
-                            <div class="row mt-3">
+                            <div class="row mt-2">
                                 <div class="col-6">
                                     <label class="form-label">Tier</label>
                                     <select class="form-select" wire:model.defer="tier">
@@ -146,7 +145,7 @@
                         @endif
 
                         @if ($type_inquiry == TypeInquiry::INTERNAL->value)
-                            <div class="row mt-3">
+                            <div class="row mt-2">
                                 <div class="col">
                                     <h6>Additional Details</h6>
                                     <div class="form-check">
@@ -167,7 +166,7 @@
                         @endif
 
                         @if ($type_inquiry == TypeInquiry::INTERNAL_OTHER_AGT->value)
-                            <div class="row mt-3">
+                            <div class="row mt-2">
                                 <div class="col">
                                     <h6>Additional Details</h6>
                                     <div class="form-check">
@@ -188,10 +187,10 @@
                         @endif
 
                         @if ($type_inquiry == TypeInquiry::INTERNAL_OTHER->value)
-                            <div class="row mt-3">
+                            <div class="row mt-2">
                                 <div class="col">
                                     <label for="organization_code" class="form-label">
-                                        Referring Source *
+                                        Referring Source <span class="text-danger">*</span>
                                     </label>
                                     <div class="dropdown">
                                         <button class="dropdown-toggle form-select d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -265,7 +264,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <label for="organization_code" class="form-label">
-                                    Contact Name *
+                                    Contact Name <span class="text-danger">*</span>
                                 </label>
                                 @if (!empty($contacts))
                                     @if (!$new_contact)
@@ -283,22 +282,22 @@
                                 @error('contact.name') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
                             @if ($type_inquiry != TypeInquiry::INTERNAL_OTHER->value && $type_inquiry != TypeInquiry::INTERNAL_OTHER_AGT->value)
-                                <div class="col-md-12 mt-3">
+                                <div class="col-md-12 mt-2">
                                     <label for="organization_code" class="form-label">
-                                        Job Title (Optional)
+                                        Job Title
                                     </label>
                                     <input type="text" class="form-control" wire:model="contact.job_title" {{ ($org_selected and !$new_contact and !$update_contact) ? 'disabled' : '' }} />
                                     @error('contact.job_title') <span class='text-danger'>{{ $message }}</span> @enderror
                                 </div>
                             @endif
-                            <div class="col-md-7 mt-3">
+                            <div class="col-md-7 mt-2">
                                 <label for="organization_code" class="form-label">
-                                    Email *
+                                    Email
                                 </label>
                                 <input type="text" class="form-control" wire:model="contact.email"  {{ ($org_selected and !$new_contact and !$update_contact) ? 'disabled' : '' }} />
                                 @error('contact.email') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
-                            <div class="col-md-5 mt-3">
+                            <div class="col-md-5 mt-2">
                                 <label for="organization_code" class="form-label">
                                     Phone
                                 </label>
@@ -320,7 +319,7 @@
                             <div class="row mb-3">
                                 <div class="col">
                                     <label for="organization_code" class="form-label d-flex align-items-center justify-content-between">
-                                        Rating *
+                                        Rating <span class="text-danger">*</span>
                                         <div wire:ignore data-toggle="tooltip" data-placement="top" title="How promising is this inquiry? Consider the business type, cargo value, and shipment urgency.">
                                             <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
@@ -350,7 +349,7 @@
 
                         <div class="row">
                             <div class="col">
-                                <label for="" class="form-label">Mode of transport *</label>
+                                <label for="" class="form-label">Mode of transport <span class="text-danger">*</span></label>
                                 <select class="form-select" wire:model="mode_of_transport">
                                     <option value="">Select an option</option>
                                     @foreach ($mode_of_transport_options as $key => $label)
@@ -369,7 +368,7 @@
                         </div>
 
                         @if ($type_inquiry === TypeInquiry::INTERNAL_OTHER_AGT->value)
-                            <div class="row mt-3">
+                            <div class="row mt-2">
                                 <div class="col">
                                     <h6>Cargo Details</h6>
                                     @if (sizeof($cargo_details_options) > 0)
@@ -393,7 +392,7 @@
                             </div>
                         @endif
 
-                        <div class="row mt-3 __descr">
+                        <div class="row mt-2 __descr">
                             <div class="col-md-12">
                                 <label for="organization_code" class="form-label d-flex align-items-center justify-content-between">
                                     Shipment Description
@@ -480,10 +479,13 @@
 @push('scripts')
     <script>
         document.addEventListener('livewire:load', function () {
+            const select_network = new TomSelect('#select-network', {
+                plugins: ['remove_button']
+            });
 
             // Volver a inicializarlos cada vez que Livewire actualiza el DOM
             Livewire.hook('message.processed', (message, component) => {
-                $(() => $('[data-toggle="tooltip"]').tooltip())
+                $(() => $('[data-toggle="tooltip"]').tooltip());
             });
 
             $(() => $('[data-toggle="tooltip"]').tooltip())
@@ -499,6 +501,13 @@
             });
             $('#shipping_date').on('apply.daterangepicker', function(ev, picker) {
                 @this.set('shipping_date', picker.startDate.format('DD-MM-YYYY'));
+            });
+
+            Livewire.on('send-network-tom-select', (data) => {
+                select_network.clear();
+                if (data.length > 0) {
+                    select_network.addItems(data);
+                }
             });
         });
     </script>

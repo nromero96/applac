@@ -13,7 +13,9 @@ class NewInquiry extends Component
 {
     use WithFileUploads;
 
-    protected $listeners = ['clean_data_after_close'];
+    protected $listeners = [
+        'clean_data_after_close',
+    ];
 
     // org
     public $org_id;
@@ -42,7 +44,7 @@ class NewInquiry extends Component
     public $score;
     public $mode_of_transport;
     public $location;
-    public $network;
+    public $network = [];
     public $referred_by = false;
     public $cargo_details = [];
     public $additional_info = [];
@@ -94,7 +96,7 @@ class NewInquiry extends Component
             'shipping_date' => 'nullable',
             'contact.name' => 'required|max:255',
             'contact.job_title' => 'nullable|max:255',
-            'contact.email' => 'required|max:255|email',
+            'contact.email' => 'nullable|max:255|email',
             'contact.phone' => 'nullable|max:20',
             'attachments.*' => 'max:2048',
             'type_inquiry' => 'required',
@@ -146,6 +148,7 @@ class NewInquiry extends Component
 
     public function updatedTypeInquiry() {
         $this->reset('org_selected', 'org_id', 'org_name', 'org_code', 'contact', 'tier', 'score', 'location', 'network', 'referred_by', 'mode_of_transport');
+        $this->emit('send-network-tom-select', $this->network);
     }
 
     public function updatedContact($value, $name){
@@ -188,6 +191,7 @@ class NewInquiry extends Component
         //
         $this->org_selected = true;
         $this->organizations = [];
+        $this->emit('send-network-tom-select', $this->network);
     }
 
     public function select_contact(OrganizationContact $contact){
@@ -253,11 +257,13 @@ class NewInquiry extends Component
         // // $this->reset('org_selected', 'org_id', 'org_name', 'org_code', 'contact', 'contacts', 'new_contact', 'update_contact');
         $this->reset('org_id', 'org_name', 'org_code', 'contact', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label', 'attachments', 'attachments_added', 'shipping_date', 'tier', 'score', 'location', 'network', 'referred_by', 'mode_of_transport');
         $this->resetErrorBag();
+        $this->emit('send-network-tom-select', $this->network);
     }
 
     public function clean_data_after_close(){
         $this->reset('org_id', 'org_name', 'org_code', 'contact', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label', 'attachments', 'attachments_added', 'shipping_date', 'tier', 'score', 'location', 'network', 'referred_by', 'mode_of_transport');
         $this->resetErrorBag();
+        $this->emit('send-network-tom-select', $this->network);
     }
 
     /**
