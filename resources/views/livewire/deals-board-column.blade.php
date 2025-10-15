@@ -1,4 +1,7 @@
 <div class="deals__board__col" x-data="{ show_options: false }" x-show="{{ $statusKey === 'stalled' ? 'show_stalled' : 'true' }}" x-cloak>
+    @php
+        use App\Enums\TypeInquiry;
+    @endphp
     {{-- thead --}}
     <div class="deals__board__thead __{{ $statusKey }}">
         <div class="__info">
@@ -125,6 +128,18 @@
 
                         @if (isset($quotation->rating))
                             <x-stars :stars="$quotation->rating" />
+                        @else
+                            @if ($quotation->type_inquiry->value == TypeInquiry::INTERNAL->value)
+                                <span class="__badge __tier">
+                                    {{ $quotation->customer_tier }}
+                                </span>
+                            @elseif ($quotation->type_inquiry->value == TypeInquiry::INTERNAL_LEGACY->value || $quotation->type_inquiry->value == TypeInquiry::INTERNAL_OTHER_AGT->value)
+                                @php $prt = $quotation->priority->meta(); @endphp
+                                <span class="__badge" style="color: {{ $prt['color'] }}; background-color: {{ $prt['bg'] }}">
+                                    {{ $quotation->priority->meta('label') }}
+                                    {{ $quotation->customer_score ? ' - ' . number_format($quotation->customer_score, 0) : '' }}
+                                </span>
+                            @endif
                         @endif
                     </div>
 
@@ -139,21 +154,31 @@
                                 {{ isset($quotation->customer_lastname) ? $quotation->customer_lastname : '' }}
                             </h3>
                         @endif
-                        @if (isset($quotation->customer_email))
-                            <p>{{ $quotation->customer_email }}</p>
+                        @if ($quotation->type_inquiry->value === TypeInquiry::INTERNAL_OTHER->value)
+                            @if (isset($quotation->customer_email))
+                                <p>{{ $quotation->customer_email }}</p>
+                            @else
+                                <p>{{ $quotation->customer_company_name }}</p>
+                            @endif
+                        @else
+                            <p>{{ $quotation->customer_company_name }}</p>
                         @endif
                     </div>
                     <div class="__foot">
                         <div class="__value_readiness">
-                            @if ($quotation->type_inquiry != 'internal')
-                                @if (isset($quotation->declared_value))
-                                    <p class="__value">{{ $quotation->currency  }}{{ number_format($quotation->declared_value) }}</p>
-                                @endif
-                            @endif
+                            <p class="opacity-50 mb-0">{{ $quotation->modeOfTransportLabel() }}</p>
                             @if (isset($this->readinessMap[$quotation->shipment_ready_date]))
                                 <p class="__readinesss {{ $this->readinessMap[$quotation->shipment_ready_date]['class'] }}">
                                     {{ $this->readinessMap[$quotation->shipment_ready_date]['label'] }}
                                 </p>
+                            @endif
+                            @if ($quotation->type_inquiry->value == TypeInquiry::INTERNAL_LEGACY->value || $quotation->type_inquiry->value == TypeInquiry::INTERNAL_OTHER_AGT->value)
+                                {!! type_network_pill_first($quotation->customer_network) !!}
+                            @endif
+                            @if (!$quotation->is_internal_inquiry)
+                                @if (isset($quotation->declared_value))
+                                    <p class="__value">{{ $quotation->currency  }}{{ number_format($quotation->declared_value) }}</p>
+                                @endif
                             @endif
                         </div>
                         <p class="__ago">{{ date('d/m/Y', strtotime($quotation->created_at)) }}</p>

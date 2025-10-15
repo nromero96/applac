@@ -463,6 +463,9 @@ class QuotationController extends Controller
             DB::raw('COALESCE(users.business_role, guest_users.business_role) as customer_business_role'),
             DB::raw('COALESCE(users.ea_shipments, guest_users.ea_shipments) as customer_ea_shipments'),
             DB::raw('COALESCE(users.source, guest_users.source) as customer_source'),
+            DB::raw('COALESCE(users.tier, guest_users.tier) as customer_tier'),
+            DB::raw('COALESCE(users.score, guest_users.score) as customer_score'),
+            DB::raw('COALESCE(users.network, guest_users.network) as customer_network'),
 
             //is user or guest user
             DB::raw('CASE WHEN users.id IS NOT NULL THEN "Returning" ELSE "Guest" END AS user_type'),

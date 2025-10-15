@@ -2,16 +2,10 @@
 
 namespace App\Http\Livewire;
 
-use App\Models\GuestUser;
+use App\Enums\TypeInquiry;
 use App\Models\Organization;
 use App\Models\OrganizationContact;
-use App\Models\Quotation;
-use App\Models\QuotationDocument;
-use App\Models\Setting;
-use App\Models\UnreadQuotation;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Services\InternalInquiryService;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -43,8 +37,19 @@ class NewInquiry extends Component
     public $recovered_account = false;
     public $cargo_description;
     public $attachments = [];
+    public $type_inquiry;
+    public $tier;
+    public $score;
+    public $mode_of_transport;
+    public $location;
+    public $network;
+    public $referred_by = false;
+    public $cargo_details = [];
+    public $additional_info = [];
 
     // aux
+    public $members;
+    public $member_sales_role;
     public $attachments_added = [];
     public $org_selected = false;
     public $contacts = [];
@@ -71,47 +76,64 @@ class NewInquiry extends Component
     ];
     public $stored = false;
     public $savedRouteTo = 'quotations.index';
+    public $types_inquiries;
+    public $network_options;
+    public $location_list;
+    public $mode_of_transport_options;
+    public $cargo_details_options = [];
+    public $additional_info_options = [];
 
-    public $rules = [
-        'org_name' => 'required|max:255',
-        'org_code' => 'required|max:50',
-        'member' => 'required',
-        'source' => 'required',
-        'rating' => 'required',
-        'shipping_date' => 'nullable',
-        'contact.name' => 'required|max:255',
-        'contact.job_title' => 'nullable|max:255',
-        'contact.email' => 'required|max:255|email',
-        'contact.phone' => 'nullable|max:20',
-        'attachments.*' => 'max:2048',
-    ];
+    public function rules() {
+        $rules = [
+            'org_name' => 'required|max:255',
+            'org_code' => 'nullable|max:50',
+            'member' => 'required',
+            'source' => 'nullable',
+            'score' => 'nullable|numeric|between:0,500',
+            'rating' => 'nullable',
+            'shipping_date' => 'nullable',
+            'contact.name' => 'required|max:255',
+            'contact.job_title' => 'nullable|max:255',
+            'contact.email' => 'required|max:255|email',
+            'contact.phone' => 'nullable|max:20',
+            'attachments.*' => 'max:2048',
+            'type_inquiry' => 'required',
+            'mode_of_transport' => 'required',
+        ];
 
-    public $attributes = [
-        'contact.name' => 'contact name',
-        'contact.job_title' => 'contact job title',
-        'contact.email' => 'contact email',
-        'contact.phone' => 'contact phone',
-        'attachments.*' => 'attachments',
-    ];
-
-    public function render()
-    {
-        // members
-        $setting_users_quoted = Setting::where('key', 'users_selected_dropdown_quotes')->first();
-        $setting_users_quoted_ids = array_map('intval', json_decode($setting_users_quoted->value));
-        $members = User::whereIn('id', $setting_users_quoted_ids)->select('id', 'name', 'lastname')->get();
-
-        // member adm or sales
-        $member_sales_role = '';
-        if (Auth::user()->hasRole('Sales')) {
-            $this->member = Auth::user()->id;
-            $member_sales_role = Auth::user()->name . ' ' . Auth::user()->lastname;
+        if ($this->type_inquiry == TypeInquiry::INTERNAL_OTHER->value) {
+            $rules['source'] = 'required';
+            $rules['rating'] = 'required';
         }
 
-        $data['members'] = $members;
-        $data['member_sales_role'] = $member_sales_role;
+        return $rules;
+    }
 
-        return view('livewire.new-inquiry', $data);
+    public function messages() {
+        return [
+            'attachments.*.max' => 'The attachments must not be greater than 2MB.'
+        ];
+    }
+
+    public function validationAttributes() {
+        return [
+            'contact.name' => 'contact name',
+            'contact.job_title' => 'contact job title',
+            'contact.email' => 'contact email',
+            'contact.phone' => 'contact phone',
+            'attachments.*' => 'attachments',
+        ];
+    }
+
+    public function mount(InternalInquiryService $internalInquiryService) {
+        $data = $internalInquiryService->mount_data();
+        foreach ($data as $key => $value) {
+            $this->{$key} = $value;
+        }
+    }
+
+    public function render() {
+        return view('livewire.new-inquiry');
     }
 
     public function updatedOrgName() {
@@ -122,119 +144,25 @@ class NewInquiry extends Component
         }
     }
 
+    public function updatedTypeInquiry() {
+        $this->reset('org_selected', 'org_id', 'org_name', 'org_code', 'contact', 'tier', 'score', 'location', 'network', 'referred_by', 'mode_of_transport');
+    }
+
     public function updatedContact($value, $name){
         if ($name == 'email') {
             $this->contact['email'] = trim($value);
         }
     }
 
-    public function store(){
-        $this->validate(
-            $this->rules,
-            ['attachments.*.max' => 'The attachments must not be greater than 2MB.'],
-            $this->attributes
-        );
+    public function updatedModeOfTransport($value) {
+        $this->reset('cargo_details');
+        // cargo_details_list
+        $internalInquiryService = new InternalInquiryService();
+        $internalInquiryService->relationTransportAndCargoDetails($this);
+    }
 
-        DB::transaction(function () {
-            // Org
-            $id_org = null;
-            if ($this->org_selected) { // Org existe
-                // capturar id
-                $id_org = $this->org_id;
-                if ($this->new_contact) { // si deseo agregar un contacto diferente a los que figuran
-                    OrganizationContact::create([
-                        'name' => $this->contact['name'],
-                        'job_title' => $this->contact['job_title'],
-                        'email' => $this->contact['email'],
-                        'phone' => $this->contact['phone'],
-                        'organization_id' => $id_org,
-                    ]);
-                } else {
-                    if ($this->update_contact) { // si a un contacto seleccionado le faltan datos
-                        $contact_update = OrganizationContact::where('id', $this->contact['id'])->first();
-                        $contact_update->update([
-                            'job_title' => $this->contact['job_title'],
-                            'email' => $this->contact['email'],
-                            'phone' => $this->contact['phone'],
-                        ]);
-                    }
-                }
-            } else { // Org es nuevo
-                // crear org
-                $org_new = Organization::create([
-                    'code' => strtoupper($this->org_code),
-                    'name' => strtoupper($this->org_name),
-                ]);
-                // asignar id de org creado
-                $id_org = $org_new->id;
-                // crear contacto
-                OrganizationContact::create([
-                    'name' => $this->contact['name'],
-                    'job_title' => $this->contact['job_title'],
-                    'email' => $this->contact['email'],
-                    'phone' => $this->contact['phone'],
-                    'organization_id' => $id_org,
-                ]);
-            }
-
-            // crear guest_user
-            $guest_user = GuestUser::create([
-                'name' => $this->contact['name'],
-                'lastname' => '',
-                'company_name' => strtoupper($this->org_name),
-                'email' => $this->contact['email'],
-                'phone_code' => '',
-                'phone' => $this->contact['phone'],
-                'source' => $this->source,
-                'subscribed_to_newsletter' => 'no',
-            ]);
-
-            // create quote con el id del org /
-            $quotation = Quotation::create([
-                'guest_user_id' => $guest_user->id,
-                'mode_of_transport' => '',
-                'service_type' => '',
-                'origin_country_id' => 38, // Canada
-                'destination_country_id' => 38, // Canada
-                'no_shipping_date' => 'no',
-                'declared_value' => 0,
-                'insurance_required' => 'no',
-                'currency' => 'USD - US Dollar',
-                'rating' => $this->rating,
-                'shipping_date' => $this->shipping_date,
-                'rating_modified' => 0,
-                'status' => 'Pending',
-                'assigned_user_id' => $this->member,
-                'is_internal_inquiry' => true,
-                'recovered_account' => $this->recovered_account,
-                'cargo_description' => $this->cargo_description,
-                'type_inquiry' => 'internal',
-                'created_at' => now(),
-            ]);
-
-            // set quotation as unread (solo testing en internal)
-            // UnreadQuotation::create([
-            //     // 'user_id'       => auth()->id(),
-            //     'user_id'       => $this->member,
-            //     'quotation_id'  => $quotation->id,
-            // ]);
-
-            // Subir adjuntos
-            if (sizeof($this->attachments) > 0) {
-                foreach ($this->attachments as $attach) {
-                    $filename = uniqid() . '_' . $attach->getClientOriginalName();
-                    $attach->storeAs('public\uploads\quotation_documents', $filename);
-                    QuotationDocument::create([
-                        'quotation_id' => $quotation->id,
-                        'document_path' => $filename,
-                    ]);
-                }
-            }
-
-            // Mostrar Mensaje de Gracias
-            $this->emit('add_stored_class_to_internal_inquiry');
-            $this->stored = true;
-        });
+    public function store(InternalInquiryService $internalInquiryService) {
+        $internalInquiryService->store($this);
     }
 
     public function select_org(Organization $org){
@@ -242,6 +170,12 @@ class NewInquiry extends Component
         $this->org_name = $org->name;
         $this->org_code = $org->code;
         $this->contacts = $org->contacts;
+        $this->tier = $org->tier;
+        $this->score = $org->score;
+        $this->location = $org->country_id;
+        $this->network = $org->network;
+        $this->recovered_account = $org->recovered_account;
+        $this->referred_by = $org->referred_by;
         $this->contact = $org->contacts->first()->toArray();
         // activar actualizacion de contact sin data
         if ($this->contact['email'] == '' || $this->contact['phone'] == '' || $this->contact['job_title'] == '') {
@@ -316,16 +250,19 @@ class NewInquiry extends Component
     }
 
     public function reset_data(){
-        // $this->reset('org_selected', 'org_id', 'org_name', 'org_code', 'contact', 'contacts', 'new_contact', 'update_contact');
-        $this->reset('org_id', 'org_name', 'org_code', 'contact', 'member', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label', 'attachments', 'attachments_added');
+        // // $this->reset('org_selected', 'org_id', 'org_name', 'org_code', 'contact', 'contacts', 'new_contact', 'update_contact');
+        $this->reset('org_id', 'org_name', 'org_code', 'contact', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label', 'attachments', 'attachments_added', 'shipping_date', 'tier', 'score', 'location', 'network', 'referred_by', 'mode_of_transport');
+        $this->resetErrorBag();
     }
 
     public function clean_data_after_close(){
+        $this->reset('org_id', 'org_name', 'org_code', 'contact', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label', 'attachments', 'attachments_added', 'shipping_date', 'tier', 'score', 'location', 'network', 'referred_by', 'mode_of_transport');
         $this->resetErrorBag();
-        $this->reset('org_id', 'org_name', 'org_code', 'contact', 'member', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label', 'attachments', 'attachments_added');
     }
 
-    // Attachments
+    /**
+     * Attachments
+     */
     public $attach_dropping = false;
 
     public function updatedAttachmentsAdded(){
@@ -353,6 +290,4 @@ class NewInquiry extends Component
     public function attach_remove($index) {
         array_splice($this->attachments, $index, 1);
     }
-
-
 }

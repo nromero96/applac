@@ -136,11 +136,11 @@ class DealsBoard extends Component
                 ->join('quotations', 'quotations.assigned_user_id', '=', 'users.id')
                 ->groupBy('users.id')
                 ->where('users.status', 'active')
-                ->select('users.id as id', 'name', 'lastname', 'department_id')
+                ->select('users.id as id', 'name', 'lastname', 'users.department_id')
                 ->with('department');
 
             if (Auth::user()->hasRole('Leader')) {
-                $user_sales_dpto->where('department_id', auth()->user()->department_id); // del mismo dpto
+                $user_sales_dpto->where('users.department_id', auth()->user()->department_id); // del mismo dpto
             }
 
             $user_sales_dpto = $user_sales_dpto->get();

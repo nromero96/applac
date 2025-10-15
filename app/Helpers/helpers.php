@@ -1018,3 +1018,42 @@ if (!function_exists('rateQuotationWeb')) {
         return $rating;
     }
 }
+
+
+/**
+ * with types
+ */
+if (!function_exists('type_network_labels')) {
+    function type_network_labels($field) {
+        $networks = is_string($field)
+            ? json_decode($field, true)
+            : $field;
+        $labels = collect($networks)
+            ->map(fn($network) => \App\Enums\TypeNetwork::from($network)->meta('label'))
+            ->implode(', ');
+        return $labels;
+    }
+}
+
+if (!function_exists('type_network_pill_first')) {
+    function type_network_pill_first($field) {
+        $networks = is_string($field)
+            ? json_decode($field, true)
+            : $field;
+        $pills = collect($networks)
+            ->map(fn($network) => \App\Enums\TypeNetwork::from($network)->meta())
+            ->toArray();
+        $first_pill = $pills[0];
+
+        $pill_draw = '';
+        $pill_draw .= '<span
+            class="__readinesss gap-1 d-flex align-items-center"
+            style="color: '.$first_pill['color'].'; border: 1px solid'.$first_pill['color'] .'"
+        >'
+            . $first_pill['icon'] . $first_pill['short_label'] .
+        '</span>';
+
+        return $pill_draw;
+        // return $labels;
+    }
+}

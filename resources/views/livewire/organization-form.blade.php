@@ -12,13 +12,13 @@
     @endif
         <div class="col-md-4">
             <label for="organization_code" class="form-label fw-bold">
-                {{__("Org. Code")}} @if (!$showing) <span class="text-danger">*</span> @endif
+                {{__("Org. Code")}} @if (!$showing) <span class="text-danger"></span> @endif
             </label>
             @if (!$showing)
                 <input wire:model.defer="code" type="text" name="organization_code" class="form-control" id="organization_code" value="{{old('organization_code')}}" placeholder="{{__('Type here')}}" >
                 @error('code') <span class='text-danger'>{{ $message }}</span> @enderror
             @else
-                <p class="form-control px-2 bg-text-control-form border-0 mb-0" style="background-color: #ebedf2">{{ $code }}</p>
+                <p class="form-control px-2 bg-text-control-form border-0 mb-0" style="background-color: #ebedf2">{{ $code ? : '-' }}</p>
             @endif
         </div>
         <div class="col-md-4">
@@ -61,6 +61,95 @@
                 @endif
             @endif
         </div>
+
+        <div class="col-md-8">
+            <div class="row">
+
+                <div class="col-6">
+                    <label for="organization_tier" class="form-label fw-bold">
+                        {{__("Tier")}} @if (!$showing) <span class="text-danger"></span> @endif
+                    </label>
+                    @if (!$showing)
+                        <select name="organization_tier" id="organization_tier" class="form-select" wire:model.defer="tier">
+                            <option value="">Select an option</option>
+                            <option value="Tier 1">Tier 1</option>
+                            <option value="Tier 2">Tier 2</option>
+                            <option value="Tier 3">Tier 3</option>
+                        </select>
+                        @error('tier') <span class='text-danger'>{{ $message }}</span> @enderror
+                    @else
+                        <p class="form-control px-2 bg-text-control-form border-0 mb-0" style="background-color: #ebedf2">{{ $tier ? : '-' }}</p>
+                    @endif
+                </div>
+
+                <div class="col-6">
+                    <label for="organization_score" class="form-label fw-bold">
+                        {{__("Score")}} @if (!$showing) <span class="text-danger"></span> @endif
+                    </label>
+                    @if (!$showing)
+                        <input wire:model.defer="score" type="text" name="organization_score" class="form-control" id="organization_score" >
+                        @error('score') <span class='text-danger'>{{ $message }}</span> @enderror
+                    @else
+                        <p class="form-control px-2 bg-text-control-form border-0 mb-0" style="background-color: #ebedf2">{{ $score ? : '-' }}</p>
+                    @endif
+                </div>
+
+                <div class="col-6 mt-3">
+                    <label for="organization_country_id" class="form-label fw-bold">
+                        {{__("Location")}} @if (!$showing) <span class="text-danger"></span> @endif
+                    </label>
+                    @if (!$showing)
+                        <select name="organization_country_id" id="organization_country_id" class="form-select" wire:model.defer="country_id">
+                            <option value="">Select an option</option>
+                            @foreach ($countries_options as $country)
+                                <option value="{{ $country->id }}">{{ $country->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('country_id') <span class='text-danger'>{{ $message }}</span> @enderror
+                    @else
+                        <p class="form-control px-2 bg-text-control-form border-0 mb-0" style="background-color: #ebedf2">{{ $location_label ? : '-' }}</p>
+                    @endif
+                </div>
+
+                <div class="col-6 mt-3">
+                    <label for="organization_network" class="form-label fw-bold">
+                        {{__("Network")}} @if (!$showing) <span class="text-danger"></span> @endif
+                    </label>
+                    @if (!$showing)
+                        <select name="organization_network" id="organization_network" class="form-select" wire:model.defer="network" multiple>
+                            <option value="">Select an option</option>
+                            @foreach ($network_options as $key => $value)
+                                <option value="{{ $key }}">{{ $value }}</option>
+                            @endforeach
+                        </select>
+                        @error('network') <span class='text-danger'>{{ $message }}</span> @enderror
+                    @else
+                        <p class="form-control px-2 bg-text-control-form border-0 mb-0" style="background-color: #ebedf2">
+                            {{ $network_label ? implode(' - ', $network_label) : '-' }}
+                        </p>
+                    @endif
+                </div>
+
+                <div class="col-6 mt-3">
+                    <label for="organization_network" class="form-label fw-bold">
+                        {{ __("Additional Information") }}
+                    </label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="recovered_account" wire:model.defer="recovered_account" @if ($showing) disabled @endif>
+                        <label class="form-check-label d-flex align-items-center gap-2" for="recovered_account">
+                            Recovered account
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="referred_by" wire:model.defer="referred_by" @if ($showing) disabled @endif>
+                        <label class="form-check-label d-flex align-items-center gap-2" for="referred_by">
+                            Referred by another agent
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <div class="col-md-12">
             <label for="contact_company" class="form-label fw-bold">{{__("Contact Information")}}: @if (!$showing) <span class="text-danger">*</span>@endif</label>

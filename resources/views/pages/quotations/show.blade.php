@@ -294,38 +294,37 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="widget-content widget-content-area pt-2">
-                        <div class="row g-3 pt-3">
-
-                            @if($quotation->type_inquiry->value == 'external 2')
-
+                        <div class="row g-3 pt-4">
                             {{-- Data the inquiry external 2 --}}
-                                <div class="col-md-4 mt-0">
-
-
-
-                                    <h6 class="text-primary mb-1">{{ __('Contact Info') }}</h6>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Contact name")}}:</label> {{ $quotation->customer_name }} {{ $quotation->customer_lastname }}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Company")}}:</label> {{ $quotation->customer_company_name }}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Job Title")}}:</label> {{$quotation->customer_job_title}}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Email")}}:</label> {{ $quotation->customer_email }}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Business type")}}:</label> {{ $quotation->customer_business_role }}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Annual Shipments")}}:</label> {{ $quotation->customer_ea_shipments }} {!! $ea_shipments_label !!}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Source")}}:</label> {{ $quotation->customer_source }}</p>
-                                </div>
-                                <div class="col-md-5 mt-0">
-                                    <h6 class="text-primary mb-1">{{ __('Shipment Info') }}</h6>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Origin")}}:</label> {{ $quotation->origin_country }}
-                                        <svg width="15" height="15" fill="none" stroke="#595959" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="m9 18 6-6-6-6"></path>
-                                        </svg>
-                                        <label class="fw-bold mb-0">{{__("Destination")}}:</label> {{ $quotation->destination_country }}
-
-                                    </p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Mode of transport")}}:</label> {{ $quotation->mode_of_transport }}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Estimated value")}}:</label> {{ number_format($quotation->declared_value) }} {{ $quotation->currency }}
+                            <div class="col-md-4 mt-0">
+                                <h6 class="text-primary mb-2">{{ __('Contact Info') }}</h6>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Contact name")}}:</label> {{ $quotation->customer_name }} {{ $quotation->customer_lastname }}</p>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Company")}}:</label> {{ $quotation->customer_company_name }}</p>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Job Title")}}:</label> {{$quotation->customer_job_title ? : '-'}}</p>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Email")}}:</label> {{ $quotation->customer_email }}</p>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}</p>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Business type")}}:</label> {{ $quotation->customer_business_role ? : '-' }}</p>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Annual Shipments")}}:</label> {{ $quotation->customer_ea_shipments ? : '-' }} {!! $ea_shipments_label !!}</p>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Source")}}:</label> {{ $quotation->customer_source ? : '-' }}</p>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name ? : '-' }}</p>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Tier")}}:</label> {{ $quotation->customer_tier ? : '-' }}</p>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Score")}}:</label> {{ $quotation->customer_score ? rtrim(rtrim($quotation->customer_score, '0'), '.') : '-' }}</p>
+                                @php $networks_labels = type_network_labels($quotation->customer_network); @endphp
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Network")}}:</label> {{ $networks_labels ? : '-' }}</p>
+                            </div>
+                            <div class="col-md-5 mt-0">
+                                <h6 class="text-primary mb-2">{{ __('Shipment Info') }}</h6>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Origin")}}:</label> {{ $quotation->origin_country }}
+                                    <svg width="15" height="15" fill="none" stroke="#595959" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="m9 18 6-6-6-6"></path>
+                                    </svg>
+                                    <label class="fw-bold mb-0">{{__("Destination")}}:</label> {{ $quotation->destination_country }}
+                                </p>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Mode of transport")}}:</label> {{ $quotation->modeOfTransportLabel() }}</p>
+                                @if (!$quotation->is_internal_inquiry)
+                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ number_format($quotation->declared_value) }} {{ $quotation->currency }}
                                         @if (false)
                                             <span data-toggle="tooltip" data-placement="top" title="...">
                                                 <svg xmlns:xlink="http://www.w3.org/1999/xlink" width="14" height="14.88" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -336,432 +335,33 @@
                                             </span>
                                         @endif
                                     </p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Shipment readiness")}}:</label> {{ $quotation->shipment_ready_date }} {!! $shipment_ready_date_label !!}</p>
-                                    <p class="mb-1"><label class="fw-bold mb-0">{{__("Shipment Details")}}:</label><br> {!! nl2br($quotation->cargo_description) ? : '-' !!}</p>
-                                </div>
-                                <div class="col-md-3 mt-0">
-                                    <div class="card py-2 px-2">
-                                        <label for="ctdocuments" class="fw-bold mb-0">{{ __('Attachments') }}:</label>
-                                        @if ($quotation_documents->count() > 0)
-                                            <ul class="mb-0 ps-3" id="ctdocuments">
-                                                @foreach ($quotation_documents as $document)
-                                                    <li><a href="{{ asset('storage/uploads/quotation_documents').'/'. $document->document_path }}" class="text-info" target="_blank">{{ $document->document_path }}</a></li>
-                                                @endforeach
-                                            </ul>
-                                        @else
-                                            <ul class="mb-0 ps-3" id="ctdocuments">
-                                                <li>No documents</li>
-
-                                            </ul>
-                                        @endif
-                                    </div>
-                                </div>
-                                {{-- ..End Data the inquiry external 2 --}}
-                            @else
-
-                                @if (!$quotation->is_internal_inquiry)
-                                    <div class="col-md-12 mt-0">
-                                        <h6 class="text-primary mb-1">{{ __('Transport Details') }}</h6>
-                                        <label class="fw-bold mb-0">{{__("Mode of transport")}}:</label> {{ $quotation->mode_of_transport }}<br>
-                                        @if ($quotation->cargo_type)
-                                        <label class="fw-bold mb-0">{{__("Cargo Type")}}:</label> {{ $quotation->cargo_type }}<br>
-                                        @endif
-                                        <label class="fw-bold mb-0">{{__("Service Type")}}:</label> {{ $quotation->service_type }}<br>
-                                    </div>
-
-                                    <div class="col-md-12 mt-2">
-                                        <h6 class="text-primary mb-1">{{ __('Location Details') }}</h6>
-                                    </div>
-
-                                    @php
-                                        if($quotation->service_type === 'Airport-to-Door' || $quotation->service_type === 'Door-to-Airport' || $quotation->service_type === 'Airport-to-Airport' ){
-                                            $originAirportorPortLabel = __('Origin Airport');
-                                            $destinationAirportorPortLabel = __('Destination Airport');
-                                        }elseif($quotation->service_type === 'CFS/Port-to-Door' || $quotation->service_type === 'Door-to-CFS/Port' || $quotation->service_type === 'CFS/Port-to-CFS/Port' ){
-                                            $originAirportorPortLabel = __('Origin CFS/Port');
-                                            $destinationAirportorPortLabel = __('Destination CFS/Port');
-                                        }elseif($quotation->service_type === 'Door-to-Port' || $quotation->service_type === 'Port-to-Door' || $quotation->service_type === 'Port-to-Port' ){
-                                            $originAirportorPortLabel = __('Origin Port');
-                                            $destinationAirportorPortLabel = __('Destination Port');
-                                        }
-                                    @endphp
-
-                                    <div class="col-md-6 mt-0">
-                                        <div class="card d-block p-2">
-
-                                            <label class="fw-bold mb-0">{{ __('Origin Country') }}:</label> {{ $quotation->origin_country }}<br>
-
-                                            @if ($quotation->service_type === 'Door-to-Door' || $quotation->service_type === 'Door-to-Airport' || $quotation->service_type === 'Door-to-CFS/Port' || $quotation->service_type === 'Door-to-Port')
-                                                <label class="fw-bold mb-0">{{__("Origin Address")}}:</label> {{ $quotation->origin_address }}<br>
-                                                <label class="fw-bold mb-0">{{__("Origin City")}}:</label> {{ $quotation->origin_city }}<br>
-                                                <label class="fw-bold mb-0">{{__("Origin State/Province")}}:</label> {{ $quotation->origin_state }}<br>
-                                                <label class="fw-bold mb-0">{{__("Origin Zip Code")}}:</label> {{ $quotation->origin_zip_code }}<br>
-                                            @endif
-
-                                            @if ($quotation->service_type === 'Airport-to-Door' || $quotation->service_type === 'CFS/Port-to-Door' || $quotation->service_type === 'Port-to-Door' || $quotation->service_type === 'Port-to-Port' || $quotation->service_type === 'Airport-to-Airport' || $quotation->service_type === 'CFS/Port-to-CFS/Port')
-                                                <label class="fw-bold mb-0">{{ $originAirportorPortLabel }}:</label> {{ $quotation->origin_airportorport }}
-                                            @endif
-
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6 mt-0">
-                                        <div class="card d-block p-2">
-
-                                            <label class="fw-bold mb-0">{{ __('Destination Country') }}:</label> {{ $quotation->destination_country }}<br>
-
-                                            @if ($quotation->service_type === 'Door-to-Door' || $quotation->service_type === 'Airport-to-Door' || $quotation->service_type === 'CFS/Port-to-Door' || $quotation->service_type === 'Port-to-Door')
-                                                <label class="fw-bold mb-0">{{__("Destination Address")}}:</label> {{ $quotation->destination_address }}<br>
-                                                <label class="fw-bold mb-0">{{__("Destination City")}}:</label> {{ $quotation->destination_city }}<br>
-                                                <label class="fw-bold mb-0">{{__("Destination State/Province")}}:</label> {{ $quotation->destination_state }}<br>
-                                                <label class="fw-bold mb-0">{{__("Destination Zip Code")}}:</label> {{ $quotation->destination_zip_code }}<br>
-                                            @endif
-
-                                            @if ($quotation->service_type === 'Door-to-Airport' || $quotation->service_type === 'Door-to-CFS/Port' || $quotation->service_type === 'Door-to-Port' || $quotation->service_type === 'Port-to-Port' || $quotation->service_type === 'Airport-to-Airport' || $quotation->service_type === 'CFS/Port-to-CFS/Port')
-                                                <label class="fw-bold mb-0">{{ $destinationAirportorPortLabel }}:</label> {{ $quotation->destination_airportorport }}
-                                            @endif
-
-                                        </div>
-                                    </div>
                                 @endif
-
-                                @if (!$quotation->is_internal_inquiry)
-                                    <div class="col-md-12 mt-2">
-                                        <h6 class="text-primary mb-1">{{ __('Cargo Details') }}</h6>
-                                    </div>
-                                    <div class="col-md-12 mt-0">
-                                        <div class="table-responsive">
-                                            <table class="table table-striped table-bordered">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="bg-primary px-2 py-2 text-center" style="width: 50px" ><b>#</b></th>
-                                                        <th class="px-2 py-2" colspan="2"><b>{{__("Package")}}</b></th>
-                                                        <th class="px-2 py-2" colspan="4">
-                                                            <b>
-                                                                @unless ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL')
-                                                                    {{__("Dimensions")}}
-                                                                @endunless
-                                                            </b>
-                                                        </th>
-                                                        <th class="px-2 py-2" colspan="3"><b>{{__("Weight")}}</b></th>
-
-                                                        @unless ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL')
-                                                        <th class="px-2 py-2"><b>
-                                                                @if($quotation->mode_of_transport == 'Air')
-                                                                {{__("Total Volume Weight")}}
-                                                                @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container')
-                                                                    @if ($quotation->cargo_type == 'LTL' || $quotation->cargo_type == 'LCL')
-                                                                    {{__("Total Volume")}}
-                                                                    @endif
-                                                                @elseif ($quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
-                                                                {{__("Total CBM")}}
-                                                                @endif
-                                                        </b></th>
-                                                        @endunless
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                    @php
-                                                        $numcont = 1;
-                                                    @endphp
-
-                                                    @if ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL')
-                                                        {{-- Item --}}
-                                                        @foreach ($cargo_details as $item)
-                                                        <tr>
-                                                            <td class="bg-primary text-light px-1 py-1 text-center" rowspan="@if($item->details_shipment != '') 2 @else 1 @endif">#{{ $numcont }}</td>
-
-                                                            @if ($quotation->cargo_type == 'FTL')
-                                                                <td class="px-1 py-1">
-                                                                    {{ __('Trailer Type') }}:<br>
-                                                                    <b>{{ $item->package_type }}</b>
-                                                                </td>
-                                                                <td class="px-1 py-1">
-                                                                    {{ __('# of Trailers') }}:<br>
-                                                                    <b>{{ $item->qty }}</b>
-                                                                </td>
-                                                            @elseif ($quotation->cargo_type == 'FCL')
-                                                                <td class="px-1 py-1">
-                                                                    {{ __('Container Type') }}:<br>
-                                                                    <b>{{ $item->package_type }}</b>
-                                                                </td>
-                                                                <td class="px-1 py-1">
-                                                                    {{ __('# of Containers') }}:<br>
-                                                                    <b>{{ $item->qty }}</b>
-                                                                </td>
-                                                            @endif
-
-                                                            <td colspan="4" class="px-1 py-1">
-
-                                                                @if($item->temperature != '')
-                                                                    <span style="color:#808080;font-weight:bold;">Temperature:</span> {{ $item->temperature }} {{ $item->temperature_type }}
-                                                                    <br>
-                                                                @endif
-
-                                                                {{ _('Cargo Description') }}: <b>{{ $item->cargo_description }}<br>
-                                                                @if ($item->dangerous_cargo == 'yes')
-                                                                <span style="color:#888ea8">Dangerous Cargo:</span> {{ $item->dangerous_cargo }}<br>
-                                                                    @if ($item->dc_imoclassification_1 != '' || $item->dc_unnumber_1 != '') {{ $item->dc_imoclassification_1 .' : '. $item->dc_unnumber_1.', ' }} @endif
-                                                                    @if ($item->dc_imoclassification_2 != '' || $item->dc_unnumber_2 != '') {{ $item->dc_imoclassification_2 .' : '. $item->dc_unnumber_2.', ' }} @endif
-                                                                    @if ($item->dc_imoclassification_3 != '' || $item->dc_unnumber_3 != '') {{ $item->dc_imoclassification_3 .' : '. $item->dc_unnumber_3.', ' }} @endif
-                                                                    @if ($item->dc_imoclassification_4 != '' || $item->dc_unnumber_4 != '') {{ $item->dc_imoclassification_4 .' : '. $item->dc_unnumber_4.', ' }} @endif
-                                                                    @if ($item->dc_imoclassification_5 != '' || $item->dc_unnumber_5 != '') {{ $item->dc_imoclassification_5 .' : '. $item->dc_unnumber_5.', ' }} @endif
-                                                                @endif
-                                                            </td>
-                                                            <td colspan="2" class="px-1 py-1">
-                                                                {{ __('Total') }}:<br>
-                                                                <b>{{ $item->item_total_weight }}</b>
-                                                            </td>
-                                                            <td class="px-1 py-1">
-                                                                {{ __('Unit') }}:<br>
-                                                                <b>{{ $item->weight_unit }}</b>
-                                                            </td>
-                                                        </tr>
-
-                                                        @if($item->details_shipment != '')
-                                                        <tr>
-                                                            <td colspan="9" class="px-1 py-1">
-                                                                <span style="color:#808080;font-weight:bold;">Details of Shipment:</span><br>
-                                                                {!! nl2br(e($item->details_shipment)) !!}
-                                                                <br>
-                                                            </td>
-                                                        </tr>
-                                                        @endif
-
-                                                        {{-- End Item --}}
-                                                        @php
-                                                            $numcont ++;
-                                                        @endphp
-
-                                                        @endforeach
-
-
-                                                    @else
-
-                                                        @foreach ($cargo_details as $item)
-                                                        {{-- Item --}}
-                                                        <tr>
-                                                            <td class="bg-primary text-light px-1 py-1 text-center" rowspan="2">#{{ $numcont }}</td>
-                                                            <td class="px-1 py-1">
-                                                                {{ __('Package Type') }}:<br>
-                                                                <b>{{ $item->package_type }}</b>
-                                                            </td>
-                                                            <td class="px-1 py-1">
-                                                                {{ __('Qty') }}:<br>
-                                                                <b>{{ $item->qty }}</b>
-                                                            </td>
-                                                            <td class="px-1 py-1">
-                                                                {{ __('Length') }}:<br>
-                                                                <b>{{ $item->length }} {{ $item->dimensions_unit }}</b>
-                                                            </td>
-                                                            <td class="px-1 py-1">
-                                                                {{ __('Width') }}:<br>
-                                                                <b>{{ $item->width }} {{ $item->dimensions_unit }}</b>
-                                                            </td>
-                                                            <td class="px-1 py-1">
-                                                                {{ __('Height') }}:<br>
-                                                                <b>{{ $item->height }} {{ $item->dimensions_unit }}</b>
-                                                            </td>
-                                                            <td class="px-1 py-1">
-                                                                {{ __('Unit') }}:<br>
-                                                                <b>{{ $item->dimensions_unit }}</b>
-                                                            </td>
-                                                            <td class="px-1 py-1">
-                                                                {{ __('Per piece') }}:<br>
-                                                                <b>{{ $item->per_piece }}</b>
-                                                            </td>
-                                                            <td class="px-1 py-1">
-                                                                {{ __('Total') }}:<br>
-                                                                <b>{{ $item->item_total_weight }}</b>
-                                                            </td>
-                                                            <td class="px-1 py-1">
-                                                                {{ __('Unit') }}:<br>
-                                                                <b>{{ $item->weight_unit }}</b>
-                                                            </td>
-                                                            <td class="px-1 py-1">
-                                                                @if ($quotation->mode_of_transport == 'Air')
-                                                                {{ __('Kgs') }}:<br>
-                                                                @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
-                                                                {{ __('m³') }}:<br>
-                                                                @endif
-                                                                <b>{{ $item->item_total_volume_weight_cubic_meter }}</b>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td class="px-2 py-2" colspan="5">{{ _('Cargo Description') }}: <b>{{ $item->cargo_description }}</b></td>
-                                                            <td class="px-2 py-2" colspan="5">
-
-                                                                @if ($item->electric_vehicle == 'yes')
-                                                                    <span style="color:#888ea8">Electric Vehicle:</span> {{ $item->electric_vehicle }}
-                                                                @endif
-
-                                                                @if ($item->dangerous_cargo == 'yes')
-                                                                <span style="color:#888ea8">Dangerous Cargo:</span> {{ $item->dangerous_cargo }}<br>
-                                                                    @if ($item->dc_imoclassification_1 != '' || $item->dc_unnumber_1 != '') {{ $item->dc_imoclassification_1 .' : '. $item->dc_unnumber_1.', ' }} @endif
-                                                                    @if ($item->dc_imoclassification_2 != '' || $item->dc_unnumber_2 != '') {{ $item->dc_imoclassification_2 .' : '. $item->dc_unnumber_2.', ' }} @endif
-                                                                    @if ($item->dc_imoclassification_3 != '' || $item->dc_unnumber_3 != '') {{ $item->dc_imoclassification_3 .' : '. $item->dc_unnumber_3.', ' }} @endif
-                                                                    @if ($item->dc_imoclassification_4 != '' || $item->dc_unnumber_4 != '') {{ $item->dc_imoclassification_4 .' : '. $item->dc_unnumber_4.', ' }} @endif
-                                                                    @if ($item->dc_imoclassification_5 != '' || $item->dc_unnumber_5 != '') {{ $item->dc_imoclassification_5 .' : '. $item->dc_unnumber_5.', ' }} @endif
-                                                                @endif
-                                                            </td>
-                                                        </tr>
-                                                        {{-- End Item --}}
-                                                        @php
-                                                            $numcont ++;
-                                                        @endphp
-
-                                                        @endforeach
-
-                                                    @endif
-
-
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 mt-0 @if ($quotation->cargo_type == 'FTL' || $quotation->cargo_type == 'FCL') d-none @else d-block; @endif">
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered mb-0">
-                                                <thead>
-                                                    <tr>
-                                                        <th colspan="4" class="px-2 py-2"><b>{{ __('Total (summary)') }}</b></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td class="px-2 py-1">
-                                                            {{ __('Qty') }}:<br>
-                                                            <b>{{ $quotation->total_qty }}</b>
-                                                        </td>
-                                                        <td class="px-2 py-1">
-                                                            @if ($quotation->mode_of_transport == 'Air')
-                                                            {{ __('Actual Weight (Kgs)') }}:<br>
-                                                            @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
-                                                            {{ __('Weight') }}:<br>
-                                                            @endif
-                                                            <b>{{ $quotation->total_actualweight }}</b>
-                                                        </td>
-                                                        <td class="px-2 py-1">
-                                                            @if ($quotation->mode_of_transport == 'Air')
-                                                            {{ __('Volume Weight (Kgs)') }}:<br>
-                                                            @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container')
-                                                            {{ __('Volume (m³)') }}:<br>
-                                                            @elseif ( $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
-                                                            {{ __('Total CBM') }}:<br>
-                                                            @endif
-                                                            <b>{{ $quotation->total_volum_weight }}</b>
-                                                        </td>
-                                                        <td class="px-2 py-1">
-                                                            @if ($quotation->mode_of_transport == 'Air')
-                                                            {{ __('Chargeable Weight (Kgs)') }}:<br>
-                                                            <b>{{ $quotation->tota_chargeable_weight }}</b>
-                                                            @endif
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                @endif
-
-                                <div class="col-md-12 mt-2">
-                                    @if (!$quotation->is_internal_inquiry)
-                                        <h6 class="text-primary mb-1">{{ __('Additional Information') }}</h6>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Shipment readiness")}}:</label> {{ $quotation->shipment_ready_date ? : '-' }} {!! $shipment_ready_date_label !!}</p>
+                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Cargo Description")}}:</label><br> {!! nl2br($quotation->cargo_description) ? : '-' !!}</p>
+                            </div>
+                            <div class="col-md-3 mt-0">
+                                <div class="card py-3 px-3">
+                                    <label for="ctdocuments" class="fw-bold mb-0 flex align-items-center gap-2">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M14.2934 7.36678L8.1667 13.4934C7.41613 14.244 6.39815 14.6657 5.3367 14.6657C4.27524 14.6657 3.25726 14.244 2.5067 13.4934C1.75613 12.7429 1.33447 11.7249 1.33447 10.6634C1.33447 9.60199 1.75613 8.58401 2.5067 7.83344L8.63336 1.70678C9.13374 1.2064 9.81239 0.925293 10.52 0.925293C11.2277 0.925293 11.9063 1.2064 12.4067 1.70678C12.9071 2.20715 13.1882 2.88581 13.1882 3.59344C13.1882 4.30108 12.9071 4.97973 12.4067 5.48011L6.27336 11.6068C6.02318 11.857 5.68385 11.9975 5.33003 11.9975C4.97621 11.9975 4.63688 11.857 4.3867 11.6068C4.13651 11.3566 3.99596 11.0173 3.99596 10.6634C3.99596 10.3096 4.13651 9.9703 4.3867 9.72011L10.0467 4.06678" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        {{ __('Attachments') }}:
+                                    </label>
+                                    @if ($quotation_documents->count() > 0)
+                                        <ul class="mb-0 ps-3" id="ctdocuments">
+                                            @foreach ($quotation_documents as $document)
+                                                <li><a href="{{ asset('storage/uploads/quotation_documents').'/'. $document->document_path }}" class="text-info" target="_blank">{{ $document->document_path }}</a></li>
+                                            @endforeach
+                                        </ul>
                                     @else
-                                        <h6 class="text-primary mb-1">{{ __('Cargo Details') }}</h6>
+                                        <ul class="mb-0 ps-3" id="ctdocuments">
+                                            <li>No documents</li>
+                                        </ul>
                                     @endif
                                 </div>
-
-                                <div class="col-md-6 mt-0">
-                                    @if (!$quotation->is_internal_inquiry)
-                                        <label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ number_format($quotation->declared_value) }}<br>
-                                        <label class="fw-bold mb-0">{{__("Insurance required")}}:</label> {{ $quotation->insurance_required }}<br>
-                                        <label class="fw-bold mb-0">{{__("Currency")}}:</label> {{ $quotation->currency }}<br>
-                                    @endif
-                                    <label class="fw-bold mb-0">{{__("Shipping date")}}:</label> {{ ($quotation->shipping_date == '') ? __('I don’t have a shipping date yet.') : $quotation->shipping_date }}<br>
-                                    <label class="fw-bold mb-0">{{__("Cargo Description")}}:</label> <br> {!! nl2br($quotation->cargo_description) ? : '-' !!}<br>
-                                </div>
-
-                                <div class="col-md-6 mt-0">
-                                    <div class="card py-2 px-2">
-                                        @if ($quotation_documents->count() > 0)
-                                            <label for="ctdocuments" class="fw-bold mb-0">{{ __('Documents') }}:</label>
-                                            <ul class="mb-0 ps-3" id="ctdocuments">
-                                                @foreach ($quotation_documents as $document)
-                                                    <li><a href="{{ asset('storage/uploads/quotation_documents').'/'. $document->document_path }}" class="text-info" target="_blank">{{ $document->document_path }}</a></li>
-                                                @endforeach
-                                            </ul>
-                                        @else
-                                            <label for="ctdocuments" class="fw-bold mb-0">{{ __('Documents') }}:</label>
-                                            <span>{{ __('No documents') }}</span>
-                                        @endif
-                                    </div>
-                                </div>
-
-                                <hr class="mb-0 mt-2">
-                                <div class="col-md-12 mt-2 d-flex align-items-center justify-content-between">
-                                    <h6 class="text-primary mb-1">{{ __('Customers Information') }}</h6>
-                                    @if ($quotation->is_internal_inquiry and $quotation->recovered_account)
-                                        <span class="recovered_account">
-                                            <img src="{{ asset('assets/img/icon_recovered_account.png') }}" alt="">
-                                            Recovered Account
-                                        </span>
-                                    @endif
-                                </div>
-                                <div class="col-md-6 mt-0">
-                                    <label class="fw-bold mb-0">{{__("First Name")}}:</label> {{ $quotation->customer_name }}<br>
-                                </div>
-                                @if (!$quotation->is_internal_inquiry)
-                                    <div class="col-md-6 mt-0">
-                                        <label class="fw-bold mb-0">{{__("Last Name")}}:</label> {{ $quotation->customer_lastname }}<br>
-                                    </div>
-                                @endif
-                                <div class="col-md-6 mt-0">
-                                    <label class="fw-bold mb-0">{{__("Company name")}}:</label> {{ $quotation->customer_company_name }}<br>
-                                </div>
-                                @if (!$quotation->is_internal_inquiry)
-                                    <div class="col-md-6 mt-0">
-                                        <label class="fw-bold mb-0">{{__("Company website")}}:</label> {{ $quotation->customer_company_website }}<br>
-                                    </div>
-                                @endif
-                                <div class="col-md-6 mt-0">
-                                    <label class="fw-bold mb-0">{{__("Company email")}}:</label> {{ $quotation->customer_email }}<br>
-                                </div>
-                                <div class="col-md-6 mt-0">
-                                    @if (!$quotation->is_internal_inquiry)
-                                        <label class="fw-bold mb-0">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}<br>
-                                    @else
-                                        <label class="fw-bold mb-0">{{__("Phone")}}:</label> {{ $quotation->customer_phone }}<br>
-                                    @endif
-                                </div>
-                                @if (!$quotation->is_internal_inquiry)
-                                    <div class="col-md-6 mt-0">
-                                        <label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }}<br>
-                                    </div>
-                                @endif
-                                @if (!$quotation->is_internal_inquiry)
-                                    <div class="col-md-6 mt-0">
-                                        <label class="fw-bold mb-0">{{__("Customer type")}}:</label> {{$quotation->customer_type}}<br>
-                                    </div>
-                                @endif
-                                <div class="col-md-6 mt-0">
-                                    @if (!$quotation->is_internal_inquiry)
-                                        <label class="fw-bold mb-0">{{__("User type")}}:</label> {{ $quotation->user_type }}<br>
-                                    @else
-                                        <label class="fw-bold mb-0">{{__("User type")}}:</label> {{ __('Internal') }}<br>
-                                    @endif
-                                </div>
-                                <div class="col-md-6 mt-0">
-                                    <label class="fw-bold mb-0">{{__("Source")}}:</label>
-                                    @switch($quotation->customer_source)
-                                        @case('agt') {{ __('Agent') }} @break
-                                        @default {{ $quotation->customer_source }}
-                                    @endswitch
-                                    <br>
-                                </div>
-                            @endif
+                            </div>
+                            {{-- ..End Data the inquiry external 2 --}}
+                            {{-- old layout --}}
                         </div>
                     </div>
                 </div>

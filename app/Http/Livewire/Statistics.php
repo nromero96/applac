@@ -91,7 +91,7 @@ class Statistics extends Component
                 ->join('quotations', 'quotations.assigned_user_id', '=', 'users.id')
                 ->groupBy('users.id')
                 ->where('users.status', 'active')
-                ->select('users.id as id', 'name', 'lastname', 'department_id')
+                ->select('users.id as id', 'name', 'lastname', 'users.department_id')
                 ->with('department');
             $user_sales_dpto = $user_sales_dpto->get();
             $user_sales_dpto_arr = [];

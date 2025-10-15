@@ -435,8 +435,6 @@
                                                     $feact_active = '';
                                                     $trfeatured = '';
                                                 }
-
-
                                             @endphp
 
                                             {{-- @if ($quotation->quotation_assigned_user_id == Auth::user()->id || Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Customer')) --}}
@@ -600,8 +598,6 @@
                                                 </td>
 
                                                 @if($adminorsales)
-
-
                                                     <td class="px-1">
                                                         <span class="cret-bge ms-0 w-100 align-middle badge @if ($quotation->quotation_result == 'Won')
                                                                 badge-light-won @elseif ($quotation->quotation_result == 'Lost')
@@ -611,7 +607,6 @@
                                                     </span>
 
                                                     </td>
-
                                                 @endif
 
                                                 <td class="px-2">
@@ -641,71 +636,71 @@
 
                                                 @if($adminorsales)
 
-                                                {{-- Select if user logged is admin spatie --}}
-                                                @if (Auth::user()->hasRole('Administrator'))
-                                                    <td>
+                                                    {{-- Select if user logged is admin spatie --}}
+                                                    @if (Auth::user()->hasRole('Administrator'))
+                                                        <td>
 
-                                                        <select class="user-select-assigned @if($quotation->quotation_assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->quotation_id }}">
-                                                            <option value="">{{ __('Unassigned') }}</option>
-                                                            @foreach ($users as $user)
-                                                                <option value="{{ $user->id }}" @if($user->id == $quotation->quotation_assigned_user_id) selected @endif>{{ $user->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        @if (false)
-                                                            @if($quotation->quotation_assigned_user_id == null)
+                                                            <select class="user-select-assigned @if($quotation->quotation_assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->quotation_id }}">
+                                                                <option value="">{{ __('Unassigned') }}</option>
+                                                                @foreach ($users as $user)
+                                                                    <option value="{{ $user->id }}" @if($user->id == $quotation->quotation_assigned_user_id) selected @endif>{{ $user->name }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                            @if (false)
+                                                                @if($quotation->quotation_assigned_user_id == null)
 
-                                                                {{-- <a class="badge badge-primary text-start me-2 action-edit" href="{{ route('assignQuoteForMe', $quotation->quotation_id) }}">
-                                                                    {{ __('Make') }}
-                                                                </a> --}}
+                                                                    {{-- <a class="badge badge-primary text-start me-2 action-edit" href="{{ route('assignQuoteForMe', $quotation->quotation_id) }}">
+                                                                        {{ __('Make') }}
+                                                                    </a> --}}
 
-                                                                {{ __('Unassigned') }}
+                                                                    {{ __('Unassigned') }}
 
-                                                            @else
-                                                                @if ($quotation->quotation_assigned_user_id == Auth::user()->id)
-                                                                    <span class="badge badge-light-won">{{ __('You were assigned') }}</span>
                                                                 @else
-                                                                    <span class="badge badge-light-danger">{{ __('Other user assigned') }}</span>
+                                                                    @if ($quotation->quotation_assigned_user_id == Auth::user()->id)
+                                                                        <span class="badge badge-light-won">{{ __('You were assigned') }}</span>
+                                                                    @else
+                                                                        <span class="badge badge-light-danger">{{ __('Other user assigned') }}</span>
+                                                                    @endif
                                                                 @endif
                                                             @endif
+                                                        </td>
+                                                    @endif
+
+                                                    <td class="ps-2 pe-2">
+                                                        <span class="text-capitalize badge-type-inquiry {{ $quotation->type_inquiry->list_class() }}">
+                                                            {!! $quotation->type_inquiry->list_icon() !!}
+                                                            {{ $quotation->type_inquiry->label() }}
+                                                        </span>
+                                                    </td>
+
+                                                    <td class="py-1 align-middle px-2">
+                                                        @if($quotation->user_source)
+                                                            @php
+
+                                                                //Color
+                                                                $sourceMap = [
+                                                                    'Search Engine'  => ['class' => 'sb-color-seo', 'text' => 'seo'],
+                                                                    'LinkedIn'       => ['class' => 'sb-color-lnk', 'text' => 'lnk'],
+                                                                    'AI Assistant'   => ['class' => 'sb-color-aia', 'text' => 'aia'],
+                                                                    'Social Media'   => ['class' => 'sb-color-soc', 'text' => 'soc'],
+                                                                    'Referral'       => ['class' => 'sb-color-ref', 'text' => 'ref'],
+                                                                    'Industry Event' => ['class' => 'sb-color-evt', 'text' => 'evt'],
+                                                                    'Other'          => ['class' => 'sb-color-oth', 'text' => 'oth'],
+                                                                    'ppc'            => ['class' => 'sb-color-ppc', 'text' => 'ppc'],
+                                                                    'Direct Client'  => ['class' => 'sb-color-dir', 'text' => 'dir'],
+                                                                    'agt'            => ['class' => 'sb-color-agt', 'text' => 'agt'],
+                                                                ];
+
+                                                                $source = $quotation->user_source;
+                                                                $class_sb = $sourceMap[$source]['class'] ?? 'sb-color-oth';
+                                                                $text_sb  = $sourceMap[$source]['text']  ?? 'N/A';
+
+                                                            @endphp
+                                                            <span class="source-badge {{$class_sb}}" title="{{$quotation->user_source}}">{{ $text_sb }}</span>
+                                                        @else
+                                                            <span>-</span>
                                                         @endif
                                                     </td>
-                                                @endif
-
-                                                <td class="ps-2 pe-2">
-                                                    <span class="text-capitalize badge-type-inquiry {{ $quotation->type_inquiry->list_class() }}">
-                                                        {!! $quotation->type_inquiry->list_icon() !!}
-                                                        {{ $quotation->type_inquiry->label() }}
-                                                    </span>
-                                                </td>
-
-                                                <td class="py-1 align-middle px-2">
-                                                    @if($quotation->user_source)
-                                                        @php
-
-                                                            //Color
-                                                            $sourceMap = [
-                                                                'Search Engine'  => ['class' => 'sb-color-seo', 'text' => 'seo'],
-                                                                'LinkedIn'       => ['class' => 'sb-color-lnk', 'text' => 'lnk'],
-                                                                'AI Assistant'   => ['class' => 'sb-color-aia', 'text' => 'aia'],
-                                                                'Social Media'   => ['class' => 'sb-color-soc', 'text' => 'soc'],
-                                                                'Referral'       => ['class' => 'sb-color-ref', 'text' => 'ref'],
-                                                                'Industry Event' => ['class' => 'sb-color-evt', 'text' => 'evt'],
-                                                                'Other'          => ['class' => 'sb-color-oth', 'text' => 'oth'],
-                                                                'ppc'            => ['class' => 'sb-color-ppc', 'text' => 'ppc'],
-                                                                'Direct Client'  => ['class' => 'sb-color-dir', 'text' => 'dir'],
-                                                                'agt'            => ['class' => 'sb-color-agt', 'text' => 'agt'],
-                                                            ];
-
-                                                            $source = $quotation->user_source;
-                                                            $class_sb = $sourceMap[$source]['class'] ?? 'sb-color-oth';
-                                                            $text_sb  = $sourceMap[$source]['text']  ?? 'N/A';
-
-                                                        @endphp
-                                                        <span class="source-badge {{$class_sb}}" title="{{$quotation->user_source}}">{{ $text_sb }}</span>
-                                                    @else
-                                                        <span>-</span>
-                                                    @endif
-                                                </td>
 
                                                 @endif
 

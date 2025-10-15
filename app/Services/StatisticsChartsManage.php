@@ -21,10 +21,10 @@ class StatisticsChartsManage {
                 ->join('quotations', 'quotations.assigned_user_id', '=', 'users.id')
                 ->groupBy('users.id')
                 ->where('users.status', 'active')
-                ->select('users.id as id', 'name', 'lastname', 'department_id')
+                ->select('users.id as id', 'name', 'lastname', 'users.department_id')
                 ->orderBy('users.name');
         if (Auth::user()->hasRole('Leader')) {
-            $this->representants->where('department_id', auth()->user()->department_id);
+            $this->representants->where('users.department_id', auth()->user()->department_id);
         }
 
         $this->representants = $this->representants->get();

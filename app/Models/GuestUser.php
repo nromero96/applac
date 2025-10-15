@@ -23,7 +23,21 @@ class GuestUser extends Model
         'business_role',
         'ea_shipments',
         'source',
+        'tier',
+        'score',
+        'network',
+        'recovered_account',
+        'referred_by',
         'subscribed_to_newsletter',
     ];
 
+    protected $casts = [
+        'network' => 'array',
+        'recovered_account' => 'boolean',
+        'referred_by' => 'boolean',
+    ];
+
+    public function getScoreAttribute($value) {
+        return rtrim(rtrim($value, '0'), '.');
+    }
 }

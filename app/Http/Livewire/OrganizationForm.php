@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire;
 
+use App\Enums\TypeNetwork;
+use App\Models\Country;
 use App\Models\Organization;
 use Livewire\Component;
 
@@ -11,13 +13,29 @@ class OrganizationForm extends Component
     public $name;
     public $addresses = [];
     public $contacts = [];
+    public $tier;
+    public $score;
+    public $country_id;
+    public $network = [];
+    public $recovered_account = false;
+    public $referred_by = false;
 
     public $org_editing;
     public $showing = false;
+    public $countries_options;
+    public $network_options;
+    public $location_label;
+    public $network_label;
 
     public $rules = [
         'name' => 'required|max:255',
         'addresses.*' => 'required',
+        'tier' => 'nullable',
+        'score' => 'nullable|numeric|between:0,500',
+        'country_id' => 'nullable',
+        'network' => 'nullable',
+        'recovered_account' => 'nullable',
+        'referred_by' => 'nullable',
         'contacts' => 'required',
         'contacts.*.name' => 'required|max:255',
         'contacts.*.job_title' => 'nullable|max:255',
@@ -39,6 +57,10 @@ class OrganizationForm extends Component
 
     public function mount(){
         if ($this->org_editing) {
+            // meta
+            $this->countries_options = Country::orderBy('name')->get();
+            $this->network_options = TypeNetwork::options();
+            // data
             $this->code = $this->org_editing->code;
             $this->name = $this->org_editing->name;
             if ($this->org_editing->addresses == '') {
@@ -46,10 +68,21 @@ class OrganizationForm extends Component
             } else {
                 $this->addresses = $this->org_editing->addresses;
             }
+            $this->tier = $this->org_editing->tier;
+            $this->score = $this->org_editing->score;
+            $this->country_id = $this->org_editing->country_id;
+            $this->location_label = $this->org_editing->country?->name;
+            $this->network = $this->org_editing->network;
+            $this->network_label = collect($this->org_editing->network)
+                                ->map(fn($item) => TypeNetwork::tryFrom($item)?->meta('label') ?? $item)
+                                ->toArray();
+            $this->recovered_account = $this->org_editing->recovered_account;
+            $this->referred_by = $this->org_editing->referred_by;
+
             $this->contacts = $this->org_editing->contacts->toArray();
-            $this->rules['code'] = 'required|max:20|unique:organizations,id,'.$this->org_editing->id;
+            $this->rules['code'] = 'nullable|max:20|unique:organizations,id,'.$this->org_editing->id;
         } else {
-            $this->rules['code'] = 'required|max:20|unique:organizations,code';
+            $this->rules['code'] = 'nullable|max:20|unique:organizations,code';
         }
     }
 
@@ -63,6 +96,9 @@ class OrganizationForm extends Component
 
         if (sizeof($this->addresses) == 0) {
             $data['addresses'] = null;
+        }
+        if (sizeof($this->network) == 0) {
+            $data['network'] = null;
         }
         $org = Organization::create($data);
         $org->contacts()->createMany($this->contacts);

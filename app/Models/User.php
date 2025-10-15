@@ -33,6 +33,11 @@ class User extends Authenticatable
         'business_role',
         'ea_shipments',
         'source',
+        'tier',
+        'score',
+        'network',
+        'recovered_account',
+        'referred_by',
         'password',
         'status',
         'photo',
@@ -57,6 +62,9 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'network' => 'array',
+        'recovered_account' => 'boolean',
+        'referred_by' => 'boolean',
     ];
 
 

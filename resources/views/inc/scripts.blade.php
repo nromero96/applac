@@ -131,6 +131,9 @@
         @case('deals')
             <script src="{{asset('plugins/src/daterangepicke/moment.min.js')}}"></script>
             <script src="{{asset('plugins/src/daterangepicke/daterangepicker.js')}}"></script>
+            <script>
+                $(() => $('[data-toggle="tooltip"]').tooltip())
+            </script>
             @break
 
         @default
