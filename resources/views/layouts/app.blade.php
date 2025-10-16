@@ -48,6 +48,19 @@
                 width: 100%;
             }
         }
+        .env-demo {
+            position: fixed;
+            z-index: 10000000000;
+            background-color: #c00000;
+            color: white;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            line-height: 1;
+            padding: 4px 12px;
+            border-radius: 0 0 6px 6px;
+            font-size: 12px;
+        }
     </style>
 
     @if(app()->environment('production'))
@@ -57,6 +70,9 @@
     @livewireStyles
 </head>
 <body class="layout-boxed">
+    @if (config('app.debug'))
+        <div class="env-demo">Demo Environment</div>
+    @endif
 
     @if(app()->environment('production'))
         @include('partials.gtm_body')
