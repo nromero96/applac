@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateDepartmentsTable extends Migration
@@ -18,6 +19,12 @@ class CreateDepartmentsTable extends Migration
             $table->string('name');
             $table->timestamps();
         });
+
+        // Insertar los dos valores fijos
+        DB::table('departments')->insert([
+            ['name' => 'SEO/House'],
+            ['name' => 'Agents'],
+        ]);
     }
 
     /**
