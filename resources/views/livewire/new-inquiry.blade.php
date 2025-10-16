@@ -479,13 +479,27 @@
 @push('scripts')
     <script>
         document.addEventListener('livewire:load', function () {
-            const select_network = new TomSelect('#select-network', {
-                plugins: ['remove_button']
-            });
+            let select_network;
+
+            function initTomSelect() {
+                if (select_network) {
+                    select_network.destroy();
+                }
+
+                const el = document.querySelector('#select-network');
+                if (el) {
+                    select_network = new TomSelect(el, {
+                        plugins: ['remove_button']
+                    });
+                }
+            }
+
+            initTomSelect();
 
             // Volver a inicializarlos cada vez que Livewire actualiza el DOM
             Livewire.hook('message.processed', (message, component) => {
                 $(() => $('[data-toggle="tooltip"]').tooltip());
+                initTomSelect();
             });
 
             $(() => $('[data-toggle="tooltip"]').tooltip())
@@ -504,10 +518,12 @@
             });
 
             Livewire.on('send-network-tom-select', (data) => {
-                select_network.clear();
-                if (data.length > 0) {
-                    select_network.addItems(data);
-                }
+                setTimeout(() => {
+                    select_network.clear();
+                    if (data.length > 0) {
+                        select_network.addItems(data);
+                    }
+                }, 0);
             });
         });
     </script>

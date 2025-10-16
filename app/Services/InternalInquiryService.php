@@ -37,19 +37,27 @@ class InternalInquiryService {
         }
 
         // type inquiry
-        $user_dept = auth()->user()->department_id;
-        switch ($user_dept) {
-            case TypeDepartment::SEO_HOUSE_DEPT->value:
-                $types_inquiries[] = ['id' => TypeInquiry::INTERNAL->value, 'label' => TypeInquiry::INTERNAL->label()];
-                $types_inquiries[] = ['id' => TypeInquiry::INTERNAL_OTHER->value, 'label' => TypeInquiry::INTERNAL_OTHER->label()];
-                $type_inquiry = TypeInquiry::INTERNAL->value;
-                break;
-            case TypeDepartment::AGENTS_DEPT->value:
-                $types_inquiries[] = ['id' => TypeInquiry::INTERNAL_LEGACY->value, 'label' => TypeInquiry::INTERNAL_LEGACY->label()];
-                $types_inquiries[] = ['id' => TypeInquiry::INTERNAL_OTHER_AGT->value, 'label' => TypeInquiry::INTERNAL_OTHER_AGT->label()];
-                $type_inquiry = TypeInquiry::INTERNAL_LEGACY->value;
-                break;
-            default: break;
+        if (Auth::user()->hasRole('Administrator')) {
+            $types_inquiries[] = ['id' => TypeInquiry::INTERNAL->value, 'label' => TypeInquiry::INTERNAL->label()];
+            $types_inquiries[] = ['id' => TypeInquiry::INTERNAL_OTHER->value, 'label' => TypeInquiry::INTERNAL_OTHER->label()];
+            $types_inquiries[] = ['id' => TypeInquiry::INTERNAL_LEGACY->value, 'label' => TypeInquiry::INTERNAL_LEGACY->label()];
+            $types_inquiries[] = ['id' => TypeInquiry::INTERNAL_OTHER_AGT->value, 'label' => TypeInquiry::INTERNAL_OTHER_AGT->label() . ' Agt'];
+            $type_inquiry = TypeInquiry::INTERNAL->value;
+        } else {
+            $user_dept = auth()->user()->department_id;
+            switch ($user_dept) {
+                case TypeDepartment::SEO_HOUSE_DEPT->value:
+                    $types_inquiries[] = ['id' => TypeInquiry::INTERNAL->value, 'label' => TypeInquiry::INTERNAL->label()];
+                    $types_inquiries[] = ['id' => TypeInquiry::INTERNAL_OTHER->value, 'label' => TypeInquiry::INTERNAL_OTHER->label()];
+                    $type_inquiry = TypeInquiry::INTERNAL->value;
+                    break;
+                case TypeDepartment::AGENTS_DEPT->value:
+                    $types_inquiries[] = ['id' => TypeInquiry::INTERNAL_LEGACY->value, 'label' => TypeInquiry::INTERNAL_LEGACY->label()];
+                    $types_inquiries[] = ['id' => TypeInquiry::INTERNAL_OTHER_AGT->value, 'label' => TypeInquiry::INTERNAL_OTHER_AGT->label()];
+                    $type_inquiry = TypeInquiry::INTERNAL_LEGACY->value;
+                    break;
+                default: break;
+            }
         }
 
         // locations
@@ -65,7 +73,7 @@ class InternalInquiryService {
         $mode_of_transport_options = TypeModeTransport::options_internal();
 
         return [
-            'member' => $member,
+            'member' => isset($member) ? $member : null,
             'members' => $members,
             'member_sales_role' => $member_sales_role,
             'types_inquiries' => $types_inquiries,

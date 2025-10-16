@@ -138,12 +138,17 @@ class NewInquiry extends Component
         return view('livewire.new-inquiry');
     }
 
+    public function updated() {
+        $this->emit('send-network-tom-select', $this->network);
+    }
+
     public function updatedOrgName() {
         if ($this->org_name != '') {
             $this->organizations = Organization::where('name', 'LIKE', "%$this->org_name%")->select('id', 'name')->get();
         } else {
             $this->reset('org_code', 'organizations', 'contacts', 'contact');
         }
+        $this->emit('send-network-tom-select', $this->network);
     }
 
     public function updatedTypeInquiry() {
@@ -159,6 +164,7 @@ class NewInquiry extends Component
 
     public function updatedModeOfTransport($value) {
         $this->reset('cargo_details');
+        $this->emit('send-network-tom-select', $this->network);
         // cargo_details_list
         $internalInquiryService = new InternalInquiryService();
         $internalInquiryService->relationTransportAndCargoDetails($this);
