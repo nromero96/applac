@@ -112,52 +112,54 @@
             </div>
 
             {{-- Source --}}
-            <div class="__field" x-data="{ show_dropdown: false }" @click.away="show_dropdown = false">
-                <button type="button" @click="show_dropdown = !show_dropdown">
-                    Source {!! $icon_dropdown !!}
-                </button>
-                <ul class="__source" x-show="show_dropdown" x-cloak>
-                    @foreach ($this->filters_data['source'] as $key => $items)
-                        <li x-data="{
-                            keys: {{ json_encode(array_column($items, 'key')) }},
-                            get allChecked() {
-                                return this.keys.every(key => filters.source.includes(key));
-                            },
-                            toggleGroup(checked) {
-                                if (checked) {
-                                    filters.source = [...new Set([...filters.source, ...this.keys])];
-                                } else {
-                                    filters.source = filters.source.filter(key => !this.keys.includes(key));
+            @if (false)
+                <div class="__field" x-data="{ show_dropdown: false }" @click.away="show_dropdown = false">
+                    <button type="button" @click="show_dropdown = !show_dropdown">
+                        Source {!! $icon_dropdown !!}
+                    </button>
+                    <ul class="__source" x-show="show_dropdown" x-cloak>
+                        @foreach ($this->filters_data['source'] as $key => $items)
+                            <li x-data="{
+                                keys: {{ json_encode(array_column($items, 'key')) }},
+                                get allChecked() {
+                                    return this.keys.every(key => filters.source.includes(key));
+                                },
+                                toggleGroup(checked) {
+                                    if (checked) {
+                                        filters.source = [...new Set([...filters.source, ...this.keys])];
+                                    } else {
+                                        filters.source = filters.source.filter(key => !this.keys.includes(key));
+                                    }
                                 }
-                            }
-                        }">
-                            <label class="form-check">
-                                <input
-                                    type="checkbox"
-                                    class="form-check-input"
-                                    :checked="allChecked"
-                                    @change="toggleGroup($event.target.checked)"
-                                >
-                                <div class="form-check-label">
-                                    <strong>{{ $key }}</strong>
-                                </div>
-                            </label>
-                            <ul>
-                                @foreach ($items as $subitem)
-                                    <li>
-                                        <label class="form-check">
-                                            <input type="checkbox" class="form-check-input" value="{{ $subitem['key'] }}" x-model="filters.source">
-                                            <div class="form-check-label">
-                                                <span style="{{ $subitem['style'] }}">{{ $subitem['label'] }}</span>
-                                            </div>
-                                        </label>
-                                    </li>
-                                @endforeach
-                            </ul>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+                            }">
+                                <label class="form-check">
+                                    <input
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        :checked="allChecked"
+                                        @change="toggleGroup($event.target.checked)"
+                                    >
+                                    <div class="form-check-label">
+                                        <strong>{{ $key }}</strong>
+                                    </div>
+                                </label>
+                                <ul>
+                                    @foreach ($items as $subitem)
+                                        <li>
+                                            <label class="form-check">
+                                                <input type="checkbox" class="form-check-input" value="{{ $subitem['key'] }}" x-model="filters.source">
+                                                <div class="form-check-label">
+                                                    <span style="{{ $subitem['style'] }}">{{ $subitem['label'] }}</span>
+                                                </div>
+                                            </label>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <button type="button" class="__btn" wire:click="updateParent()">Apply</button>
             @if ($this->is_filtering)

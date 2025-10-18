@@ -25,9 +25,13 @@ class InternalInquiryService {
         $setting_users_quoted = Setting::where('key', 'users_selected_dropdown_quotes')->first();
         $setting_users_quoted_ids = array_map('intval', json_decode($setting_users_quoted->value));
         $members = User::whereIn('id', $setting_users_quoted_ids)
-                        ->where('department_id', auth()->user()->department_id)
                         ->select('id', 'name', 'lastname')
-                        ->get();
+                        ;
+        if (!Auth::user()->hasRole('Administrator')) {
+            $members->where('department_id', auth()->user()->department_id);
+        }
+
+        $members = $members->get();
 
         // member adm or sales
         $member_sales_role = '';

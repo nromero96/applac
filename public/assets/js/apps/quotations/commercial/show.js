@@ -93,17 +93,19 @@ function listQuotationNotes(quotationId) {
     fetch(`/list-quotation-notes/${quotationId}`)  // Cambia la URL según la ruta de tu API
         .then(response => response.json())  // Convertimos la respuesta a JSON
         .then(data => {
+            console.log(data);
             // Iterar sobre las notas de cotización y mostrarlas en el DOM
             let notesContainer = document.getElementById('quotation-notes');  // Suponiendo que tengas un contenedor en el DOM
             notesContainer.innerHTML = '';  // Limpiar contenido previo
 
             data.forEach(note => {
                 // Limpiar y separar el estado
+                let [last_status_base, new_status_base] = note.action_base.replace(/'/g, "").split(' to ');
                 let [last_status, new_status] = note.action.replace(/'/g, "").split(' to ');
 
                 // Crear los badges usando la función
-                let badge_last_status = getBadge(last_status);
-                let badge_new_status = getBadge(new_status);
+                let badge_last_status = getBadge(last_status_base, last_status);
+                let badge_new_status = getBadge(new_status_base, new_status);
 
                 // manejar el formato de la fecha (YYY-MM-DD) y hora(HH:MM)
                 let date = new Date(note.created_at);
@@ -313,7 +315,7 @@ function listQuotationNotes(quotationId) {
 
 
 // Función para generar los badges según el estado
-function getBadge(status) {
+function getBadge(status, statusLabel = '') {
     const badgeClasses = {
         'Pending': 'badge-light-pending',
         'Contacted': 'badge-light-warning',
@@ -329,7 +331,7 @@ function getBadge(status) {
     };
 
     // Retornar el badge correspondiente o uno por defecto si no se encuentra el estado
-    return `<span class="badge ${badgeClasses[status] || 'badge-light-default'}">${status}</span>`;
+    return `<span class="badge ${badgeClasses[status] || 'badge-light-default'}">${statusLabel != '' ? statusLabel : status}</span>`;
 }
 
 //onchange event for slect user-select-assigned

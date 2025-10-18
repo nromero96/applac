@@ -1,3 +1,7 @@
+@php
+    use App\Enums\TypeStatus;
+@endphp
+
 @extends('layouts.app')
 
 
@@ -97,7 +101,7 @@
                                         <!-- Dropdown status -->
                                         <div class="dropdown">
                                             <button class="dropdown-toggle rounded-pill select-dropdown me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                {{ request('status') ? request('status') : 'Status' }}
+                                                {{ request('status') ? TypeStatus::from(request('status'))->meta('label') : 'Status' }}
                                             </button>
                                             <input type="hidden" name="status" id="inputsearchstatus" value="{{ request('status') }}">
                                             <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuButton">
@@ -105,30 +109,15 @@
                                                     <a class="dropdown-item" href="#" onclick="selectStatus('')"><b>All Status</b> <small class="float-end fw-light">({{$totalQuotation}})</small></a>
                                                 </li>
                                                 @foreach ($liststatus as $status)
+                                                    @php
+                                                        $statusItem = TypeStatus::from($status->quotation_status);
+                                                        $class_sb_sch = TypeStatus::from($status->quotation_status)->meta('badge_class');
+                                                    @endphp
                                                     <li>
-                                                        <a class="dropdown-item" href="#" onclick="selectStatus('{{ $status->quotation_status }}')">
-
-                                                            @php
-                                                            //color
-                                                            if($status->quotation_status == 'Pending') {
-                                                                $class_sb_sch = 'badge-light-pending';
-                                                            } elseif($status->quotation_status == 'Contacted'){
-                                                                $class_sb_sch = 'badge-light-warning';
-                                                            } elseif($status->quotation_status == 'Stalled'){
-                                                                $class_sb_sch = 'badge-light-stalled';
-                                                            } elseif($status->quotation_status == 'Qualified') {
-                                                                $class_sb_sch = 'badge-light-info';
-                                                            } elseif($status->quotation_status == 'Quote Sent'){
-                                                                $class_sb_sch = 'badge-light-success';
-                                                            } elseif($status->quotation_status == 'Unqualified'){
-                                                                $class_sb_sch = 'badge-light-unqualified';
-                                                            } elseif($status->quotation_status == 'Deleted'){
-                                                                $class_sb_sch = 'badge-light-danger';
-                                                            } else {
-                                                                $class_sb_sch = 'badge-light-unqualified';
-                                                            }
-                                                        @endphp
-                                                        <span class="cret-bge ms-0 align-middle badge {{$class_sb_sch}}" title="{{$status->quotation_status}}">{{ $status->quotation_status }}</span>
+                                                        <a class="dropdown-item" href="#" onclick="selectStatus('{{ $statusItem->value }}')">
+                                                        <span class="cret-bge ms-0 align-middle badge {{$class_sb_sch}}" title="{{ $statusItem->meta('label') }}">
+                                                            {{ $statusItem->meta('label') }}
+                                                        </span>
                                                         <small class="float-end fw-light">({{ $status->total >= 1000 ? number_format($status->total / 1000, 1) . 'K' : $status->total }})</small>
                                                         </a>
                                                     </li>
@@ -171,51 +160,53 @@
                                         </div>
 
 
-                                        <!-- Dropdown source -->
-                                        <div class="dropdown">
-                                            <button class="dropdown-toggle rounded-pill select-dropdown me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                                {{ request('source') ? request('source') : 'Source' }}
-                                            </button>
-                                            <input type="hidden" name="source" id="inputsearchsource" value="{{ request('source') }}">
-                                            <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuButton">
-                                                <li>
-                                                    <a class="dropdown-item" href="#" onclick="selectSource('')"><b>All Sources</b> <small class="float-end fw-light">({{$totalQuotation}})</small></a>
-                                                </li>
-                                                @foreach ($listsources as $source)
+                                        @if (false)
+                                            <!-- Dropdown source -->
+                                            <div class="dropdown">
+                                                <button class="dropdown-toggle rounded-pill select-dropdown me-2" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    {{ request('source') ? request('source') : 'Source' }}
+                                                </button>
+                                                <input type="hidden" name="source" id="inputsearchsource" value="{{ request('source') }}">
+                                                <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuButton">
                                                     <li>
-                                                        <a class="dropdown-item" href="#" onclick="selectSource('{{ $source->user_source }}')">
-
-
-                                                            @php
-                                                            // color
-                                                            $sourceSearchMap = [
-                                                                'Search Engine' => ['class' => 'sb-color-seo', 'text' => 'seo'],
-                                                                'LinkedIn' => ['class' => 'sb-color-lnk', 'text' => 'lnk'],
-                                                                'AI Assistant' => ['class' => 'sb-color-aia', 'text' => 'aia'],
-                                                                'Social Media' => ['class' => 'sb-color-soc', 'text' => 'soc'],
-                                                                'Referral' => ['class' => 'sb-color-ref', 'text' => 'ref'],
-                                                                'Industry Event' => ['class' => 'sb-color-evt', 'text' => 'evt'],
-                                                                'Other' => ['class' => 'sb-color-oth', 'text' => 'oth'],
-                                                                'ppc' => ['class' => 'sb-color-ppc', 'text' => 'ppc'],
-                                                                'Direct Client' => ['class' => 'sb-color-dir', 'text' => 'dir'],
-                                                                'agt' => ['class' => 'sb-color-agt', 'text' => 'agt'],
-                                                            ];
-
-                                                            $default = ['class' => 'sb-color-oth', 'text' => 'N/A'];
-                                                            $mapping = $sourceSearchMap[$source->user_source] ?? $default;
-
-                                                            $class_sb_sch = $mapping['class'];
-                                                            $text_sb_sch  = $mapping['text'];
-
-
-                                                        @endphp
-                                                        <span class="source-badge {{$class_sb_sch}}" title="{{$source->user_source}}">{{ $text_sb_sch }}</span>
-                                                        <small class="float-end fw-light">({{ $source->total >= 1000 ? number_format($source->total / 1000, 1) . 'K' : $source->total }})</small>
-                                                        </a>
+                                                        <a class="dropdown-item" href="#" onclick="selectSource('')"><b>All Sources</b> <small class="float-end fw-light">({{$totalQuotation}})</small></a>
                                                     </li>
-                                                @endforeach
-                                            </ul>
-                                        </div>
+                                                    @foreach ($listsources as $source)
+                                                        <li>
+                                                            <a class="dropdown-item" href="#" onclick="selectSource('{{ $source->user_source }}')">
+
+
+                                                                @php
+                                                                // color
+                                                                $sourceSearchMap = [
+                                                                    'Search Engine' => ['class' => 'sb-color-seo', 'text' => 'seo'],
+                                                                    'LinkedIn' => ['class' => 'sb-color-lnk', 'text' => 'lnk'],
+                                                                    'AI Assistant' => ['class' => 'sb-color-aia', 'text' => 'aia'],
+                                                                    'Social Media' => ['class' => 'sb-color-soc', 'text' => 'soc'],
+                                                                    'Referral' => ['class' => 'sb-color-ref', 'text' => 'ref'],
+                                                                    'Industry Event' => ['class' => 'sb-color-evt', 'text' => 'evt'],
+                                                                    'Other' => ['class' => 'sb-color-oth', 'text' => 'oth'],
+                                                                    'ppc' => ['class' => 'sb-color-ppc', 'text' => 'ppc'],
+                                                                    'Direct Client' => ['class' => 'sb-color-dir', 'text' => 'dir'],
+                                                                    'agt' => ['class' => 'sb-color-agt', 'text' => 'agt'],
+                                                                ];
+
+                                                                $default = ['class' => 'sb-color-oth', 'text' => 'N/A'];
+                                                                $mapping = $sourceSearchMap[$source->user_source] ?? $default;
+
+                                                                $class_sb_sch = $mapping['class'];
+                                                                $text_sb_sch  = $mapping['text'];
+
+
+                                                            @endphp
+                                                            <span class="source-badge {{$class_sb_sch}}" title="{{$source->user_source}}">{{ $text_sb_sch }}</span>
+                                                            <small class="float-end fw-light">({{ $source->total >= 1000 ? number_format($source->total / 1000, 1) . 'K' : $source->total }})</small>
+                                                            </a>
+                                                        </li>
+                                                    @endforeach
+                                                </ul>
+                                            </div>
+                                        @endif
 
 
                                         <!-- Dropdown para el rating con checkboxes -->
@@ -567,31 +558,22 @@
                                                 @endif
 
                                                 <td class="px-2">
+                                                    @php
+                                                        $statusRow = TypeStatus::from($quotation->quotation_status);
+                                                    @endphp
 
-                                                    <span class="cret-bge ms-0 w-100 align-middle badge
-                                                            @if ($quotation->quotation_status == 'Pending')
-                                                                badge-light-pending
-                                                            @elseif ($quotation->quotation_status == 'Stalled')
-                                                                badge-light-stalled
-                                                            @elseif ($quotation->quotation_status == 'Contacted')
-                                                                badge-light-warning
-                                                            @elseif ($quotation->quotation_status == 'Qualified')
-                                                                badge-light-info
-                                                            @elseif ($quotation->quotation_status == 'Attended')
-                                                                badge-light-info
-                                                            @elseif ($quotation->quotation_status == 'Quote Sent')
-                                                                badge-light-success
-                                                            @elseif ($quotation->quotation_status == 'Unqualified')
-                                                                badge-light-unqualified
-                                                            @elseif ($quotation->quotation_status == 'Deleted')
-                                                                badge-light-danger
-                                                            @endif
-                                                            inv-status">
-                                                            @if($adminorsales || in_array($quotation->quotation_status, ['Pending', 'Qualified', 'Attended', 'Quote Sent']))
-                                                                {{ $quotation->quotation_status }}
-                                                            @elseif ($quotation->quotation_status == 'Contacted')
+                                                    <span class="cret-bge ms-0 w-100 align-middle badge {{ $statusRow->meta('badge_class') }} inv-status">
+                                                            @if ($adminorsales || in_array($statusRow->value, [
+                                                                    Typestatus::PENDING->value,
+                                                                    TypeStatus::QUALIFIED->value,
+                                                                    TypeStatus::ATTENDED->value,
+                                                                    TypeStatus::QUOTE_SENT->value,
+                                                                ])
+                                                            )
+                                                                {{ $statusRow->meta('label') }}
+                                                            @elseif ($statusRow->value == TypeStatus::CONTACTED->value)
                                                                 Attending
-                                                            @elseif ($quotation->quotation_status == 'Unqualified')
+                                                            @elseif ($statusRow->value == TypeStatus::UNQUALIFIED->value)
                                                                 Unable to fulfill
                                                             @endif
                                                     </span>

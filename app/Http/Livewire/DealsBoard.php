@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Enums\TypeInquiry;
+use App\Enums\TypeStatus;
 use App\Models\GuestUser;
 use App\Models\Quotation;
 use App\Models\QuotationNote;
@@ -39,13 +40,7 @@ class DealsBoard extends Component
     ];
     public $filters_data;
 
-    public $statuses = [
-        'pending'       => ['label' => 'Pending', 'status' => 'Pending'],
-        'contacted'     => ['label' => 'Contacted', 'status' => 'Contacted'],
-        'stalled'       => ['label' => 'Stalled', 'status' => 'Stalled'],
-        'qualified'     => ['label' => 'Qualified', 'status' => 'Qualified'],
-        'quote_sent'    => ['label' => 'Quote Sent', 'status' => 'Quote Sent'],
-    ];
+    public $statuses;
     public $results = [
         'under_review'  => ['label' => 'Under Review', 'result' => 'Under Review'],
         'won'           => ['label' => 'Won', 'result' => 'Won'],
@@ -65,6 +60,13 @@ class DealsBoard extends Component
     }
 
     public function mount() {
+        $this->statuses = [
+            'pending'       => ['label' => TypeStatus::PENDING->meta('label'), 'status' => TypeStatus::PENDING->value],
+            'contacted'     => ['label' => TypeStatus::CONTACTED->meta('label'), 'status' => TypeStatus::CONTACTED->value],
+            'stalled'       => ['label' => TypeStatus::STALLED->meta('label'), 'status' => TypeStatus::STALLED->value],
+            'qualified'     => ['label' => TypeStatus::QUALIFIED->meta('label'), 'status' => TypeStatus::QUALIFIED->value],
+            'quote_sent'    => ['label' => TypeStatus::QUOTE_SENT->meta('label'), 'status' =>  TypeStatus::QUOTE_SENT->value],
+        ];
         $this->filters_data = [
             'readiness' => [
                 ['label' => 'ready now', 'style' => 'color: #4CBB17; border-color: #4CBB17', 'key' => 'Ready to ship now'],
@@ -72,14 +74,7 @@ class DealsBoard extends Component
                 ['label' => 'budgeting', 'style' => 'color: #B28600; border-color: #B28600', 'key' => 'Not yet ready, just exploring options/budgeting'],
                 // ['label' => 'N/A', 'style' => 'color: #686868; border-color: #686868', 'key' => 'null'],
             ],
-            'statuses' => [
-                'Pending'       => ['style' => 'color: #EB6200; background-color: #FFF2E8', 'label' => 'Pending'],
-                'Contacted'     => ['style' => 'color: #B28600; background-color: #FCF4D6', 'label' => 'Contacted'],
-                'Stalled'       => ['style' => 'color: #68C0FF; background-color: #EEF8FF', 'label' => 'Stalled'],
-                'Qualified'     => ['style' => 'color: #0A6AB7; background-color: #D3EAFD', 'label' => 'Qualified'],
-                'Quote Sent'    => ['style' => 'color: #1D813A; background-color: #E9F6ED', 'label' => 'Quote Sent'],
-                'Unqualified'   => ['style' => 'color: #686868; background-color: #E8E8E8', 'label' => 'Unqualified'],
-            ],
+            'statuses' => TypeStatus::deals_change_status_list(),
             'inquiry_type' => [
                 'Manual' => [
                     ['label' => TypeInquiry::INTERNAL->label(), 'key' => TypeInquiry::INTERNAL->value],
@@ -252,9 +247,28 @@ class DealsBoard extends Component
             $quotation = Quotation::findOrFail($form['quotation_id']);
 
             // remove unread quotation
-            $quotation_unread = UnreadQuotation::where('quotation_id', $quotation->id)->first();
+            $quotation_unread = UnreadQuotation::where('quotation_id', $quotation->id)->where('user_id', auth()->id())->first();
             if ($quotation_unread and $quotation_unread->user_id == auth()->id()) {
+                // verificar si ya tiene un read (si tiene hay que reemplazarlo) -> subsanación de error
                 $quotation_unread->delete();
+                $have_read = QuotationNote::where([
+                        ['type', 'read'],
+                        ['quotation_id', $quotation->id],
+                        ['user_id', auth()->id()],
+                    ])->first();
+                if (!$have_read) {
+                    // register as read
+                    QuotationNote::create([
+                        'quotation_id' => $quotation->id,
+                        'type' => 'read',
+                        'action' => '',
+                        'reason' => '',
+                        'note' => '',
+                        'user_id' => auth()->id(),
+                    ]);
+                } else {
+                    $have_read->update(['user_id' => auth()->id()]);
+                }
             }
 
             if ($form['status'] == 'Unqualified'){

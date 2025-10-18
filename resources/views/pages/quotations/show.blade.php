@@ -1,3 +1,7 @@
+@php
+    use App\Enums\TypeStatus;
+    $statusItem = TypeStatus::from($quotation->status);
+@endphp
 @extends('layouts.app')
 
 
@@ -107,31 +111,19 @@
                                 <div class="d-flex pb-2 pt-2">
                                     <div class="flex-grow-1 d-flex align-items-center gap-5">
                                         <div>
-                                            <h4 class="pt-3 pb-2 d-inline-block" style="padding-top:8px !important;">{{__("Quotation")}}: <span class="text-primary">#{{ $quotation->id }}</span></h4>
-                                            <span class="cret-bge align-middle badge
-                                                @if ($quotation->status == 'Pending')
-                                                    badge-light-pending
-                                                @elseif ($quotation->status == 'Stalled')
-                                                    badge-light-stalled
-                                                @elseif ($quotation->status == 'Contacted')
-                                                    badge-light-warning
-                                                @elseif ($quotation->status == 'Qualified')
-                                                    badge-light-info
-                                                @elseif ($quotation->status == 'Attended')
-                                                    badge-light-info
-                                                @elseif ($quotation->status == 'Quote Sent')
-                                                    badge-light-success
-                                                @elseif ($quotation->status == 'Unqualified')
-                                                    badge-light-unqualified
-                                                @elseif ($quotation->status == 'Deleted')
-                                                    badge-light-danger
-                                                @endif
-                                                inv-status">
-                                                @if($adminorsales || in_array($quotation->status, ['Pending', 'Qualified', 'Attended', 'Quote Sent']))
-                                                    {{ $quotation->status }}
-                                                @elseif ($quotation->status == 'Contacted')
+                                            <h4 class="pt-3 pb-2 d-inline-block" style="padding-top:8px !important;">{{__("Inquiry")}}: <span class="text-primary">#{{ $quotation->id }}</span></h4>
+                                            <span class="cret-bge align-middle badge {{ $statusItem->meta('badge_class') }} inv-status">
+                                                @if ($adminorsales || in_array($statusItem->value, [
+                                                        Typestatus::PENDING->value,
+                                                        TypeStatus::QUALIFIED->value,
+                                                        TypeStatus::ATTENDED->value,
+                                                        TypeStatus::QUOTE_SENT->value,
+                                                    ])
+                                                )
+                                                    {{ $statusItem->meta('label') }}
+                                                @elseif ($statusItem->value == TypeStatus::CONTACTED->value)
                                                     Attending
-                                                @elseif ($quotation->status == 'Unqualified')
+                                                @elseif ($statusItem->value == TypeStatus::UNQUALIFIED->value)
                                                     Unable to fulfill
                                                 @endif
                                             </span>
@@ -382,32 +374,20 @@
                                     </div>
                                     <div class="col text-end">
                                         <span class="cret-txt align-middle">{{__('Current: ')}}</span>
-                                        <span class="cret-bge align-middle badge
-                                                @if ($quotation->status == 'Pending')
-                                                    badge-light-pending
-                                                @elseif ($quotation->status == 'Stalled')
-                                                    badge-light-stalled
-                                                @elseif ($quotation->status == 'Contacted')
-                                                    badge-light-warning
-                                                @elseif ($quotation->status == 'Qualified')
-                                                    badge-light-info
-                                                @elseif ($quotation->status == 'Attended')
-                                                    badge-light-info
-                                                @elseif ($quotation->status == 'Quote Sent')
-                                                    badge-light-success
-                                                @elseif ($quotation->status == 'Unqualified')
-                                                    badge-light-unqualified
-                                                @elseif ($quotation->status == 'Deleted')
-                                                    badge-light-danger
-                                                @endif
-                                                inv-status">
-                                                @if($adminorsales || in_array($quotation->status, ['Pending', 'Qualified', 'Attended', 'Quote Sent']))
-                                                    {{ $quotation->status }}
-                                                @elseif ($quotation->status == 'Contacted')
-                                                    Attending
-                                                @elseif ($quotation->status == 'Unqualified')
-                                                    Unable to fulfill
-                                                @endif
+                                        <span class="cret-bge align-middle badge {{ $statusItem->meta('badge_class') }} inv-status">
+                                            @if ($adminorsales || in_array($statusItem->value, [
+                                                    Typestatus::PENDING->value,
+                                                    TypeStatus::QUALIFIED->value,
+                                                    TypeStatus::ATTENDED->value,
+                                                    TypeStatus::QUOTE_SENT->value,
+                                                ])
+                                            )
+                                                {{ $statusItem->meta('label') }}
+                                            @elseif ($statusItem->value == TypeStatus::CONTACTED->value)
+                                                Attending
+                                            @elseif ($statusItem->value == TypeStatus::UNQUALIFIED->value)
+                                                Unable to fulfill
+                                            @endif
                                         </span>
                                     </div>
                                 </div>
@@ -417,7 +397,7 @@
                                     action="{{ route('quotationupdatestatus', ['id' => $quotation->id]) }}"
                                     method="POST"
                                     id="form-status"
-                                    x-data="{ status: '', contacted_via: '' }"
+                                    x-data="{ status: {{ '"' . $quotation->status . '"' }}, contacted_via: '' }"
                                 >
                                     @csrf
                                     @method('PUT')
@@ -431,12 +411,12 @@
                                             x-model="status" @change="contacted_via = (status == 'Contacted' ? 'Email' : '')"
                                         >
                                             <option value="">{{ __('Select status') }} </option>
-                                            <option value="Pending" @if($quotation->status == 'Pending') selected {{--disabled--}}  @endif>Pending</option>
-                                            <option value="Contacted" @if($quotation->status == 'Contacted') selected {{--disabled--}} @endif>Contacted</option>
-                                            <option value="Stalled" @if($quotation->status == 'Stalled') selected {{--disabled--}} @endif>Stalled</option>
-                                            <option value="Qualified" @if($quotation->status == 'Qualified') selected {{--disabled--}} @endif>Qualified</option>
-                                            <option value="Quote Sent" @if($quotation->status == 'Quote Sent') selected {{--disabled--}} @endif>Quote Sent</option>
-                                            <option value="Unqualified" @if($quotation->status == 'Unqualified') selected {{--disabled--}} @endif>Unqualified</option>
+                                            <option value="{{ TypeStatus::PENDING->value }}">{{ TypeStatus::PENDING->meta('label') }}</option>
+                                            <option value="{{ TypeStatus::CONTACTED->value }}">{{ TypeStatus::CONTACTED->meta('label') }}</option>
+                                            <option value="{{ TypeStatus::STALLED->value }}">{{ TypeStatus::STALLED->meta('label') }}</option>
+                                            <option value="{{ TypeStatus::QUALIFIED->value }}">{{ TypeStatus::QUALIFIED->meta('label') }}</option>
+                                            <option value="{{ TypeStatus::QUOTE_SENT->value }}">{{ TypeStatus::QUOTE_SENT->meta('label') }}</option>
+                                            <option value="{{ TypeStatus::UNQUALIFIED->value }}">{{ TypeStatus::UNQUALIFIED->meta('label') }}</option>
                                         </select>
                                     </div>
                                     {{-- Contacted via --}}
@@ -642,32 +622,20 @@
                                 <div class="widget-content widget-content-area px-2 pb-3 pt-1">
                                     <div class="">
                                         <span class="cret-txt align-middle">{{__('Inquiry Status Current: ')}}</span>
-                                        <span class="cret-bge align-middle badge
-                                                @if ($quotation->status == 'Pending')
-                                                    badge-light-pending
-                                                @elseif ($quotation->status == 'Stalled')
-                                                    badge-light-stalled
-                                                @elseif ($quotation->status == 'Contacted')
-                                                    badge-light-warning
-                                                @elseif ($quotation->status == 'Qualified')
-                                                    badge-light-info
-                                                @elseif ($quotation->status == 'Attended')
-                                                    badge-light-info
-                                                @elseif ($quotation->status == 'Quote Sent')
-                                                    badge-light-success
-                                                @elseif ($quotation->status == 'Unqualified')
-                                                    badge-light-unqualified
-                                                @elseif ($quotation->status == 'Deleted')
-                                                    badge-light-danger
-                                                @endif
-                                                inv-status">
-                                                @if($adminorsales || in_array($quotation->status, ['Pending', 'Qualified', 'Attended', 'Quote Sent']))
-                                                    {{ $quotation->status }}
-                                                @elseif ($quotation->status == 'Contacted')
-                                                    Attending
-                                                @elseif ($quotation->status == 'Unqualified')
-                                                    Unable to fulfill
-                                                @endif
+                                        <span class="cret-bge align-middle badge {{ $statusItem->label('badge_class') }} inv-status">
+                                            @if ($adminorsales || in_array($statusItem->value, [
+                                                    Typestatus::PENDING->value,
+                                                    TypeStatus::QUALIFIED->value,
+                                                    TypeStatus::ATTENDED->value,
+                                                    TypeStatus::QUOTE_SENT->value,
+                                                ])
+                                            )
+                                                {{ $statusItem->meta('label') }}
+                                            @elseif ($statusItem->value == TypeStatus::CONTACTED->value)
+                                                Attending
+                                            @elseif ($statusItem->value == TypeStatus::UNQUALIFIED->value)
+                                                Unable to fulfill
+                                            @endif
                                         </span>
                                     </div>
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TypeInquiry;
+use App\Enums\TypeStatus;
 use App\Mail\QuotationCreated;
 use App\Mail\UserCreated;
 use Illuminate\Support\Facades\Mail;
@@ -275,7 +276,7 @@ class QuotationController extends Controller
         ->get();
 
         // Contar por status de cotizaciones
-        $statusorderforlist = ['Pending', 'Stalled', 'Contacted', 'Qualified', 'Quote Sent', 'Unqualified', 'Deleted'];
+        $statusorderforlist = ['Pending', 'Stalled', 'Contacted', TypeStatus::QUALIFIED->value, 'Quote Sent', 'Unqualified', 'Deleted'];
 
         $liststatus = Quotation::select(
             'quotations.status as quotation_status',
@@ -427,18 +428,28 @@ class QuotationController extends Controller
     public function show($id)
     {
         // remove unread quotation
-        $quotation_unread = UnreadQuotation::where('quotation_id',$id)->first();
+        $quotation_unread = UnreadQuotation::where('quotation_id', $id)->where('user_id', auth()->id())->first();
         if ($quotation_unread and $quotation_unread->user_id == auth()->id()) {
+            // verificar si ya tiene un read (si tiene hay que reemplazarlo) -> subsanación de error
             $quotation_unread->delete();
-            // register as read
-            QuotationNote::create([
-                'quotation_id' => $id,
-                'type' => 'read',
-                'action' => '',
-                'reason' => '',
-                'note' => '',
-                'user_id' => auth()->id(),
-            ]);
+            $have_read = QuotationNote::where([
+                    ['type', 'read'],
+                    ['quotation_id', $id],
+                    ['user_id', auth()->id()],
+                ])->first();
+            if (!$have_read) {
+                // register as read
+                QuotationNote::create([
+                    'quotation_id' => $id,
+                    'type' => 'read',
+                    'action' => '',
+                    'reason' => '',
+                    'note' => '',
+                    'user_id' => auth()->id(),
+                ]);
+            } else {
+                $have_read->update(['user_id' => auth()->id()]);
+            }
         }
 
         $data = [
@@ -646,6 +657,20 @@ class QuotationController extends Controller
 
     // Ordenar por id después de agregar las columnas desendientes
     $quotation_notes = $quotation_notes->sortByDesc('id');
+
+    $quotation_notes = $quotation_notes->map(function ($note) {
+        if (isset($note->action)) {
+            $note->action_base = $note->action;
+            $note->action = str_replace(TypeStatus::QUALIFIED->value, TypeStatus::QUALIFIED->meta('label'), $note->action);
+            $note->action = str_replace(TypeStatus::QUOTE_SENT->value, TypeStatus::QUOTE_SENT->meta('label'), $note->action);
+            $note->action = str_replace(TypeStatus::UNQUALIFIED->value, TypeStatus::UNQUALIFIED->meta('label'), $note->action);
+            $note->action = str_replace(TypeStatus::STALLED->value, TypeStatus::STALLED->meta('label'), $note->action);
+            $note->action = str_replace(TypeStatus::CONTACTED->value, TypeStatus::CONTACTED->meta('label'), $note->action);
+            $note->action = str_replace(TypeStatus::PENDING->value, TypeStatus::PENDING->meta('label'), $note->action);
+        }
+        return $note;
+    });
+
     return response()->json($quotation_notes->values()->all());
 }
 
