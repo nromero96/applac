@@ -1,4 +1,7 @@
 <?php
+
+use App\Enums\TypeProcessFor;
+use App\Enums\TypeStatus;
 use GuzzleHttp\Client;
 use Carbon\Carbon;
 //Quotation use
@@ -9,7 +12,7 @@ use App\Models\Setting;
 use App\Models\QuotationNote;
 use App\Models\CargoDetail;
 use App\Models\QuotePendingEmail;
-
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 function sendMailApiLac($toEmail, $subject, $content, $from = null, $attachments, $ccEmails = [], $bccEmails = [])
@@ -1055,5 +1058,50 @@ if (!function_exists('type_network_pill_first')) {
 
         return $pill_draw;
         // return $labels;
+    }
+}
+
+
+if (!function_exists('auto_assign_processing')) {
+    function auto_assign_processing($quotation_id) {
+        $user_id = auth()->id();
+        $dept_id = auth()->user()->department_id;
+        $users = User::where('department_id', $dept_id)
+            ->select('id', 'name', 'lastname')
+            ->where('id', '!=', $user_id)
+            ->where('status', 'active')
+            ->whereHas('roles', function($q){
+                $q->whereIn('role_id', [6]); // quoter
+            })
+            ->get()
+            ;
+
+        $result = Quotation::where(function($q) use ($users) {
+                $q->whereIn('assigned_user_id', $users->pluck('id'));
+                $q->orWhereIn('processed_by_user_id', $users->pluck('id'));
+            })
+            ->where('status', TypeStatus::QUALIFIED->value)
+            ->where('id', '!=', $quotation_id)
+            ->selectRaw("
+                CASE
+                    WHEN assigned_user_id IN (" . $users->pluck('id')->implode(',') . ")
+                        THEN assigned_user_id
+                    ELSE processed_by_user_id
+                END as user_id,
+                SUM(
+                    CASE
+                        WHEN process_for = '".TypeProcessFor::ESTIMATE->value."' THEN 1
+                        WHEN process_for = '".TypeProcessFor::FULL_QUOTE->value."' THEN 3
+                        ELSE 0
+                    END
+                ) as total_points,
+                COUNT(id) as count_inquiries
+            ")
+            ->groupBy('user_id')
+            ->orderBy('total_points', 'asc')
+            ->orderBy('count_inquiries', 'asc')
+            ->first()
+            ;
+        return $result->user_id;
     }
 }

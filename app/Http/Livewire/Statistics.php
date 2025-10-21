@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Enums\TypeInquiry;
+use App\Enums\TypeStatus;
 use App\Models\Quotation;
 use App\Models\User;
 use App\Services\ServiceChartHelpers;
@@ -48,14 +49,7 @@ class Statistics extends Component
                 ['label' => 'budgeting', 'style' => 'color: #B28600; border-color: #B28600', 'key' => 'Not yet ready, just exploring options/budgeting'],
                 // ['label' => 'N/A', 'style' => 'color: #686868; border-color: #686868', 'key' => 'null'],
             ],
-            'statuses' => [
-                'Pending'       => ['style' => 'color: #EB6200; background-color: #FFF2E8', 'label' => 'Pending'],
-                'Contacted'     => ['style' => 'color: #B28600; background-color: #FCF4D6', 'label' => 'Contacted'],
-                'Stalled'       => ['style' => 'color: #68C0FF; background-color: #EEF8FF', 'label' => 'Stalled'],
-                'Qualified'     => ['style' => 'color: #0A6AB7; background-color: #D3EAFD', 'label' => 'Qualified'],
-                'Quote Sent'    => ['style' => 'color: #1D813A; background-color: #E9F6ED', 'label' => 'Quote Sent'],
-                'Unqualified'   => ['style' => 'color: #686868; background-color: #E8E8E8', 'label' => 'Unqualified'],
-            ],
+            'statuses' => TypeStatus::deals_change_status_list(),
             'inquiry_type' => [
                 'Manual' => [
                     ['label' => TypeInquiry::INTERNAL->label(), 'key' => TypeInquiry::INTERNAL->value],
@@ -207,31 +201,31 @@ class Statistics extends Component
         $this->area_sales['deals_pipeline'] = [
             [
                 'status'    => 'pending',
-                'title'     => 'Pending',
+                'title'     => TypeStatus::PENDING->meta('label'),
                 'icon'      => $this->icons['pending'],
                 'total'     => isset($pipeline_result['Pending']) ? $pipeline_result['Pending'] : 0,
             ],
             [
                 'status'    => 'contacted',
-                'title'     => 'Contacted',
+                'title'     => TypeStatus::CONTACTED->meta('label'),
                 'icon'      => $this->icons['contacted'],
                 'total'     => isset($pipeline_result['Contacted']) ? $pipeline_result['Contacted'] : 0,
             ],
             [
                 'status'    => 'stalled',
-                'title'     => 'Stalled',
+                'title'     => TypeStatus::STALLED->meta('label'),
                 'icon'      => $this->icons['stalled'],
                 'total'     => isset($pipeline_result['Stalled']) ? $pipeline_result['Stalled'] : 0,
             ],
             [
                 'status'    => 'qualified',
-                'title'     => 'Qualified',
+                'title'     => TypeStatus::QUALIFIED->meta('label'),
                 'icon'      => $this->icons['qualified'],
                 'total'     => isset($pipeline_result['Qualified']) ? $pipeline_result['Qualified'] : 0,
             ],
             [
                 'status'    => 'quote_sent',
-                'title'     => 'Quote Sent',
+                'title'     => TypeStatus::QUOTE_SENT->meta('label'),
                 'icon'      => $this->icons['quote_sent'],
                 'total'     => $quotes_sent->get()->count(),
             ],

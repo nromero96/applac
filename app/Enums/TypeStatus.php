@@ -17,41 +17,49 @@ enum TypeStatus: string {
                 'label'         => 'Attended',
                 'badge_class'   => '',
                 'style'         => '',
+                'keyValue'      => 'Attended',
             ],
             self::QUOTE_SENT    => [
                 'label'         => 'Quote Sent',
                 'badge_class'   => 'badge-light-success',
                 'style'         => 'color: #1D813A; background-color: #E9F6ED',
+                'keyValue'      => 'Quote Sent',
             ],
             self::UNQUALIFIED   => [
                 'label'         => 'Unqualified',
                 'badge_class'   => 'badge-light-unqualified',
                 'style'         => 'color: #686868; background-color: #E8E8E8',
+                'keyValue'      => 'Unqualified',
             ],
             self::STALLED       => [
                 'label'         => 'Stalled',
                 'badge_class'   => 'badge-light-stalled',
                 'style'         => 'color: #68C0FF; background-color: #EEF8FF',
+                'keyValue'      => 'Stalled',
             ],
             self::QUALIFIED     => [
                 'label'         => 'Processing',
                 'badge_class'   => 'badge-light-info',
                 'style'         => 'color: #0A6AB7; background-color: #D3EAFD',
+                'keyValue'      => 'Qualified',
             ],
             self::CONTACTED     => [
                 'label'         => 'Contacted',
                 'badge_class'   => 'badge-light-warning',
                 'style'         => 'color: #B28600; background-color: #FCF4D6',
+                'keyValue'      => 'Contacted',
             ],
             self::DELETED       => [
                 'label'         => 'Deleted',
                 'badge_class'   => 'badge-light-danger',
                 'style'         => '',
+                'keyValue'      => 'Deleted',
             ],
             self::PENDING       => [
                 'label'         => 'Pending',
                 'badge_class'   => 'badge-light-pending',
                 'style'         => 'color: #EB6200; background-color: #FFF2E8',
+                'keyValue'      => 'Pending',
             ],
         };
 

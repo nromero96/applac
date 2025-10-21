@@ -141,42 +141,65 @@ function listQuotationNotes(quotationId) {
 
                 if(note.type == 'inquiry_status'){
                     noteElement.innerHTML = `
-                                    <div class="al-action d-flex align-items-center">
-                                        <span class="text-result" style="padding-right:4px">Status ${note.update_type} </span> ${badge_last_status}
-                                        <svg width="15" height="15" fill="none" stroke="#595959" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="m9 18 6-6-6-6"></path>
-                                          </svg>
-                                        ${badge_new_status}
-                                        ${
-                                            note.contacted_via
-                                            ?
-                                                `
-                                                <div class="d-flex align-items-center gap-2">
-                                                    <span style="padding-left: 4px">/ Contacted via</span>
-                                                    <span class="__contacted_via">
-                                                        ${note.contacted_via == 'Call' ? `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_11616_12093)"><path d="M14.665 11.28V13.28C14.6657 13.4657 14.6277 13.6494 14.5533 13.8195C14.479 13.9897 14.3699 14.1424 14.233 14.2679C14.0962 14.3934 13.9347 14.489 13.7588 14.5485C13.5829 14.6079 13.3966 14.63 13.2117 14.6133C11.1602 14.3904 9.18966 13.6894 7.45833 12.5667C5.84755 11.5431 4.48189 10.1774 3.45833 8.56665C2.33165 6.82745 1.63049 4.84731 1.41166 2.78665C1.395 2.60229 1.41691 2.41649 1.47599 2.24107C1.53508 2.06564 1.63004 1.90444 1.75484 1.76773C1.87964 1.63102 2.03153 1.52179 2.20086 1.447C2.37018 1.37221 2.55322 1.33349 2.73833 1.33332H4.73833C5.06187 1.33013 5.37552 1.4447 5.62084 1.65567C5.86615 1.86664 6.02638 2.15961 6.07166 2.47998C6.15608 3.12003 6.31263 3.74847 6.53833 4.35332C6.62802 4.59193 6.64744 4.85126 6.59427 5.10057C6.5411 5.34988 6.41757 5.57872 6.23833 5.75998L5.39166 6.60665C6.3407 8.27568 7.72263 9.65761 9.39166 10.6067L10.2383 9.75998C10.4196 9.58074 10.6484 9.45722 10.8977 9.40405C11.1471 9.35088 11.4064 9.37029 11.645 9.45998C12.2498 9.68568 12.8783 9.84224 13.5183 9.92665C13.8422 9.97234 14.1379 10.1355 14.3494 10.385C14.5608 10.6345 14.6731 10.953 14.665 11.28Z" stroke="#0A6AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_11616_12093"><rect width="16" height="16" fill="white"/></clipPath></defs></svg>` : ``}
-                                                        ${note.contacted_via == 'Email' ? `<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.16536 2.66675H13.832C14.5654 2.66675 15.1654 3.26675 15.1654 4.00008V12.0001C15.1654 12.7334 14.5654 13.3334 13.832 13.3334H3.16536C2.43203 13.3334 1.83203 12.7334 1.83203 12.0001V4.00008C1.83203 3.26675 2.43203 2.66675 3.16536 2.66675Z" stroke="#0A6AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.1654 4L8.4987 8.66667L1.83203 4" stroke="#0A6AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ``}
-                                                        ${note.contacted_via == 'Text' ? `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 7.66669C14.0023 8.5466 13.7967 9.41461 13.4 10.2C12.9296 11.1412 12.2065 11.9328 11.3116 12.4862C10.4168 13.0396 9.3855 13.3329 8.33333 13.3334C7.45342 13.3356 6.58541 13.1301 5.8 12.7334L2 14L3.26667 10.2C2.86995 9.41461 2.66437 8.5466 2.66667 7.66669C2.66707 6.61452 2.96041 5.58325 3.51381 4.68839C4.06722 3.79352 4.85884 3.0704 5.8 2.60002C6.58541 2.20331 7.45342 1.99772 8.33333 2.00002H8.66667C10.0562 2.07668 11.3687 2.66319 12.3528 3.64726C13.3368 4.63132 13.9233 5.94379 14 7.33335V7.66669Z" stroke="#0A6AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ``}
-                                                        ${note.contacted_via}
-                                                    </span>
-                                                </div>
-                                                `
-                                            : ''
-                                        }
+                        <div class="al-action d-flex align-items-center">
+                            <span class="text-result" style="padding-right:4px">Status ${note.update_type} </span> ${badge_last_status}
+                            <svg width="15" height="15" fill="none" stroke="#595959" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="m9 18 6-6-6-6"></path>
+                                </svg>
+                            ${badge_new_status}
+                            ${
+                                note.contacted_via
+                                ?
+                                    `
+                                    <div class="d-flex align-items-center gap-2">
+                                        <span style="padding-left: 4px">/ Contacted via</span>
+                                        <span class="__contacted_via">
+                                            ${note.contacted_via == 'Call' ? `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g clip-path="url(#clip0_11616_12093)"><path d="M14.665 11.28V13.28C14.6657 13.4657 14.6277 13.6494 14.5533 13.8195C14.479 13.9897 14.3699 14.1424 14.233 14.2679C14.0962 14.3934 13.9347 14.489 13.7588 14.5485C13.5829 14.6079 13.3966 14.63 13.2117 14.6133C11.1602 14.3904 9.18966 13.6894 7.45833 12.5667C5.84755 11.5431 4.48189 10.1774 3.45833 8.56665C2.33165 6.82745 1.63049 4.84731 1.41166 2.78665C1.395 2.60229 1.41691 2.41649 1.47599 2.24107C1.53508 2.06564 1.63004 1.90444 1.75484 1.76773C1.87964 1.63102 2.03153 1.52179 2.20086 1.447C2.37018 1.37221 2.55322 1.33349 2.73833 1.33332H4.73833C5.06187 1.33013 5.37552 1.4447 5.62084 1.65567C5.86615 1.86664 6.02638 2.15961 6.07166 2.47998C6.15608 3.12003 6.31263 3.74847 6.53833 4.35332C6.62802 4.59193 6.64744 4.85126 6.59427 5.10057C6.5411 5.34988 6.41757 5.57872 6.23833 5.75998L5.39166 6.60665C6.3407 8.27568 7.72263 9.65761 9.39166 10.6067L10.2383 9.75998C10.4196 9.58074 10.6484 9.45722 10.8977 9.40405C11.1471 9.35088 11.4064 9.37029 11.645 9.45998C12.2498 9.68568 12.8783 9.84224 13.5183 9.92665C13.8422 9.97234 14.1379 10.1355 14.3494 10.385C14.5608 10.6345 14.6731 10.953 14.665 11.28Z" stroke="#0A6AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g><defs><clipPath id="clip0_11616_12093"><rect width="16" height="16" fill="white"/></clipPath></defs></svg>` : ``}
+                                            ${note.contacted_via == 'Email' ? `<svg width="17" height="16" viewBox="0 0 17 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3.16536 2.66675H13.832C14.5654 2.66675 15.1654 3.26675 15.1654 4.00008V12.0001C15.1654 12.7334 14.5654 13.3334 13.832 13.3334H3.16536C2.43203 13.3334 1.83203 12.7334 1.83203 12.0001V4.00008C1.83203 3.26675 2.43203 2.66675 3.16536 2.66675Z" stroke="#0A6AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.1654 4L8.4987 8.66667L1.83203 4" stroke="#0A6AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ``}
+                                            ${note.contacted_via == 'Text' ? `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 7.66669C14.0023 8.5466 13.7967 9.41461 13.4 10.2C12.9296 11.1412 12.2065 11.9328 11.3116 12.4862C10.4168 13.0396 9.3855 13.3329 8.33333 13.3334C7.45342 13.3356 6.58541 13.1301 5.8 12.7334L2 14L3.26667 10.2C2.86995 9.41461 2.66437 8.5466 2.66667 7.66669C2.66707 6.61452 2.96041 5.58325 3.51381 4.68839C4.06722 3.79352 4.85884 3.0704 5.8 2.60002C6.58541 2.20331 7.45342 1.99772 8.33333 2.00002H8.66667C10.0562 2.07668 11.3687 2.66319 12.3528 3.64726C13.3368 4.63132 13.9233 5.94379 14 7.33335V7.66669Z" stroke="#0A6AB7" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ``}
+                                            ${note.contacted_via}
+                                        </span>
                                     </div>
+                                    `
+                                : ''
+                            }
+                        </div>
+                        ${
+                            (note.process_for)
+                            ?
+                            `
+                                <div class="d-flex align-items-center gap-2 mb-2">
+                                    <span class="badge ${getBadge(note.process_for, note.process_for, false)}">
+                                        ${note.process_for}
+                                    </span>
+                                    ${
+                                        note.processed_by_type
+                                        ? `
+                                            →
+                                            <span>
+                                                ${note.processed_user_name} ${note.processed_user_lastname}
+                                            </span>
+                                            (${note.processed_by_type})
+                                        `
+                                        : ''
+                                    }
+                                </div>
+                            `
+                            : ''
+                        }
 
-                                    ${notereason}
-                                    <div class="al-info">
-                                        <span class="name">${note.user_name}</span>
-                                        <svg width="13" height="13" fill="none" stroke="#0a6ab7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                          </svg>
-                                        <span class="comment">${note.note}</span>
-                                    </div>
-                                    <div class="al-date">
-                                        <small class="date">${formattedDate}</small> - <small class="time">${formattedTime}</small>
-                                        <span class="badge rounded-pill badge-light-time">${note.time_diff}</span>
-                                    </div>
+                        ${notereason}
+                        <div class="al-info">
+                            <span class="name">${note.user_name}</span>
+                            <svg width="13" height="13" fill="none" stroke="#0a6ab7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                            <span class="comment">${note.note}</span>
+                        </div>
+                        <div class="al-date">
+                            <small class="date">${formattedDate}</small> - <small class="time">${formattedTime}</small>
+                            <span class="badge rounded-pill badge-light-time">${note.time_diff}</span>
+                        </div>
 
                     `;
                 }
@@ -315,7 +338,7 @@ function listQuotationNotes(quotationId) {
 
 
 // Función para generar los badges según el estado
-function getBadge(status, statusLabel = '') {
+function getBadge(status, statusLabel = '', draw = true) {
     const badgeClasses = {
         'Pending': 'badge-light-pending',
         'Contacted': 'badge-light-warning',
@@ -328,10 +351,17 @@ function getBadge(status, statusLabel = '') {
         'Lost': 'badge-light-danger',
         'Won': 'badge-light-won',
         'Deleted': 'badge-light-danger',
+        //
+        'Full Quote': 'process_full_quote',
+        'Estimate': 'process_estimate',
     };
 
-    // Retornar el badge correspondiente o uno por defecto si no se encuentra el estado
-    return `<span class="badge ${badgeClasses[status] || 'badge-light-default'}">${statusLabel != '' ? statusLabel : status}</span>`;
+    if (draw) {
+        // Retornar el badge correspondiente o uno por defecto si no se encuentra el estado
+        return `<span class="badge ${badgeClasses[status] || 'badge-light-default'}">${statusLabel != '' ? statusLabel : status}</span>`;
+    } else {
+        return badgeClasses[status];
+    }
 }
 
 //onchange event for slect user-select-assigned

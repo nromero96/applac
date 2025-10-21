@@ -1,3 +1,7 @@
+@php
+    use \App\Enums\TypeStatus;
+    use \App\Enums\TypeProcessFor;
+@endphp
 <div class="deals__modal">
     <form class="deals__modal__content" wire:submit.prevent="save_modal_data()">
         <button type="button" class="__close" type="button" @click="show_modal = false">
@@ -21,6 +25,9 @@
                             :style="modal_deal_data.status?.style"
                             @click.self="show_statuses = true"
                         ></span>
+                        @if (false)
+                            <pre style="background:white" x-text="JSON.stringify(modal_deal_data.status, null, 2)"></pre>
+                        @endif
                         <ul x-cloak x-show="show_statuses">
                             <template x-for="status in statuses">
                                 <li @click="modal_deal_data.status = status; show_statuses = false">
@@ -52,6 +59,19 @@
                     @error('modal_deal_data.contacted_via')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
+                </div>
+                <div x-show="modal_deal_data?.status?.keyValue == '{{ TypeStatus::QUALIFIED->value }}'">
+                    <label class="form-label mb-0">{{ __('Process for') }}</label>
+                    <div class="d-flex gap-3">
+                        <label class="form-check">
+                            <input type="radio" name="process_for" class="form-check-input" value="{{ TypeProcessFor::FULL_QUOTE->value }}" x-model="modal_deal_data.process_for">
+                            <div class="form-check-label">{{ TypeProcessFor::FULL_QUOTE->meta('label') }}</div>
+                        </label>
+                        <label class="form-check">
+                            <input type="radio" name="process_for" class="form-check-input" value="{{ TypeProcessFor::ESTIMATE->value }}" x-model="modal_deal_data.process_for">
+                            <div class="form-check-label">{{ TypeProcessFor::ESTIMATE->meta('label') }}</div>
+                        </label>
+                    </div>
                 </div>
                 <div x-show="modal_deal_data?.status?.label == 'Unqualified'">
                     <label class="form-label mb-0">{{ __('Reason to decline') }} <span class="text-danger">*</span></label>

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Enums\TypeInquiry;
+use App\Enums\TypeStatus;
 use App\Models\Quotation;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -29,7 +30,12 @@ class DealsBoardColumn extends Component
     public $quotations;
 
     public function render() {
-        $quotations = Quotation::where('assigned_user_id', $this->assignedUserId)
+        $quotations = Quotation::where(function($q) {
+                $q->where('assigned_user_id', $this->assignedUserId);
+                if ($this->status == TypeStatus::QUALIFIED->value) {
+                    $q->orWhere('processed_by_user_id', $this->assignedUserId);
+                }
+            })
             ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
             ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
             ->leftJoin('featured_quotations', function($join) {
@@ -53,6 +59,7 @@ class DealsBoardColumn extends Component
                 'quotations.status',
                 'quotations.result',
                 'quotations.priority',
+                'quotations.process_for',
                 'quotations.created_at',
                 DB::raw('EXISTS(SELECT 1 FROM featured_quotations WHERE featured_quotations.quotation_id = quotations.id AND featured_quotations.user_id = ' . $this->assignedUserId . ') as is_featured'),
                 DB::raw('EXISTS(SELECT 1 FROM unread_quotations WHERE unread_quotations.quotation_id = quotations.id AND unread_quotations.user_id = ' . $this->assignedUserId . ') as is_unread'),

@@ -1,6 +1,8 @@
 <div class="deals__board__col" x-data="{ show_options: false }" x-show="{{ $statusKey === 'stalled' ? 'show_stalled' : 'true' }}" x-cloak>
     @php
         use App\Enums\TypeInquiry;
+        use App\Enums\TypeStatus;
+        use App\Enums\TypeProcessfor;
     @endphp
     {{-- thead --}}
     <div class="deals__board__thead __{{ $statusKey }}">
@@ -116,7 +118,7 @@
                                             </button>
                                         </li>
                                         <li>
-                                            <button @click="show_card_options = false; openDealModal('{{ $label }}', {{ $quotation->id }})">
+                                            <button @click="show_card_options = false; openDealModal('{{ $status }}', {{ $quotation->id }})">
                                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.668 12L14.668 8L10.668 4" stroke="#1877F2" stroke-linecap="round" stroke-linejoin="round"/><path d="M5.33203 4L1.33203 8L5.33203 12" stroke="#1877F2" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                                 Change Status
                                             </button>
@@ -126,21 +128,34 @@
                             @endif
                         </h3>
 
-                        @if (isset($quotation->rating))
-                            <x-stars :stars="$quotation->rating" />
-                        @else
-                            @if ($quotation->type_inquiry->value == TypeInquiry::INTERNAL->value)
-                                <span class="__badge __tier">
-                                    {{ $quotation->customer_tier }}
-                                </span>
-                            @elseif ($quotation->type_inquiry->value == TypeInquiry::INTERNAL_LEGACY->value || $quotation->type_inquiry->value == TypeInquiry::INTERNAL_OTHER_AGT->value)
-                                @php $prt = $quotation->priority->meta(); @endphp
-                                <span class="__badge" style="color: {{ $prt['color'] }}; background-color: {{ $prt['bg'] }}">
-                                    {{ $quotation->priority->meta('label') }}
-                                    {{ $quotation->customer_score ? ' - ' . number_format($quotation->customer_score, 0) : '' }}
-                                </span>
+                        <div class="d-flex align-items-center gap-2">
+
+                            @if ($quotation->status == TypeStatus::QUALIFIED->value)
+                                @if ($quotation->process_for)
+                                    @php $item_process_for = TypeProcessFor::from($quotation->process_for); @endphp
+                                    <span class="badge {{ $item_process_for->meta('class') }}">
+                                        {{ $item_process_for->meta('label') }}
+                                    </span>
+                                @endif
                             @endif
-                        @endif
+
+
+                            @if (isset($quotation->rating))
+                                <x-stars :stars="$quotation->rating" />
+                            @else
+                                @if ($quotation->type_inquiry->value == TypeInquiry::INTERNAL->value)
+                                    <span class="__badge __tier">
+                                        {{ $quotation->customer_tier }}
+                                    </span>
+                                @elseif ($quotation->type_inquiry->value == TypeInquiry::INTERNAL_LEGACY->value || $quotation->type_inquiry->value == TypeInquiry::INTERNAL_OTHER_AGT->value)
+                                    @php $prt = $quotation->priority->meta(); @endphp
+                                    <span class="__badge" style="color: {{ $prt['color'] }}; background-color: {{ $prt['bg'] }}">
+                                        {{ $quotation->priority->meta('label') }}
+                                        {{ $quotation->customer_score ? ' - ' . number_format($quotation->customer_score, 0) : '' }}
+                                    </span>
+                                @endif
+                            @endif
+                        </div>
                     </div>
 
                     @if ($type == 'open')

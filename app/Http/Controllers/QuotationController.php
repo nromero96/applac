@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\TypeInquiry;
+use App\Enums\TypeProcessFor;
 use App\Enums\TypeStatus;
 use App\Mail\QuotationCreated;
 use App\Mail\UserCreated;
@@ -485,12 +486,15 @@ class QuotationController extends Controller
             'dc.name as destination_country',
             'os.name as origin_state',
             'ds.name as destination_state',
+            'U.name as processed_by_name',
+            'U.lastname as processed_by_lastname',
             DB::raw('COALESCE(loc_users.name, loc_guest_users.name) as customer_country_name'),
             DB::raw('COALESCE(loc_users.id, loc_guest_users.id) as customer_country_id')
         )
 
         ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
         ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
+        ->leftJoin('users as U', 'quotations.processed_by_user_id', '=', 'U.id')
         ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
         ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
         ->leftJoin('states as os', 'quotations.origin_state_id', '=', 'os.id')
@@ -533,8 +537,34 @@ class QuotationController extends Controller
         $dropdownUserIds = explode(",", $users_selected_dropdown_quotes_value);
         $users = User::whereIn('id', $dropdownUserIds)->get();
 
+        // get users for assign
+        $members = User::whereHas('roles', function($query) {
+                    if (Auth::user()->hasRole('Administrator')) {
+                        $query->whereIn('role_id', [1, 2]); // admin, sales
+                    } else {
+                        $query->whereIn('role_id', [6]); // quoter
+                    }
+                })
+                ->join('quotations', 'quotations.assigned_user_id', '=', 'users.id')
+                ->groupBy('users.id')
+                ->where('users.status', 'active')
+                ->select('users.id as id', 'name', 'lastname', 'users.department_id')
+                ->with('department');
+
+            if (Auth::user()->hasRole('Leader')) {
+                $members->where('users.department_id', auth()->user()->department_id); // del mismo dpto
+            }
+
+        $members = $members->get();
+
         //verificate if quotation is assigned to user logged or is Administator
-        if($quotation->assigned_user_id == auth()->id() || auth()->user()->hasRole('Administrator') || (auth()->user()->hasRole('Sales') && auth()->user()->hasRole('Leader')) || ($quotation->customer_user_id == auth()->id()  && auth()->user()->hasRole('Customer')) ){
+        if (
+            $quotation->processed_by_user_id == auth()->id() ||
+            $quotation->assigned_user_id == auth()->id() ||
+            auth()->user()->hasRole('Administrator') ||
+            (auth()->user()->hasRole('Sales') && auth()->user()->hasRole('Leader')) ||
+            ($quotation->customer_user_id == auth()->id()  && auth()->user()->hasRole('Customer'))
+        ){
             return view('pages.quotations.show')
                         ->with($data)
                         ->with('quotation', $quotation)
@@ -542,7 +572,8 @@ class QuotationController extends Controller
                         ->with('cargo_details', $cargo_details)
                         ->with('quotation_documents', $quotation_documents)
                         ->with('users', $users)
-                        ->with('reason_unqualified', $reason_unqualified);
+                        ->with('reason_unqualified', $reason_unqualified)
+                        ->with('members', $members);
         }else{
             return redirect()
                 ->route('quotations.index')
@@ -595,7 +626,8 @@ class QuotationController extends Controller
     // Obtener las notas de cotización
     $quotation_notes = QuotationNote::where('quotation_id', $id)
         ->join('users', 'quotation_notes.user_id', '=', 'users.id')
-        ->select('quotation_notes.*', 'users.name as user_name')
+        ->leftJoin('users as U', 'quotation_notes.processed_by_user_id', '=', 'U.id')
+        ->select('quotation_notes.*', 'users.name as user_name', 'U.name as processed_user_name', 'U.lastname as processed_user_lastname')
         ->get();
 
     // Depurar las notas obtenidas
@@ -688,6 +720,9 @@ class QuotationController extends Controller
                 'reason' => 'nullable|string',
                 'note' => 'nullable|string',
                 'contacted_via' => 'nullable|string',
+                'process_for' => 'nullable',
+                'processed_by_type' => 'nullable',
+                'processed_by_user_id' => 'nullable',
             ]);
 
             if($validatedData['action'] == 'Unqualified'){
@@ -709,6 +744,31 @@ class QuotationController extends Controller
                 'user_id' => auth()->id(),
             ];
 
+            if ($validatedData['action'] == TypeStatus::QUALIFIED->value) {
+                $result_data['process_for'] = $validatedData['process_for'];
+                if (Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Leader')) {
+                    if ($validatedData['processed_by_user_id'] == '') {
+                        $result_data['processed_by_type'] = null;
+                    } else if ($validatedData['processed_by_user_id'] != 'auto') {
+                        $result_data['processed_by_type'] = 'manual';
+                    } else {
+                        $result_data['processed_by_type'] = 'auto';
+                    }
+                    if ($result_data['processed_by_type'] == 'auto') {
+                        if ($quotation->processed_by_type != 'auto') {
+                            $result_data['processed_by_user_id'] = auto_assign_processing($quotation->id);
+                        } else {
+                            $result_data['processed_by_user_id'] = $quotation->processed_by_user_id;
+                        }
+                    } else {
+                        $result_data['processed_by_user_id'] = $validatedData['processed_by_user_id'];
+                    }
+                } else {
+                    $result_data['processed_by_type'] = $quotation->processed_by_type;
+                    $result_data['processed_by_user_id'] = $quotation->processed_by_user_id;
+                }
+            }
+
             if ($validatedData['action'] == $quotation->status) { // status unchanged
                 $result_data['action'] = "'' to '{$quotation->status}'";
                 $result_data['update_type'] = 'unchanged';
@@ -720,10 +780,28 @@ class QuotationController extends Controller
             QuotationNote::create($result_data);
 
             // Actualizar el estado de la inscripción después de registrar la nota
-            $quotation->update([
-                'status' => $validatedData['action'],
-                'updated_at' => now(),
-            ]);
+            if ($validatedData['action'] == TypeStatus::QUALIFIED->value) {
+                if (Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Leader')) {
+                    $quotation->update([
+                        'status' => $validatedData['action'],
+                        'process_for' => $result_data['process_for'],
+                        'processed_by_type' => $result_data['processed_by_type'],
+                        'processed_by_user_id' => $result_data['processed_by_user_id'],
+                        'updated_at' => now(),
+                    ]);
+                } else {
+                    $quotation->update([
+                        'status' => $validatedData['action'],
+                        'process_for' => $result_data['process_for'],
+                        'updated_at' => now(),
+                    ]);
+                }
+            } else {
+                $quotation->update([
+                    'status' => $validatedData['action'],
+                    'updated_at' => now(),
+                ]);
+            }
 
             //if action 'Quote Sent' update 'result'
             if($validatedData['action'] == 'Quote Sent'){
@@ -768,6 +846,11 @@ class QuotationController extends Controller
             return redirect()->route('quotations.show', ['quotation' => $id])->with('success', 'Updated status successfully quotation #'.$id);
         } catch (\Exception $e) {
             // Manejo de errores
+            Log::error('Error updating status quotation #'. $id, [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
             return redirect()->back()->with('error', 'Error updating status quotation #'.$id);
         }
     }

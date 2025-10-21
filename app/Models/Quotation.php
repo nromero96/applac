@@ -61,6 +61,9 @@ class Quotation extends Model
         'additional_info',
         'priority',
         'points',
+        'process_for',
+        'processed_by_type',
+        'processed_by_user_id',
     ];
 
     protected $casts = [

@@ -210,6 +210,7 @@ class DealsBoard extends Component
         'notes'         => '',
         'reason'        => '', // Unqualified
         'contacted_via' => '', // Contacted
+        'process_for'   => '', // Qualified
     ];
 
     public function save_modal_data(){
@@ -219,13 +220,13 @@ class DealsBoard extends Component
             'modal_deal_data.notes'         => 'nullable|string',
         ];
 
-        if ($this->modal_deal_data['status']['label'] != 'Unqualified') {
+        if ($this->modal_deal_data['status']['keyValue'] != 'Unqualified') {
             $validation['modal_deal_data.reason'] = 'nullable|string';
         } else {
             $validation['modal_deal_data.reason'] = 'required|string';
         }
 
-        if ($this->modal_deal_data['status']['label'] != 'Contacted') {
+        if ($this->modal_deal_data['status']['keyValue'] != 'Contacted') {
             $validation['modal_deal_data.contacted_via'] = 'nullable|string';
         } else {
             $validation['modal_deal_data.contacted_via'] = 'required|string';
@@ -241,7 +242,7 @@ class DealsBoard extends Component
         ]);
 
         $form = $this->modal_deal_data;
-        $form['status'] = $form['status']['label'];
+        $form['status'] = $form['status']['keyValue'];
 
         DB::transaction(function () use ($form) {
             $quotation = Quotation::findOrFail($form['quotation_id']);
@@ -292,6 +293,12 @@ class DealsBoard extends Component
             ];
             if ($form['status'] == 'Contacted') {
                 $q_note['contacted_via'] = $form['contacted_via'];
+            }
+            if ($form['status'] == TypeStatus::QUALIFIED->value) {
+                $q_note['process_for'] = $form['process_for'];
+                $quotation->update([
+                    'process_for' => $form['process_for'],
+                ]);
             }
             QuotationNote::create($q_note);
 

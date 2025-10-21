@@ -1,5 +1,6 @@
 @php
     use App\Enums\TypeStatus;
+    use App\Enums\TypeProcessFor;
     $statusItem = TypeStatus::from($quotation->status);
 @endphp
 @extends('layouts.app')
@@ -393,11 +394,22 @@
                                 </div>
                             </div>
                             <div class="widget-content widget-content-area px-2 pb-3 pt-1">
+                                @php
+                                    $default_processed_user_id = $quotation->processed_by_user_id;
+                                    if ( $quotation->processed_by_type == 'auto') {
+                                        $default_processed_user_id = 'auto';
+                                    }
+                                @endphp
                                 <form
                                     action="{{ route('quotationupdatestatus', ['id' => $quotation->id]) }}"
                                     method="POST"
                                     id="form-status"
-                                    x-data="{ status: {{ '"' . $quotation->status . '"' }}, contacted_via: '' }"
+                                    x-data="{
+                                        status: {{ '"' . $quotation->status . '"' }},
+                                        contacted_via: '',
+                                        process_for: {{ '"' . ($quotation->process_for ? : TypeProcessFor::FULL_QUOTE->value) . '"' }},
+                                        processed_by_user_id: {{ '"' . $default_processed_user_id . '"' }},
+                                    }"
                                 >
                                     @csrf
                                     @method('PUT')
@@ -408,7 +420,11 @@
                                             id="action"
                                             class="form-select"
                                             required
-                                            x-model="status" @change="contacted_via = (status == 'Contacted' ? 'Email' : '')"
+                                            x-model="status"
+                                            @change="
+                                                contacted_via = (status == '{{ TypeStatus::CONTACTED->value }}' ? 'Email' : '');
+                                                process_for = (status == '{{ TypeStatus::QUALIFIED->value }}') ? '{{ TypeProcessFor::FULL_QUOTE->value }}' : '';
+                                            "
                                         >
                                             <option value="">{{ __('Select status') }} </option>
                                             <option value="{{ TypeStatus::PENDING->value }}">{{ TypeStatus::PENDING->meta('label') }}</option>
@@ -420,7 +436,7 @@
                                         </select>
                                     </div>
                                     {{-- Contacted via --}}
-                                    <div class="mb-2" x-show="status === 'Contacted'" x-cloak>
+                                    <div class="mb-2" x-show="status === '{{ TypeStatus::CONTACTED->value }}'" x-cloak>
                                         <div class="d-flex gap-3">
                                             <label for="action" class="form-label mb-0">{{ __('Contacted via:') }}</label>
                                             <div class="d-flex gap-3">
@@ -439,6 +455,40 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {{-- Process for --}}
+                                    <div class="mb-2" x-show="status === '{{ TypeStatus::QUALIFIED->value }}'" x-cloak>
+                                        <div class="d-flex gap-3">
+                                            <label for="action" class="form-label mb-0">{{ __('Process for:') }}</label>
+                                            <div class="d-flex gap-3">
+                                                <label class="form-check">
+                                                    <input type="radio" name="process_for" class="form-check-input" value="{{ TypeProcessFor::FULL_QUOTE->value }}" x-model="process_for">
+                                                    <div class="form-check-label">{{ TypeProcessFor::FULL_QUOTE->meta('label') }}</div>
+                                                </label>
+                                                <label class="form-check">
+                                                    <input type="radio" name="process_for" class="form-check-input" value="{{ TypeProcessFor::ESTIMATE->value }}" x-model="process_for">
+                                                    <div class="form-check-label">{{ TypeProcessFor::ESTIMATE->meta('label') }}</div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Leader'))
+                                        {{-- Processed by --}}
+                                        <div class="mb-2" x-show="status === '{{ TypeStatus::QUALIFIED->value }}'" x-cloak>
+                                            <label for="processed_by_user_id" class="form-label mb-0">{{ __('Processed by') }}</label>
+                                            <select name="processed_by_user_id" id="processed_by_user_id" class="form-select" x-model="processed_by_user_id">
+                                                <option value="">{{ __('Select and option') }}</option>
+                                                @if ($quotation->processed_by_type === 'auto')
+                                                    <option value="auto">Auto-assign → {{ $quotation->processed_by_name . ' ' . $quotation->processed_by_lastname }}</option>
+                                                @else
+                                                    <option value="auto">Auto-assign</option>
+                                                @endif
+                                                @foreach ($members as $member)
+                                                    <option value="{{ $member->id }}">{{ $member->name . ' ' . $member->lastname }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @endif
                                     <div class="mb-2 @if($reason_unqualified) @else d-none @endif" id="dv_reason">
                                         <label for="reason" class="form-label mb-0">{{ __('Reason to decline') }} <span class="text-danger">*</span></label>
                                         <select name="reason" id="reason" class="form-select">
