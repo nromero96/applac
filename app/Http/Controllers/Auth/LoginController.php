@@ -47,7 +47,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         // temp
-        // $this->validateCaptcha($request);
+        $this->validateCaptcha($request);
 
         $this->validateLogin($request);
 
