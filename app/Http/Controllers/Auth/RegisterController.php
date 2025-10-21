@@ -79,7 +79,9 @@ class RegisterController extends Controller
 
     public function register(Request $request)
     {
-        $this->validateCaptcha($request);
+        if (!config('app.debug')) { // desactivado en demo
+            $this->validateCaptcha($request);
+        }
         $this->validator($request->all())->validate();
 
         $user = $this->create($request->all());
