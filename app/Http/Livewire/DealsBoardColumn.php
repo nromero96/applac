@@ -92,11 +92,11 @@ class DealsBoardColumn extends Component
             );
 
         if ($this->status) {
-            $quotations->where('quotations.status', $this->status);
+            $quotations->where('quotations.status', $this->status)->where('result', '!=', 'Lost');
         }
 
         if ($this->result) {
-            $quotations->where('quotations.status', 'Quote Sent');
+            // $quotations->where('quotations.status', 'Quote Sent');
             $quotations->where('quotations.result', $this->result);
         }
 
