@@ -134,7 +134,15 @@ if(!function_exists('europe_countries')) {
 if(!function_exists('other_countries')) {
     function other_countries()
     {
-        return ['1', '3', '4', '6', '8', '13', '17', '18', '23', '25', '28', '29', '31', '32', '34', '35', '36', '37', '39', '41', '42', '44', '45', '46', '48', '49', '50', '51', '53', '59', '62', '64', '66', '67', '69', '70', '71', '72', '73', '77', '78', '79', '80', '83', '86', '89', '91', '92', '93', '96', '98', '101', '102', '103', '104', '106', '109', '110', '111', '113', '114', '115', '116', '117', '118', '119', '121', '122', '123', '124', '128', '130', '131', '132', '133', '134', '136', '137', '139', '140', '141', '143', '146', '148', '149', '150', '151', '152', '153', '156', '157', '159', '160', '161', '162', '163', '165', '166', '167', '168', '170', '173', '174', '178', '179', '182', '183', '186', '188', '190', '191', '192', '194', '195', '196', '199', '200', '201', '202', '203', '204', '206', '207', '209', '210', '213', '214', '215', '216', '217', '218', '219', '220', '222', '224', '226', '227', '229', '232', '234', '235', '238', '241', '242', '243', '245', '246'];
+        return ['1', '3', '4', '6', '8', '13', '17', '18', '23', '25', '28', '29', '31', '32', '34', '35', '36', '37', '39', '41', '42', '45', '46', '48', '49', '50', '51', '53', '59', '62', '64', '66', '67', '69', '70', '71', '72', '73', '77', '78', '79', '80', '83', '86', '89', '91', '92', '93', '96', '98', '101', '102', '103', '104', '106', '109', '110', '111', '113', '114', '115', '116', '117', '118', '119', '121', '122', '123', '124', '128', '130', '131', '132', '133', '134', '136', '137', '139', '140', '141', '143', '146', '148', '149', '150', '151', '152', '153', '156', '157', '159', '160', '161', '162', '163', '165', '166', '167', '168', '170', '173', '174', '178', '179', '182', '183', '186', '188', '190', '191', '192', '194', '195', '196', '199', '200', '201', '202', '203', '204', '206', '207', '209', '210', '213', '214', '215', '216', '217', '218', '219', '220', '222', '224', '226', '227', '229', '232', '234', '235', '238', '241', '242', '243', '245', '246'];
+    }
+}
+
+//China
+if(!function_exists('china_country')) {
+    function china_country()
+    {
+        return ['44'];
     }
 }
 
@@ -190,6 +198,7 @@ if (!function_exists('rateQuotation')) {
         $specialCountries = special_countries(); // Países especiales
         $europeCountries = europe_countries(); // Países en Europa
         $otherCountries = other_countries(); // Resto de países
+        $chinaCountry = china_country(); // China
 
 
         //Location
@@ -199,18 +208,21 @@ if (!function_exists('rateQuotation')) {
         $isLocationInEuropeCountries = in_array($location, $europeCountries);
         $isLocationScopeCountries = in_array($location, $scopeCountries);
         $isLocationInOtherCountries = in_array($location, $otherCountries);
+        $isLocationChina = in_array($location, $chinaCountry);
 
         //Origen
         $isOriginInSpecialCountries = in_array($quotation->origin_country_id, $specialCountries);
         $isOriginInEuropeCountries = in_array($quotation->origin_country_id, $europeCountries);
         $isOriginInScopeCountries = in_array($quotation->origin_country_id, $scopeCountries);
         $isOriginInOtherCountries = in_array($quotation->origin_country_id, $otherCountries);
+        $isOriginChina = in_array($quotation->origin_country_id, $chinaCountry);
 
         //Destino
         $isDestinationInSpecialCountries = in_array($quotation->destination_country_id, $specialCountries);
         $isDestinationInEuropeCountries = in_array($quotation->destination_country_id, $europeCountries);
         $isDestinationInScopeCountries = in_array($quotation->destination_country_id, $scopeCountries);
         $isDestinationInOtherCountries = in_array($quotation->destination_country_id, $otherCountries);
+        $isDestinationChina = in_array($quotation->origin_country_id, $chinaCountry);
 
         //Correo de empresa y no de educación
         $isBusinessEmailAndNotEdu = !in_array($domain, $personal_domains) && !preg_match('/\.edu(\.[a-z]{2,})?$/', $domain);
@@ -252,6 +264,12 @@ if (!function_exists('rateQuotation')) {
                         } elseif($isOriginInScopeCountries && $isDestinationInScopeCountries){
                             //(Origin Scope - Destination Scope)
                             $rating += 2;
+                        } elseif($isOriginInEuropeCountries && $isDestinationInScopeCountries){
+                            //(Origin Europe - Destination Scope)
+                            $rating += 2;
+                        } elseif($isOriginInEuropeCountries && $isDestinationInSpecialCountries){
+                            //(Origin Europe - Destination USA/CA)
+                            $rating += 2;
                         } elseif(($isOriginInOtherCountries && $isDestinationInScopeCountries) || ($isOriginInScopeCountries && $isDestinationInOtherCountries)){
                             //(Origin Other - Destination Scope) o (Origin Scope - Destination Other)
                             $rating += 2;
@@ -266,6 +284,12 @@ if (!function_exists('rateQuotation')) {
                             $rating += 1;
                         } elseif( $isOriginInSpecialCountries && $isDestinationInSpecialCountries){
                             //(Origin USA/CA - Destination USA/CA)
+                            $rating += 2;
+                        } else if ($isOriginChina && $isDestinationInSpecialCountries) {
+                            //(Origin China - Destination USA/CA)
+                            $rating += 2;
+                        } elseif ( $isOriginInOtherCountries && $isDestinationInSpecialCountries) {
+                            //(Origin Other - Destination USA/CA)
                             $rating += 2;
                         }
                     } elseif ($isLocationInEuropeCountries) {
@@ -287,10 +311,22 @@ if (!function_exists('rateQuotation')) {
                         }elseif($isOriginInOtherCountries && $isDestinationInEuropeCountries){
                             //(Origin Other - Destination Europe)
                             $rating += 2;
+                        } else if ($isOriginChina && $isDestinationInEuropeCountries) {
+                            //(Origin China - Destination europe)
+                            $rating += 2;
                         }
                     } elseif ($isLocationScopeCountries) {
                         if($isOriginInSpecialCountries && $isDestinationInScopeCountries){
                             //(Origin USA/CA - Destination Scope)
+                            $rating += 2;
+                        } else if ($isOriginInEuropeCountries && $isDestinationInScopeCountries) {
+                            //(Origin Europe - Destination Scope)
+                            $rating += 2;
+                        } else if ($isOriginChina && $isDestinationInScopeCountries) {
+                            //(Origin China - Destination Scope)
+                            $rating += 2;
+                        } else if ($isOriginInOtherCountries && $isDestinationInScopeCountries) {
+                            //(Origin Other - Destination Scope)
                             $rating += 2;
                         }
                     }
@@ -607,6 +643,7 @@ if (!function_exists('rateQuotationWeb')) {
         $specialCountries = special_countries(); // Países especiales
         $europeCountries = europe_countries(); // Países en Europa
         $otherCountries = other_countries(); // Resto de países
+        $chinaCountry = china_country(); // China
 
 
         //Location
@@ -616,18 +653,21 @@ if (!function_exists('rateQuotationWeb')) {
         $isLocationInEuropeCountries = in_array($location, $europeCountries);
         $isLocationScopeCountries = in_array($location, $scopeCountries);
         $isLocationInOtherCountries = in_array($location, $otherCountries);
+        $isLocationChina = in_array($location, $chinaCountry);
 
         //Origen
         $isOriginInSpecialCountries = in_array($quotation->origin_country_id, $specialCountries);
         $isOriginInEuropeCountries = in_array($quotation->origin_country_id, $europeCountries);
         $isOriginInScopeCountries = in_array($quotation->origin_country_id, $scopeCountries);
         $isOriginInOtherCountries = in_array($quotation->origin_country_id, $otherCountries);
+        $isOriginChina = in_array($quotation->origin_country_id, $chinaCountry);
 
         //Destino
         $isDestinationInSpecialCountries = in_array($quotation->destination_country_id, $specialCountries);
         $isDestinationInEuropeCountries = in_array($quotation->destination_country_id, $europeCountries);
         $isDestinationInScopeCountries = in_array($quotation->destination_country_id, $scopeCountries);
         $isDestinationInOtherCountries = in_array($quotation->destination_country_id, $otherCountries);
+        $isDestinationChina = in_array($quotation->origin_country_id, $chinaCountry);
 
         //Correo de empresa y no de educación
         $isBusinessEmailAndNotEdu = !in_array($domain, $personal_domains) && !preg_match('/\.edu(\.[a-z]{2,})?$/', $domain);
@@ -696,6 +736,9 @@ if (!function_exists('rateQuotationWeb')) {
                             } elseif( $isOriginInSpecialCountries && $isDestinationInSpecialCountries){
                                 //(Origin USA/CA - Destination USA/CA)
                                 $rating += 2;
+                            } else if ($isOriginChina && $isDestinationInSpecialCountries) {
+                                //(Origin China - Destination USA/CA)
+                                $rating += 2;
                             } elseif ( $isOriginInOtherCountries && $isDestinationInSpecialCountries) {
                                 //(Origin Other - Destination USA/CA)
                                 $rating += 2;
@@ -719,10 +762,22 @@ if (!function_exists('rateQuotationWeb')) {
                             }elseif($isOriginInOtherCountries && $isDestinationInEuropeCountries){
                                 //(Origin Other - Destination Europe)
                                 $rating += 2;
+                            } else if ($isOriginChina && $isDestinationInEuropeCountries) {
+                                //(Origin China - Destination europe)
+                                $rating += 2;
                             }
                         } elseif ($isLocationScopeCountries) {
                             if($isOriginInSpecialCountries && $isDestinationInScopeCountries){
                                 //(Origin USA/CA - Destination Scope)
+                                $rating += 2;
+                            } else if ($isOriginInEuropeCountries && $isDestinationInScopeCountries) {
+                                //(Origin Europe - Destination Scope)
+                                $rating += 2;
+                            } else if ($isOriginChina && $isDestinationInScopeCountries) {
+                                //(Origin China - Destination Scope)
+                                $rating += 2;
+                            } else if ($isOriginInOtherCountries && $isDestinationInScopeCountries) {
+                                //(Origin Other - Destination Scope)
                                 $rating += 2;
                             }
                         }
