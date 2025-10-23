@@ -60,10 +60,11 @@ class UpdateQuoteStatus extends Command
 
         $limitTime = $now->subHours(4);  // Restar 4 horas
 
-        
+
         $quotespendingemails = QuotePendingEmail::join('quotations', 'quote_pending_emails.quotation_id', '=', 'quotations.id')
             ->where('quote_pending_emails.type', 'Unqualified')
             ->where('quote_pending_emails.status', 'pending')
+            ->where('quotations.is_internal_inquiry', 0) // solo external
             ->where('quotations.created_at', '<=', $limitTime)
             ->select('quote_pending_emails.*')
             ->limit(8) // Limitar a 8 registros
