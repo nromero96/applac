@@ -136,9 +136,21 @@
                                 @endforeach
                             </div>
                             <div class="col-md-6">
-                                <label for="priority_countries" class="form-label fw-bold">{{__("Priority Countries")}}</label>
+                                <label for="priority_countries" class="form-label fw-bold">{{__("Priority Countries (for internal and external)")}}</label>
                                 <br>
                                 <select name="priority_countries[]" id="priority_countries" class="form-select" multiple autocomplete="off">
+                                    <option value="" disabled >Select</option>
+                                    @foreach ($contries as $item)
+                                        <option
+                                            value="{{ $item->id }}"
+                                        >{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="priority_countries_ext" class="form-label fw-bold">{{__("Priority Countries (for external)")}}</label>
+                                <br>
+                                <select name="priority_countries_ext[]" id="priority_countries_ext" class="form-select" multiple autocomplete="off">
                                     <option value="" disabled >Select</option>
                                     @foreach ($contries as $item)
                                         <option
@@ -172,7 +184,7 @@
 </div>
 
 <script>
-    // JavaScript
+    //# Javascript
     var passwordInput = document.getElementById('inputPassword');
     var togglePasswordButton = document.getElementById('togglePassword');
     var showPasswordIcon = togglePasswordButton.querySelector('svg.icon-show');
@@ -197,6 +209,9 @@
 @push('scripts')
 <script>
     new TomSelect('#priority_countries', {
+        plugins: ['remove_button']
+    });
+    new TomSelect('#priority_countries_ext', {
         plugins: ['remove_button']
     });
 </script>

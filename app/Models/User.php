@@ -44,6 +44,7 @@ class User extends Authenticatable
         'subscribed_to_newsletter',
         'department_id',
         'priority_countries',
+        'priority_countries_ext',
     ];
 
     /**
@@ -67,6 +68,7 @@ class User extends Authenticatable
         'recovered_account' => 'boolean',
         'referred_by' => 'boolean',
         'priority_countries' => 'array',
+        'priority_countries_ext' => 'array',
     ];
 
     public function getPriorityCountriesAttribute($value) {

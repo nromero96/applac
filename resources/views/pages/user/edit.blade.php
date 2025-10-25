@@ -138,14 +138,31 @@
                                 @endforeach
                             </div>
                             <div class="col-md-6">
-                                <label for="priority_countries" class="form-label fw-bold">{{__("Priority Countries")}}</label>
+                                <label for="priority_countries" class="form-label fw-bold">{{__("Priority Countries (for internal and external)")}}</label>
                                 <br>
                                 <select name="priority_countries[]" id="priority_countries" class="form-select" multiple autocomplete="off">
                                     <option value="" disabled >Select</option>
                                     @foreach ($contries as $item)
                                         <option
                                             value="{{ $item->id }}"
-                                            {{ in_array($item->id, $user->priority_countries) ? 'selected' : '' }}
+                                            @if (is_array($user->priority_countries))
+                                                {{ in_array($item->id, $user->priority_countries) ? 'selected' : '' }}
+                                            @endif
+                                        >{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="priority_countries_ext" class="form-label fw-bold">{{__("Priority Countries (for external)")}}</label>
+                                <br>
+                                <select name="priority_countries_ext[]" id="priority_countries_ext" class="form-select" multiple autocomplete="off">
+                                    <option value="" disabled >Select</option>
+                                    @foreach ($contries as $item)
+                                        <option
+                                            value="{{ $item->id }}"
+                                            @if (is_array($user->priority_countries_ext))
+                                                {{ in_array($item->id, $user->priority_countries_ext) ? 'selected' : '' }}
+                                            @endif
                                         >{{ $item->name }}</option>
                                     @endforeach
                                 </select>
@@ -184,6 +201,9 @@
 @push('scripts')
 <script>
     new TomSelect('#priority_countries', {
+        plugins: ['remove_button']
+    });
+    new TomSelect('#priority_countries_ext', {
         plugins: ['remove_button']
     });
 </script>

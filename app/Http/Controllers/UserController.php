@@ -129,6 +129,7 @@ class UserController extends Controller
         $users->status = $request->get('status');
         $users->department_id = ($request['department_id'] == '') ? null : $request['department_id'];
         $users->priority_countries = $request['priority_countries'];
+        $users->priority_countries_ext = $request['priority_countries_ext'];
 
         $users->save();
 
@@ -215,6 +216,7 @@ class UserController extends Controller
             'status' => $request['status'],
             'department_id' => ($request['department_id'] == '') ? null : $request['department_id'],
             'priority_countries' => $request['priority_countries'],
+            'priority_countries_ext' => $request['priority_countries_ext'],
         ]);
 
         $userinfo = User::find($id);

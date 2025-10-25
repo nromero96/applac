@@ -14,5 +14,6 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         //
         'api/web-quotation-store',
+        'api/web-quotation-store-agent',
     ];
 }

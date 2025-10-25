@@ -1,5 +1,8 @@
 <?php
 
+use App\Enums\TypeDepartment;
+use App\Enums\TypeNetwork;
+use App\Enums\TypePriorityInq;
 use App\Enums\TypeProcessFor;
 use App\Enums\TypeStatus;
 use GuzzleHttp\Client;
@@ -1075,6 +1078,230 @@ if (!function_exists('rateQuotationWeb')) {
             $quotation->save();
 
         }
+
+        return $rating;
+    }
+}
+
+//web quotations calculate rating and assign to user
+if (!function_exists('rateQuotationAgentWeb')) {
+
+    function rateQuotationAgentWeb($quotation_id) {
+        $quotation = Quotation::find($quotation_id);
+        if (!$quotation) {
+            throw new \Exception("Quotation not found");
+        }
+
+        $rating = 0;
+
+        //######## email :::::::::::
+        $email = $quotation->customer_user_id
+        ? User::find($quotation->customer_user_id)->email
+        : GuestUser::find($quotation->guest_user_id)->email;
+
+        //######## ea_shipments :::::::::::
+        $ea_shipments = $quotation->customer_user_id
+        ? User::find($quotation->customer_user_id)->ea_shipments
+        : GuestUser::find($quotation->guest_user_id)->ea_shipments;
+
+        $domain = substr(strrchr($email, "@"), 1);
+        $personal_domains = personal_domains();
+
+        //######## Origen/Destino, Ubicación y correo :::::::::::
+        $scopeCountries = scope_countries(); // Países en el scope
+        $specialCountries = special_countries(); // Países especiales
+        $europeCountries = europe_countries(); // Países en Europa
+        $otherCountries = other_countries(); // Resto de países
+        $chinaCountry = china_country(); // China
+
+
+        //Location
+        $location = $quotation->customer_user_id ? \App\Models\User::where('id', $quotation->customer_user_id)->value('location') : ($quotation->guest_user_id ? \App\Models\GuestUser::where('id', $quotation->guest_user_id)->value('location') : null);
+
+        $isLocationInSpecialCountries = in_array($location, $specialCountries);
+        $isLocationInEuropeCountries = in_array($location, $europeCountries);
+        $isLocationScopeCountries = in_array($location, $scopeCountries);
+        $isLocationInOtherCountries = in_array($location, $otherCountries);
+        $isLocationChina = in_array($location, $chinaCountry);
+
+        //Origen
+        $isOriginInSpecialCountries = in_array($quotation->origin_country_id, $specialCountries);
+        $isOriginInEuropeCountries = in_array($quotation->origin_country_id, $europeCountries);
+        $isOriginInScopeCountries = in_array($quotation->origin_country_id, $scopeCountries);
+        $isOriginInOtherCountries = in_array($quotation->origin_country_id, $otherCountries);
+        $isOriginChina = in_array($quotation->origin_country_id, $chinaCountry);
+
+        //Destino
+        $isDestinationInSpecialCountries = in_array($quotation->destination_country_id, $specialCountries);
+        $isDestinationInEuropeCountries = in_array($quotation->destination_country_id, $europeCountries);
+        $isDestinationInScopeCountries = in_array($quotation->destination_country_id, $scopeCountries);
+        $isDestinationInOtherCountries = in_array($quotation->destination_country_id, $otherCountries);
+        $isDestinationChina = in_array($quotation->origin_country_id, $chinaCountry);
+
+        //Correo de empresa y no de educación
+        $isBusinessEmailAndNotEdu = !in_array($domain, $personal_domains) && !preg_match('/\.edu(\.[a-z]{2,})?$/', $domain);
+
+        //######## Shipment ready date :::::::::::
+            if ($quotation->shipment_ready_date) {
+                if($quotation->shipment_ready_date == 'Ready to ship now'){
+                    $rating += 1;
+                }elseif($quotation->shipment_ready_date == 'Ready within a month'){
+                    $rating += 1;
+                }elseif($quotation->shipment_ready_date == 'Ready within 1-3 months'){
+                    $rating += 0.5;
+                }elseif($quotation->shipment_ready_date == 'Not yet ready, just exploring options/budgeting'){
+                    $rating += 0;
+                }
+            }
+
+        //######## Annual Shipments :::::::::::
+            if($ea_shipments){
+                if ($ea_shipments == 'One-time shipment') {
+                    $rating += 0;
+                } elseif($ea_shipments == 'Between 2-10') {
+                    $rating += 0;
+                } elseif($ea_shipments == 'Between 11-50') {
+                    $rating += 1;
+                } elseif($ea_shipments == 'Between 51-200') {
+                    $rating += 1;
+                } elseif($ea_shipments == 'Between 201-500') {
+                    $rating += 2;
+                } elseif($ea_shipments == 'More than 500') {
+                    $rating += 2;
+                }
+            }
+
+        //######## Mail, Location, Origen y Destino :::::::::::
+            if($isBusinessEmailAndNotEdu){
+                if ($isLocationScopeCountries) {
+                    if ($isOriginInSpecialCountries && $isDestinationInOtherCountries) {
+                        // (Origin USA/CA - Destination Other)
+                        $rating += 3;
+                    } elseif ($isOriginInSpecialCountries && $isDestinationInScopeCountries) {
+                        // (Origin USA/CA - Destination Scope)
+                        $rating += 3;
+                    } elseif ($isOriginInSpecialCountries && $isDestinationInEuropeCountries) {
+                        // (Origin USA/CA - Destination Europe)
+                        $rating += 3;
+                    }
+                } elseif ($isLocationInEuropeCountries) {
+                    if ($isOriginInSpecialCountries && $isDestinationInOtherCountries) {
+                        // (Origin USA/CA - Destination Other)
+                        $rating += 3;
+                    } elseif ($isOriginInSpecialCountries && $isDestinationInScopeCountries) {
+                        // (Origin USA/CA - Destination Scope)
+                        $rating += 3;
+                    } elseif ($isOriginInSpecialCountries && $isDestinationInEuropeCountries) {
+                        // (Origin USA/CA - Destination Europe)
+                        $rating += 3;
+                    }
+                } elseif ($isLocationInSpecialCountries) {
+                    if ($isOriginInSpecialCountries && $isDestinationInScopeCountries) {
+                        // (Origin USA/CA - Destination Scope)
+                        $rating += 1;
+                    } elseif ($isOriginInSpecialCountries && $isDestinationInEuropeCountries) {
+                        // (Origin USA/CA - Destination Europe)
+                        $rating += 1;
+                    } elseif ($isOriginInSpecialCountries && $isDestinationInOtherCountries) {
+                        // (Origin USA/CA - Destination Other)
+                        $rating += 1;
+                    } elseif ($isOriginInSpecialCountries && $isDestinationChina) {
+                        // (Origin USA/CA - Destination China)
+                        $rating += 1;
+                    }
+                } elseif ($isLocationChina) {
+                    if ($isOriginInSpecialCountries && $isDestinationInScopeCountries) {
+                        // (Origin USA/CA - Destination Scope)
+                        $rating += 2;
+                    } elseif ($isOriginInSpecialCountries && $isDestinationInEuropeCountries) {
+                        // (Origin USA/CA - Destination Europe)
+                        $rating += 2;
+                    } elseif ($isOriginInSpecialCountries && $isDestinationInOtherCountries) {
+                        // (Origin USA/CA - Destination Other)
+                        $rating += 2;
+                    } elseif ($isOriginInSpecialCountries && $isDestinationChina) {
+                        // (Origin USA/CA - Destination China)
+                        $rating += 2;
+                    }
+                }
+            }
+
+
+        //###### Network
+            $network = $quotation->customer_user_id ? \App\Models\User::where('id', $quotation->customer_user_id)->value('network') : ($quotation->guest_user_id ? \App\Models\GuestUser::where('id', $quotation->guest_user_id)->value('network') : null);
+            switch ($network) {
+                case TypeNetwork::TWIG->value:
+                case TypeNetwork::WCA->value:
+                    $rating += 2;
+                    break;
+                case TypeNetwork::JC_TRANS->value:
+                case TypeNetwork::GKF->value:
+                case TypeNetwork::X2->value:
+                case TypeNetwork::PANGEA->value:
+                case TypeNetwork::GFA->value:
+                case TypeNetwork::DFA->value:
+                    $rating += 1;
+                    break;
+                case TypeNetwork::NONE->value:
+                    $rating += 0;
+                    break;
+                default:
+                    break;
+            }
+
+
+        //###### Mode of transport
+            $mode_of_transport = $quotation->mode_of_transport;
+            $declared_value = $quotation->declared_value;
+
+            $umbrales = [
+                'FCL (Full Container Load)'         => 25000,
+                'RORO (Roll-On/Roll-Off)'           => 25000,
+                'FTL (Full Truckload)'              => 25000,
+                'LCL (Less-than-Container Load)'    => 2500,
+                'LTL (Less-than-Truckload)'         => 2500,
+                'Standard Air Freight'              => 2500,
+                'Breakbulk'                         => 60000,
+                'Project Cargo'                     => 60000,
+            ];
+
+            // Verificar si el modo de transporte tiene un threshold definido
+            if (isset($umbrales[$mode_of_transport])) {
+                $umbral = $umbrales[$mode_of_transport];
+                $tolerance = $umbral * 0.10; // 10%
+
+                if ($declared_value > $umbral) {
+                    $rating += 2;
+                } elseif ($declared_value > ($umbral - $tolerance)) {
+                    $rating += 1;
+                }
+            }
+
+        $priority = TypePriorityInq::LOW->value;
+        if ($rating >= 6 and $rating <= 10) {
+            $priority = TypePriorityInq::MEDIUM->value;
+        }
+
+        // Guarda la prioridad en la cotización
+        $quotation->priority = $priority;
+        $quotation->points = $rating;
+        $quotation->save();
+
+
+        // Asignar usuario basado en location
+        $agent_users = User::where('department_id', TypeDepartment::AGENTS_DEPT->value)->get();
+        $assigned_user_id = null;
+        if ($agent_users) {
+            foreach ($agent_users as $user) {
+                if (in_array($location, $user->priority_countries) || in_array($location, $user->priority_countries_ext)) {
+                    $assigned_user_id = $user->id;
+                    break;
+                }
+            }
+        }
+
+        $quotation->assigned_user_id = $assigned_user_id;
+        $quotation->save();
 
         return $rating;
     }
