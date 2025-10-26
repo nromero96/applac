@@ -90,9 +90,12 @@ class DealsBoardColumn extends Component
                     END as currency
                 "),
             );
-
         if ($this->status) {
-            $quotations->where('quotations.status', $this->status)->where('result', '!=', 'Lost');
+            $quotations->where('quotations.status', $this->status)
+                ->where(function($q){
+                    $q->where('result', '!=', 'Lost');
+                    $q->orWhereNull('result');
+                });
         }
 
         if ($this->result) {

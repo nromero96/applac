@@ -147,7 +147,11 @@
                                     <span class="__badge __tier">
                                         {{ $quotation->customer_tier }}
                                     </span>
-                                @elseif ($quotation->type_inquiry->value == TypeInquiry::INTERNAL_LEGACY->value || $quotation->type_inquiry->value == TypeInquiry::INTERNAL_OTHER_AGT->value)
+                                @elseif (
+                                    $quotation->type_inquiry->value == TypeInquiry::INTERNAL_LEGACY->value ||
+                                    $quotation->type_inquiry->value == TypeInquiry::INTERNAL_OTHER_AGT->value ||
+                                    $quotation->type_inquiry->value == TypeInquiry::EXTERNAL_SEO_RFQ->value
+                                )
                                     @php $prt = $quotation->priority->meta(); @endphp
                                     <span class="__badge" style="color: {{ $prt['color'] }}; background-color: {{ $prt['bg'] }}">
                                         {{ $quotation->priority->meta('label') }}
@@ -187,12 +191,18 @@
                                     {{ $this->readinessMap[$quotation->shipment_ready_date]['label'] }}
                                 </p>
                             @endif
-                            @if ($quotation->type_inquiry->value == TypeInquiry::INTERNAL_LEGACY->value || $quotation->type_inquiry->value == TypeInquiry::INTERNAL_OTHER_AGT->value)
+                            @if (
+                                $quotation->type_inquiry->value == TypeInquiry::INTERNAL_LEGACY->value ||
+                                $quotation->type_inquiry->value == TypeInquiry::INTERNAL_OTHER_AGT->value ||
+                                $quotation->type_inquiry->value == TypeInquiry::EXTERNAL_SEO_RFQ->value
+                            )
                                 {!! type_network_pill_first($quotation->customer_network) !!}
                             @endif
                             @if (!$quotation->is_internal_inquiry)
-                                @if (isset($quotation->declared_value))
-                                    <p class="__value">{{ $quotation->currency  }}{{ number_format($quotation->declared_value) }}</p>
+                                @if ($quotation->type_inquiry->value != TypeInquiry::EXTERNAL_SEO_RFQ->value)
+                                    @if (isset($quotation->declared_value))
+                                        <p class="__value">{{ $quotation->currency  }}{{ number_format($quotation->declared_value) }}</p>
+                                    @endif
                                 @endif
                             @endif
                         </div>

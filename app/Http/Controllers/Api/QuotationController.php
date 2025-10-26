@@ -211,7 +211,7 @@ class QuotationController extends Controller
             'phone' => $validatedData['phone'],
             'ea_shipments' => $validatedData['ea_shipments'],
             'source' => $validatedData['source'],
-            'network' => $validatedData['network'],
+            'network' => (array) $validatedData['network'],
             'business_role' => 'Logistics Company / Freight Forwarder',
         ]);
 
