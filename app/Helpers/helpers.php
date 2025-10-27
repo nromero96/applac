@@ -1289,7 +1289,11 @@ if (!function_exists('rateQuotationAgentWeb')) {
 
 
         // Asignar usuario basado en location
-        $agent_users = User::where('department_id', TypeDepartment::AGENTS_DEPT->value)->get();
+        $agent_users = User::where('department_id', TypeDepartment::AGENTS_DEPT->value)
+            ->whereHas('roles', function ($q) {
+                $q->where('name', 'Quoter');
+            })
+            ->get();
         $assigned_user_id = null;
         if ($agent_users) {
             foreach ($agent_users as $user) {
