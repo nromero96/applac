@@ -16,6 +16,7 @@ class FlagFollowUp extends Component
 
     // app
     public $quotationId;
+    public $quotationPriority;
     public $flag = [
         'priority'  => '',
         'notes'     => '',
@@ -95,10 +96,22 @@ class FlagFollowUp extends Component
     }
 
     public function save_flag() {
-        $this->validate([
+        $rules = [
             'flag.priority' => 'required|string',
             'flag.notes'    => 'nullable|string',
-        ], [], [
+        ];
+        if ($this->quotationPriority) {
+            $rules['flag.priority'] = 'nullable|string';
+            $priority = '';
+            switch ($this->quotationPriority) {
+                case 'low': $priority = 'Low Priority'; break;
+                case 'medium': $priority = 'Medium Priority'; break;
+                case 'high': $priority = 'High Priority'; break;
+                default: break;
+            }
+            $this->flag['priority'] = $priority;
+        }
+        $this->validate($rules, [], [
             'flag.priority' => 'priority',
             'flag.notes'    => 'notes',
         ]);
@@ -152,6 +165,17 @@ class FlagFollowUp extends Component
         // Convertir formato dd-mm-yyyy a yyyy-mm-dd
         if (!empty($this->schedule['date'])) {
             $this->schedule['date'] = Carbon::createFromFormat('d-m-Y', $this->schedule['date'])->format('Y-m-d');
+        }
+
+        if ($this->quotationPriority) {
+            $priority = '';
+            switch ($this->quotationPriority) {
+                case 'low': $priority = 'Low Priority'; break;
+                case 'medium': $priority = 'Medium Priority'; break;
+                case 'high': $priority = 'High Priority'; break;
+                default: break;
+            }
+            $this->schedule['priority'] = $priority;
         }
 
         $this->validate([

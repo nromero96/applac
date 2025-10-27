@@ -17,18 +17,20 @@
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
-            <div class="flex-grow-1">
-                <label class="form-label">Priority</label>
-                <select class="form-select" wire:model.defer="schedule.priority">
-                    <option value="">Select</option>
-                    <option value="High Priority">High Priority</option>
-                    <option value="Medium Priority">Medium Priority</option>
-                    <option value="Low Priority">Low Priority</option>
-                </select>
-                @error('schedule.priority')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
+            @if (!$this->quotationPriority)
+                <div class="flex-grow-1">
+                    <label class="form-label">Priority</label>
+                    <select class="form-select" wire:model.defer="schedule.priority">
+                        <option value="">Select</option>
+                        <option value="High Priority">High Priority</option>
+                        <option value="Medium Priority">Medium Priority</option>
+                        <option value="Low Priority">Low Priority</option>
+                    </select>
+                    @error('schedule.priority')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            @endif
         </div>
         <div class="mb-4">
             <label class="form-label">Notes</label>

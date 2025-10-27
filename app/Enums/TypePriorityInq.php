@@ -12,16 +12,19 @@ enum TypePriorityInq: string {
                 'label' => 'High',
                 'color' => '#B80000',
                 'bg' => '#FAE6E6',
+                'style' => 'color: #B80000; background-color: #FAE6E6'
             ],
             self::MEDIUM => [
                 'label' => 'Medium',
                 'color' => '#B28600',
                 'bg' => '#FCF4D6',
+                'style' => 'color: #B28600; background-color: #FCF4D6'
             ],
             self::LOW => [
                 'label' => 'Low',
                 'color' => '#686868',
                 'bg' => '#E8E8E8',
+                'style' => 'color: #686868; background-color: #E8E8E8'
             ],
         };
 

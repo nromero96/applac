@@ -1,6 +1,8 @@
 @php
+    use App\Enums\TypeInquiry;
     use App\Enums\TypeStatus;
     use App\Enums\TypeProcessFor;
+    use App\Enums\TypePriorityInq;
     $statusItem = TypeStatus::from($quotation->status);
 @endphp
 @extends('layouts.app')
@@ -147,102 +149,109 @@
                                                 }
                                             @endphp
 
-                                            <div class="">
-                                                {{-- Grupo de radios --}}
-                                                <div class="rating-modify">
-                                                    <form action="{{ route('quotationupdaterating', ['id' => $quotation->id]) }}" method="POST">
+                                            @if ($quotation->type_inquiry->value !== TypeInquiry::EXTERNAL_SEO_RFQ->value)
+                                                <div class="">
+                                                    {{-- Grupo de radios --}}
+                                                    <div class="rating-modify">
+                                                        <form action="{{ route('quotationupdaterating', ['id' => $quotation->id]) }}" method="POST">
 
-                                                        <span class="qtrating {{$class_rtg_rating_stars}}" id="rtg_rating_stars">
-                                                            @php
-                                                                $fullStars = floor($quotation->rating);
-                                                                $hasHalfStar = ($quotation->rating - $fullStars) >= 0.5;
-                                                            @endphp
+                                                            <span class="qtrating {{$class_rtg_rating_stars}}" id="rtg_rating_stars">
+                                                                @php
+                                                                    $fullStars = floor($quotation->rating);
+                                                                    $hasHalfStar = ($quotation->rating - $fullStars) >= 0.5;
+                                                                @endphp
 
-                                                            @for ($i = 0; $i < $fullStars; $i++)
-                                                                <span class="star">
-                                                                    <svg width="17" height="17" fill="#edb10c" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                            @endfor
+                                                                @for ($i = 0; $i < $fullStars; $i++)
+                                                                    <span class="star">
+                                                                        <svg width="17" height="17" fill="#edb10c" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                        </svg>
+                                                                    </span>
+                                                                @endfor
 
-                                                            @if ($hasHalfStar)
-                                                                <span class="star">
-                                                                    <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                        <defs>
-                                                                            <clipPath id="halfStarClip">
-                                                                                <rect x="0" y="0" width="12" height="24" />
-                                                                            </clipPath>
-                                                                        </defs>
-                                                                        <!-- Estrella completa en gris -->
-                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#e1e1e1" />
-                                                                        <!-- Parte de la estrella en color original -->
-                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#edb10c" clip-path="url(#halfStarClip)" />
-                                                                    </svg>
-                                                                </span>
-                                                            @endif
+                                                                @if ($hasHalfStar)
+                                                                    <span class="star">
+                                                                        <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                            <defs>
+                                                                                <clipPath id="halfStarClip">
+                                                                                    <rect x="0" y="0" width="12" height="24" />
+                                                                                </clipPath>
+                                                                            </defs>
+                                                                            <!-- Estrella completa en gris -->
+                                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#e1e1e1" />
+                                                                            <!-- Parte de la estrella en color original -->
+                                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#edb10c" clip-path="url(#halfStarClip)" />
+                                                                        </svg>
+                                                                    </span>
+                                                                @endif
 
-                                                            @for ($i = $fullStars + ($hasHalfStar ? 1 : 0); $i < 5; $i++)
-                                                                <span class="star">
-                                                                    <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
-                                                                    </svg>
-                                                                </span>
-                                                            @endfor
-                                                        </span>
+                                                                @for ($i = $fullStars + ($hasHalfStar ? 1 : 0); $i < 5; $i++)
+                                                                    <span class="star">
+                                                                        <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                            <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                        </svg>
+                                                                    </span>
+                                                                @endfor
+                                                            </span>
 
-                                                        <div class="{{$class_rtg_modified_stars}}" id="rtg_modified_stars">
-                                                            @csrf
-                                                            @method('PUT')
-                                                            @php
-                                                                $rating = $quotation->rating;
-                                                                // verificar y agregar active class a los radio buttons
-                                                                for ($i=1; $i <= 5; $i++) {
-                                                                    if($i <= $rating){
-                                                                        $classactive = "active";
-                                                                    }else{
-                                                                        $classactive = "";
+                                                            <div class="{{$class_rtg_modified_stars}}" id="rtg_modified_stars">
+                                                                @csrf
+                                                                @method('PUT')
+                                                                @php
+                                                                    $rating = $quotation->rating;
+                                                                    // verificar y agregar active class a los radio buttons
+                                                                    for ($i=1; $i <= 5; $i++) {
+                                                                        if($i <= $rating){
+                                                                            $classactive = "active";
+                                                                        }else{
+                                                                            $classactive = "";
+                                                                        }
+
+                                                                        if($i == $rating){
+                                                                            $checked = "checked";
+                                                                        }else{
+                                                                            $checked = "";
+                                                                        }
+
+                                                                        echo '<input type="radio" id="star'.$i.'" name="new_rating" value="'.$i.'" '.$checked.' disabled/>
+                                                                        <label for="star'.$i.'" class="'.$classactive.'">
+                                                                            <span class="star">
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star">
+                                                                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                                                                </svg>
+                                                                            </span>
+                                                                        </label>';
                                                                     }
+                                                                @endphp
+                                                            </div>
 
-                                                                    if($i == $rating){
-                                                                        $checked = "checked";
-                                                                    }else{
-                                                                        $checked = "";
-                                                                    }
+                                                            <div class="ms-2 d-none" id="rtg_comment_input">
+                                                                <input type="text" name="rating_comment" class="rating_comment" placeholder="Comment">
+                                                                <button type="submit" class="btn-outline-primary ms-2 btn-rtg-update">Update</button>
+                                                                <button type="button" class="ms-1 btn-rtg-cancel">
+                                                                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M18 6 6 18"></path>
+                                                                        <path d="m6 6 12 12"></path>
+                                                                        </svg>
+                                                                </button>
+                                                            </div>
 
-                                                                    echo '<input type="radio" id="star'.$i.'" name="new_rating" value="'.$i.'" '.$checked.' disabled/>
-                                                                    <label for="star'.$i.'" class="'.$classactive.'">
-                                                                        <span class="star">
-                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-star">
-                                                                                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                                                                            </svg>
-                                                                        </span>
-                                                                    </label>';
-                                                                }
-                                                            @endphp
-                                                        </div>
+                                                            <div class="d-inline" id="rtg_modified_by">
+                                                                <span class="ms-2 {{$class_rtg_modified_by_name}}">(Modified by {{$modified_by}})</span>
+                                                                <a href="javascript:void(0);" class="btn-outline-primary ms-2 btn-modify">Modify</a>
+                                                            </div>
 
-                                                        <div class="ms-2 d-none" id="rtg_comment_input">
-                                                            <input type="text" name="rating_comment" class="rating_comment" placeholder="Comment">
-                                                            <button type="submit" class="btn-outline-primary ms-2 btn-rtg-update">Update</button>
-                                                            <button type="button" class="ms-1 btn-rtg-cancel">
-                                                                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path d="M18 6 6 18"></path>
-                                                                    <path d="m6 6 12 12"></path>
-                                                                    </svg>
-                                                            </button>
-                                                        </div>
-
-                                                        <div class="d-inline" id="rtg_modified_by">
-                                                            <span class="ms-2 {{$class_rtg_modified_by_name}}">(Modified by {{$modified_by}})</span>
-                                                            <a href="javascript:void(0);" class="btn-outline-primary ms-2 btn-modify">Modify</a>
-                                                        </div>
-
-                                                    </form>
+                                                        </form>
+                                                    </div>
                                                 </div>
-                                            </div>
-
-
+                                            @else
+                                                <div class="d-flex align-items-center gap-2">
+                                                    <b class="me-1">Priority</b>
+                                                    <span class="badge" style="{{ $quotation->priority->meta('style') }}">
+                                                        {{ $quotation->priority->meta('label') }}
+                                                    </span>
+                                                </div>
+                                            @endif
                                         @endif
 
                                         @if(Auth::user()->hasRole('Administrator'))
@@ -261,7 +270,10 @@
                                     </div>
 
                                     <div class="flex-grow-1 text-end d-flex justify-content-end align-items-center gap-2">
-                                        <livewire:flag-follow-up :quotation-id="$quotation->id" />
+                                        <livewire:flag-follow-up
+                                            :quotation-id="$quotation->id"
+                                            :quotation-priority="isset($quotation->priority->value) ? $quotation->priority->value : null"
+                                        />
                                         <div class="dropdown-list dropdown text-end pe-2" role="group">
                                             <a href="javascript:void(0);" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
@@ -295,17 +307,37 @@
                                 <h6 class="text-primary mb-2">{{ __('Contact Info') }}</h6>
                                 <p class="mb-2"><label class="fw-bold mb-0">{{__("Contact name")}}:</label> {{ $quotation->customer_name }} {{ $quotation->customer_lastname }}</p>
                                 <p class="mb-2"><label class="fw-bold mb-0">{{__("Company")}}:</label> {{ $quotation->customer_company_name }}</p>
-                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Job Title")}}:</label> {{$quotation->customer_job_title ? : '-'}}</p>
-                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Email")}}:</label> {{ $quotation->customer_email }}</p>
-                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}</p>
-                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Business type")}}:</label> {{ $quotation->customer_business_role ? : '-' }}</p>
-                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Annual Shipments")}}:</label> {{ $quotation->customer_ea_shipments ? : '-' }} {!! $ea_shipments_label !!}</p>
-                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Source")}}:</label> {{ $quotation->customer_source ? : '-' }}</p>
-                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name ? : '-' }}</p>
-                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Tier")}}:</label> {{ $quotation->customer_tier ? : '-' }}</p>
-                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Score")}}:</label> {{ $quotation->customer_score ? rtrim(rtrim($quotation->customer_score, '0'), '.') : '-' }}</p>
+                                @if ($quotation->customer_job_title)
+                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Job Title")}}:</label> {{$quotation->customer_job_title}}</p>
+                                @endif
+                                @if ($quotation->customer_email)
+                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Email")}}:</label> {{ $quotation->customer_email }}</p>
+                                @endif
+                                @if ($quotation->customer_phone)
+                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}</p>
+                                @endif
+                                @if ($quotation->customer_business_role)
+                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Business type")}}:</label> {{ $quotation->customer_business_role }}</p>
+                                @endif
+                                @if ($quotation->customer_ea_shipments)
+                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Annual Shipments")}}:</label> {{ $quotation->customer_ea_shipments }} {!! $ea_shipments_label !!}</p>
+                                @endif
+                                @if ($quotation->customer_source)
+                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Source")}}:</label> {{ $quotation->customer_source }}</p>
+                                @endif
+                                @if ($quotation->customer_country_name)
+                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Location")}}:</label> {{ $quotation->customer_country_name }}</p>
+                                @endif
+                                @if ($quotation->customer_tier)
+                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Tier")}}:</label> {{ $quotation->customer_tier }}</p>
+                                @endif
+                                @if ($quotation->customer_score)
+                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Score")}}:</label> {{ rtrim(rtrim($quotation->customer_score, '0'), '.') }}</p>
+                                @endif
                                 @php $networks_labels = type_network_labels($quotation->customer_network); @endphp
-                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Network")}}:</label> {{ $networks_labels ? : '-' }}</p>
+                                @if ($networks_labels)
+                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Network")}}:</label> {{ $networks_labels ? : '-' }}</p>
+                                @endif
                             </div>
                             <div class="col-md-5 mt-0">
                                 <h6 class="text-primary mb-2">{{ __('Shipment Info') }}</h6>
