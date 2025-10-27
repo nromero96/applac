@@ -279,15 +279,15 @@ class QuotationController extends Controller
         }
 
         //obtener los documentos de la cotización
-        // $quotation_documents = QuotationDocument::where('quotation_id', $quotation->id)->get();
+        $quotation_documents = QuotationDocument::where('quotation_id', $quotation->id)->get();
 
-        // try {
-        //     // Enviar correo
-        //     Mail::send(new WebQuotationCreated($quotation, $guest_user, $request->email, $quotation_documents, $assigned_user_full_name, $assigned_user_mail));
-        // } catch (\Exception $e) {
-        //     // Puedes loguear el error o manejarlo como desees
-        //     Log::error("Error sending email Web Quotation Mail: " . $e->getMessage());
-        // }
+        try {
+            // Enviar correo
+            Mail::send(new WebQuotationCreated($quotation, $guest_user, $request->email, $quotation_documents, $assigned_user_full_name, $assigned_user_mail));
+        } catch (\Exception $e) {
+            // Puedes loguear el error o manejarlo como desees
+            Log::error("Error sending email Web Quotation Mail: " . $e->getMessage());
+        }
 
         return response()->json([
             'message' => 'Quotation created',
