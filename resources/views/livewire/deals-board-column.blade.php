@@ -2,7 +2,7 @@
     @php
         use App\Enums\TypeInquiry;
         use App\Enums\TypeStatus;
-        use App\Enums\TypeProcessfor;
+        use App\Enums\TypeProcessFor;
     @endphp
     {{-- thead --}}
     <div class="deals__board__thead __{{ $statusKey }}">
