@@ -82,6 +82,8 @@ class QuotationController extends Controller
             DB::raw('COALESCE(users.phone_code, guest_users.phone_code) as user_phone_code'),
             DB::raw('COALESCE(users.phone, guest_users.phone) as user_phone'),
             DB::raw('COALESCE(users.company_website, guest_users.company_website) as user_company_website'),
+            DB::raw('COALESCE(users.tier, guest_users.tier) as user_tier'),
+            DB::raw('COALESCE(users.score, guest_users.score) as user_score'),
             'quotations.status as quotation_status',
             'quotations.result as quotation_result',
             'quotations.mode_of_transport as quotation_mode_of_transport',
@@ -179,8 +181,12 @@ class QuotationController extends Controller
             if (!empty($assignedto) && !auth()->user()->hasRole('Customer')) {
                 $query->where('quotations.assigned_user_id', $assignedto);
             } else {
-                if (Auth::user()->hasRole('Sales') || Auth::user()->hasRole('Customer')) {
+                if (Auth::user()->hasRole('Quoter') || Auth::user()->hasRole('Customer')) {
                     $query->where('quotations.assigned_user_id', auth()->id());
+                } elseif (Auth::user()->hasRole('Leader')) {
+                    $users_dept = User::where('department_id', auth()->user()->department_id)->get('id')->toArray();
+                    $query->whereIn('quotations.assigned_user_id', $users_dept);
+                    // $query->where('quotations.department_id', auth()->user()->department_id);
                 }
             }
 
@@ -245,7 +251,13 @@ class QuotationController extends Controller
         $users_selected_dropdown_quotes_value = $users_selected_dropdown_quotes->value;
         $users_selected_dropdown_quotes_value = preg_replace('/["\[\]]/', '', $users_selected_dropdown_quotes->value);
         $dropdownUserIds = explode(",", $users_selected_dropdown_quotes_value);
-        $users = User::whereIn('id', $dropdownUserIds)->get();
+        if (Auth::user()->hasRole('Administrator')) {
+            $users = User::whereIn('id', $dropdownUserIds)->get();
+        } elseif (Auth::user()->hasRole('Leader')) {
+            $users = User::where('department_id', auth()->user()->department_id)->get();
+        } else {
+            $users = [];
+        }
 
         //Contar los sources de cotizaciones
         $sourceorderforlist = ['Search Engine', 'LinkedIn', 'AI Assistant', 'Social Media', 'Referral', 'Industry Event', 'Other', 'ppc', 'Direct Client', 'agt', 'Unknown'];
@@ -478,6 +490,7 @@ class QuotationController extends Controller
             DB::raw('COALESCE(users.tier, guest_users.tier) as customer_tier'),
             DB::raw('COALESCE(users.score, guest_users.score) as customer_score'),
             DB::raw('COALESCE(users.network, guest_users.network) as customer_network'),
+            DB::raw('COALESCE(users.referred_by, guest_users.referred_by) as customer_referred_by'),
 
             //is user or guest user
             DB::raw('CASE WHEN users.id IS NOT NULL THEN "Returning" ELSE "Guest" END AS user_type'),

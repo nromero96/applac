@@ -62,12 +62,12 @@ class NewInquiry extends Component
     public $rating_star_icon = '<svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.00065 0.333344L9.06065 4.50668L13.6673 5.18001L10.334 8.42668L11.1207 13.0133L7.00065 10.8467L2.88065 13.0133L3.66732 8.42668L0.333984 5.18001L4.94065 4.50668L7.00065 0.333344Z" fill="#EDB10C"/></svg>';
     public $source_label = 'Select Source';
     public $sources_list = [
+        // [
+            // 'Direct Client' => ['key' => 'DIR', 'label' => 'Direct Client', 'color' => '#CC0000'],
+            // 'agt' => ['key' => 'AGT', 'label' => 'Agent', 'color' => '#FF5F1F'],
+        // ],
         [
-            'Direct Client' => ['key' => 'DIR', 'label' => 'Direct Client', 'color' => '#CC0000'],
-            'agt' => ['key' => 'AGT', 'label' => 'Agent', 'color' => '#FF5F1F'],
             'Referral' => ['key' => 'REF', 'label' => 'Referral', 'color' => '#FFCC00'],
-        ],
-        [
             'Search Engine' => ['key' => 'SEO', 'label' => 'Search Engine', 'color' => '#4CBB17'],
             'AI Assistant' => ['key' => 'AIA', 'label' => 'AI Assistant', 'color' => '#FF00FF'],
             'LinkedIn' => ['key' => 'LNK', 'label' => 'LinkedIn', 'color' => '#0077B5'],

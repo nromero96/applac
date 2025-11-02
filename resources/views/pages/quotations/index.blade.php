@@ -390,11 +390,13 @@
                                         <th class="px-2">{{ __('Route') }}</th>
                                         <th class="px-2">{{ __('Transport') }}</th>
                                         @if($adminorsales)
-                                        @if (Auth::user()->hasRole('Administrator'))
+                                        @if (Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Leader'))
                                             <th>{{ __('Assigned') }}</th>
                                         @endif
                                         <th class="ps-2 pe-2">{{ __('Type') }}</th>
-                                        <th class="px-2">{{ __('Source') }}</th>
+                                        @if (false)
+                                            <th class="px-2">{{ __('Source') }}</th>
+                                        @endif
                                         @endif
                                         <th class="px-2">{{ __('Last Update') }}</th>
                                         <th></th>
@@ -467,48 +469,54 @@
                                                 @if($adminorsales)
                                                 <td class="p-1 text-start">
                                                     {{-- Rating aleatorio --}}
-                                                    <div class="qtrating">
-                                                        @php
-                                                            if($quotation->rating_modified) {
-                                                                $starcolor = '#2196F3';
-                                                            } else {
-                                                                $starcolor = '#edb10c';
-                                                            }
+                                                    @if ( $quotation->user_tier || $quotation->user_score)
+                                                        <div class="badge __tier">
+                                                            {{ $quotation->user_tier }} - {{ $quotation->user_score }}
+                                                        </div>
+                                                    @else
+                                                        <div class="qtrating">
+                                                            @php
+                                                                if($quotation->rating_modified) {
+                                                                    $starcolor = '#2196F3';
+                                                                } else {
+                                                                    $starcolor = '#edb10c';
+                                                                }
 
-                                                            $fullStars = floor($quotation->quotation_rating);
-                                                            $hasHalfStar = ($quotation->quotation_rating - $fullStars) >= 0.5;
-                                                        @endphp
+                                                                $fullStars = floor($quotation->quotation_rating);
+                                                                $hasHalfStar = ($quotation->quotation_rating - $fullStars) >= 0.5;
+                                                            @endphp
 
-                                                        @for ($i = 0; $i < $fullStars; $i++)
-                                                            <span class="star">
-                                                                <svg width="17" height="17" fill="{{$starcolor}}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
-                                                                </svg>
-                                                            </span>
-                                                        @endfor
+                                                            @for ($i = 0; $i < $fullStars; $i++)
+                                                                <span class="star">
+                                                                    <svg width="17" height="17" fill="{{$starcolor}}" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                            @endfor
 
-                                                        @if ($hasHalfStar)
-                                                            <span class="star">
-                                                                <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#e1e1e1" />
-                                                                    <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#edb10c" clip-path="url(#halfStarClip)" />
-                                                                    <defs>
-                                                                        <clipPath id="halfStarClip">
-                                                                            <rect x="0" y="0" width="12" height="24" />
-                                                                        </clipPath>
-                                                                    </defs>
-                                                                </svg>
-                                                            </span>
-                                                        @endif
+                                                            @if ($hasHalfStar)
+                                                                <span class="star">
+                                                                    <svg width="17" height="17" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#e1e1e1" />
+                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z" fill="#edb10c" clip-path="url(#halfStarClip)" />
+                                                                        <defs>
+                                                                            <clipPath id="halfStarClip">
+                                                                                <rect x="0" y="0" width="12" height="24" />
+                                                                            </clipPath>
+                                                                        </defs>
+                                                                    </svg>
+                                                                </span>
+                                                            @endif
 
-                                                        @for ($i = $fullStars + ($hasHalfStar ? 1 : 0); $i < 5; $i++)
-                                                            <span class="star">
-                                                                <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                    <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
-                                                                </svg>
-                                                            </span>
-                                                        @endfor
-                                                    </div>
+                                                            @for ($i = $fullStars + ($hasHalfStar ? 1 : 0); $i < 5; $i++)
+                                                                <span class="star">
+                                                                    <svg width="17" height="17" fill="#e1e1e1" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                                                        <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
+                                                                    </svg>
+                                                                </span>
+                                                            @endfor
+                                                        </div>
+                                                    @endif
                                                 </td>
 
 
@@ -619,7 +627,7 @@
                                                 @if($adminorsales)
 
                                                     {{-- Select if user logged is admin spatie --}}
-                                                    @if (Auth::user()->hasRole('Administrator'))
+                                                    @if (Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Leader'))
                                                         <td>
 
                                                             <select class="user-select-assigned @if($quotation->quotation_assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->quotation_id }}">
@@ -655,6 +663,7 @@
                                                         </span>
                                                     </td>
 
+                                                    @if (false)
                                                     <td class="py-1 align-middle px-2">
                                                         @if($quotation->user_source)
                                                             @php
@@ -683,6 +692,7 @@
                                                             <span>-</span>
                                                         @endif
                                                     </td>
+                                                    @endif
 
                                                 @endif
 

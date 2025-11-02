@@ -249,6 +249,8 @@ class InternalInquiryService {
             'recovered_account' => $component->recovered_account,
             'cargo_description' => $component->cargo_description,
             'type_inquiry' => $component->type_inquiry,
+            'additional_info' => $component->additional_info,
+            'cargo_details' => $component->cargo_details,
             'department_id' => Auth::user()->department_id,
             'created_at' => now(),
         ];

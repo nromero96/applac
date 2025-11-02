@@ -75,15 +75,6 @@ class DealsBoard extends Component
                 // ['label' => 'N/A', 'style' => 'color: #686868; border-color: #686868', 'key' => 'null'],
             ],
             'statuses' => TypeStatus::deals_change_status_list(),
-            'inquiry_type' => [
-                'Manual' => [
-                    ['label' => TypeInquiry::INTERNAL->label(), 'key' => TypeInquiry::INTERNAL->value],
-                ],
-                'Inbound' => [
-                    ['label' => TypeInquiry::EXTERNAL_2->label(), 'key' => TypeInquiry::EXTERNAL_2->value],
-                    ['label' => TypeInquiry::EXTERNAL_1->label(), 'key' => TypeInquiry::EXTERNAL_1->value],
-                ]
-            ],
             'source' => [
                 'External' => [
                     ['label' => 'SEO', 'style' => 'color: #4CBB17; border-color: #4CBB17', 'key' => 'Search Engine'],
@@ -101,6 +92,46 @@ class DealsBoard extends Component
                 ],
             ],
         ];
+
+        if (!Auth::user()->hasRole('Administrator')) {
+            if (auth()->user()->department_id === 1) { // SEO / House
+                $this->filters_data['inquiry_type'] = [
+                    'Internal' => [
+                        ['label' => TypeInquiry::INTERNAL->label(), 'key' => TypeInquiry::INTERNAL->value],
+                        ['label' => TypeInquiry::INTERNAL_OTHER->label(), 'key' => TypeInquiry::INTERNAL_OTHER->value],
+                    ],
+                    'External' => [
+                        ['label' => TypeInquiry::EXTERNAL_2->label(), 'key' => TypeInquiry::EXTERNAL_2->value],
+                        ['label' => TypeInquiry::EXTERNAL_1->label(), 'key' => TypeInquiry::EXTERNAL_1->value],
+                    ]
+                ];
+            } elseif (auth()->user()->department_id === 2) { // Agents
+                $this->filters_data['inquiry_type'] = [
+                    'Internal' => [
+                        ['label' => TypeInquiry::INTERNAL_LEGACY->label(), 'key' => TypeInquiry::INTERNAL_LEGACY->value],
+                        ['label' => TypeInquiry::INTERNAL_OTHER_AGT->label(), 'key' => TypeInquiry::INTERNAL_OTHER_AGT->value],
+                    ],
+                    'External' => [
+                        ['label' => TypeInquiry::EXTERNAL_SEO_RFQ->label(), 'key' => TypeInquiry::EXTERNAL_SEO_RFQ->value],
+                    ]
+                ];
+            }
+        } else {
+            $this->filters_data['inquiry_type'] = [
+                'Internal' => [
+                    ['label' => TypeInquiry::INTERNAL->label() . '(SEO/House)', 'key' => TypeInquiry::INTERNAL->value],
+                    ['label' => TypeInquiry::INTERNAL_OTHER->label() . '(SEO/House)', 'key' => TypeInquiry::INTERNAL_OTHER->value],
+                    ['label' => TypeInquiry::INTERNAL_LEGACY->label() . '(Agents)', 'key' => TypeInquiry::INTERNAL_LEGACY->value],
+                    ['label' => TypeInquiry::INTERNAL_OTHER_AGT->label() . '(Agents)', 'key' => TypeInquiry::INTERNAL_OTHER_AGT->value],
+                ],
+                'External' => [
+                    ['label' => TypeInquiry::EXTERNAL_2->label() . '(SEO/House)', 'key' => TypeInquiry::EXTERNAL_2->value],
+                    ['label' => TypeInquiry::EXTERNAL_1->label() . '(SEO/House)', 'key' => TypeInquiry::EXTERNAL_1->value],
+                    ['label' => TypeInquiry::EXTERNAL_SEO_RFQ->label() . '(Agents)', 'key' => TypeInquiry::EXTERNAL_SEO_RFQ->value],
+                ]
+            ];
+        }
+
         // Asegurar todas las llaves
         $this->filters = array_merge([
             'rating'        => [],

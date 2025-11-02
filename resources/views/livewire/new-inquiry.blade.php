@@ -173,13 +173,15 @@
                                         <input class="form-check-input" type="checkbox" id="referred_by" wire:model.defer="referred_by">
                                         <label class="form-check-label d-flex align-items-center gap-2" for="referred_by">
                                             Referred by another agent
-                                            <div wire:ignore data-toggle="tooltip" data-placement="top" title="Check this box if this inquiry is from a customer who hasn't used our services in over 6 months.">
-                                                <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    <path d="M8 11.1667V8.5" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
-                                                    <path d="M8 5.83334H8.00667" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
-                                                </svg>
-                                            </div>
+                                            @if (false)
+                                                <div wire:ignore data-toggle="tooltip" data-placement="top" title="Check this box if this inquiry is from a customer who hasn't used our services in over 6 months.">
+                                                    <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        <path d="M8 11.1667V8.5" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        <path d="M8 5.83334H8.00667" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    </svg>
+                                                </div>
+                                            @endif
                                         </label>
                                     </div>
                                 </div>
@@ -319,7 +321,7 @@
                             <div class="row mb-3">
                                 <div class="col">
                                     <label for="organization_code" class="form-label d-flex align-items-center justify-content-between">
-                                        Rating <span class="text-danger">*</span>
+                                        <span>Rating <span class="text-danger">*</span></span>
                                         <div wire:ignore data-toggle="tooltip" data-placement="top" title="How promising is this inquiry? Consider the business type, cargo value, and shipment urgency.">
                                             <svg width="16" height="17" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M8.00065 15.1667C11.6825 15.1667 14.6673 12.1819 14.6673 8.50001C14.6673 4.81811 11.6825 1.83334 8.00065 1.83334C4.31875 1.83334 1.33398 4.81811 1.33398 8.50001C1.33398 12.1819 4.31875 15.1667 8.00065 15.1667Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
@@ -362,7 +364,7 @@
                                 <label for="shipping_date" class="form-label d-flex align-items-center justify-content-between">
                                     Est. Shipping Date
                                 </label>
-                                <input id="shipping_date" type="text" class="form-control" autocomplete="off" wire:model="shipping_date">
+                                <input id="shipping_date" type="text" class="form-control" autocomplete="off" wire:model="shipping_date" placeholder="Select Date">
                                 @error('shipping_date') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
                         </div>

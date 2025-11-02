@@ -611,7 +611,7 @@ a.dropdown-item:hover {
         max-width: 1000px;
         margin-left: auto;
         margin-right: auto;
-        margin-top: 1.5rem;
+        margin-top: 2.5rem;
         border-radius: 10px;
         padding: 24px;
         box-shadow: 0 0 10px rgba(black, .1);
@@ -687,7 +687,8 @@ a.dropdown-item:hover {
     }
 
     &__contacts {
-        background-color: #FAE6E6;
+        // background-color: #FAE6E6;
+        background-color: #F5F5F5;
         color: #B80000;
         font-weight: 700;
         border-radius: 10rem;
@@ -743,7 +744,7 @@ a.dropdown-item:hover {
         padding: 12px;
         border-radius: 4px;
         background-color: #B80000;
-        font-size: 16px;
+        font-size: 14px;
     }
 
     &__thanks {
@@ -922,6 +923,10 @@ a.dropdown-item:hover {
             display: flex;
             flex-direction: column;
         }
+    }
+
+    h6, .form-check label {
+        font-size: 14px;
     }
 
 }

@@ -57,12 +57,14 @@
                 </div>
             </div>
 
-            <div class="card p-3">
-                <h2 class="stats__subtitle">Reasons for Losing Deals</h2>
-                <div wire:ignore style="padding: 0 6rem">
-                    <canvas id="chart_reasons_for_losing_deals"></canvas>
+            @if (false)
+                <div class="card p-3">
+                    <h2 class="stats__subtitle">Reasons for Losing Deals</h2>
+                    <div wire:ignore style="padding: 0 6rem">
+                        <canvas id="chart_reasons_for_losing_deals"></canvas>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
 
     </div>

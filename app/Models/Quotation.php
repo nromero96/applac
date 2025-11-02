@@ -70,7 +70,8 @@ class Quotation extends Model
         'type_inquiry'      => TypeInquiry::class,
         'priority'          => TypePriorityInq::class,
         'cargo_details'     => 'array',
-        'additional_info'   => TypeAdditionalInfo::class,
+        // 'additional_info'   => TypeAdditionalInfo::class,
+        'additional_info'   => 'array',
     ];
 
     public function modeOfTransportLabel(): string {

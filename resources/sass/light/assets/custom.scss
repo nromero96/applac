@@ -646,6 +646,12 @@
                 background-color: white;
             }
 
+            svg {
+                width: 40px;
+                height: 40px;
+                object-fit: contain;
+            }
+
             .__info {
                 display: flex;
                 flex-direction: column;
@@ -1463,3 +1469,48 @@
     color: #0A6AB7;
     background-color: #D3EAFD;
 }
+
+
+
+.badge-type-inquiry{
+  background: #F8F8F8;
+  color: #515365;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+
+  &.internal{
+    background: #D3EAFD;
+    color: #0A6AB7;
+  }
+
+  &.external-1{
+    background: #FCF4D6;
+    color: #B28600;
+  }
+
+  &.external-2{
+    background: #FFF2E8;
+    color: #EB6200;
+  }
+
+  &.ext-auto{
+    background: #dc354536;
+    color: #dc3545;
+  }
+
+}
+
+
+.badge.__tier {
+    text-transform: uppercase;
+    color: #B28600;
+    background-color: #FCF4D6;
+    letter-spacing: 1px;
+    font-size: 10px;
+}
+

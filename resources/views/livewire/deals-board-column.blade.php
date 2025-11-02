@@ -185,7 +185,7 @@
                     </div>
                     <div class="__foot">
                         <div class="__value_readiness">
-                            <p class="opacity-50 mb-0">{{ $quotation->modeOfTransportLabel() }}</p>
+                            <p class="opacity-50 mb-0" style="font-size: 12px">{{ $quotation->modeOfTransportLabel() }}</p>
                             @if (isset($this->readinessMap[$quotation->shipment_ready_date]))
                                 <p class="__readinesss {{ $this->readinessMap[$quotation->shipment_ready_date]['class'] }}">
                                     {{ $this->readinessMap[$quotation->shipment_ready_date]['label'] }}

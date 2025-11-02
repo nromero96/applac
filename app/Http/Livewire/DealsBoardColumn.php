@@ -82,6 +82,14 @@ class DealsBoardColumn extends Component
                     END as shipment_ready_rank
                 "),
                 DB::raw("
+                    CASE COALESCE(users.tier, guest_users.tier)
+                        WHEN 'Tier 1' THEN 3
+                        WHEN 'Tier 2' THEN 2
+                        WHEN 'Tier 3' THEN 1
+                        ELSE 0
+                    END as tier_rank
+                "),
+                DB::raw("
                     CASE quotations.currency
                         WHEN 'USD - US Dollar' THEN '$'
                         WHEN 'USD' THEN '$'
@@ -153,11 +161,16 @@ class DealsBoardColumn extends Component
         // sorting
         if ($this->sortBy == 'id') {
             $this->quotations = $this->quotations->sortByDesc('id')
-                ->sortByDesc('is_scheduled')
+                // ->sortByDesc('is_scheduled')
                 ->sortByDesc('is_featured')
                 ->values();
         } elseif ($this->sortBy == 'shipment_ready_rank') {
             $this->quotations = $this->quotations->sortByDesc('shipment_ready_rank')->values();
+        } elseif ($this->sortBy == 'rating') {
+            $this->quotations = $this->quotations->sortByDesc([
+                ['tier_rank', 'desc'],
+                ['rating', 'desc'],
+            ])->values();
         } else {
             $this->quotations = $this->quotations->sortByDesc($this->sortBy)->values();
         }

@@ -4,7 +4,7 @@
 @section('content')
 
 
-<div class="layout-px-spacing">
+<div class="layout-px-spacing" x-data="{ dept: {{ $user->department_id }} }">
 
     <div class="middle-content container-xxl p-0">
 
@@ -127,17 +127,17 @@
                                 <label for="department" class="form-label fw-bold">{{__("Department")}}</label>
                                 <br>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input cursor-pointer" type="radio" name="department_id" id="department-none" value=""  @if (!$user->department_id) checked @endif>
+                                    <input x-model="dept" class="form-check-input cursor-pointer" type="radio" name="department_id" id="department-none" value=""  @if (!$user->department_id) checked @endif>
                                     <label class="form-check-label cursor-pointer" for="department-none">{{ __('None') }}</label>
                                 </div>
                                 @foreach ($departments as $item)
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input cursor-pointer" type="radio" name="department_id" id="department-{{$item->id}}" value="{{$item->id}}"  @if ($user->department_id == $item->id) checked @endif>
+                                        <input x-model="dept" class="form-check-input cursor-pointer" type="radio" name="department_id" id="department-{{$item->id}}" value="{{$item->id}}"  @if ($user->department_id == $item->id) checked @endif>
                                         <label class="form-check-label cursor-pointer" for="department-{{$item->id}}">{{$item->name}}</label>
                                     </div>
                                 @endforeach
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" x-show="dept == 2">
                                 <label for="priority_countries" class="form-label fw-bold">{{__("Priority Countries (for internal and external)")}}</label>
                                 <br>
                                 <select name="priority_countries[]" id="priority_countries" class="form-select" multiple autocomplete="off">
@@ -152,7 +152,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-6" x-show="dept == 2">
                                 <label for="priority_countries_ext" class="form-label fw-bold">{{__("Priority Countries (for external)")}}</label>
                                 <br>
                                 <select name="priority_countries_ext[]" id="priority_countries_ext" class="form-select" multiple autocomplete="off">
