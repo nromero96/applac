@@ -50,21 +50,21 @@
                 </div>
             </div>
 
-            <div class="card p-3 mb-3">
-                <h2 class="stats__subtitle">Closing Rate by Source Type</h2>
-                <div wire:ignore>
-                    <canvas id="chart_closing_rate_by_source_type" height="180"></canvas>
-                </div>
-            </div>
-
             @if (false)
-                <div class="card p-3">
-                    <h2 class="stats__subtitle">Reasons for Losing Deals</h2>
-                    <div wire:ignore style="padding: 0 6rem">
-                        <canvas id="chart_reasons_for_losing_deals"></canvas>
+                <div class="card p-3 mb-3">
+                    <h2 class="stats__subtitle">Closing Rate by Source Type</h2>
+                    <div wire:ignore>
+                        <canvas id="chart_closing_rate_by_source_type" height="180"></canvas>
                     </div>
                 </div>
             @endif
+
+            <div class="card p-3">
+                <h2 class="stats__subtitle">Reasons for Losing Deals</h2>
+                <div wire:ignore style="padding: 0 6rem">
+                    <canvas id="chart_reasons_for_losing_deals"></canvas>
+                </div>
+            </div>
         </div>
 
     </div>

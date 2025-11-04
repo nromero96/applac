@@ -471,7 +471,7 @@
                                                     {{-- Rating aleatorio --}}
                                                     @if ( $quotation->user_tier || $quotation->user_score)
                                                         <div class="badge __tier">
-                                                            {{ $quotation->user_tier }} - {{ $quotation->user_score }}
+                                                            {{ $quotation->user_tier }} - {{ number_format($quotation->user_score, 0) }}
                                                         </div>
                                                     @else
                                                         <div class="qtrating">

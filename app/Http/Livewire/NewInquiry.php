@@ -67,12 +67,12 @@ class NewInquiry extends Component
             // 'agt' => ['key' => 'AGT', 'label' => 'Agent', 'color' => '#FF5F1F'],
         // ],
         [
-            'Referral' => ['key' => 'REF', 'label' => 'Referral', 'color' => '#FFCC00'],
             'Search Engine' => ['key' => 'SEO', 'label' => 'Search Engine', 'color' => '#4CBB17'],
             'AI Assistant' => ['key' => 'AIA', 'label' => 'AI Assistant', 'color' => '#FF00FF'],
             'LinkedIn' => ['key' => 'LNK', 'label' => 'LinkedIn', 'color' => '#0077B5'],
             'Social Media' => ['key' => 'SOC', 'label' => 'Social Media', 'color' => '#1877F2'],
             'Industry Event' => ['key' => 'EVT', 'label' => 'Industry Event', 'color' => '#008080'],
+            'Referral' => ['key' => 'REF', 'label' => 'Referral', 'color' => '#FFCC00'],
             'Other' => ['key' => 'OTH', 'label' => 'Other', 'color' => '#595959'],
         ]
     ];

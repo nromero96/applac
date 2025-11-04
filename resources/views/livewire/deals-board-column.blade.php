@@ -174,7 +174,7 @@
                             </h3>
                         @endif
                         @if ($quotation->type_inquiry->value === TypeInquiry::INTERNAL_OTHER->value)
-                            @if (isset($quotation->customer_email))
+                            @if (isset($quotation->customer_email) && $quotation->customer_email != '')
                                 <p>{{ $quotation->customer_email }}</p>
                             @else
                                 <p>{{ $quotation->customer_company_name }}</p>
@@ -185,7 +185,7 @@
                     </div>
                     <div class="__foot">
                         <div class="__value_readiness">
-                            <p class="opacity-50 mb-0" style="font-size: 12px">{{ $quotation->modeOfTransportLabel() }}</p>
+                            <p class="mb-0" style="font-size: 12px; color: #999999">{{ $quotation->modeOfTransportLabel() }}</p>
                             @if (isset($this->readinessMap[$quotation->shipment_ready_date]))
                                 <p class="__readinesss {{ $this->readinessMap[$quotation->shipment_ready_date]['class'] }}">
                                     {{ $this->readinessMap[$quotation->shipment_ready_date]['label'] }}

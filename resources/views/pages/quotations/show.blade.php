@@ -112,7 +112,7 @@
                             <div class="col-xl-12 col-md-12 col-sm-12 col-12">
 
                                 <div class="d-flex pb-2 pt-2">
-                                    <div class="flex-grow-1 d-flex align-items-center gap-3">
+                                    <div class="flex-grow-1 d-flex align-items-center gap-2">
                                         <div>
                                             <h4 class="pt-3 pb-2 d-inline-block" style="padding-top:8px !important; font-weight: 400">
                                                 {{__("Inquiry")}}: <span class="text-primary">#{{ $quotation->id }}</span>
@@ -374,8 +374,8 @@
                                 @endif
                             </div>
                             <div class="col-md-5 mt-0">
+                                <h6 class="text-primary mb-2">{{ __('Shipment Info') }}</h6>
                                 @if (!$quotation->is_internal_inquiry)
-                                    <h6 class="text-primary mb-2">{{ __('Shipment Info') }}</h6>
                                     <p class="mb-2"><label class="fw-bold mb-0">{{__("Origin")}}:</label> {{ $quotation->origin_country }}
                                         <svg width="15" height="15" fill="none" stroke="#595959" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path d="m9 18 6-6-6-6"></path>
