@@ -112,7 +112,7 @@
                             <div class="col-xl-12 col-md-12 col-sm-12 col-12">
 
                                 <div class="d-flex pb-2 pt-2">
-                                    <div class="flex-grow-1 d-flex align-items-center gap-2">
+                                    <div class="flex-grow-1 d-flex align-items-center" style="gap: 2rem;">
                                         <div>
                                             <h4 class="pt-3 pb-2 d-inline-block" style="padding-top:8px !important; font-weight: 400">
                                                 {{__("Inquiry")}}: <span class="text-primary">#{{ $quotation->id }}</span>
