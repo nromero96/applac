@@ -270,16 +270,16 @@
                                 </label>
                                 @if (!empty($contacts))
                                     @if (!$new_contact)
-                                        <select type="text" class="form-select" wire:model="contact.id" wire:change="select_contact($event.target.value)">
+                                        <select type="text" class="form-select" wire:model.defer="contact.id" wire:change="select_contact($event.target.value)">
                                             @foreach ($contacts as $item)
                                                 <option value="{{ $item->id }}">{{ $item->name }}</option>
                                             @endforeach
                                         </select>
                                     @else
-                                        <input type="text" class="form-control" wire:model="contact.name" />
+                                        <input type="text" class="form-control" wire:model.defer="contact.name" />
                                     @endif
                                 @else
-                                    <input type="text" class="form-control" wire:model="contact.name" />
+                                    <input type="text" class="form-control" wire:model.defer="contact.name" />
                                 @endif
                                 @error('contact.name') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
@@ -288,7 +288,7 @@
                                     <label for="organization_code" class="form-label">
                                         Job Title
                                     </label>
-                                    <input type="text" class="form-control" wire:model="contact.job_title" {{ ($org_selected and !$new_contact and !$update_contact) ? 'disabled' : '' }} />
+                                    <input type="text" class="form-control" wire:model.defer="contact.job_title" {{ ($org_selected and !$new_contact and !$update_contact) ? 'disabled' : '' }} />
                                     @error('contact.job_title') <span class='text-danger'>{{ $message }}</span> @enderror
                                 </div>
                             @endif
@@ -296,14 +296,14 @@
                                 <label for="organization_code" class="form-label">
                                     Email
                                 </label>
-                                <input type="text" class="form-control" wire:model="contact.email"  {{ ($org_selected and !$new_contact and !$update_contact) ? 'disabled' : '' }} />
+                                <input type="text" class="form-control" wire:.defer="contact.email"  {{ ($org_selected and !$new_contact and !$update_contact) ? 'disabled' : '' }} />
                                 @error('contact.email') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-5 mt-2">
                                 <label for="organization_code" class="form-label">
                                     Phone
                                 </label>
-                                <input type="text" class="form-control" wire:model="contact.phone"  {{ ($org_selected and !$new_contact and !$update_contact) ? 'disabled' : '' }} />
+                                <input type="text" class="form-control" wire:model.defer="contact.phone"  {{ ($org_selected and !$new_contact and !$update_contact) ? 'disabled' : '' }} />
                                 @error('contact.phone') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
                         </div>
