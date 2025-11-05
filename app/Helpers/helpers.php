@@ -1152,6 +1152,7 @@ if (!function_exists('rateQuotationAgentWeb')) {
                 }elseif($quotation->shipment_ready_date == 'Not yet ready, just exploring options/budgeting'){
                     $rating += 0;
                 }
+                // Log::info('rating until -shipment ready- ' . $rating);
             }
 
         //######## Annual Shipments :::::::::::
@@ -1169,6 +1170,7 @@ if (!function_exists('rateQuotationAgentWeb')) {
                 } elseif($ea_shipments == 'More than 500') {
                     $rating += 2;
                 }
+                // Log::info('rating until -annual shipments- ' . $rating);
             }
 
         //######## Mail, Location, Origen y Destino :::::::::::
@@ -1224,30 +1226,34 @@ if (!function_exists('rateQuotationAgentWeb')) {
                         $rating += 2;
                     }
                 }
+                // Log::info('rating until -locations- ' . $rating);
             }
 
 
         //###### Network
             $network = $quotation->customer_user_id ? \App\Models\User::where('id', $quotation->customer_user_id)->value('network') : ($quotation->guest_user_id ? \App\Models\GuestUser::where('id', $quotation->guest_user_id)->value('network') : null);
-            switch ($network) {
-                case TypeNetwork::TWIG->value:
-                case TypeNetwork::WCA->value:
-                    $rating += 2;
-                    break;
-                case TypeNetwork::JC_TRANS->value:
-                case TypeNetwork::GKF->value:
-                case TypeNetwork::X2->value:
-                case TypeNetwork::PANGEA->value:
-                case TypeNetwork::GFA->value:
-                case TypeNetwork::DFA->value:
-                    $rating += 1;
-                    break;
-                case TypeNetwork::NONE->value:
-                    $rating += 0;
-                    break;
-                default:
-                    break;
+            if (isset($network[0])) {
+                switch ($network[0]) {
+                    case TypeNetwork::TWIG->value:
+                    case TypeNetwork::WCA->value:
+                        $rating += 2;
+                        break;
+                    case TypeNetwork::JC_TRANS->value:
+                    case TypeNetwork::GKF->value:
+                    case TypeNetwork::X2->value:
+                    case TypeNetwork::PANGEA->value:
+                    case TypeNetwork::GFA->value:
+                    case TypeNetwork::DFA->value:
+                        $rating += 1;
+                        break;
+                    case TypeNetwork::NONE->value:
+                        $rating += 0;
+                        break;
+                    default:
+                        break;
+                }
             }
+            // Log::info('rating until -network- ' . $rating);
 
 
         //###### Mode of transport
@@ -1276,6 +1282,7 @@ if (!function_exists('rateQuotationAgentWeb')) {
                     $rating += 1;
                 }
             }
+            // Log::info('rating until -transport/declared- ' . $rating);
 
         $priority = TypePriorityInq::LOW->value;
         if ($rating >= 6 and $rating <= 10) {

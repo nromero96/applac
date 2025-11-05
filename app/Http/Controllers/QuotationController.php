@@ -73,6 +73,7 @@ class QuotationController extends Controller
             'quotations.shipping_date as quotation_shipping_date',
             'quotations.no_shipping_date as quotation_no_shipping_date',
             'quotations.is_internal_inquiry',
+            'quotations.priority',
             DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
             DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),
             DB::raw('COALESCE(users.business_role, guest_users.business_role) as user_business_role'),
@@ -305,9 +306,13 @@ class QuotationController extends Controller
         //Contar Type Inquiry
         $typeinquiryorderforlist = [
             TypeInquiry::INTERNAL->value,
+            TypeInquiry::INTERNAL_OTHER->value,
             TypeInquiry::EXTERNAL_1->value,
             TypeInquiry::EXTERNAL_2->value,
-            TypeInquiry::EXT_AUTO->value
+            TypeInquiry::INTERNAL_LEGACY->value,
+            TypeInquiry::INTERNAL_OTHER_AGT->value,
+            TypeInquiry::EXTERNAL_SEO_RFQ->value,
+            TypeInquiry::EXT_AUTO->value,
         ];
         $listtypeinquiries = Quotation::select(
             'quotations.type_inquiry as type_inquiry',

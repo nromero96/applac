@@ -19,14 +19,14 @@ enum TypeInquiry: string {
     public function label(): string {
         return match ($this) {
             // SEO/HOUSE Dept.
-            self::INTERNAL          => 'House',
-            self::INTERNAL_OTHER    => 'Other',
+            self::INTERNAL          => 'B2B House',
+            self::INTERNAL_OTHER    => 'B2B Other',
             self::EXTERNAL_1        => 'SEO RFQ Personal',
             self::EXTERNAL_2        => 'SEO RFQ Business',
 
             // Agents Dept.
-            self::INTERNAL_LEGACY       => 'Legacy',
-            self::INTERNAL_OTHER_AGT    => 'Other',
+            self::INTERNAL_LEGACY       => 'Agent Legacy',
+            self::INTERNAL_OTHER_AGT    => 'Agent Other',
             self::EXTERNAL_SEO_RFQ      => 'SEO RFQ Agent',
 
             // System

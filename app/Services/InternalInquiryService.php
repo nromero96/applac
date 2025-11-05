@@ -45,7 +45,7 @@ class InternalInquiryService {
             $types_inquiries[] = ['id' => TypeInquiry::INTERNAL->value, 'label' => TypeInquiry::INTERNAL->label()];
             $types_inquiries[] = ['id' => TypeInquiry::INTERNAL_OTHER->value, 'label' => TypeInquiry::INTERNAL_OTHER->label()];
             $types_inquiries[] = ['id' => TypeInquiry::INTERNAL_LEGACY->value, 'label' => TypeInquiry::INTERNAL_LEGACY->label()];
-            $types_inquiries[] = ['id' => TypeInquiry::INTERNAL_OTHER_AGT->value, 'label' => TypeInquiry::INTERNAL_OTHER_AGT->label() . ' Agt'];
+            $types_inquiries[] = ['id' => TypeInquiry::INTERNAL_OTHER_AGT->value, 'label' => TypeInquiry::INTERNAL_OTHER_AGT->label()];
             $type_inquiry = TypeInquiry::INTERNAL->value;
         } else {
             $user_dept = auth()->user()->department_id;

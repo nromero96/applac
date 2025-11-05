@@ -31,7 +31,7 @@
                 <div class="col-6">
                     {{-- options --}}
                     <div class="row flex align-items-start">
-                        <div class="col-4 d-flex align-items-center gap-2">
+                        <div class="col-5 d-flex align-items-center gap-2">
                             <label class="form-label flex-shrink-0">Type</label>
                             <select class="form-select" wire:model="type_inquiry">
                                 @foreach ($types_inquiries as $item)
@@ -40,7 +40,7 @@
                             </select>
                             @error('type_inquiry') <span class='text-danger'>{{ $message }}</span> @enderror
                         </div>
-                        <div class="col-8 d-flex align-items-start gap-2">
+                        <div class="col-7 d-flex align-items-start gap-2">
                                 <label class="form-label flex-shrink-0" style="padding-top: 8px">Assigned to</label>
                                 @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Leader'))
                                 <div class="w-100">
