@@ -271,7 +271,7 @@
                                         @endif
 
                                         <div class="d-flex align-items-center gap-2">
-                                            <b>Inquiry</b>
+                                            <b>Type</b>
                                             <span class="text-capitalize badge-type-inquiry {{ $quotation->type_inquiry->list_class()}}">
                                                 {!! $quotation->type_inquiry->list_icon() !!}
                                                 {{ $quotation->type_inquiry->label() }}
@@ -402,7 +402,7 @@
                                     </p>
                                 @endif
                                 @if ($quotation->type_inquiry->value ===  TypeInquiry::EXTERNAL_2->value)
-                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Annual Shipments USA/CA")}}:</label> {{ $quotation->customer_ea_shipments }}</p>
+                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Annual shipments")}}:</label> {{ $quotation->customer_ea_shipments }}</p>
                                 @endif
                                 @if ($quotation->is_internal_inquiry)
                                     <p class="mb-2">

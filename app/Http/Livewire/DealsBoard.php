@@ -119,15 +119,15 @@ class DealsBoard extends Component
         } else {
             $this->filters_data['inquiry_type'] = [
                 'Internal' => [
-                    ['label' => TypeInquiry::INTERNAL->label() . '(SEO/House)', 'key' => TypeInquiry::INTERNAL->value],
-                    ['label' => TypeInquiry::INTERNAL_OTHER->label() . '(SEO/House)', 'key' => TypeInquiry::INTERNAL_OTHER->value],
-                    ['label' => TypeInquiry::INTERNAL_LEGACY->label() . '(Agents)', 'key' => TypeInquiry::INTERNAL_LEGACY->value],
-                    ['label' => TypeInquiry::INTERNAL_OTHER_AGT->label() . '(Agents)', 'key' => TypeInquiry::INTERNAL_OTHER_AGT->value],
+                    ['label' => TypeInquiry::INTERNAL->label(), 'key' => TypeInquiry::INTERNAL->value],
+                    ['label' => TypeInquiry::INTERNAL_OTHER->label(), 'key' => TypeInquiry::INTERNAL_OTHER->value],
+                    ['label' => TypeInquiry::INTERNAL_LEGACY->label(), 'key' => TypeInquiry::INTERNAL_LEGACY->value],
+                    ['label' => TypeInquiry::INTERNAL_OTHER_AGT->label(), 'key' => TypeInquiry::INTERNAL_OTHER_AGT->value],
                 ],
                 'External' => [
-                    ['label' => TypeInquiry::EXTERNAL_2->label() . '(SEO/House)', 'key' => TypeInquiry::EXTERNAL_2->value],
-                    ['label' => TypeInquiry::EXTERNAL_1->label() . '(SEO/House)', 'key' => TypeInquiry::EXTERNAL_1->value],
-                    ['label' => TypeInquiry::EXTERNAL_SEO_RFQ->label() . '(Agents)', 'key' => TypeInquiry::EXTERNAL_SEO_RFQ->value],
+                    ['label' => TypeInquiry::EXTERNAL_2->label(), 'key' => TypeInquiry::EXTERNAL_2->value],
+                    ['label' => TypeInquiry::EXTERNAL_1->label(), 'key' => TypeInquiry::EXTERNAL_1->value],
+                    ['label' => TypeInquiry::EXTERNAL_SEO_RFQ->label(), 'key' => TypeInquiry::EXTERNAL_SEO_RFQ->value],
                 ]
             ];
         }

@@ -25,8 +25,8 @@ enum TypeInquiry: string {
             self::EXTERNAL_2        => 'SEO RFQ Business',
 
             // Agents Dept.
-            self::INTERNAL_LEGACY       => 'Agent Legacy',
-            self::INTERNAL_OTHER_AGT    => 'Agent Other',
+            self::INTERNAL_LEGACY       => 'AGT Legacy',
+            self::INTERNAL_OTHER_AGT    => 'AGT Other',
             self::EXTERNAL_SEO_RFQ      => 'SEO RFQ Agent',
 
             // System
