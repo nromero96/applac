@@ -1,4 +1,4 @@
-@if (false)
+@if (true)
     @if($quotation->type_inquiry->value == 'external 2')
     @else
         @if (!$quotation->is_internal_inquiry)
@@ -28,42 +28,44 @@
                 }
             @endphp
 
-            <div class="col-md-6 mt-0">
-                <div class="card d-block p-2">
+            <div class="row">
+                <div class="col-md-6 mt-0">
+                    <div class="card d-block p-2">
 
-                    <label class="fw-bold mb-0">{{ __('Origin Country') }}:</label> {{ $quotation->origin_country }}<br>
+                        <label class="fw-bold mb-0">{{ __('Origin Country') }}:</label> {{ $quotation->origin_country }}<br>
 
-                    @if ($quotation->service_type === 'Door-to-Door' || $quotation->service_type === 'Door-to-Airport' || $quotation->service_type === 'Door-to-CFS/Port' || $quotation->service_type === 'Door-to-Port')
-                        <label class="fw-bold mb-0">{{__("Origin Address")}}:</label> {{ $quotation->origin_address }}<br>
-                        <label class="fw-bold mb-0">{{__("Origin City")}}:</label> {{ $quotation->origin_city }}<br>
-                        <label class="fw-bold mb-0">{{__("Origin State/Province")}}:</label> {{ $quotation->origin_state }}<br>
-                        <label class="fw-bold mb-0">{{__("Origin Zip Code")}}:</label> {{ $quotation->origin_zip_code }}<br>
-                    @endif
+                        @if ($quotation->service_type === 'Door-to-Door' || $quotation->service_type === 'Door-to-Airport' || $quotation->service_type === 'Door-to-CFS/Port' || $quotation->service_type === 'Door-to-Port')
+                            <label class="fw-bold mb-0">{{__("Origin Address")}}:</label> {{ $quotation->origin_address }}<br>
+                            <label class="fw-bold mb-0">{{__("Origin City")}}:</label> {{ $quotation->origin_city }}<br>
+                            <label class="fw-bold mb-0">{{__("Origin State/Province")}}:</label> {{ $quotation->origin_state }}<br>
+                            <label class="fw-bold mb-0">{{__("Origin Zip Code")}}:</label> {{ $quotation->origin_zip_code }}<br>
+                        @endif
 
-                    @if ($quotation->service_type === 'Airport-to-Door' || $quotation->service_type === 'CFS/Port-to-Door' || $quotation->service_type === 'Port-to-Door' || $quotation->service_type === 'Port-to-Port' || $quotation->service_type === 'Airport-to-Airport' || $quotation->service_type === 'CFS/Port-to-CFS/Port')
-                        <label class="fw-bold mb-0">{{ $originAirportorPortLabel }}:</label> {{ $quotation->origin_airportorport }}
-                    @endif
+                        @if ($quotation->service_type === 'Airport-to-Door' || $quotation->service_type === 'CFS/Port-to-Door' || $quotation->service_type === 'Port-to-Door' || $quotation->service_type === 'Port-to-Port' || $quotation->service_type === 'Airport-to-Airport' || $quotation->service_type === 'CFS/Port-to-CFS/Port')
+                            <label class="fw-bold mb-0">{{ $originAirportorPortLabel }}:</label> {{ $quotation->origin_airportorport }}
+                        @endif
 
 
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-md-6 mt-0">
-                <div class="card d-block p-2">
+                <div class="col-md-6 mt-0">
+                    <div class="card d-block p-2">
 
-                    <label class="fw-bold mb-0">{{ __('Destination Country') }}:</label> {{ $quotation->destination_country }}<br>
+                        <label class="fw-bold mb-0">{{ __('Destination Country') }}:</label> {{ $quotation->destination_country }}<br>
 
-                    @if ($quotation->service_type === 'Door-to-Door' || $quotation->service_type === 'Airport-to-Door' || $quotation->service_type === 'CFS/Port-to-Door' || $quotation->service_type === 'Port-to-Door')
-                        <label class="fw-bold mb-0">{{__("Destination Address")}}:</label> {{ $quotation->destination_address }}<br>
-                        <label class="fw-bold mb-0">{{__("Destination City")}}:</label> {{ $quotation->destination_city }}<br>
-                        <label class="fw-bold mb-0">{{__("Destination State/Province")}}:</label> {{ $quotation->destination_state }}<br>
-                        <label class="fw-bold mb-0">{{__("Destination Zip Code")}}:</label> {{ $quotation->destination_zip_code }}<br>
-                    @endif
+                        @if ($quotation->service_type === 'Door-to-Door' || $quotation->service_type === 'Airport-to-Door' || $quotation->service_type === 'CFS/Port-to-Door' || $quotation->service_type === 'Port-to-Door')
+                            <label class="fw-bold mb-0">{{__("Destination Address")}}:</label> {{ $quotation->destination_address }}<br>
+                            <label class="fw-bold mb-0">{{__("Destination City")}}:</label> {{ $quotation->destination_city }}<br>
+                            <label class="fw-bold mb-0">{{__("Destination State/Province")}}:</label> {{ $quotation->destination_state }}<br>
+                            <label class="fw-bold mb-0">{{__("Destination Zip Code")}}:</label> {{ $quotation->destination_zip_code }}<br>
+                        @endif
 
-                    @if ($quotation->service_type === 'Door-to-Airport' || $quotation->service_type === 'Door-to-CFS/Port' || $quotation->service_type === 'Door-to-Port' || $quotation->service_type === 'Port-to-Port' || $quotation->service_type === 'Airport-to-Airport' || $quotation->service_type === 'CFS/Port-to-CFS/Port')
-                        <label class="fw-bold mb-0">{{ $destinationAirportorPortLabel }}:</label> {{ $quotation->destination_airportorport }}
-                    @endif
+                        @if ($quotation->service_type === 'Door-to-Airport' || $quotation->service_type === 'Door-to-CFS/Port' || $quotation->service_type === 'Door-to-Port' || $quotation->service_type === 'Port-to-Port' || $quotation->service_type === 'Airport-to-Airport' || $quotation->service_type === 'CFS/Port-to-CFS/Port')
+                            <label class="fw-bold mb-0">{{ $destinationAirportorPortLabel }}:</label> {{ $quotation->destination_airportorport }}
+                        @endif
 
+                    </div>
                 </div>
             </div>
         @endif
@@ -316,29 +318,31 @@
             @endif
         </div>
 
-        <div class="col-md-6 mt-0">
-            @if (!$quotation->is_internal_inquiry)
-                <label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ number_format($quotation->declared_value) }}<br>
-                <label class="fw-bold mb-0">{{__("Insurance required")}}:</label> {{ $quotation->insurance_required }}<br>
-                <label class="fw-bold mb-0">{{__("Currency")}}:</label> {{ $quotation->currency }}<br>
-            @endif
-            <label class="fw-bold mb-0">{{__("Shipping date")}}:</label> {{ ($quotation->shipping_date == '') ? __('I don’t have a shipping date yet.') : $quotation->shipping_date }}<br>
-            <label class="fw-bold mb-0">{{__("Cargo Description")}}:</label> <br> {!! nl2br($quotation->cargo_description) ? : '-' !!}<br>
-        </div>
-
-        <div class="col-md-6 mt-0">
-            <div class="card py-2 px-2">
-                @if ($quotation_documents->count() > 0)
-                    <label for="ctdocuments" class="fw-bold mb-0">{{ __('Documents') }}:</label>
-                    <ul class="mb-0 ps-3" id="ctdocuments">
-                        @foreach ($quotation_documents as $document)
-                            <li><a href="{{ asset('storage/uploads/quotation_documents').'/'. $document->document_path }}" class="text-info" target="_blank">{{ $document->document_path }}</a></li>
-                        @endforeach
-                    </ul>
-                @else
-                    <label for="ctdocuments" class="fw-bold mb-0">{{ __('Documents') }}:</label>
-                    <span>{{ __('No documents') }}</span>
+        <div class="row">
+            <div class="col-md-6 mt-0">
+                @if (!$quotation->is_internal_inquiry)
+                    <label class="fw-bold mb-0">{{__("Declared value")}}:</label> {{ number_format($quotation->declared_value) }}<br>
+                    <label class="fw-bold mb-0">{{__("Insurance required")}}:</label> {{ $quotation->insurance_required }}<br>
+                    <label class="fw-bold mb-0">{{__("Currency")}}:</label> {{ $quotation->currency }}<br>
                 @endif
+                <label class="fw-bold mb-0">{{__("Shipping date")}}:</label> {{ ($quotation->shipping_date == '') ? __('I don’t have a shipping date yet.') : $quotation->shipping_date }}<br>
+                <label class="fw-bold mb-0">{{__("Cargo Description")}}:</label> <br> {!! nl2br($quotation->cargo_description) ? : '-' !!}<br>
+            </div>
+
+            <div class="col-md-6 mt-0">
+                <div class="card py-2 px-2">
+                    @if ($quotation_documents->count() > 0)
+                        <label for="ctdocuments" class="fw-bold mb-0">{{ __('Documents') }}:</label>
+                        <ul class="mb-0 ps-3" id="ctdocuments">
+                            @foreach ($quotation_documents as $document)
+                                <li><a href="{{ asset('storage/uploads/quotation_documents').'/'. $document->document_path }}" class="text-info" target="_blank">{{ $document->document_path }}</a></li>
+                            @endforeach
+                        </ul>
+                    @else
+                        <label for="ctdocuments" class="fw-bold mb-0">{{ __('Documents') }}:</label>
+                        <span>{{ __('No documents') }}</span>
+                    @endif
+                </div>
             </div>
         </div>
 

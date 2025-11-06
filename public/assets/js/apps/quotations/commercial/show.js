@@ -17,42 +17,46 @@ document.querySelectorAll('input[name="new_rating"]').forEach(function(ratingInp
 
 
 //if click .btn-modify javascript puro
-document.querySelector('.btn-modify').addEventListener('click', function() {
-    document.getElementById('rtg_modified_by').classList.remove('d-inline');
-    document.getElementById('rtg_modified_by').classList.add('d-none');
+if (document.querySelector('.btn-modify')) {
+    document.querySelector('.btn-modify').addEventListener('click', function() {
+        document.getElementById('rtg_modified_by').classList.remove('d-inline');
+        document.getElementById('rtg_modified_by').classList.add('d-none');
 
-    document.getElementById('rtg_comment_input').classList.remove('d-none');
-    document.getElementById('rtg_comment_input').classList.add('d-inline');
+        document.getElementById('rtg_comment_input').classList.remove('d-none');
+        document.getElementById('rtg_comment_input').classList.add('d-inline');
 
-    document.getElementById('rtg_rating_stars').classList.add('d-none');
-    document.getElementById('rtg_rating_stars').classList.remove('d-inline');
+        document.getElementById('rtg_rating_stars').classList.add('d-none');
+        document.getElementById('rtg_rating_stars').classList.remove('d-inline');
 
-    document.getElementById('rtg_modified_stars').classList.remove('d-none');
-    document.getElementById('rtg_modified_stars').classList.add('d-inline');
+        document.getElementById('rtg_modified_stars').classList.remove('d-none');
+        document.getElementById('rtg_modified_stars').classList.add('d-inline');
 
-    document.querySelectorAll('input[name="new_rating"]').forEach(function(input) {
-        input.removeAttribute('disabled');
+        document.querySelectorAll('input[name="new_rating"]').forEach(function(input) {
+            input.removeAttribute('disabled');
+        });
     });
-});
+}
 
 //if click .btn-rtg-cancel javascript puro
-document.querySelector('.btn-rtg-cancel').addEventListener('click', function() {
-    document.getElementById('rtg_modified_by').classList.add('d-inline');
-    document.getElementById('rtg_modified_by').classList.remove('d-none');
+if (document.querySelector('.btn-rtg-cancel')) {
+    document.querySelector('.btn-rtg-cancel').addEventListener('click', function() {
+        document.getElementById('rtg_modified_by').classList.add('d-inline');
+        document.getElementById('rtg_modified_by').classList.remove('d-none');
 
-    document.getElementById('rtg_comment_input').classList.add('d-none');
-    document.getElementById('rtg_comment_input').classList.remove('d-inline');
+        document.getElementById('rtg_comment_input').classList.add('d-none');
+        document.getElementById('rtg_comment_input').classList.remove('d-inline');
 
-    document.getElementById('rtg_rating_stars').classList.remove('d-none');
-    document.getElementById('rtg_rating_stars').classList.add('d-inline');
+        document.getElementById('rtg_rating_stars').classList.remove('d-none');
+        document.getElementById('rtg_rating_stars').classList.add('d-inline');
 
-    document.getElementById('rtg_modified_stars').classList.add('d-none');
-    document.getElementById('rtg_modified_stars').classList.remove('d-inline');
+        document.getElementById('rtg_modified_stars').classList.add('d-none');
+        document.getElementById('rtg_modified_stars').classList.remove('d-inline');
 
-    document.querySelectorAll('input[name="new_rating"]').forEach(function(input) {
-        input.setAttribute('disabled', 'disabled');
+        document.querySelectorAll('input[name="new_rating"]').forEach(function(input) {
+            input.setAttribute('disabled', 'disabled');
+        });
     });
-});
+}
 
 //if change select id action
 document.getElementById('action').addEventListener('change', function() {
