@@ -1373,6 +1373,7 @@ if (!function_exists('auto_assign_processing')) {
         $users = User::where('department_id', $dept_id)
             ->select('id', 'name', 'lastname')
             ->where('id', '!=', $user_id)
+            ->where('id', '!=', 2731) // temporalmente excluir a Felipe
             ->where('status', 'active')
             ->whereHas('roles', function($q){
                 $q->whereIn('role_id', [6]); // quoter
