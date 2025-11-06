@@ -12,6 +12,7 @@ use App\Models\UnreadQuotation;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class DealsBoard extends Component
@@ -94,6 +95,7 @@ class DealsBoard extends Component
         ];
 
         if (!Auth::user()->hasRole('Administrator')) {
+            Log::info('-- debug department_id' . auth()->user()->department_id);
             if (auth()->user()->department_id === 1) { // SEO / House
                 $this->filters_data['inquiry_type'] = [
                     'Internal' => [
