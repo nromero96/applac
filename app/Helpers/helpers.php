@@ -1343,7 +1343,12 @@ if (!function_exists('type_network_pill_first')) {
             $pills = collect($networks)
                 ->map(fn($network) => \App\Enums\TypeNetwork::from($network)->meta())
                 ->toArray();
-            $first_pill = $pills[0];
+
+            if (sizeof($pills) > 0) {
+                $first_pill = $pills[0];
+            } else {
+                return '';
+            }
 
             $pill_draw = '';
             $pill_draw .= '<span
