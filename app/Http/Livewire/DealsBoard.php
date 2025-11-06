@@ -95,8 +95,7 @@ class DealsBoard extends Component
         ];
 
         if (!Auth::user()->hasRole('Administrator')) {
-            Log::info('-- debug department_id ' . auth()->user()->department_id);
-            if (auth()->user()->department_id === 1) { // SEO / House
+            if (auth()->user()->department_id == 1) { // SEO / House
                 $this->filters_data['inquiry_type'] = [
                     'Internal' => [
                         ['label' => TypeInquiry::INTERNAL->label(), 'key' => TypeInquiry::INTERNAL->value],
@@ -107,7 +106,7 @@ class DealsBoard extends Component
                         ['label' => TypeInquiry::EXTERNAL_1->label(), 'key' => TypeInquiry::EXTERNAL_1->value],
                     ]
                 ];
-            } elseif (auth()->user()->department_id === 2) { // Agents
+            } elseif (auth()->user()->department_id == 2) { // Agents
                 $this->filters_data['inquiry_type'] = [
                     'Internal' => [
                         ['label' => TypeInquiry::INTERNAL_LEGACY->label(), 'key' => TypeInquiry::INTERNAL_LEGACY->value],
@@ -117,7 +116,6 @@ class DealsBoard extends Component
                         ['label' => TypeInquiry::EXTERNAL_SEO_RFQ->label(), 'key' => TypeInquiry::EXTERNAL_SEO_RFQ->value],
                     ]
                 ];
-                Log::info('-- debug filters inquiry type ' . $this->filters_data['inquiry_type']);
             }
         } else {
             $this->filters_data['inquiry_type'] = [
