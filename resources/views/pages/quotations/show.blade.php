@@ -278,7 +278,7 @@
                                             </span>
                                         </div>
 
-                                        @if(Auth::user()->hasRole('Administrator'))
+                                        @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Leader'))
                                             <div>
                                                 <b class="me-1">Assigned</b>
                                                 <select style="width: 130px" class="form-select rounded-pill px-2 py-1 assto_select d-inline-block user-select-assigned @if($quotation->assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->id }}">
