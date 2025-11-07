@@ -75,9 +75,9 @@
     @livewireStyles
 </head>
 <body class="layout-boxed">
-    @if (config('app.debug'))
+    {{-- @if (config('app.debug'))
         <div class="env-demo">Demo Environment</div>
-    @endif
+    @endif --}}
 
     @if(app()->environment('production'))
         @include('partials.gtm_body')
