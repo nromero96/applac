@@ -94,13 +94,13 @@ class QuotationCreated extends Mailable{
         if (!empty($this->cargoDetails) && count($this->cargoDetails) === 1) {
             $package_type = isset($this->cargoDetails[0]['package_type']) ? $this->cargoDetails[0]['package_type'] : '';
         }
-        
+
         // Inicializar $pdf como null por defecto
         $pdf = null;
 
         if ($this->quotation->mode_of_transport == 'RoRo' && $this->quotation->cargo_type == 'Personal Vehicle' && ($package_type == 'Automobile' || $package_type == 'Motorcycle (crated or palletized) / ATV')) {
             $contviewblade = 'emails.quotation_created_personal_vehicle_shipping';
-        
+
             // Verificar si la combinación de puertos tiene un PDF asociado y asignarlo a la variable $pdf
             if (isset($pdfs[$port_combination])) {
                 $pdf = [
@@ -165,8 +165,8 @@ class QuotationCreated extends Mailable{
 
         // Llama a tu función sendMailApi para enviar el correo
         sendMailApiLac(
-            $this->email, 
-            'Quote ID: #'. $this->quotation->id .' - Your Request with Latin American Cargo - '. $this->quotation->mode_of_transport .' - ['. $origin_country_name .' - '. $destination_country_name .'].', 
+            $this->email,
+            'Quote ID: #'. $this->quotation->id .' - Your Request with Latin American Cargo - '. $this->quotation->mode_of_transport .' - ['. $origin_country_name .' - '. $destination_country_name .'].',
             $content,
             null,
             ($pdf !== null) ? [$pdf] : [],

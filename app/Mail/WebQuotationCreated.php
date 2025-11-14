@@ -77,13 +77,14 @@ class WebQuotationCreated extends Mailable
 
         // Llama a tu función sendMailApi para enviar el correo
         sendMailApiLac(
-            $this->email, 
-            'Quote ID: #'. $this->quotation->id .' - Your Request with Latin American Cargo - ['. $origin_country_name .' - '. $destination_country_name .'].', 
+            $this->email,
+            'Quote ID: #'. $this->quotation->id .' - Your Request with Latin American Cargo - ['. $origin_country_name .' - '. $destination_country_name .'].',
             $content,
             null,
             [],
             [], //copias
-            [config('services.copymail.mail_1'), config('services.copymail.mail_2')] //copia oculta
+            // [config('services.copymail.mail_1'), config('services.copymail.mail_2')] //copia oculta
+            [config('services.copymail.mail_2'), $this->assigned_user_mail] //copia oculta
         );
 
         //Si el rating es mayor o igual a 4, enviar también un correo al administrador
@@ -116,9 +117,9 @@ class WebQuotationCreated extends Mailable
                     'quotation_documents' => $this->quotation_documents,
                     'assigned_user_full_name' => $this->assigned_user_full_name,
                 ])->render();
-        
+
                 sendMailApiLac(
-                    config('services.copymail.mail_marketing'), 
+                    config('services.copymail.mail_marketing'),
                     'Quote ID: #'. $this->quotation->id .' - Priority Lead - ['. $origin_country_name .' - '. $destination_country_name .'].',
                     $content_admin,
                     ['email' => config('services.sendgrid.sender_email_priority'), 'name' => config('services.sendgrid.sender_name_priority')],
@@ -127,7 +128,7 @@ class WebQuotationCreated extends Mailable
                 );
             }
         }
-        
+
 
         // Retorna la vista utilizando la variable $content
         return $this->html($content);
