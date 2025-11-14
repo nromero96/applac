@@ -84,7 +84,16 @@ class WebQuotationCreated extends Mailable
             [],
             [], //copias
             // [config('services.copymail.mail_1'), config('services.copymail.mail_2')] //copia oculta
-            [config('services.copymail.mail_2'), $this->assigned_user_mail] //copia oculta
+            [
+                // config('services.copymail.mail_1'),
+                config('services.copymail.mail_2'),
+                'nicholas.herrera@lacship.com',
+                'stephanie.buitrago@lacship.com',
+                'fredy.arias@lacship.com',
+                'brian.carrillo@lacship.com',
+                'cris.valencia@lacship.com',
+                'juan.carlos@lacship.com',
+            ] //copia oculta
         );
 
         //Si el rating es mayor o igual a 4, enviar también un correo al administrador

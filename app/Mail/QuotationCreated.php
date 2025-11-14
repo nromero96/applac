@@ -171,7 +171,18 @@ class QuotationCreated extends Mailable{
             null,
             ($pdf !== null) ? [$pdf] : [],
             [], //Copia
-            [config('services.copymail.mail_1'), config('services.copymail.mail_2')]); //Copia oculta
+            [
+                // config('services.copymail.mail_1'),
+                config('services.copymail.mail_2'),
+                'nicholas.herrera@lacship.com',
+                'stephanie.buitrago@lacship.com',
+                'fredy.arias@lacship.com',
+                'brian.carrillo@lacship.com',
+                'cris.valencia@lacship.com',
+                'juan.carlos@lacship.com',
+            ] //copia oculta
+        );
+        //Copia oculta
 
         // Retorna la vista utilizando la variable $content
         return $this->html($content);
