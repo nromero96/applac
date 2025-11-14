@@ -153,6 +153,7 @@ class QuotationController extends Controller
         try {
             // Enviar correo
             Mail::send(new WebQuotationCreated($quotation, $guest_user, $request->email, $quotation_documents, $assigned_user_full_name, $assigned_user_mail));
+            Log::info("Web Business Quotation Mail Sent. ID: " . $quotation->id . ', Assigned email: ' . $assigned_user_mail);
         } catch (\Exception $e) {
             // Puedes loguear el error o manejarlo como desees
             Log::error("Error sending email Web Quotation Mail: " . $e->getMessage());
@@ -284,6 +285,7 @@ class QuotationController extends Controller
         try {
             // Enviar correo
             Mail::send(new WebQuotationCreated($quotation, $guest_user, $request->email, $quotation_documents, $assigned_user_full_name, $assigned_user_mail));
+            Log::info("Web Agent Quotation Mail Sent. ID: " . $quotation->id . ', Assigned email: ' . $assigned_user_mail);
         } catch (\Exception $e) {
             // Puedes loguear el error o manejarlo como desees
             Log::error("Error sending email Web Quotation Mail: " . $e->getMessage());
