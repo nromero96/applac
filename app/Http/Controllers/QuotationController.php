@@ -387,7 +387,7 @@ class QuotationController extends Controller
             ];
 
             $builder = $quotations; // tu query ya filtrada y ordenada
-            // ini_set('max_execution_time', 0);
+            ini_set('max_execution_time', 0);
 
             $callback = function () use ($builder, $columns) {
                 $file = fopen('php://output', 'w');
