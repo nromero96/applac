@@ -360,6 +360,7 @@ class QuotationController extends Controller
             $headers = [
                 'Content-Type' => 'text/csv',
                 'Content-Disposition' => "attachment; filename=\"$filename\"",
+                'Cache-Control' => 'no-store, no-cache, must-revalidate',
             ];
 
             $columns = [
@@ -385,11 +386,14 @@ class QuotationController extends Controller
                 'Source',
             ];
 
-            $callback = function () use ($quotations, $columns) {
+            $builder = $quotations; // tu query ya filtrada y ordenada
+            ini_set('max_execution_time', 0);
+
+            $callback = function () use ($builder, $columns) {
                 $file = fopen('php://output', 'w');
                 fputcsv($file, $columns); // Encabezados
 
-                $quotations->chunk(200, function ($rows) use ($file) {
+                $builder->chunk(1000, function ($rows) use ($file) {
                     foreach ($rows as $quotation) {
                         fputcsv($file, [
                             $quotation->quotation_id ?? '',

@@ -49,7 +49,7 @@
                         </select>
                         <input type="text" name="daterequest" id="daterequest" class="form-control rounded-pill ms-2 float-end daterequest" value="{{ request('daterequest') }}" placeholder="Date/Range" autocomplete="off">
 
-                        @role('Administrator')
+                        @role('Administrator|Leader')
                         <button class="btn btn-outline-primary py-1 ms-2 fw-bold btn-exportdata" id="exportData">
                             Export
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-external-link"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
@@ -265,7 +265,7 @@
                                             </ul>
                                         </div>
 
-                                        @if (Auth::user()->hasRole('Administrator'))
+                                        @if (Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Leader'))
                                             <!-- Dropdown Team -->
                                             <div class="dropdown">
                                                 <button class="dropdown-toggle rounded-pill select-dropdown me-2 assigned-to" type="button" id="dropdownTeamButton" data-bs-toggle="dropdown" aria-expanded="false">
