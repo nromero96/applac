@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\TypeInquiry;
 use App\Enums\TypeProcessFor;
 use App\Enums\TypeStatus;
+use App\Exports\InquiriesExport;
 use App\Mail\QuotationCreated;
 use App\Mail\UserCreated;
 use Illuminate\Support\Facades\Mail;
@@ -38,6 +39,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 use Illuminate\Support\Facades\Log;
+use Maatwebsite\Excel\Facades\Excel;
 
 class QuotationController extends Controller
 {
@@ -241,7 +243,7 @@ class QuotationController extends Controller
 
         // Verificar si la solicitud es para exportar
         if ($export) {
-            $quotations = $quotations->get(); // Obtener todos los registros sin paginación
+            // $quotations = $quotations->get(); // Obtener todos los registros sin paginación
         } else {
             $quotations = $quotations->paginate($listforpage);
         }
@@ -343,9 +345,15 @@ class QuotationController extends Controller
         // Si se requiere exportación a CSV
         if ($export === 'csv') {
             // Asegúrate de que quotations es una colección
-            if ($quotations instanceof \Illuminate\Database\Eloquent\Builder) {
-                $quotations = $quotations->get(); // Si es una consulta, conviértelo a colección
-            }
+            // if ($quotations instanceof \Illuminate\Database\Eloquent\Builder) {
+            //     $quotations = $quotations->get(); // Si es una consulta, conviértelo a colección
+            // }
+
+            // $data['inquiries'] = $quotations;
+            // return Excel::download(new InquiriesExport($data), 'inquiries.xlsx');
+
+            /*
+            */
 
             // Genera el archivo CSV
             $filename = 'quotations_' . now()->format('Ymd_His') . '.csv';
@@ -381,30 +389,32 @@ class QuotationController extends Controller
                 $file = fopen('php://output', 'w');
                 fputcsv($file, $columns); // Encabezados
 
-                foreach ($quotations as $quotation) {
-                    fputcsv($file, [
-                        $quotation->quotation_id ?? '', // Maneja valores nulos
-                        $quotation->type_inquiry ?? '',
-                        $quotation->quotation_created_at ?? '',
-                        $quotation->quotation_status ?? '',
-                        $quotation->quotation_rating ?? '',
-                        $quotation->customer_type ?? '',
-                        $quotation->user_company_name ?? '',
-                        $quotation->user_business_role ?? '',
-                        $quotation->user_ea_shipments ?? '',
-                        $quotation->shipment_ready_date ?? '',
-                        $quotation->user_email ?? '',
-                        '+' . $quotation->user_phone_code . ' ' . $quotation->user_phone ?? '',
-                        $quotation->user_company_website ?? '',
-                        $quotation->location_name ?? '',
-                        $quotation->origin_country . ' - ' . $quotation->destination_country ?? '',
-                        $quotation->quotation_mode_of_transport ?? '',
-                        $quotation->quotation_currency ?? '',
-                        $quotation->quotation_declared_value ?? '',
-                        $quotation->assigned_user_name ?? '',
-                        $quotation->user_source ?? '',
-                    ]);
-                }
+                $quotations->chunk(200, function ($rows) use ($file) {
+                    foreach ($rows as $quotation) {
+                        fputcsv($file, [
+                            $quotation->quotation_id ?? '',
+                            $quotation->type_inquiry->label() ?? '',
+                            $quotation->quotation_created_at ?? '',
+                            $quotation->quotation_status ?? '',
+                            $quotation->quotation_rating ?? '',
+                            $quotation->customer_type ?? '',
+                            $quotation->user_company_name ?? '',
+                            $quotation->user_business_role ?? '',
+                            $quotation->user_ea_shipments ?? '',
+                            $quotation->shipment_ready_date ?? '',
+                            $quotation->user_email ?? '',
+                            '+' . $quotation->user_phone_code . ' ' . $quotation->user_phone ?? '',
+                            $quotation->user_company_website ?? '',
+                            $quotation->location_name ?? '',
+                            $quotation->origin_country . ' - ' . $quotation->destination_country ?? '',
+                            $quotation->quotation_mode_of_transport ?? '',
+                            $quotation->quotation_currency ?? '',
+                            $quotation->quotation_declared_value ?? '',
+                            $quotation->assigned_user_name ?? '',
+                            $quotation->user_source ?? '',
+                        ]);
+                    }
+                });
 
                 fclose($file);
             };
