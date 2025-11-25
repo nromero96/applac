@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Enums\TypeStatus;
 use App\Models\Quotation;
 use App\Models\User;
 use Carbon\Carbon;
@@ -26,6 +27,7 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithCh
             'quotations.type_inquiry as type_inquiry',
             'quotations.created_at as quotation_created_at',
             'quotations.status as quotation_status',
+            'quotations.result',
             'quotations.rating as quotation_rating',
             DB::raw('COALESCE(users.customer_type, guest_users.customer_type) as customer_type'),
             DB::raw('COALESCE(users.company_name, guest_users.company_name) as user_company_name'),
@@ -167,6 +169,7 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithCh
             'Inquiry Type',
             'Request Date',
             'Status',
+            'Outcome',
             'Rating',
             'Customer Type',
             'Company Name',
@@ -191,7 +194,8 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithCh
             $q->quotation_id ?? '',
             $q->type_inquiry->label() ?? '',
             $q->quotation_created_at ?? '',
-            $q->quotation_status ?? '',
+            TypeStatus::from($q->quotation_status)->meta('label') ?? '',
+            $q->result ?? '',
             $q->quotation_rating ?? '',
             $q->customer_type ?? '',
             $q->user_company_name ?? '',

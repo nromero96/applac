@@ -348,8 +348,6 @@ class QuotationController extends Controller
             // if ($quotations instanceof \Illuminate\Database\Eloquent\Builder) {
             //     $quotations = $quotations->get(); // Si es una consulta, conviértelo a colección
             // }
-            // return $quotations->get();
-            // return Excel::download(new InquiriesExport($quotations), 'inquiries.xlsx');
             $filters['daterequest'] = $daterequest;
             $filters['search'] = $search;
             $filters['type_inquiry'] = $type_inquiry;
@@ -358,7 +356,9 @@ class QuotationController extends Controller
             $filters['source'] = $source;
             $filters['rating'] = $rating;
             $filters['assignedto'] = $assignedto;
-            return Excel::download(new InquiriesExport($filters), 'inquiries.xlsx');
+
+            $filename = 'quotations_' . now()->format('Ymd_His') . '.xlsx';
+            return Excel::download(new InquiriesExport($filters), $filename);
 
             /*
             // Genera el archivo CSV
