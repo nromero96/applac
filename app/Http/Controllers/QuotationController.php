@@ -348,13 +348,19 @@ class QuotationController extends Controller
             // if ($quotations instanceof \Illuminate\Database\Eloquent\Builder) {
             //     $quotations = $quotations->get(); // Si es una consulta, conviértelo a colección
             // }
-
-            // $data['inquiries'] = $quotations;
-            // return Excel::download(new InquiriesExport($data), 'inquiries.xlsx');
+            // return $quotations->get();
+            // return Excel::download(new InquiriesExport($quotations), 'inquiries.xlsx');
+            $filters['daterequest'] = $daterequest;
+            $filters['search'] = $search;
+            $filters['type_inquiry'] = $type_inquiry;
+            $filters['result'] = $result;
+            $filters['status'] = $status;
+            $filters['source'] = $source;
+            $filters['rating'] = $rating;
+            $filters['assignedto'] = $assignedto;
+            return Excel::download(new InquiriesExport($filters), 'inquiries.xlsx');
 
             /*
-            */
-
             // Genera el archivo CSV
             $filename = 'quotations_' . now()->format('Ymd_His') . '.csv';
             $headers = [
@@ -387,7 +393,6 @@ class QuotationController extends Controller
             ];
 
             $builder = $quotations; // tu query ya filtrada y ordenada
-            ini_set('max_execution_time', 0);
 
             $callback = function () use ($builder, $columns) {
                 $file = fopen('php://output', 'w');
@@ -422,8 +427,9 @@ class QuotationController extends Controller
 
                 fclose($file);
             };
-
             return response()->stream($callback, 200, $headers);
+            */
+
         }
 
 
