@@ -149,11 +149,10 @@ if(!function_exists('china_country')) {
     }
 }
 
-
 //quotations calculate rating and assign to user
 if (!function_exists('rateQuotation')) {
 
-    function rateQuotation($quotation_id) {
+    function rateQuotationBK($quotation_id) {
 
         $quotation = Quotation::find($quotation_id);
 
@@ -608,6 +607,128 @@ if (!function_exists('rateQuotation')) {
         }
 
         return $rating;
+    }
+
+    function rateQuotation($quotation_id) {
+
+        $quotation = Quotation::find($quotation_id);
+
+        if (!$quotation) {
+            throw new \Exception("Quotation not found");
+        }
+
+        //######## Correo electrónico :::::::::::
+        $email = $quotation->customer_user_id
+        ? User::find($quotation->customer_user_id)->email
+        : GuestUser::find($quotation->guest_user_id)->email;
+
+        $domain = substr(strrchr($email, "@"), 1);
+        $personal_domains = personal_domains();
+
+        // Obtener el valor de users_auto_assigned_quotes de la tabla settings
+        $users_auto_assigned_quotes = Setting::where('key', 'users_auto_assigned_quotes')->first()->value;
+        $userIds = json_decode($users_auto_assigned_quotes);
+
+        $userIdsArray = array_map('intval', json_decode($users_auto_assigned_quotes));
+
+        // Buscar si la cotización es con el mismo email
+        if (in_array($domain, $personal_domains)) {
+            // Buscar el usuario con el correo electrónico proporcionado
+            $user = User::where('email', $email)->first();
+
+            $guestUser = GuestUser::where('email', $email)
+                        ->orderBy('id', 'desc') // Ordenar por ID descendente
+                        ->offset(1) // <- Antepenúltimo GuestUser con ese email
+                        ->limit(1)
+                        ->first();
+
+            // Inicializar variables para almacenar las cotizaciones
+            $quotationWithUser = null;
+            $quotationWithGuest = null;
+
+            // Buscar la última cotización basada en el user_id
+            if ($user) {
+                $quotationWithUser = Quotation::where('customer_user_id', $user->id)
+                    ->whereNotNull('assigned_user_id') // Asegúrate de que assigned_user_id no sea nulo
+                    ->orderBy('id', 'desc') // Ordenar por ID descendente
+                    ->first(); // Obtener la última cotización
+                if($quotationWithUser && in_array($quotationWithUser->assigned_user_id, $userIdsArray)){
+                    $quotation->assigned_user_id = $quotationWithUser->assigned_user_id;
+                    $quotation->save();
+                    return;
+                }
+            }
+
+            // Buscar la última cotización basada en el guest_user_id
+            if ($guestUser) {
+                $quotationWithGuest = Quotation::where('guest_user_id', $guestUser->id)
+                    ->whereNotNull('assigned_user_id') // Asegúrate de que assigned_user_id no sea nulo
+                    ->first();
+
+                if($quotationWithGuest && in_array($quotationWithGuest->assigned_user_id, $userIdsArray)){
+                    $quotation->assigned_user_id = $quotationWithGuest->assigned_user_id;
+                    $quotation->save();
+                    return;
+                }
+            }
+        }
+
+        if (!in_array($domain, $personal_domains)) {
+
+            $userWithDomain = User::where('email', 'like', "%@$domain")->first();
+
+            $guestUserWithDomain = GuestUser::where('email', 'like', "%@$domain")
+                        ->orderBy('id', 'desc') // Ordenar por ID descendente
+                        ->offset(1) // <- Antepenúltimo GuestUser con ese email
+                        ->limit(1)
+                        ->first();
+
+            // Inicializar variables para almacenar las cotizaciones
+            $quotationWithUserDomain = null;
+            $quotationWithGuestDomain = null;
+
+            // Buscar la última cotización basada en el user_id
+            if ($userWithDomain) {
+                $quotationWithUserDomain = Quotation::where('customer_user_id', $userWithDomain->id)
+                    ->whereNotNull('assigned_user_id') // Asegúrate de que assigned_user_id no sea nulo
+                    ->orderBy('id', 'desc') // Ordenar por ID descendente
+                    ->first(); // Obtener la última cotización
+                if($quotationWithUserDomain && in_array($quotationWithUserDomain->assigned_user_id, $userIdsArray)){
+                    $quotation->assigned_user_id = $quotationWithUserDomain->assigned_user_id;
+                    $quotation->save();
+                    return;
+                }
+            }
+
+            // Buscar la última cotización basada en el guest_user_id
+            if ($guestUserWithDomain) {
+                $quotationWithGuestDomain = Quotation::where('guest_user_id', $guestUserWithDomain->id)
+                    ->whereNotNull('assigned_user_id') // Asegúrate de que assigned_user_id no sea nulo
+                    ->first();
+
+                if($quotationWithGuestDomain && in_array($quotationWithGuestDomain->assigned_user_id, $userIdsArray)){
+                    $quotation->assigned_user_id = $quotationWithGuestDomain->assigned_user_id;
+                    $quotation->save();
+                    return;
+                }
+            }
+        }
+
+        $indexFile = 'current_index.txt';
+        $currentIndex = (int)Storage::get($indexFile);
+        if ($currentIndex >= count($userIds)) {
+            $currentIndex = 0;
+        }
+
+        // Obtén el usuario en el índice actual
+        $selectedUserId = $userIds[$currentIndex];
+
+        $quotation->assigned_user_id = $selectedUserId;
+
+        $currentIndex++;
+        Storage::put($indexFile, $currentIndex);
+
+        $quotation->save();
     }
 }
 

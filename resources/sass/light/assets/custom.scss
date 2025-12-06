@@ -1532,3 +1532,90 @@
 .badge:hover {
     transform: translateX(0) !important;
 }
+
+
+// external 1 (personal)
+.cargo__totals {
+    &__title {
+        font-weight: 700;
+        background-color: #FFCC00;
+        padding: 4px 12px;
+        font-size: 14px;
+        width: 100%;
+        border-radius: 4px 4px 0 0;
+    }
+    &__content {
+        padding: 4px 12px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        font-size: 15px;
+        border: 1px solid #D8D8D8;
+        border-top: none;
+        border-radius: 0 0 4px 4px;
+
+        label {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.cargo__details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+    &__item {
+        display: flex;
+        .__counter {
+            background-color: #42403E;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            border-radius: 8px 0 0 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            width: 33px;
+        }
+        .__content {
+            color: #42403E;
+            width: 100%;
+            border: 1px solid #D8D8D8;
+            border-bottom: none;
+            border-left: none;
+            .__row {
+                &.__multi {
+                    display: flex;
+                    > div {
+                        border-right: 1px solid #D8D8D8;
+                        flex: 1;
+                        .__info {
+                            border-left: none;
+                        }
+                        &:last-child {
+                            border-right: none;
+                        }
+                    }
+                }
+                label {
+                    background-color: #F5F5F5;
+                    padding: 2px 12px;
+                    margin-bottom: 0;
+                    display: block;
+                }
+                strong {
+                    font-weight: 700;
+                }
+            }
+            .__info {
+                padding: 2px 12px;
+                display: flex;
+                gap: 16px;
+                border: 1px solid #D8D8D8;
+                border-right: none;
+            }
+        }
+    }
+}

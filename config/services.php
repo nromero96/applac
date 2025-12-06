@@ -54,4 +54,6 @@ return [
 
     'quotation_api_token' => env('WEB_QUOTATION_API_TOKEN'),
 
+    'url_quote_personal' => env('REDIRECT_URL_QUOTE_PERSONAL'),
+
 ];

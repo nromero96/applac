@@ -39,8 +39,8 @@
             </tr>
             <tr>
                 <td colspan="2">
-                    <b>Mode of transport:</b> {{ $quotation->mode_of_transport }}<br>
-                    @if ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo')
+                    <b>Mode of transport:</b> {{ $quotation->modeOfTransportLabel() }}<br>
+                    @if ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'RORO (Roll-On/Roll-Off)')
                     <b>Cargo Type:</b> {{ $quotation->cargo_type }}  <br>
                     @endif
                     <b>Service Type:</b> {{ $quotation->service_type }}
@@ -198,7 +198,7 @@
                                         @if ($quotation->cargo_type == 'LTL' || $quotation->cargo_type == 'LCL')
                                         Total Volume
                                         @endif
-                                    @elseif ($quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
+                                    @elseif ($quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'RORO (Roll-On/Roll-Off)' || $quotation->mode_of_transport == 'Breakbulk')
                                     Total CBM
                                     @endif
                                 </b>
@@ -284,7 +284,7 @@
                                         <span style="color:#808080;font-weight:bold;">
                                             @if ($quotation->mode_of_transport == 'Air')
                                             Kgs:
-                                            @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
+                                            @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'RORO (Roll-On/Roll-Off)' || $quotation->mode_of_transport == 'Breakbulk')
                                             m³:
                                             @endif
                                         </span><br>
@@ -337,7 +337,7 @@
                                 <span style="color:#808080;font-weight:bold;">
                                     @if ($quotation->mode_of_transport == 'Air')
                                     Actual Weight (Kgs):
-                                    @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
+                                    @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container' || $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'RORO (Roll-On/Roll-Off)' || $quotation->mode_of_transport == 'Breakbulk')
                                     Weight:
                                     @endif
                                 </span><br>
@@ -349,7 +349,7 @@
                                     Volume Weight (Kgs):
                                     @elseif ($quotation->mode_of_transport == 'Ground' || $quotation->mode_of_transport == 'Container')
                                     Volume (m³):
-                                    @elseif ( $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'Breakbulk')
+                                    @elseif ( $quotation->mode_of_transport == 'RoRo' || $quotation->mode_of_transport == 'RORO (Roll-On/Roll-Off)' || $quotation->mode_of_transport == 'Breakbulk')
                                     Total CBM
                                     @endif
                                 </span><br>
@@ -405,10 +405,7 @@
                 <td colspan="2">
                     <b>First name:</b>  {{ $reguser->name }}<br>
                     <b>Last name: </b> {{ $reguser->lastname }}<br>
-                    <b>Company name: </b> {{ $reguser->company_name }}<br>
-                    <b>Company website: </b> {{ $reguser->company_website }}<br>
                     <b>Company email: </b> {{ $reguser->email }}<br>
-                    <b>Customer type</b> {{ $reguser->customer_type }}<br>
                     <b>Location: </b> {{ $reguser_location_name }}<br>
                     <b>Phone: </b> +{{ $reguser->phone_code }} {{ $reguser->phone }}<br>
                 </td>

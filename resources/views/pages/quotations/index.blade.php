@@ -1,6 +1,7 @@
 @php
     use App\Enums\TypeStatus;
     use App\Enums\TypeInquiry;
+    use App\Enums\TypeModeTransport;
 @endphp
 
 @extends('layouts.app')
@@ -632,7 +633,7 @@
                                                 </td>
 
                                                 <td class="px-2">
-                                                    {{ $quotation->quotation_mode_of_transport }}
+                                                    {{ $quotation->modeOfTransportLabel() }}
                                                 </td>
 
                                                 @if($adminorsales)

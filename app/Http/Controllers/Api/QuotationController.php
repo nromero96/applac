@@ -3,14 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Enums\TypeInquiry;
+use App\Enums\TypeModeTransport;
+use App\Enums\TypeStatus;
 use App\Http\Controllers\Controller;
+use App\Mail\QuotationCreated;
 use Illuminate\Http\Request;
 use App\Models\Quotation;
 use App\Models\User;
 use App\Models\GuestUser;
 use App\Models\QuotationDocument;
 use App\Mail\WebQuotationCreated;
+use App\Models\CargoDetail;
 use App\Models\UnreadQuotation;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -295,6 +301,122 @@ class QuotationController extends Controller
             'message' => 'Quotation created',
             'quotation' => $quotation,
         ], 201);
+    }
+
+    public function store_individual(Request $request) {
+        $request->validate([
+            // user
+            'first_name'    => 'required|string|max:255',
+            'last_name'     => 'required|string|max:255',
+            // ...
+        ]);
+        try {
+            $result = null;
+            // DB::transaction(function() use ($request, &$result) {
+                // User
+                $user_data = [
+                    'name'          => $request->input('first_name'),
+                    'lastname'      => $request->input('last_name'),
+                    'phone_code'    => $request->input('phone_code'),
+                    'phone'         => $request->input('phone_number'),
+                    'email'         => strtolower($request->input('email')),
+                    'location'      => $request->input('location'),
+                    'source'        => $request->input('referring'),
+                ];
+                $user = GuestUser::create($user_data);
+
+                // Inquiry
+                $rating = 1; // min 1
+                $no_shipping_date = filter_var($request->input('no_shipping_date'), FILTER_VALIDATE_BOOLEAN);
+                $shipping_date = null;
+                if (!$no_shipping_date) {
+                    if ($request->input('shipping_date')) {
+                        $shipping_date = Carbon::parse($request->input('shipping_date'))->format('Y-m-d');
+                        $today = Carbon::today();
+                        // Diferencia en días desde hoy hasta la fecha de envío
+                        $daysDiff = $today->diffInDays($shipping_date, false);
+                        if ($daysDiff >= 0 && $daysDiff <= 21) {
+                            $rating = 3;
+                        }  elseif ($daysDiff >= 22 && $daysDiff <= 60) {
+                            $rating = 2;
+                        }
+                    }
+                }
+                $inquiry_data = [
+                    'department_id'             => 1,
+                    'status'                    => TypeStatus::PENDING->value,
+                    'type_inquiry'              => TypeInquiry::EXTERNAL_1->value,
+                    'mode_of_transport'         => TypeModeTransport::OCEAN_RORO->value,
+                    'cargo_type'                => 'Personal Vehicle',
+                    'service_type'              => 'Port-to-Port',
+                    'rating'                    => $rating,
+                    'guest_user_id'             => $user->id,
+                    'origin_country_id'         => $request->input('country_origin'),
+                    'destination_country_id'    => $request->input('country_destination'),
+                    'shipping_date'             => $shipping_date,
+                    'no_shipping_date'          => filter_var($request->input('no_shipping_date'), FILTER_VALIDATE_BOOLEAN) ? 'yes' : 'no',
+                    'declared_value'            => $request->input('declared_value'),
+                    'insurance_required'        => filter_var($request->input('insurance_required'), FILTER_VALIDATE_BOOLEAN) ? 'yes' : 'no',
+                    'currency'                  => $request->input('currency'),
+                    'total_qty'                 => $request->input('total_qty'),
+                    'total_actualweight'        => $request->input('total_actualweight'),
+                    'total_volum_weight'        => $request->input('total_volum_weight'),
+                    'created_at'                => Carbon::now(),
+                ];
+
+                $inquiry = Quotation::create($inquiry_data);
+
+                // Cargo Details
+                $icargo = $request->input('icargo_items');
+                $cargo_details_data = [];
+                foreach ($icargo as $item) {
+                    $cargo_details_data[] = [
+                        'quotation_id'                          => $inquiry->id,
+                        'qty'                                   => 1,
+                        'package_type'                          => $item['vehicle_type'],
+                        'cargo_description'                     => $item['description'],
+                        'electric_vehicle'                      => $item['is_electric'] ? 'yes' : 'no',
+                        'length'                                => $item['length'],
+                        'width'                                 => $item['width'],
+                        'height'                                => $item['height'],
+                        'dimensions_unit'                       => $item['unit_dimensions'],
+                        'per_piece'                             => $item['weight_pc'],
+                        'item_total_weight'                     => $item['weight_pc'],
+                        'weight_unit'                           => $item['unit_weight'],
+                        'item_total_volume_weight_cubic_meter'  => $item['cbm_m3'],
+                    ];
+                }
+                $cargo_details = [];
+                foreach ($cargo_details_data as $item) {
+                    $cargo_details[] = CargoDetail::create($item);
+                }
+
+                // auto assigned user / send auto email
+                rateQuotation($inquiry->id);
+                try {
+                    //si hay archivos adjuntos obtenemos los links
+                    $quotation_documents = QuotationDocument::where('quotation_id', $inquiry->id)->get();
+                    // Envía el correo electrónico con los detalles de carga y archivos adjuntos
+                    Mail::send(new QuotationCreated($inquiry, $user, $request->input('email'), $cargo_details, $quotation_documents));
+                    // Si no se lanzó una excepción, asumimos que el correo se envió correctamente
+                    Log::info('Correo electrónico enviado correctamente de la cotización: ' . $inquiry->id);
+                } catch (\Exception $e) {
+                    // Captura cualquier excepción que pueda ocurrir durante el envío del correo
+                    Log::error('Error al enviar el correo electrónico de la cotización: ' . $inquiry->id . ' - ' . $e);
+                }
+
+                $result = [
+                    'user' => $user,
+                    'inquiry' => $inquiry,
+                    'cargo_details' => $cargo_details,
+                    'request' => $request->all(),
+                ];
+            // });
+            return response()->json($result);
+        } catch (\Throwable $e) {
+            Log::error($e);
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 
     /**

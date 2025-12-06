@@ -89,7 +89,7 @@ class QuotationController extends Controller
             DB::raw('COALESCE(users.score, guest_users.score) as user_score'),
             'quotations.status as quotation_status',
             'quotations.result as quotation_result',
-            'quotations.mode_of_transport as quotation_mode_of_transport',
+            'quotations.mode_of_transport as mode_of_transport',
             'quotations.currency as quotation_currency',
             'quotations.declared_value as quotation_declared_value',
             'quotations.service_type as quotation_service_type',
@@ -439,6 +439,8 @@ class QuotationController extends Controller
     }
 
     public function onlineregister(Request $request){
+        // redireccion al nuevo formulario de la web
+        return redirect()->away(config('services.url_quote_personal'));
 
         if ($request->has('source')) {
             session(['source' => $request->query('source')]);
@@ -657,94 +659,92 @@ class QuotationController extends Controller
 
     public function listQuotationNotes($id)
     {
-    // Obtener la cotización para acceder a su fecha de creación
-    $quotation = Quotation::find($id);
-    $quotationCreatedAt = $quotation ? $quotation->created_at : null;
+        // Obtener la cotización para acceder a su fecha de creación
+        $quotation = Quotation::find($id);
+        $quotationCreatedAt = $quotation ? $quotation->created_at : null;
 
-    // Obtener las notas de cotización
-    $quotation_notes = QuotationNote::where('quotation_id', $id)
-        ->join('users', 'quotation_notes.user_id', '=', 'users.id')
-        ->leftJoin('users as U', 'quotation_notes.processed_by_user_id', '=', 'U.id')
-        ->select('quotation_notes.*', 'users.name as user_name', 'U.name as processed_user_name', 'U.lastname as processed_user_lastname')
-        ->get();
+        // Obtener las notas de cotización
+        $quotation_notes = QuotationNote::where('quotation_id', $id)
+            ->join('users', 'quotation_notes.user_id', '=', 'users.id')
+            ->leftJoin('users as U', 'quotation_notes.processed_by_user_id', '=', 'U.id')
+            ->select('quotation_notes.*', 'users.name as user_name', 'U.name as processed_user_name', 'U.lastname as processed_user_lastname')
+            ->get();
 
-    // Depurar las notas obtenidas
-    if ($quotation_notes->isEmpty()) {
-        return response()->json(['message' => 'No quotation notes found.'], 404);
-    }
+        // Depurar las notas obtenidas
+        if ($quotation_notes->isEmpty()) {
+            return response()->json(['message' => 'No quotation notes found.'], 404);
+        }
 
-    $previousDate = $quotationCreatedAt; // Iniciar con la fecha de creación de la cotización
+        $previousDate = $quotationCreatedAt; // Iniciar con la fecha de creación de la cotización
 
-    // Calcular la diferencia de tiempo para cada nota
-    foreach ($quotation_notes as $index => $note) {
-        // Establecer la fecha de la nota anterior
-        $note->previous_note_date = $previousDate ? $previousDate : '-';
+        // Calcular la diferencia de tiempo para cada nota
+        foreach ($quotation_notes as $index => $note) {
+            // Establecer la fecha de la nota anterior
+            $note->previous_note_date = $previousDate ? $previousDate : '-';
 
-        if ($index === 0) {
-            // Si es la primera nota, calcular desde la creación de la cotización
-            if ($quotationCreatedAt) {
-                // Calcular la diferencia desde la creación de la cotización
-                $diffInSecondsFromCreation = \Carbon\Carbon::parse($note->created_at)->diffInSeconds(\Carbon\Carbon::parse($quotationCreatedAt));
+            if ($index === 0) {
+                // Si es la primera nota, calcular desde la creación de la cotización
+                if ($quotationCreatedAt) {
+                    // Calcular la diferencia desde la creación de la cotización
+                    $diffInSecondsFromCreation = \Carbon\Carbon::parse($note->created_at)->diffInSeconds(\Carbon\Carbon::parse($quotationCreatedAt));
 
-                // Determinar la unidad de tiempo más apropiada
-                if ($diffInSecondsFromCreation < 60) {
-                    $note->time_diff = "in $diffInSecondsFromCreation seconds since received";
-                } elseif ($diffInSecondsFromCreation < 3600) {
-                    $minutes = floor($diffInSecondsFromCreation / 60);
-                    $note->time_diff = "in $minutes minute" . ($minutes > 1 ? 's' : '') . " since received";
-                } elseif ($diffInSecondsFromCreation < 604800) {
-                    $hours = floor($diffInSecondsFromCreation / 3600);
-                    $note->time_diff = "in $hours hour" . ($hours > 1 ? 's' : '') . " since received";
+                    // Determinar la unidad de tiempo más apropiada
+                    if ($diffInSecondsFromCreation < 60) {
+                        $note->time_diff = "in $diffInSecondsFromCreation seconds since received";
+                    } elseif ($diffInSecondsFromCreation < 3600) {
+                        $minutes = floor($diffInSecondsFromCreation / 60);
+                        $note->time_diff = "in $minutes minute" . ($minutes > 1 ? 's' : '') . " since received";
+                    } elseif ($diffInSecondsFromCreation < 604800) {
+                        $hours = floor($diffInSecondsFromCreation / 3600);
+                        $note->time_diff = "in $hours hour" . ($hours > 1 ? 's' : '') . " since received";
+                    } else {
+                        $weeks = floor($diffInSecondsFromCreation / 604800);
+                        $note->time_diff = "in $weeks week" . ($weeks > 1 ? 's' : '') . " since received";
+                    }
                 } else {
-                    $weeks = floor($diffInSecondsFromCreation / 604800);
-                    $note->time_diff = "in $weeks week" . ($weeks > 1 ? 's' : '') . " since received";
+                    $note->time_diff = "No previous note";
                 }
             } else {
-                $note->time_diff = "No previous note";
-            }
-        } else {
-            // Calcular la diferencia en segundos desde la nota anterior
-            $diffInSeconds = \Carbon\Carbon::parse($note->created_at)->diffInSeconds(\Carbon\Carbon::parse($previousDate));
+                // Calcular la diferencia en segundos desde la nota anterior
+                $diffInSeconds = \Carbon\Carbon::parse($note->created_at)->diffInSeconds(\Carbon\Carbon::parse($previousDate));
 
-            // Determinar la unidad de tiempo más apropiada
-            if ($diffInSeconds < 60) {
-                $note->time_diff = "in $diffInSeconds seconds";
-            } elseif ($diffInSeconds < 3600) {
-                $minutes = floor($diffInSeconds / 60);
-                $note->time_diff = "in $minutes minute" . ($minutes > 1 ? 's' : '');
-            } elseif ($diffInSeconds < 604800) {
-                $hours = floor($diffInSeconds / 3600);
-                $note->time_diff = "in $hours hour" . ($hours > 1 ? 's' : '');
-            } else {
-                $weeks = floor($diffInSeconds / 604800);
-                $note->time_diff = "in $weeks week" . ($weeks > 1 ? 's' : '');
+                // Determinar la unidad de tiempo más apropiada
+                if ($diffInSeconds < 60) {
+                    $note->time_diff = "in $diffInSeconds seconds";
+                } elseif ($diffInSeconds < 3600) {
+                    $minutes = floor($diffInSeconds / 60);
+                    $note->time_diff = "in $minutes minute" . ($minutes > 1 ? 's' : '');
+                } elseif ($diffInSeconds < 604800) {
+                    $hours = floor($diffInSeconds / 3600);
+                    $note->time_diff = "in $hours hour" . ($hours > 1 ? 's' : '');
+                } else {
+                    $weeks = floor($diffInSeconds / 604800);
+                    $note->time_diff = "in $weeks week" . ($weeks > 1 ? 's' : '');
+                }
             }
+
+            // Actualizar la fecha de la nota anterior
+            $previousDate = $note->created_at;
         }
 
-        // Actualizar la fecha de la nota anterior
-        $previousDate = $note->created_at;
+        // Ordenar por id después de agregar las columnas desendientes
+        $quotation_notes = $quotation_notes->sortByDesc('id');
+
+        $quotation_notes = $quotation_notes->map(function ($note) {
+            if (isset($note->action)) {
+                $note->action_base = $note->action;
+                $note->action = str_replace(TypeStatus::QUALIFIED->value, TypeStatus::QUALIFIED->meta('label'), $note->action);
+                $note->action = str_replace(TypeStatus::QUOTE_SENT->value, TypeStatus::QUOTE_SENT->meta('label'), $note->action);
+                $note->action = str_replace(TypeStatus::UNQUALIFIED->value, TypeStatus::UNQUALIFIED->meta('label'), $note->action);
+                $note->action = str_replace(TypeStatus::STALLED->value, TypeStatus::STALLED->meta('label'), $note->action);
+                $note->action = str_replace(TypeStatus::CONTACTED->value, TypeStatus::CONTACTED->meta('label'), $note->action);
+                $note->action = str_replace(TypeStatus::PENDING->value, TypeStatus::PENDING->meta('label'), $note->action);
+            }
+            return $note;
+        });
+
+        return response()->json($quotation_notes->values()->all());
     }
-
-    // Ordenar por id después de agregar las columnas desendientes
-    $quotation_notes = $quotation_notes->sortByDesc('id');
-
-    $quotation_notes = $quotation_notes->map(function ($note) {
-        if (isset($note->action)) {
-            $note->action_base = $note->action;
-            $note->action = str_replace(TypeStatus::QUALIFIED->value, TypeStatus::QUALIFIED->meta('label'), $note->action);
-            $note->action = str_replace(TypeStatus::QUOTE_SENT->value, TypeStatus::QUOTE_SENT->meta('label'), $note->action);
-            $note->action = str_replace(TypeStatus::UNQUALIFIED->value, TypeStatus::UNQUALIFIED->meta('label'), $note->action);
-            $note->action = str_replace(TypeStatus::STALLED->value, TypeStatus::STALLED->meta('label'), $note->action);
-            $note->action = str_replace(TypeStatus::CONTACTED->value, TypeStatus::CONTACTED->meta('label'), $note->action);
-            $note->action = str_replace(TypeStatus::PENDING->value, TypeStatus::PENDING->meta('label'), $note->action);
-        }
-        return $note;
-    });
-
-    return response()->json($quotation_notes->values()->all());
-}
-
-
 
     public function updateStatus(Request $request, $id)
     {
@@ -1011,44 +1011,41 @@ class QuotationController extends Controller
     }
 
     public function updateFeatured(Request $request, $id)
-{
-    $request->validate([
-        'featured' => 'required|boolean', // Valida que 'featured' sea requerido y sea booleano
-    ]);
+    {
+        $request->validate([
+            'featured' => 'required|boolean', // Valida que 'featured' sea requerido y sea booleano
+        ]);
 
-    $quotation = Quotation::findOrFail($id); // Encuentra la cotización o lanza una excepción
-    $user = auth()->user(); // Obtiene el usuario autenticado
+        $quotation = Quotation::findOrFail($id); // Encuentra la cotización o lanza una excepción
+        $user = auth()->user(); // Obtiene el usuario autenticado
 
-    Log::info('User '. $user->id .' is updating featured for quotation #'. $id);
+        Log::info('User '. $user->id .' is updating featured for quotation #'. $id);
 
-    // verifica si el id ya existe en la tabla de cotizaciones destacadas para el usuario autenticado
-    $featuredQuotation = FeaturedQuotation::where('user_id', $user->id)
-        ->where('quotation_id', $id)
-        ->first();
+        // verifica si el id ya existe en la tabla de cotizaciones destacadas para el usuario autenticado
+        $featuredQuotation = FeaturedQuotation::where('user_id', $user->id)
+            ->where('quotation_id', $id)
+            ->first();
 
-    // Si la cotización ya está en la tabla de cotizaciones destacadas
-    if ($featuredQuotation) {
-        // Si la cotización ya está en la tabla de cotizaciones destacadas y se está desmarcando como destacada
-        if ($request->featured === false) {
-            $featuredQuotation->delete(); // Elimina la cotización destacada
-            Log::info('Quotation #'. $id .' removed from featured quotations for user '. $user->id);
+        // Si la cotización ya está en la tabla de cotizaciones destacadas
+        if ($featuredQuotation) {
+            // Si la cotización ya está en la tabla de cotizaciones destacadas y se está desmarcando como destacada
+            if ($request->featured === false) {
+                $featuredQuotation->delete(); // Elimina la cotización destacada
+                Log::info('Quotation #'. $id .' removed from featured quotations for user '. $user->id);
+            }
+        } else {
+            // Si la cotización no está en la tabla de cotizaciones destacadas y se está marcando como destacada
+            if ($request->featured === true) {
+                FeaturedQuotation::create([
+                    'user_id' => $user->id,
+                    'quotation_id' => $id,
+                ]);
+                Log::info('Quotation #'. $id .' added to featured quotations for user '. $user->id);
+            }
         }
-    } else {
-        // Si la cotización no está en la tabla de cotizaciones destacadas y se está marcando como destacada
-        if ($request->featured === true) {
-            FeaturedQuotation::create([
-                'user_id' => $user->id,
-                'quotation_id' => $id,
-            ]);
-            Log::info('Quotation #'. $id .' added to featured quotations for user '. $user->id);
-        }
+
+        return response()->json(['message' => 'Featured status updated successfully.']);
     }
-
-    return response()->json(['message' => 'Featured status updated successfully.']);
-}
-
-
-
 
 
     public function onlinestore(Request $request){
