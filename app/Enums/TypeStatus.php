@@ -10,6 +10,7 @@ enum TypeStatus: string {
     case CONTACTED      = 'Contacted';
     case DELETED        = 'Deleted';
     case PENDING        = 'Pending';
+    case AUTO_QUOTED    = 'Auto-quoted';
 
     public function meta(?string $key = null): mixed {
         $data = match ($this) {
@@ -59,6 +60,12 @@ enum TypeStatus: string {
                 'label'         => 'Pending',
                 'badge_class'   => 'badge-light-pending',
                 'style'         => 'color: #EB6200; background-color: #FFF2E8',
+                'keyValue'      => 'Pending',
+            ],
+            self::AUTO_QUOTED       => [
+                'label'         => 'Auto-Quoted',
+                'badge_class'   => 'badge-light-autoquoted',
+                'style'         => 'color: #0A6AB7; background-color: ##D3EAFD',
                 'keyValue'      => 'Pending',
             ],
         };

@@ -78,7 +78,7 @@ class Statistics extends Component
         ];
 
         if (Auth::user()->hasRole('Administrator')) {
-            $this->tab = 'manage';
+            $this->tab = 'manage'; // sales temp
             $user_sales_dpto = User::whereHas('roles', function($query){
                     $query->whereIn('role_id', [1, 2]);
                 })
@@ -291,6 +291,81 @@ class Statistics extends Component
             'closing_rate_by_source_type' => $salesCharts->closing_rate_by_source_type(),
             'reasons_for_losing_deals' => $salesCharts->reasons_for_losing_deals(),
         ];
+
+        // quotes sent per user
+        $quotes_sent = Quotation::from('quotations as Q')
+            ->select('Q.id', 'Q.type_inquiry', 'Q.status', 'Q.assigned_user_id', 'Q.process_for', 'QN.action', 'QN.note', 'U.lastname', 'U.name')
+            ->selectRaw("
+                MAX(
+                    CASE
+                        WHEN QN.note LIKE '%Auto-quoted%' THEN 1
+                        WHEN QN.note LIKE '%Autoquoted%' THEN 1
+                        ELSE 0
+                    END
+                ) as is_auto_quoted
+            ")
+            ->selectRaw("
+                MAX(
+                    CASE
+                        WHEN QN.action LIKE '%to%Quote Sent%' THEN QN.created_at
+                        ELSE NULL
+                    END
+                ) as quote_sent_at
+            ")
+            ->selectRaw("
+                COUNT(*) OVER (
+                    PARTITION BY Q.assigned_user_id
+                ) as total_by_user
+            ")
+            ->selectRaw("
+                SUM(
+                    MAX(
+                        CASE
+                            WHEN QN.note LIKE '%Auto-quoted%'
+                            OR QN.note LIKE '%Autoquoted%'
+                            THEN 1
+                            ELSE 0
+                        END
+                    )
+                ) OVER (
+                    PARTITION BY Q.assigned_user_id
+                ) as autoquoted_by_user
+            ")
+            ->join('quotation_notes as QN', 'QN.quotation_id', '=', 'Q.id')
+            ->join('users as U', 'U.id', '=', 'Q.assigned_user_id')
+            ->where('Q.status', TypeStatus::QUOTE_SENT->value)
+            // ->where('Q.department_id', auth()->user()->department_id)
+            ->whereNotNull('Q.assigned_user_id')
+            ->groupBy('Q.assigned_user_id', 'Q.id')
+            ->orderBy('id', 'desc')
+        ;
+
+        // filter by quotation date
+        switch ($this->filters['period']) {
+            case 'today':
+                $quotes_sent->whereDate('Q.created_at', Carbon::today());
+                break;
+            case 'last_7_days':
+                $quotes_sent->whereDate('Q.created_at', '>=', Carbon::now()->subDays(7));
+                break;
+            case 'last_30_days':
+                $quotes_sent->whereDate('Q.created_at', '>=', Carbon::now()->subDays(30));
+                break;
+            case 'last_90_days':
+                $quotes_sent->whereDate('Q.created_at', '>=', Carbon::now()->subDays(90));
+                break;
+            case 'last_180_days':
+                $quotes_sent->whereDate('Q.created_at', '>=', Carbon::now()->subDays(180));
+                break;
+            case 'custom':
+                $quotes_sent->whereDate('Q.created_at', '>=', $this->filters['date_from']);
+                $quotes_sent->whereDate('Q.created_at', '<=', $this->filters['date_to']);
+                break;
+            default:
+                break;
+        }
+
+        $this->area_sales['quotes_sent'] = $quotes_sent->get()->groupBy('assigned_user_id');
     }
 
     public function manage() {

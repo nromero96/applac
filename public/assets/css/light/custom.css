@@ -1410,3 +1410,79 @@
   border: 1px solid #D8D8D8;
   border-right: none;
 }
+
+.badge-light-autoquoted {
+  color: #0A6AB7;
+  background-color: #D3EAFD;
+  border: 1px solid #D3EAFD;
+}
+
+.table-quotes {
+  border-bottom: 1px solid #D8D8D8;
+}
+.table-quotes .__col-1 {
+  width: 25%;
+}
+.table-quotes .__col-1 {
+  width: 25%;
+}
+.table-quotes .__col-3 {
+  width: 25%;
+}
+.table-quotes .__col-4 {
+  width: 25%;
+}
+.table-quotes thead {
+  background-color: #F5F5F5;
+  border-bottom: 1px solid #D8D8D8;
+  cursor: pointer;
+}
+.table-quotes thead.active svg {
+  transform: translateY(-50%) rotateX(180deg) !important;
+}
+.table-quotes thead th {
+  color: #161515;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 15px 12px;
+}
+.table-quotes thead .__total {
+  color: #B80000;
+  position: relative;
+}
+.table-quotes thead .__total svg {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+}
+.table-quotes tbody {
+  display: none;
+}
+.table-quotes tbody.opened {
+  display: table-row-group;
+}
+.table-quotes tbody td {
+  padding: 9px 12px;
+  border-bottom: 1px solid #D8D8D8;
+  font-size: 13px;
+  color: #42403E;
+}
+.table-quotes tbody .__sub {
+  color: #999999;
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.table-quotes tbody .__id {
+  font-size: 13px;
+  color: #1877F2;
+  font-weight: 500;
+}
+.table-quotes tbody .__id a {
+  color: inherit;
+}
+.table-quotes tbody .__date {
+  color: #999999;
+}
