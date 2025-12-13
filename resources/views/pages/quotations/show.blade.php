@@ -518,6 +518,7 @@
                                         contacted_via: '',
                                         process_for: {{ '"' . ($quotation->process_for ? : TypeProcessFor::FULL_QUOTE->value) . '"' }},
                                         processed_by_user_id: {{ '"' . $default_processed_user_id . '"' }},
+                                        processing_by_completed: @js($quotation->processing_by_completed),
                                     }"
                                 >
                                     @csrf
@@ -597,6 +598,18 @@
                                                 @endforeach
                                             </select>
                                         </div>
+                                    @endif
+                                    @if(\Auth::user()->hasRole('Quoter'))
+                                        @if ($quotation->processed_by_user_id == auth()->user()->id)
+                                            <div class="mb-2" x-show="status === '{{ TypeStatus::QUALIFIED->value }}'" x-cloak>
+                                                <label class="form-check">
+                                                    <input type="checkbox" class="form-check-input" name="processing_by_completed" x-model="processing_by_completed">
+                                                    <div class="form-check-label d-flex align-items-center gap-2 justify-content-between">
+                                                        Mark as completed
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        @endif
                                     @endif
                                     <div class="mb-2 @if($reason_unqualified) @else d-none @endif" id="dv_reason">
                                         <label for="reason" class="form-label mb-0">{{ __('Reason to decline') }} <span class="text-danger">*</span></label>

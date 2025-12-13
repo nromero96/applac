@@ -924,6 +924,43 @@
                     background-color: #FCF4D6;
                 }
             }
+
+            .__assigned {
+                border-top: 1px solid #D8D8D8;
+                padding-top: 12px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+
+                &__by {
+                    display: flex;
+                    gap: 4px;
+                    align-items: center;
+                    color: #0A6AB7;
+                    font-style: italic;
+                    font-size: 11px;
+
+                    svg {
+                        flex-shrink: 0;
+                    }
+                }
+
+                &__status {
+                    display: flex;
+                    gap: 4px;
+                    align-items: center;
+                    font-size: 11px;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    color: #999999;
+                    line-height: 1;
+
+                    &.__completed {
+                        color: #1D813A;
+                    }
+                }
+            }
         }
     }
 

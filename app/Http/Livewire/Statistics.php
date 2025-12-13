@@ -78,7 +78,7 @@ class Statistics extends Component
         ];
 
         if (Auth::user()->hasRole('Administrator')) {
-            $this->tab = 'manage'; // sales temp
+            $this->tab = 'manage';
             $user_sales_dpto = User::whereHas('roles', function($query){
                     $query->whereIn('role_id', [1, 2]);
                 })

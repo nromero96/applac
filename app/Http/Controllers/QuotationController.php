@@ -761,6 +761,7 @@ class QuotationController extends Controller
                 'process_for' => 'nullable',
                 'processed_by_type' => 'nullable',
                 'processed_by_user_id' => 'nullable',
+                'processing_by_completed' => 'nullable',
             ]);
 
             if($validatedData['action'] == 'Unqualified'){
@@ -831,6 +832,7 @@ class QuotationController extends Controller
                     $quotation->update([
                         'status' => $validatedData['action'],
                         'process_for' => $result_data['process_for'],
+                        'processing_by_completed' => (bool) $request->input('processing_by_completed'),
                         'updated_at' => now(),
                     ]);
                 }

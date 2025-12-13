@@ -35,6 +35,9 @@ class DealsBoardColumn extends Component
                 if ($this->status == TypeStatus::QUALIFIED->value) {
                     $q->orWhere('processed_by_user_id', $this->assignedUserId);
                 }
+                if (auth()->user()->hasRole('Quoter')) {
+                    $q->where('processing_by_completed', 0);
+                }
             })
             ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
             ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
@@ -46,7 +49,11 @@ class DealsBoardColumn extends Component
                 $join->on('quotations.id', '=', 'unread_quotations.quotation_id')
                     ->where('unread_quotations.user_id', '=', $this->assignedUserId);
             })
+            ->leftJoin('users as UO', 'UO.id', '=', 'quotations.assigned_user_id') // user owner
+            ->leftJoin('users as UA', 'UA.id', '=', 'quotations.processed_by_user_id') // user assigned
             ->select(
+                'UO.name as owner_name',
+                'UA.name as assigned_name',
                 'quotations.id',
                 'quotations.type_inquiry',
                 'quotations.is_internal_inquiry',
@@ -59,7 +66,11 @@ class DealsBoardColumn extends Component
                 'quotations.status',
                 'quotations.result',
                 'quotations.priority',
+                'quotations.assigned_user_id',
                 'quotations.process_for',
+                'quotations.processed_by_type',
+                'quotations.processed_by_user_id',
+                'quotations.processing_by_completed',
                 'quotations.created_at',
                 DB::raw('EXISTS(SELECT 1 FROM featured_quotations WHERE featured_quotations.quotation_id = quotations.id AND featured_quotations.user_id = ' . $this->assignedUserId . ') as is_featured'),
                 DB::raw('EXISTS(SELECT 1 FROM unread_quotations WHERE unread_quotations.quotation_id = quotations.id AND unread_quotations.user_id = ' . $this->assignedUserId . ') as is_unread'),
