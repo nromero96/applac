@@ -440,7 +440,7 @@ class QuotationController extends Controller
 
     public function onlineregister(Request $request){
         // redireccion al nuevo formulario de la web
-        return redirect()->away(config('services.url_quote_personal'));
+        // return redirect()->away(config('services.url_quote_personal'));
 
         if ($request->has('source')) {
             session(['source' => $request->query('source')]);

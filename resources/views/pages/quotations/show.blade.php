@@ -570,11 +570,11 @@
                                         <div class="d-flex gap-3">
                                             <label for="action" class="form-label mb-0">{{ __('Process for:') }}</label>
                                             <div class="d-flex gap-3">
-                                                <label class="form-check">
+                                                <label class="form-check __small">
                                                     <input type="radio" name="process_for" class="form-check-input" value="{{ TypeProcessFor::FULL_QUOTE->value }}" x-model="process_for">
                                                     <div class="form-check-label">{{ TypeProcessFor::FULL_QUOTE->meta('label') }}</div>
                                                 </label>
-                                                <label class="form-check">
+                                                <label class="form-check __small">
                                                     <input type="radio" name="process_for" class="form-check-input" value="{{ TypeProcessFor::ESTIMATE->value }}" x-model="process_for">
                                                     <div class="form-check-label">{{ TypeProcessFor::ESTIMATE->meta('label') }}</div>
                                                 </label>
@@ -602,7 +602,7 @@
                                     @if(\Auth::user()->hasRole('Quoter'))
                                         @if ($quotation->processed_by_user_id == auth()->user()->id)
                                             <div class="mb-2" x-show="status === '{{ TypeStatus::QUALIFIED->value }}'" x-cloak>
-                                                <label class="form-check">
+                                                <label class="form-check __small">
                                                     <input type="checkbox" class="form-check-input" name="processing_by_completed" x-model="processing_by_completed">
                                                     <div class="form-check-label d-flex align-items-center gap-2 justify-content-between">
                                                         Mark as completed

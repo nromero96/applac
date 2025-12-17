@@ -4,17 +4,16 @@
 @endphp
 <div class="card p-3">
     <h2 class="stats__subtitle">Quotes Sent</h2>
-    @php $count = 0; @endphp
     @foreach ($this->area_sales['quotes_sent'] as $userId => $quotes)
         @php
             $user = $quotes->first();
         @endphp
         <table class="table-quotes">
-            <thead class="{{ $count == 0 ? 'active' : '' }}">
+            <thead>
                 <tr>
                     <th class="__col-1">{{ $user->name }} {{ $user->lastname }}</th>
-                    <th class="__col-2">Manual: {{ $user->total_by_user - $user->autoquoted_by_user }}</th>
-                    <th class="__col-3">Auto Quoted: {{ $user->autoquoted_by_user }}</th>
+                    <th class="__col-2" style="font-weight: 500;">Manual: {{ $user->total_by_user - $user->autoquoted_by_user }}</th>
+                    <th class="__col-3" style="font-weight: 500;">Auto Quoted: {{ $user->autoquoted_by_user }}</th>
                     <th class="__total __col-4">
                         Total: {{ $user->total_by_user }}
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -23,7 +22,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="{{ $count == 0 ? 'opened' : '' }}">
+            <tbody>
                 <tr>
                     <td class="__sub __col-1">Inquiry ID</td>
                     <td class="__sub __col-2">Status</td>
@@ -58,13 +57,12 @@
                 @endforeach
             </tbody>
         </table>
-        @php $count++ @endphp
     @endforeach
 </div>
 
 @push('scripts')
     <script>
-        jQuery('.table-quotes thead').on('click', function() {
+        jQuery('body').on('click', '.table-quotes thead', function() {
             if (jQuery(this).hasClass('active')) {
                 jQuery(this).removeClass('active');
                 jQuery(this).next().hide();

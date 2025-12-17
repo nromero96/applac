@@ -48,10 +48,7 @@
     <span style="font-size: 15px;font-weight: bold; color: #b80000;">Contact Information</span><br>
     <b>First name:</b>  {{ $reguser->name }}<br>
     <b>Last name: </b> {{ $reguser->lastname }}<br>
-    <b>Company name: </b> {{ $reguser->company_name }}<br>
-    <b>Company website: </b> {{ $reguser->company_website }}<br>
     <b>Company email: </b> {{ $reguser->email }}<br>
-    <b>Customer type</b> {{ $reguser->customer_type }}<br>
     <b>Location: </b> {{ $reguser_location_name }}<br>
     <b>Phone: </b> +{{ $reguser->phone_code }} {{ $reguser->phone }}<br>
 

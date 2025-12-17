@@ -2,7 +2,7 @@
     <div class="col-md-3">
         <h6 class="text-primary mb-3">{{ __('Contact Info') }}</h6>
         <div><label class="fw-bold">{{__("Contact Name")}}:</label> {{ $quotation->customer_name }} {{ $quotation->customer_lastname }}</div>
-        <div><label class="fw-bold">{{__("Company email")}}:</label> {{ $quotation->customer_email }}</div>
+        <div><label class="fw-bold">{{__("Email")}}:</label> {{ $quotation->customer_email }}</div>
         <div><label class="fw-bold">{{__("Phone")}}:</label> +{{ $quotation->customer_phone_code }} {{ $quotation->customer_phone }}</div>
         <div><label class="fw-bold">{{__("Location")}}:</label> {{ $quotation->customer_country_name }}</div>
         <div>
@@ -14,13 +14,13 @@
         </div>
     </div>
 
-    <div class="col-md-5" style="border-left: 1px solid #D8D8D8; padding-left: 2rem;">
+    <div class="col-md-6" style="border-left: 1px solid #D8D8D8; padding-left: 2rem;">
         <h6 class="text-primary mb-3">{{ __('Shipment Info') }}</h6>
 
         <div class="d-flex gap-2 align-items-center mb-2">
-            <div><label class="fw-bold mb-0">Origin:</label> {{ $quotation->origin_country }}</div>
+            <div><label class="fw-bold mb-0">Origin:</label> {{ $quotation->origin_country }} - {{ $quotation->origin_airportorport }}</div>
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 15L12.5 10L7.5 5" stroke="#D8D8D8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            <div><label class="fw-bold mb-0">Destination:</label> {{ $quotation->destination_country }}</div>
+            <div><label class="fw-bold mb-0">Destination:</label> {{ $quotation->destination_country }} - {{ $quotation->destination_airportorport }}</div>
         </div>
 
         <div class="d-flex gap-4 align-items-center mb-2">
@@ -73,7 +73,7 @@
                                 <div>
                                     <label><strong>Volume</strong></label>
                                     <div class="__info">
-                                        <div><strong>CBM:</strong> {{ $item->item_total_volume_weight_cubic_meter }} m<sup>3</sup></div>
+                                        <div><strong>CBM:</strong> {{ number_format($item->item_total_volume_weight_cubic_meter, 2) }} m<sup>3</sup></div>
                                     </div>
                                 </div>
                             </div>

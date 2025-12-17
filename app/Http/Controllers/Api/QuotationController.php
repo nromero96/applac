@@ -331,7 +331,7 @@ class QuotationController extends Controller
                 $shipping_date = null;
                 if (!$no_shipping_date) {
                     if ($request->input('shipping_date')) {
-                        $shipping_date = Carbon::parse($request->input('shipping_date'))->format('Y-m-d');
+                        $shipping_date = Carbon::createFromFormat('m-d-Y', $request->input('shipping_date'))->format('Y-m-d');
                         $today = Carbon::today();
                         // Diferencia en días desde hoy hasta la fecha de envío
                         $daysDiff = $today->diffInDays($shipping_date, false);
@@ -352,7 +352,9 @@ class QuotationController extends Controller
                     'rating'                    => $rating,
                     'guest_user_id'             => $user->id,
                     'origin_country_id'         => $request->input('country_origin'),
+                    'origin_airportorport'      => $request->input('origin_airportorport'),
                     'destination_country_id'    => $request->input('country_destination'),
+                    'destination_airportorport' => $request->input('destination_airportorport'),
                     'shipping_date'             => $shipping_date,
                     'no_shipping_date'          => filter_var($request->input('no_shipping_date'), FILTER_VALIDATE_BOOLEAN) ? 'yes' : 'no',
                     'declared_value'            => $request->input('declared_value'),
