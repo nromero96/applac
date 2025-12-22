@@ -296,7 +296,7 @@
                                 <label for="organization_code" class="form-label">
                                     Email
                                 </label>
-                                <input type="text" class="form-control" wire:.defer="contact.email"  {{ ($org_selected and !$new_contact and !$update_contact) ? 'disabled' : '' }} />
+                                <input type="text" class="form-control" wire:model.defer="contact.email"  {{ ($org_selected and !$new_contact and !$update_contact) ? 'disabled' : '' }} />
                                 @error('contact.email') <span class='text-danger'>{{ $message }}</span> @enderror
                             </div>
                             <div class="col-md-5 mt-2">
