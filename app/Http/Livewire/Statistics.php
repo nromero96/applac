@@ -27,7 +27,7 @@ class Statistics extends Component
         'readiness'     => [],
         'inquiry_type'  => [],
         'source'        => [],
-        'period'        => 'last_30_days',
+        'period'        => 'last_7_days', // last_30_days
         'date_from'     => '',
         'date_to'       => '',
     ];

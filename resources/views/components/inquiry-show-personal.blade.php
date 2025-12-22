@@ -87,7 +87,7 @@
             <label class="fw-bold mb-0 cargo__totals__title">Calculated total</label>
             <div class="cargo__totals__content">
                 <span><label class="fw-bold">Items: </label> {{ $quotation->total_qty }}</span>
-                <span><label class="fw-bold">Total Weight: </label> {{ $quotation->total_actualweight }}</span>
+                <span><label class="fw-bold">Total Weight: </label> {{ $quotation->total_actualweight }} Kg</span>
                 <span><label class="fw-bold">Total CBM: </label> {{ $quotation->total_volum_weight }} m<sup>3</sup></span>
             </div>
         </div>
