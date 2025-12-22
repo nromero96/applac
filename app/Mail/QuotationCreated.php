@@ -73,16 +73,16 @@ class QuotationCreated extends Mailable{
             'Freeport, TX|Manzanillo' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004611_Freeport_Manzanillo.pdf',
             'Newark, NJ|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004612_Newark_Puerto_Cortes.pdf',
             'Newark, NJ|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004613_Newark_Puerto_Limon.pdf',
-            'Newark, NJ|Santo Tomas de Castilla' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004614_Newark_Santo_Tomas.pdf',
+            'Newark, NJ|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004614_Newark_Santo_Tomas.pdf',
             'Baltimore, MD|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004615_Baltimore_Puerto_Cortes.pdf',
             'Baltimore, MD|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004616_Baltimore_Puerto_Limon.pdf',
-            'Baltimore, MD|Santo Tomas de Castilla' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004617_Baltimore_Santo_Tomas.pdf',
+            'Baltimore, MD|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004617_Baltimore_Santo_Tomas.pdf',
             'Freeport, TX|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004618_Freeport_Puerto_Cortes.pdf',
             'Freeport, TX|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004619_Freeport_Puerto_Limon.pdf',
-            'Freeport, TX|Santo Tomas de Castilla' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004620_Freeport_Santo_Tomas.pdf',
+            'Freeport, TX|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004620_Freeport_Santo_Tomas.pdf',
             'Jacksonville, FL|Puerto Cortes' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004641_Jacksonville_Puerto_Cortes.pdf',
             'Jacksonville, FL|Puerto Limon' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004642_Jacksonville_Puerto_Limon.pdf',
-            'Jacksonville, FL|Santo Tomas de Castilla' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004643_Jacksonville_Santo_Tomas.pdf',
+            'Jacksonville, FL|Santo Tomas' => 'https://app.latinamericancargo.com/storage/uploads/Quote_00004643_Jacksonville_Santo_Tomas.pdf',
         ];
 
         // Combinación de puertos de la cotización actual
