@@ -165,6 +165,21 @@ class QuotationCreated extends Mailable{
 
 
         // Llama a tu función sendMailApi para enviar el correo
+        $emails_to = [
+            config('services.copymail.mail_2'),
+        ];
+        if (!config('app.debug')) {
+            $emails_to = [
+                // config('services.copymail.mail_1'),
+                config('services.copymail.mail_2'),
+                'nicholas.herrera@lacship.com',
+                'stephanie.buitrago@lacship.com',
+                'fredy.arias@lacship.com',
+                'brian.carrillo@lacship.com',
+                'cris.valencia@lacship.com',
+                'juan.carlos@lacship.com',
+            ];
+        }
         sendMailApiLac(
             $this->email,
             'Quote ID: #'. $this->quotation->id .' - Your Request with Latin American Cargo - '. $this->quotation->modeOfTransportLabel() .' - ['. $origin_country_name .' - '. $destination_country_name .'].',
@@ -172,18 +187,8 @@ class QuotationCreated extends Mailable{
             null,
             ($pdf !== null) ? [$pdf] : [],
             [], //Copia
-            [
-                // config('services.copymail.mail_1'),
-                config('services.copymail.mail_2'),
-                // 'nicholas.herrera@lacship.com',
-                // 'stephanie.buitrago@lacship.com',
-                // 'fredy.arias@lacship.com',
-                // 'brian.carrillo@lacship.com',
-                // 'cris.valencia@lacship.com',
-                // 'juan.carlos@lacship.com',
-            ] //copia oculta
+            $emails_to, //copia oculta
         );
-        //Copia oculta
 
         // Retorna la vista utilizando la variable $content
         return $this->html($content);
