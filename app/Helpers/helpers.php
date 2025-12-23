@@ -549,15 +549,19 @@ if (!function_exists('rateQuotation')) {
             if($rating >= 4){
                 // usuarios temporalmente
                 $stephanieId = 2733;
-                $nicholasId  = 3;
+                // $nicholasId  = 3;
                 $counterFile = 'quotations_rating_4-5.txt';
                 $counter = (int)Storage::get($counterFile);
                 // Patrón S-S-S-S-N
-                if ($counter < 4) {
-                    $quotation->assigned_user_id = $stephanieId;
-                } else {
-                    $quotation->assigned_user_id = $nicholasId;
-                }
+                // if ($counter < 4) {
+                //     $quotation->assigned_user_id = $stephanieId;
+                // } else {
+                //     $quotation->assigned_user_id = $nicholasId;
+                // }
+
+                // ahora todos llegarían a stephanie
+                $quotation->assigned_user_id = $stephanieId;
+
                 // Incrementar contador (0 a 4) y reiniciar
                 $counter = ($counter + 1) % 5;
                 Storage::put($counterFile, $counter);
@@ -1491,10 +1495,13 @@ if (!function_exists('auto_assign_processing')) {
     function auto_assign_processing($quotation_id) {
         $user_id = auth()->id();
         $dept_id = auth()->user()->department_id;
-        $users = User::where('department_id', $dept_id)
-            ->select('id', 'name', 'lastname')
+        $users_auto_assigned_quotes = Setting::where('key', 'users_auto_assigned_quotes')->first()->value;
+        $userIdsArray = array_map('intval', json_decode($users_auto_assigned_quotes));
+
+        $users = User::select('id', 'name', 'lastname')
+            ->where('department_id', $dept_id)
             ->where('id', '!=', $user_id)
-            ->where('id', '!=', 2731) // temporalmente excluir a Felipe
+            ->whereIn('id', $userIdsArray)
             ->where('status', 'active')
             ->whereHas('roles', function($q){
                 $q->whereIn('role_id', [6]); // quoter
