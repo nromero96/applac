@@ -1021,7 +1021,7 @@ if (!function_exists('rateQuotationWeb')) {
         $quotation->rating = $rating;
         $quotation->save();
 
-        if ($rating >= 0 && $rating <= 2.5) { // nueva regla
+        if ($rating >= 0 && $rating <= 2.5 && !$isBusinessEmailAndNotEdu) { // nueva regla
             //Registrar QuotationNote
             QuotationNote::create([
                 'quotation_id' => $quotation->id,
