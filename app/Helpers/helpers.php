@@ -1149,15 +1149,19 @@ if (!function_exists('rateQuotationWeb')) {
             if($rating >= 4){
                 // usuarios temporalmente
                 $stephanieId = 2733;
-                $nicholasId  = 3;
+                // $nicholasId  = 3;
                 $counterFile = 'quotations_rating_4-5.txt';
                 $counter = (int)Storage::get($counterFile);
                 // Patrón S-S-S-S-N
-                if ($counter < 4) {
-                    $quotation->assigned_user_id = $stephanieId;
-                } else {
-                    $quotation->assigned_user_id = $nicholasId;
-                }
+                // if ($counter < 4) {
+                //     $quotation->assigned_user_id = $stephanieId;
+                // } else {
+                //     $quotation->assigned_user_id = $nicholasId;
+                // }
+
+                // ahora todos llegarían a stephanie
+                $quotation->assigned_user_id = $stephanieId;
+
                 // Incrementar contador (0 a 4) y reiniciar
                 $counter = ($counter + 1) % 5;
                 Storage::put($counterFile, $counter);
