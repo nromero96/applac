@@ -328,7 +328,7 @@
                         @if ($quotation->type_inquiry->value != TypeInquiry::EXTERNAL_1->value)
                             <div class="row g-3 pt-4">
                                 {{-- Data the inquiry external 2 --}}
-                                <div class="col-md-4 mt-0">
+                                <div class="col-md-3 mt-0">
                                     <h6 class="text-primary mb-2">{{ __('Contact Info') }}</h6>
                                     <p class="mb-2"><label class="fw-bold mb-0">{{__("Contact name")}}:</label> {{ $quotation->customer_name }} {{ $quotation->customer_lastname }}</p>
                                     <p class="mb-2"><label class="fw-bold mb-0">{{__("Company")}}:</label> {{ $quotation->customer_company_name }}</p>
@@ -377,8 +377,30 @@
                                     @if ($quotation->customer_referred_by)
                                         <p class="mb-2"><label class="fw-bold mb-0">{{__("Referred by another agent")}}:</label> {{ $quotation->customer_referred_by == 1 ? 'Yes' : 'No' }}</p>
                                     @endif
+
+                                    <hr>
+
+                                    <div class="card py-3 px-3">
+                                        <label for="ctdocuments" class="fw-bold mb-0 flex align-items-center gap-2">
+                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M14.2934 7.36678L8.1667 13.4934C7.41613 14.244 6.39815 14.6657 5.3367 14.6657C4.27524 14.6657 3.25726 14.244 2.5067 13.4934C1.75613 12.7429 1.33447 11.7249 1.33447 10.6634C1.33447 9.60199 1.75613 8.58401 2.5067 7.83344L8.63336 1.70678C9.13374 1.2064 9.81239 0.925293 10.52 0.925293C11.2277 0.925293 11.9063 1.2064 12.4067 1.70678C12.9071 2.20715 13.1882 2.88581 13.1882 3.59344C13.1882 4.30108 12.9071 4.97973 12.4067 5.48011L6.27336 11.6068C6.02318 11.857 5.68385 11.9975 5.33003 11.9975C4.97621 11.9975 4.63688 11.857 4.3867 11.6068C4.13651 11.3566 3.99596 11.0173 3.99596 10.6634C3.99596 10.3096 4.13651 9.9703 4.3867 9.72011L10.0467 4.06678" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                            {{ __('Attachments') }}:
+                                        </label>
+                                        @if ($quotation_documents->count() > 0)
+                                            <ul class="mb-0 ps-3" id="ctdocuments">
+                                                @foreach ($quotation_documents as $document)
+                                                    <li><a href="{{ asset('storage/uploads/quotation_documents').'/'. $document->document_path }}" class="text-info" target="_blank">{{ $document->document_path }}</a></li>
+                                                @endforeach
+                                            </ul>
+                                        @else
+                                            <ul class="mb-0 ps-3" id="ctdocuments">
+                                                <li>No documents</li>
+                                            </ul>
+                                        @endif
+                                    </div>
                                 </div>
-                                <div class="col-md-5 mt-0">
+                                <div class="col-md-6 mt-0" style="border-left: 1px solid #D8D8D8; padding-left: 2rem;">
                                     <h6 class="text-primary mb-2">{{ __('Shipment Info') }}</h6>
                                     @if (!$quotation->is_internal_inquiry)
                                         <p class="mb-2"><label class="fw-bold mb-0">{{__("Origin")}}:</label> {{ $quotation->origin_country }}
@@ -439,25 +461,7 @@
                                     <p class="mb-2"><label class="fw-bold mb-0">{{__("Shipment description")}}:</label><br> {!! nl2br($quotation->cargo_description) ? : '-' !!}</p>
                                 </div>
                                 <div class="col-md-3 mt-0">
-                                    <div class="card py-3 px-3">
-                                        <label for="ctdocuments" class="fw-bold mb-0 flex align-items-center gap-2">
-                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M14.2934 7.36678L8.1667 13.4934C7.41613 14.244 6.39815 14.6657 5.3367 14.6657C4.27524 14.6657 3.25726 14.244 2.5067 13.4934C1.75613 12.7429 1.33447 11.7249 1.33447 10.6634C1.33447 9.60199 1.75613 8.58401 2.5067 7.83344L8.63336 1.70678C9.13374 1.2064 9.81239 0.925293 10.52 0.925293C11.2277 0.925293 11.9063 1.2064 12.4067 1.70678C12.9071 2.20715 13.1882 2.88581 13.1882 3.59344C13.1882 4.30108 12.9071 4.97973 12.4067 5.48011L6.27336 11.6068C6.02318 11.857 5.68385 11.9975 5.33003 11.9975C4.97621 11.9975 4.63688 11.857 4.3867 11.6068C4.13651 11.3566 3.99596 11.0173 3.99596 10.6634C3.99596 10.3096 4.13651 9.9703 4.3867 9.72011L10.0467 4.06678" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
-                                            </svg>
-                                            {{ __('Attachments') }}:
-                                        </label>
-                                        @if ($quotation_documents->count() > 0)
-                                            <ul class="mb-0 ps-3" id="ctdocuments">
-                                                @foreach ($quotation_documents as $document)
-                                                    <li><a href="{{ asset('storage/uploads/quotation_documents').'/'. $document->document_path }}" class="text-info" target="_blank">{{ $document->document_path }}</a></li>
-                                                @endforeach
-                                            </ul>
-                                        @else
-                                            <ul class="mb-0 ps-3" id="ctdocuments">
-                                                <li>No documents</li>
-                                            </ul>
-                                        @endif
-                                    </div>
+                                    <livewire:inquiry-note />
                                 </div>
                                 {{-- ..End Data the inquiry external 2 --}}
                                 {{-- old layout --}}

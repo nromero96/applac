@@ -12,6 +12,22 @@
                 @default {{ $quotation->customer_source }}
             @endswitch
         </div>
+
+        <hr>
+
+        <div class="card py-2 px-2">
+            @if ($quotation_documents->count() > 0)
+                <label for="ctdocuments" class="fw-bold mb-0">{{ __('Attachments') }}:</label>
+                <ul class="mb-0 ps-3" id="ctdocuments">
+                    @foreach ($quotation_documents as $document)
+                        <li><a href="{{ asset('storage/uploads/quotation_documents').'/'. $document->document_path }}" class="text-info" target="_blank">{{ $document->document_path }}</a></li>
+                    @endforeach
+                </ul>
+            @else
+                <label for="ctdocuments" class="fw-bold mb-0">{{ __('Documents') }}:</label>
+                <span>{{ __('No documents') }}</span>
+            @endif
+        </div>
     </div>
 
     <div class="col-md-6" style="border-left: 1px solid #D8D8D8; padding-left: 2rem;">
@@ -94,18 +110,6 @@
     </div>
 
     <div class="col">
-        <div class="card py-2 px-2">
-            @if ($quotation_documents->count() > 0)
-                <label for="ctdocuments" class="fw-bold mb-0">{{ __('Attachments') }}:</label>
-                <ul class="mb-0 ps-3" id="ctdocuments">
-                    @foreach ($quotation_documents as $document)
-                        <li><a href="{{ asset('storage/uploads/quotation_documents').'/'. $document->document_path }}" class="text-info" target="_blank">{{ $document->document_path }}</a></li>
-                    @endforeach
-                </ul>
-            @else
-                <label for="ctdocuments" class="fw-bold mb-0">{{ __('Documents') }}:</label>
-                <span>{{ __('No documents') }}</span>
-            @endif
-        </div>
+        <livewire:inquiry-note />
     </div>
 </div>
