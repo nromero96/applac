@@ -337,10 +337,19 @@ class Statistics extends Component
             // ->where('Q.department_id', auth()->user()->department_id)
             ->whereNotNull('Q.assigned_user_id')
             ->groupBy('Q.assigned_user_id', 'Q.id')
-            ->orderBy('id', 'desc')
+            // ->orderBy('id', 'desc')
+            ->orderByRaw("
+                MAX(
+                    CASE
+                        WHEN QN.action LIKE '%to%Quote Sent%' THEN QN.created_at
+                        ELSE NULL
+                    END
+                ) DESC
+            ")
         ;
 
         // filter by quotation date
+        /*
         switch ($this->filters['period']) {
             case 'today':
                 $quotes_sent->whereDate('Q.created_at', Carbon::today());
@@ -362,6 +371,78 @@ class Statistics extends Component
                 $quotes_sent->whereDate('Q.created_at', '<=', $this->filters['date_to']);
                 break;
             default:
+                break;
+        }
+        */
+        /** */
+        switch ($this->filters['period']) {
+            case 'today':
+                $quotes_sent->havingRaw("
+                    MAX(
+                        CASE
+                            WHEN QN.action LIKE '%to%Quote Sent%' THEN QN.created_at
+                            ELSE NULL
+                        END
+                    ) = ?
+                ", [Carbon::today()->toDateString()]);
+                break;
+
+            case 'last_7_days':
+                $quotes_sent->havingRaw("
+                    MAX(
+                        CASE
+                            WHEN QN.action LIKE '%to%Quote Sent%' THEN QN.created_at
+                            ELSE NULL
+                        END
+                    ) >= ?
+                ", [Carbon::now()->subDays(7)]);
+                break;
+
+            case 'last_30_days':
+                $quotes_sent->havingRaw("
+                    MAX(
+                        CASE
+                            WHEN QN.action LIKE '%to%Quote Sent%' THEN QN.created_at
+                            ELSE NULL
+                        END
+                    ) >= ?
+                ", [Carbon::now()->subDays(30)]);
+                break;
+
+            case 'last_90_days':
+                $quotes_sent->havingRaw("
+                    MAX(
+                        CASE
+                            WHEN QN.action LIKE '%to%Quote Sent%' THEN QN.created_at
+                            ELSE NULL
+                        END
+                    ) >= ?
+                ", [Carbon::now()->subDays(90)]);
+                break;
+
+            case 'last_180_days':
+                $quotes_sent->havingRaw("
+                    MAX(
+                        CASE
+                            WHEN QN.action LIKE '%to%Quote Sent%' THEN QN.created_at
+                            ELSE NULL
+                        END
+                    ) >= ?
+                ", [Carbon::now()->subDays(180)]);
+                break;
+
+            case 'custom':
+                $quotes_sent->havingRaw("
+                    MAX(
+                        CASE
+                            WHEN QN.action LIKE '%to%Quote Sent%' THEN QN.created_at
+                            ELSE NULL
+                        END
+                    ) BETWEEN ? AND ?
+                ", [
+                    Carbon::parse($this->filters['date_from'])->startOfDay(),
+                    Carbon::parse($this->filters['date_to'])->endOfDay()
+                ]);
                 break;
         }
 
