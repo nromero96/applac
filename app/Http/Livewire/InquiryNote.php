@@ -46,6 +46,7 @@ class InquiryNote extends Component
 
     public function cancel_save_note() {
         $this->reset('show_modal_add', 'attachment_form', 'attachments', 'attachments_added');
+        $this->resetErrorBag();
     }
 
     public function save_note() {
