@@ -109,7 +109,7 @@
         </div>
     </div>
 
-    <div class="col">
-        <livewire:inquiry-note />
+    <div class="col-md-3">
+        <livewire:inquiry-note :quotation="$quotation" />
     </div>
 </div>

@@ -1766,6 +1766,7 @@
         display: flex;
         flex-direction: column;
         gap: 12px;
+        padding-top: 12px;
         max-height: 500px;
         overflow-y: auto;
 
@@ -1777,10 +1778,42 @@
             gap: 12px;
 
             &__text {
-                font-style: italic;
-                font-size: 14px;
-                margin-bottom: 0;
-                color: #42403E;
+                display: flex;
+                justify-content: space-between;
+                gap: 8px;
+
+                p {
+                    font-style: italic;
+                    font-size: 14px;
+                    margin-bottom: 0;
+                    color: #42403E;
+
+                    button {
+                        text-decoration: underline;
+                        color: #1877F2;
+                        border: none;
+                        background-color: transparent;
+                        padding: 0;
+                    }
+                }
+
+                button.__delete {
+                    width: 24px;
+                    height: 24px;
+                    border-radius: 50%;
+                    border: 1px solid transparent;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    &:hover {
+                        border-color: #D8D8D8;
+
+                        svg, svg * {
+                            stroke: #CC0000;
+                        }
+                    }
+                }
             }
 
             &__files {
@@ -1835,5 +1868,69 @@
                 }
             }
         }
+    }
+
+    &__modal__delete {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        text-align: center;
+
+        p, h2, h3 {
+            margin-bottom: 0;
+        }
+    }
+
+    &__modal__add {
+        min-width: 700px;
+    }
+}
+
+
+// modal
+.box__modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(black, .5);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: none;
+        background-color: #F5F5F5;
+        transform: translate(50%, -50%);
+    }
+
+    &__content {
+        background-color: white;
+        padding: 32px;
+        border-radius: 10px;
+        filter: drop-shadow(0 0 10px #00000026);
+        position: relative;
+        max-width: 95%;
+    }
+
+    &__actions {
+        padding-left: 0;
+        list-style-type: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
     }
 }

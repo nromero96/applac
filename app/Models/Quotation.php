@@ -136,4 +136,8 @@ class Quotation extends Model
     public function setDeclaredValueAttribute($value) {
         $this->attributes['declared_value'] = (float) str_replace(',', '', $value);
     }
+
+    public function attachments() {
+        return $this->hasMany(QuotationAttachment::class);
+    }
 }

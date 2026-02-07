@@ -229,4 +229,6 @@
     @endswitch
 
     <link href="{{ asset('assets/css/light/custom.css') }}?v={{ config('app.version') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/light/apps/invoice-list.css')}}?v={{ config('app.version') }}">
+    <link rel="stylesheet" type="text/css" href="{{asset('assets/css/dark/apps/invoice-list.css')}}?v={{ config('app.version') }}">
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->

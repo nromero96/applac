@@ -324,7 +324,7 @@
                         </div>
                     </div>
 
-                    <div class="widget-content widget-content-area pt-2">
+                    <div class="widget-content widget-content-area p-3">
                         @if ($quotation->type_inquiry->value != TypeInquiry::EXTERNAL_1->value)
                             <div class="row g-3 pt-4">
                                 {{-- Data the inquiry external 2 --}}
@@ -461,7 +461,7 @@
                                     <p class="mb-2"><label class="fw-bold mb-0">{{__("Shipment description")}}:</label><br> {!! nl2br($quotation->cargo_description) ? : '-' !!}</p>
                                 </div>
                                 <div class="col-md-3 mt-0">
-                                    <livewire:inquiry-note />
+                                    <livewire:inquiry-note :quotation="$quotation" />
                                 </div>
                                 {{-- ..End Data the inquiry external 2 --}}
                                 {{-- old layout --}}
