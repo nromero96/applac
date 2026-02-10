@@ -486,11 +486,7 @@ class QuotationController extends Controller
                 ->where('status', 'active')
                 ->get()
             ;
-            if ($department_id == 1) {
-                $indexFile = 'current_index.txt';
-                } else if ($department_id == 2) {
-                $indexFile = 'current_index_2.txt';
-            }
+            $indexFile = 'current_index_contact_dpto_' . $department_id . '.txt';
             $userIds = $users->pluck('id');
             $currentIndex = (int)Storage::get($indexFile);
             if ($currentIndex >= count($userIds)) {
