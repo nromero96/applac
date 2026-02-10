@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Enums\TypeInquiry;
 use App\Enums\TypeModeTransport;
+use App\Enums\TypeNetwork;
 use App\Enums\TypeStatus;
 use App\Http\Controllers\Controller;
 use App\Mail\QuotationCreated;
@@ -14,6 +15,7 @@ use App\Models\GuestUser;
 use App\Models\QuotationDocument;
 use App\Mail\WebQuotationCreated;
 use App\Models\CargoDetail;
+use App\Models\Country;
 use App\Models\UnreadQuotation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -415,6 +417,114 @@ class QuotationController extends Controller
                 ];
             // });
             return response()->json($result);
+        } catch (\Throwable $e) {
+            Log::error($e);
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }
+
+    public function form_contact(Request $request) {
+
+        try {
+            // User
+            $source_map = [
+                'Google Search / Bing Search' => 'Search Engine',
+                'LinkedIn' => 'LinkedIn',
+                'AI Assistant (ChatGPT, Copilot, Perplexity, Gemini, Claude, etc.)' => 'AI Assistant',
+                'Social Media (Facebook, Instagram, YouTube)' => 'Social Media',
+                'Industry Event or Conference' => 'Industry Event',
+                'Personal Referral or Recommendation' => 'Referral',
+                'Other Source' => 'Other',
+            ];
+            $location = Country::where('name', $request->input('location'))->first();
+            $network = TypeNetwork::fromLabel($request->input('network'))?->value;
+            $user_data = [
+                'name'          => $request->input('first_name'),
+                'lastname'      => $request->input('last_name'),
+                'phone_code'    => $request->input('phone_code'),
+                'phone'         => $request->input('phone_number'),
+                'email'         => strtolower($request->input('email')),
+                'location'      => isset($location) ? $location->id : null,
+                'source'        => $source_map[$request->input('referring')],
+                'company_name'  => $request->input('company'),
+                'network'       => $network,
+            ];
+            $user = GuestUser::create($user_data);
+
+            // Inquiry
+            $customer_type_map = [
+                'I’m a Business / Company' => [
+                    'department_id' => 1,
+                    'type_inquiry' => TypeInquiry::SEO_CONTACT_BUSI->value,
+                ],
+                'I’m a Freight Forwarder / Broker / Agent' => [
+                    'department_id' => 2,
+                    'type_inquiry' => TypeInquiry::SEO_CONTACT_AGT->value,
+                ],
+            ];
+            $customer_type = $request->input('customer_type');
+            $subject = $request->input('subject', '');
+            $subject_other = trim($request->input('subject_other', ''));
+            if ($subject_other !== '') {
+                $subject .= ': ' . $subject_other;
+            }
+            $department_id = isset($customer_type_map[$customer_type]['department_id']) ? $customer_type_map[$customer_type]['department_id'] : null;
+
+            $inquiry_data = [
+                'department_id'         => $department_id,
+                'status'                => TypeStatus::PENDING->value,
+                'type_inquiry'          => isset($customer_type_map[$customer_type]['type_inquiry']) ? $customer_type_map[$customer_type]['type_inquiry'] : null,
+                'guest_user_id'         => $user->id,
+                'subject'               => $subject,
+                'cargo_description'     => $request->input('message'),
+                'created_at'            => Carbon::now(),
+            ];
+
+            // asignar usuario
+            $users = User::select('id')
+                ->where('department_id', $department_id)
+                ->where('status', 'active')
+                ->get()
+            ;
+            if ($department_id == 1) {
+                $indexFile = 'current_index.txt';
+                } else if ($department_id == 2) {
+                $indexFile = 'current_index_2.txt';
+            }
+            $userIds = $users->pluck('id');
+            $currentIndex = (int)Storage::get($indexFile);
+            if ($currentIndex >= count($userIds)) {
+                $currentIndex = 0;
+            }
+            $selectedUserId = $userIds[$currentIndex];
+            $currentIndex++;
+            Storage::put($indexFile, $currentIndex);
+            $inquiry_data['assigned_user_id'] = $selectedUserId;
+
+            $inquiry = Quotation::create($inquiry_data);
+
+            // save files
+            if ($request->hasFile('files_inquiry')) {
+                foreach ($request->file('files_inquiry') as $file) {
+                    // Nombre único para el archivo
+                    $file_name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                    // Mueve el archivo a la carpeta public/uploads/quotation_documents
+                    $file->storeAs('public/uploads/quotation_documents', $file_name);
+                    // Registrar en la base de datos
+                    QuotationDocument::create([
+                        'quotation_id' => $inquiry->id,
+                        'document_path' => $file_name,
+                    ]);
+                }
+            }
+
+            return response()->json([
+                'request' => $request->all(),
+                'user_data' => $user_data,
+                'inquiry_data' => $inquiry_data,
+                'user' => $user,
+                'inquiry' => $inquiry,
+            ]);
         } catch (\Throwable $e) {
             Log::error($e);
             return response()->json(['error' => $e->getMessage()], 500);

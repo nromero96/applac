@@ -27,3 +27,4 @@ Route::get('/countries', [CountryController::class, 'index']);
 Route::middleware('validate.web.quotation.api.token')->post('/web-quotation-store', [QuotationController::class, 'store']);
 Route::middleware('validate.web.quotation.api.token')->post('/web-quotation-store-agent', [QuotationController::class, 'store_agent']);
 Route::middleware('validate.web.quotation.api.token')->post('/web-quotation-store-individual', [QuotationController::class, 'store_individual']);
+Route::middleware('validate.web.quotation.api.token')->post('/web-quotation-form-contact', [QuotationController::class, 'form_contact']);

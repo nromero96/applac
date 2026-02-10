@@ -16,5 +16,6 @@ class VerifyCsrfToken extends Middleware
         'api/web-quotation-store',
         'api/web-quotation-store-agent',
         'api/web-quotation-store-individual',
+        'api/web-quotation-form-contact',
     ];
 }

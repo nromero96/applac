@@ -314,6 +314,8 @@ class QuotationController extends Controller
             TypeInquiry::INTERNAL_LEGACY->value,
             TypeInquiry::INTERNAL_OTHER_AGT->value,
             TypeInquiry::EXTERNAL_SEO_RFQ->value,
+            TypeInquiry::SEO_CONTACT_BUSI->value,
+            TypeInquiry::SEO_CONTACT_AGT->value,
             TypeInquiry::EXT_AUTO->value,
         ];
         $listtypeinquiries = Quotation::select(

@@ -80,6 +80,18 @@ enum TypeNetwork: string {
         return $key ? ($data[$key] ?? null) : $data;
     }
 
+    public static function fromLabel(?string $label): ?self {
+        if (!$label) {
+            return null;
+        }
+        foreach (self::cases() as $case) {
+            if ($case->meta('label') === $label) {
+                return $case;
+            }
+        }
+        return null;
+    }
+
     public static function options() : array {
         $options = [];
         foreach (self::cases() as $case) {

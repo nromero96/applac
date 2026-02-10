@@ -56,6 +56,7 @@ class Quotation extends Model
         'recovered_account',
         'shipment_ready_date',
         'is_internal_inquiry',
+        'subject',
         'cargo_description',
         'cargo_details',
         'additional_info',
