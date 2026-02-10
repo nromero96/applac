@@ -52,14 +52,14 @@ class InquiryNote extends Component
     public function save_note() {
         $this->validate(
             [
-            'attachment_form.description' => 'required',
-            'attachments.*' => 'max:2048',
+                // 'attachment_form.description' => 'required',
+                'attachments.*' => 'max:2048',
             ],
             [
                 'attachments.*.max' => 'The attachments must not be greater than 2MB.'
             ],
             [
-                'attachment_form.description' => 'description',
+                // 'attachment_form.description' => 'description',
                 'attachments.*' => 'attachments',
             ]
         );
