@@ -16,6 +16,7 @@ use App\Models\QuotationDocument;
 use App\Mail\WebQuotationCreated;
 use App\Models\CargoDetail;
 use App\Models\Country;
+use App\Models\Setting;
 use App\Models\UnreadQuotation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -481,13 +482,18 @@ class QuotationController extends Controller
             ];
 
             // asignar usuario
-            $users = User::select('id')
-                ->where('department_id', $department_id)
-                ->where('status', 'active')
-                ->get()
-            ;
+            if ($department_id == 1) {
+                $users_auto_assigned_quotes = Setting::where('key', 'users_auto_assigned_quotes')->first()->value;
+                $userIds = array_map('intval', json_decode($users_auto_assigned_quotes));
+            } elseif ($department_id == 2) {
+                $users = User::select('id')
+                    ->where('department_id', $department_id)
+                    ->where('status', 'active')
+                    ->get()
+                ;
+                $userIds = $users->pluck('id');
+            }
             $indexFile = 'current_index_contact_dpto_' . $department_id . '.txt';
-            $userIds = $users->pluck('id');
             $currentIndex = (int)Storage::get($indexFile);
             if ($currentIndex >= count($userIds)) {
                 $currentIndex = 0;
