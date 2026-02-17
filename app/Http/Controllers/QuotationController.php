@@ -182,7 +182,11 @@ class QuotationController extends Controller
 
             // Aplicar assigned-to si está presente
             if (!empty($assignedto) && !auth()->user()->hasRole('Customer')) {
-                $query->where('quotations.assigned_user_id', $assignedto);
+                if ($assignedto == 'unassigned') {
+                    $query->where('quotations.assigned_user_id', null);
+                } else {
+                    $query->where('quotations.assigned_user_id', $assignedto);
+                }
             } else {
                 if (Auth::user()->hasRole('Quoter') || Auth::user()->hasRole('Customer')) {
                     $query->where('quotations.assigned_user_id', auth()->id());

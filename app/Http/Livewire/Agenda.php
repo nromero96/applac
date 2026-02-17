@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use App\Models\FeaturedQuotation;
 use App\Models\ScheduledQuotation;
+use App\Models\TaggedQuotation;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -16,6 +17,7 @@ class Agenda extends Component
     public $ui_show_agenda = false;
 
     public $flagged;
+    public $tagged;
     public $scheduled;
     public $scheduled_today;
 
@@ -40,6 +42,8 @@ class Agenda extends Component
                         WHEN 'High Priority' THEN 'high'
                         WHEN 'Medium Priority' THEN 'medium'
                         WHEN 'Low Priority' THEN 'low'
+                        WHEN 'Hot Deal' THEN 'hot'
+                        WHEN 'Potential Lead' THEN 'potential'
                         ELSE ''
                     END as priority_class
                 "),
@@ -53,6 +57,31 @@ class Agenda extends Component
             ->orderBy('featured_quotations.created_at', 'DESC')
             ->get();
 
+        $this->tagged = TaggedQuotation::where('user_id', $this->user_id)
+            ->select(
+                '*',
+                'tagged_quotations.*',
+                'quotations.type_inquiry',
+                DB::raw("
+                    CASE tagged_quotations.priority
+                        WHEN 'High Priority' THEN 'high'
+                        WHEN 'Medium Priority' THEN 'medium'
+                        WHEN 'Low Priority' THEN 'low'
+                        WHEN 'Hot Deal' THEN 'hot'
+                        WHEN 'Potential Lead' THEN 'potential'
+                        ELSE ''
+                    END as priority_class
+                "),
+                DB::raw('COALESCE(users.name, guest_users.name) as customer_name'),
+                DB::raw('COALESCE(users.lastname, guest_users.lastname) as customer_lastname'),
+                DB::raw('COALESCE(users.email, guest_users.email) as customer_email'),
+            )
+            ->join('quotations', 'quotations.id', '=', 'tagged_quotations.quotation_id')
+            ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
+            ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
+            ->orderBy('tagged_quotations.created_at', 'DESC')
+            ->get();
+
         $scheduled = ScheduledQuotation::where('user_id', $this->user_id)
             ->select(
                 '*',
@@ -63,6 +92,8 @@ class Agenda extends Component
                         WHEN 'High Priority' THEN 'high'
                         WHEN 'Medium Priority' THEN 'medium'
                         WHEN 'Low Priority' THEN 'low'
+                        WHEN 'Hot Deal' THEN 'hot'
+                        WHEN 'Potential Lead' THEN 'potential'
                         ELSE ''
                     END as priority_class
                 "),

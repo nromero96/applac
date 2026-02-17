@@ -9,12 +9,14 @@
         </h1>
         @if (!$this->quotationPriority)
             <div class="mb-4">
-                <label class="form-label">Priority</label>
+                <label class="form-label">Tag</label>
                 <select class="form-select" wire:model.defer="flag.priority">
                     <option value="">Select</option>
                     <option value="High Priority">High Priority</option>
                     <option value="Medium Priority">Medium Priority</option>
                     <option value="Low Priority">Low Priority</option>
+                    <option value="Hot Deal">Hot Deal</option>
+                    <option value="Potential Lead">Potential Lead</option>
                 </select>
                 @error('flag.priority')
                     <span class="text-danger">{{ $message }}</span>

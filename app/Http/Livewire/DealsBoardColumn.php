@@ -73,6 +73,7 @@ class DealsBoardColumn extends Component
                 'quotations.processing_by_completed',
                 'quotations.created_at',
                 DB::raw('EXISTS(SELECT 1 FROM featured_quotations WHERE featured_quotations.quotation_id = quotations.id AND featured_quotations.user_id = ' . $this->assignedUserId . ') as is_featured'),
+                DB::raw('EXISTS(SELECT 1 FROM tagged_quotations WHERE tagged_quotations.quotation_id = quotations.id AND tagged_quotations.user_id = ' . $this->assignedUserId . ') as is_tagged'),
                 DB::raw('EXISTS(SELECT 1 FROM unread_quotations WHERE unread_quotations.quotation_id = quotations.id AND unread_quotations.user_id = ' . $this->assignedUserId . ') as is_unread'),
                 DB::raw('EXISTS(SELECT 1 FROM scheduled_quotations WHERE scheduled_quotations.quotation_id = quotations.id AND scheduled_quotations.user_id = ' . $this->assignedUserId . ') as is_scheduled'),
                 DB::raw("CAST(REPLACE(quotations.declared_value, ',', '') AS DECIMAL(10,2)) as declared_value"),

@@ -19,12 +19,14 @@
             </div>
             @if (!$this->quotationPriority)
                 <div class="flex-grow-1">
-                    <label class="form-label">Priority</label>
+                    <label class="form-label">Tag</label>
                     <select class="form-select" wire:model.defer="schedule.priority">
                         <option value="">Select</option>
                         <option value="High Priority">High Priority</option>
                         <option value="Medium Priority">Medium Priority</option>
                         <option value="Low Priority">Low Priority</option>
+                        <option value="Hot Deal">Hot Deal</option>
+                        <option value="Potential Lead">Potential Lead</option>
                     </select>
                     @error('schedule.priority')
                         <span class="text-danger">{{ $message }}</span>

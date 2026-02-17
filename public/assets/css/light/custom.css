@@ -641,7 +641,7 @@
   gap: 8px;
   cursor: pointer;
 }
-.deals__board__card.__flag, .deals__board__card.__bell {
+.deals__board__card.__flag, .deals__board__card.__tag, .deals__board__card.__bell {
   background-color: #FFFAEE;
 }
 .deals__board__card.__new {
@@ -938,6 +938,11 @@
   border-radius: 4px;
   border: 1px solid #D8D8D8;
   background-color: white;
+  width: -moz-min-content;
+  width: min-content;
+}
+.flag-followup__actions svg {
+  flex-shrink: 0;
 }
 .flag-followup__dropdown {
   position: relative;
@@ -1021,6 +1026,9 @@
 .agenda__modal__group.__flagged .agenda__modal__group__title {
   color: #CC0000;
 }
+.agenda__modal__group.__tagged .agenda__modal__group__title {
+  color: #1D813A;
+}
 .agenda__modal__group.__scheduled .agenda__modal__group__title {
   color: #0A6AB7;
 }
@@ -1075,6 +1083,8 @@
   font-family: "Nunito sans";
 }
 .agenda__modal__item__title span {
+  width: -moz-max-content;
+  width: max-content;
   text-transform: lowercase;
   padding: 2px 8px;
   border-radius: 4px;
@@ -1092,6 +1102,14 @@
 .agenda__modal__item__title span.__low {
   background-color: #FCF4D6;
   color: #B28600;
+}
+.agenda__modal__item__title span.__hot {
+  background-color: #FAE6E6;
+  color: #B80000;
+}
+.agenda__modal__item__title span.__potential {
+  background-color: #D3EAFD;
+  color: #0A6AB7;
 }
 .agenda__modal__item__id {
   font-size: 14px;

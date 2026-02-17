@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithChunkReading;
+// use Maatwebsite\Excel\Concerns\WithChunkReading;
 
 class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithChunkReading
 {
@@ -46,6 +46,12 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithCh
             'quotations.declared_value as quotation_declared_value',
             DB::raw('COALESCE(users.source, guest_users.source) as user_source'),
             'users_assigned.name as assigned_user_name',
+            'qn_lost.lost_reason as lost_reason',
+            DB::raw("MAX(CASE WHEN qn_dates.action LIKE '%to \'Contacted\'%' THEN qn_dates.created_at END) as date_contacted"),
+            DB::raw("MAX(CASE WHEN qn_dates.action LIKE '%to \'Stalled\'%' THEN qn_dates.created_at END) as date_stalled"),
+            DB::raw("MAX(CASE WHEN qn_dates.action LIKE '%to \'Unqualified\'%' THEN qn_dates.created_at END) as date_unqualified"),
+            DB::raw("MAX(CASE WHEN qn_dates.action LIKE '%to \'Qualified\'%' THEN qn_dates.created_at END) as date_qualified"),
+            DB::raw("MAX(CASE WHEN qn_dates.action LIKE '%to \'Quote Sent\'%' THEN qn_dates.created_at END) as date_quote_sent"),
         )
         ->where('quotations.status', '!=', 'Deleted')
         ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
@@ -54,6 +60,17 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithCh
         ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
         ->leftJoin('countries as dc', 'quotations.destination_country_id', '=', 'dc.id')
         ->leftJoin('countries as lc', DB::raw('COALESCE(users.location, guest_users.location)'), '=', 'lc.id')
+        ->leftJoin('quotation_notes as qn_lost', function ($join) {
+            $join->on('qn_lost.quotation_id', '=', 'quotations.id')
+                ->where('qn_lost.type', 'result_status')
+                ->where('qn_lost.action', 'LIKE', "%to 'Lost'%")
+                ->where('qn_lost.update_type', 'changed');
+        })
+        ->leftJoin('quotation_notes as qn_dates', function ($join) {
+            $join->on('qn_dates.quotation_id', '=', 'quotations.id')
+                ->where('qn_dates.type', 'inquiry_status')
+                ->where('qn_dates.update_type', 'changed');
+        })
         ;
 
         $inquiries->where(function($query) {
@@ -157,6 +174,7 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithCh
             }
         });
 
+        $inquiries->groupBy('quotations.id');
         $inquiries->orderBy('quotations.created_at', 'desc');
 
         return $inquiries;
@@ -180,12 +198,19 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithCh
             'Phone',
             'Website',
             'Location',
-            'Route',
+            'Origin',
+            'Destination',
             'Transport',
             'Currency',
             'Cargo Value',
             'Assigned',
             'Source',
+            'Lost Reason',
+            'Date Contacted',
+            'Date Stalled',
+            'Date Unqualified',
+            'Date Processing',
+            'Date Quote Sent',
         ];
     }
 
@@ -206,12 +231,19 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithCh
             '+' . $q->user_phone_code . ' ' . $q->user_phone ?? '',
             $q->user_company_website ?? '',
             $q->location_name ?? '',
-            $q->origin_country . ' - ' . $q->destination_country ?? '',
+            $q->origin_country ?? '',
+            $q->destination_country ?? '',
             $q->quotation_mode_of_transport ?? '',
             $q->quotation_currency ?? '',
             $q->quotation_declared_value ?? '',
             $q->assigned_user_name ?? '',
             $q->user_source ?? '',
+            $q->lost_reason ?? '',
+            $q->date_contacted ?? '-',
+            $q->date_stalled ?? '-',
+            $q->date_unqualified ?? '-',
+            $q->date_qualified ?? '-', // processing
+            $q->date_quote_sent ?? '-',
         ];
     }
 }
