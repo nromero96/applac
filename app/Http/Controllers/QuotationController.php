@@ -768,6 +768,7 @@ class QuotationController extends Controller
                 'processed_by_type' => 'nullable',
                 'processed_by_user_id' => 'nullable',
                 'processing_by_completed' => 'nullable',
+                'options_sent' => 'nullable|integer',
             ]);
 
             if($validatedData['action'] == 'Unqualified'){
@@ -820,6 +821,10 @@ class QuotationController extends Controller
             } else { // status changed
                 $result_data['action'] = "'{$quotation->status}' to '{$validatedData['action']}'";
                 $result_data['update_type'] = 'changed';
+                }
+
+            if($validatedData['action'] == 'Quote Sent'){
+                $result_data['options_sent'] = $validatedData['options_sent'];
             }
             // Insertar la nota de estado
             QuotationNote::create($result_data);

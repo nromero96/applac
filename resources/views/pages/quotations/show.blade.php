@@ -614,6 +614,21 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {{-- Options sent --}}
+                                    <div class="mb-2" x-show="status === '{{ TypeStatus::QUOTE_SENT->value }}'" x-cloak>
+                                        <label for="options_sent" class="form-label mb-0" id="label_options_sent">{{ __('Options sent') }}</label>
+                                        <div class="options_sent_input" x-data="{options_sent: 1}">
+                                            <input type="number" class="form-control" name="options_sent" id="options_sent" x-model="options_sent">
+                                            <ul>
+                                                <button type="button" class="__minus" @click="options_sent > 1 ? options_sent-- : null">
+                                                    <svg width="15" height="1" viewBox="0 0 15 1" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0.5 0.5H14.5" stroke="#595959" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                </button>
+                                                <button type="button" class="__plus" @click="options_sent++">
+                                                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.5 0.5V14.5" stroke="#595959" stroke-linecap="round" stroke-linejoin="round"/><path d="M0.5 7.5H14.5" stroke="#595959" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                </button>
+                                            </ul>
+                                        </div>
+                                    </div>
 
                                     @if(\Auth::user()->hasRole('Administrator') || \Auth::user()->hasRole('Leader'))
                                         {{-- Processed by --}}

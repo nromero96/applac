@@ -25,6 +25,7 @@ class QuotationNote extends Model
         'followup_comment',
         'lost_reason',
         'update_type',
+        'options_sent',
     ];
 
 }

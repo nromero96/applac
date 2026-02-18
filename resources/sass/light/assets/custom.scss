@@ -1952,3 +1952,28 @@
         gap: 10px;
     }
 }
+
+
+.options_sent_input {
+    position: relative;
+
+    ul {
+        position: absolute;
+        right: 8px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        gap: 8px;
+
+        button {
+            width: 24px;
+            height: 24px;
+            border-radius: 2px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #F5F5F5;
+        }
+    }
+}

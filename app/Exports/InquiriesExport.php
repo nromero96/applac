@@ -52,6 +52,7 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithCh
             DB::raw("MAX(CASE WHEN qn_dates.action LIKE '%to \'Unqualified\'%' THEN qn_dates.created_at END) as date_unqualified"),
             DB::raw("MAX(CASE WHEN qn_dates.action LIKE '%to \'Qualified\'%' THEN qn_dates.created_at END) as date_qualified"),
             DB::raw("MAX(CASE WHEN qn_dates.action LIKE '%to \'Quote Sent\'%' THEN qn_dates.created_at END) as date_quote_sent"),
+            DB::raw("SUM(DISTINCT qn_status.options_sent) as options_sent"),
         )
         ->where('quotations.status', '!=', 'Deleted')
         ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
@@ -70,6 +71,10 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithCh
             $join->on('qn_dates.quotation_id', '=', 'quotations.id')
                 ->where('qn_dates.type', 'inquiry_status')
                 ->where('qn_dates.update_type', 'changed');
+        })
+        ->leftJoin('quotation_notes as qn_status', function ($join) {
+            $join->on('qn_status.quotation_id', '=', 'quotations.id')
+                ->where('qn_status.type', 'inquiry_status');
         })
         ;
 
@@ -211,6 +216,7 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithCh
             'Date Unqualified',
             'Date Processing',
             'Date Quote Sent',
+            'Options Sent',
         ];
     }
 
@@ -244,6 +250,7 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithCh
             $q->date_unqualified ?? '-',
             $q->date_qualified ?? '-', // processing
             $q->date_quote_sent ?? '-',
+            $q->options_sent ?? '0',
         ];
     }
 }
