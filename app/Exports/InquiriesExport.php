@@ -250,7 +250,7 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping //, WithCh
             $q->date_unqualified ?? '-',
             $q->date_qualified ?? '-', // processing
             $q->date_quote_sent ?? '-',
-            $q->options_sent ?? '0',
+            $q->options_sent ?? '-',
         ];
     }
 }
