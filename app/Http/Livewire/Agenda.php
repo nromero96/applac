@@ -111,4 +111,35 @@ class Agenda extends Component
         $this->scheduled = (clone $scheduled)->whereDate('date', '!=', $today)->get();
         $this->scheduled_today = (clone $scheduled)->whereBetween('date', [$today, $today->copy()->addDays(7)])->get();;
     }
+
+    public function mark_done($type, $quotationId) {
+        switch ($type) {
+            case 'flag':
+                FeaturedQuotation::where([
+                    ['user_id', auth()->id()],
+                    ['quotation_id', $quotationId],
+                ])->delete();
+                break;
+
+            case 'schedule':
+                ScheduledQuotation::where([
+                    ['user_id', auth()->id()],
+                    ['quotation_id', $quotationId],
+                ])->delete();
+                break;
+
+            case 'tag':
+                TaggedQuotation::where([
+                    ['user_id', auth()->id()],
+                    ['quotation_id', $quotationId],
+                ])->delete();
+                break;
+
+            default:
+                break;
+        }
+
+        $this->emit('agenda_button_update');
+        $this->emit('agenda_update');
+    }
 }
