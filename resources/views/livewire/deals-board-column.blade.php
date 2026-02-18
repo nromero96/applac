@@ -146,12 +146,12 @@
 
                             @if (isset($quotation->rating))
                                 <div class="d-flex align-items-center gap-1">
+                                    <b style="color:black; font-weight: 500">{{ $quotation->rating ? : '-' }}</b>
                                     <span class="star" style="display:inline-block;transform:translateY(-3px)">
                                         <svg width="17" height="17" fill="#edb10c" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                             <path d="M11.549 3.532a.502.502 0 0 1 .903 0l2.39 4.868c.074.15.216.253.38.277l5.346.78c.413.06.578.57.28.863l-3.87 3.79a.507.507 0 0 0-.144.447l.913 5.35a.504.504 0 0 1-.73.534l-4.783-2.526a.501.501 0 0 0-.468 0L6.984 20.44a.504.504 0 0 1-.731-.534l.913-5.35a.507.507 0 0 0-.145-.448L3.153 10.32a.507.507 0 0 1 .279-.863l5.346-.78a.504.504 0 0 0 .38-.277l2.39-4.868Z"></path>
                                         </svg>
                                     </span>
-                                    <b style="color:black">{{ $quotation->rating ? : '-' }}</b>
                                 </div>
                                 {{-- <x-stars :stars="$quotation->rating" /> --}}
                             @else
