@@ -52,7 +52,6 @@ class InquiryNote extends Component
     public function save_note() {
         $this->validate(
             [
-                'attachments' => 'required',
                 'attachments.*' => 'max:2048',
             ],
             [
@@ -63,19 +62,25 @@ class InquiryNote extends Component
                 'attachments.*' => 'attachments',
             ]
         );
-        $this->attachment_form['user_id'] = auth()->user()->id;
 
-        $files_array = [];
-        foreach ($this->attachments ?? [] as $attach) {
-            $filename = uniqid() . '_' . $attach->getClientOriginalName();
-            $attach->storeAs('public/uploads/inquiry_notes', $filename);
-            $files_array[] = $filename;
+        if ($this->attachment_form['description'] != '' || count($this->attachments) > 0) {
+            $this->attachment_form['user_id'] = auth()->user()->id;
+
+            $files_array = [];
+            foreach ($this->attachments ?? [] as $attach) {
+                $filename = uniqid() . '_' . $attach->getClientOriginalName();
+                $attach->storeAs('public/uploads/inquiry_notes', $filename);
+                $files_array[] = $filename;
+            }
+
+            $this->attachment_form['file_paths'] = $files_array;
+            $this->quotation->attachments()->create($this->attachment_form);
+            $this->reset('show_modal_add', 'attachment_form', 'attachments', 'attachments_added');
+            $this->quotation->refresh();
+
+        } else {
+            $this->reset('show_modal_add', 'attachment_form', 'attachments', 'attachments_added');
         }
-
-        $this->attachment_form['file_paths'] = $files_array;
-        $this->quotation->attachments()->create($this->attachment_form);
-        $this->reset('show_modal_add', 'attachment_form', 'attachments', 'attachments_added');
-        $this->quotation->refresh();
     }
 
     /**
