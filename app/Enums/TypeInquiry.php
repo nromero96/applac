@@ -38,6 +38,26 @@ enum TypeInquiry: string {
         };
     }
 
+    public function category(): string {
+        return match ($this) {
+            // SEO/HOUSE Dept.
+            self::INTERNAL          => 'Internal',
+            self::INTERNAL_OTHER    => 'Internal',
+            self::EXTERNAL_1        => 'External',
+            self::EXTERNAL_2        => 'External',
+            self::SEO_CONTACT_BUSI  => 'External',
+
+            // Agents Dept.
+            self::INTERNAL_LEGACY       => 'Internal',
+            self::INTERNAL_OTHER_AGT    => 'Internal',
+            self::EXTERNAL_SEO_RFQ      => 'External',
+            self::SEO_CONTACT_AGT       => 'External',
+
+            // System
+            self::EXT_AUTO      => 'Auto',
+        };
+    }
+
     public function list_icon(): string {
         return match ($this) {
             // SEO/HOUSE Dept.

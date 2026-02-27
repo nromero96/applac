@@ -887,18 +887,47 @@
                                     </div>
 
                                     <div class="activity-log border-0 mb-0 mt-2">
-                                        <div class="al-action">
-                                            <svg width="13" height="13" fill="none" stroke="#4cbb17" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                                                <path d="M14 2v6h6"></path>
-                                                <path d="M12 18v-6"></path>
-                                                <path d="M9 15h6"></path>
+                                        <div class="al-action d-flex align-items-center gap-2 mb-2">
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12Z" fill="#E9F6ED"/>
+                                                <g clip-path="url(#clip0_13545_3770)">
+                                                <path d="M12 7V9" stroke="#1D813A" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M12 15V17" stroke="#1D813A" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M8.46484 8.46497L9.87984 9.87997" stroke="#1D813A" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M14.1201 14.12L15.5351 15.535" stroke="#1D813A" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M7 12H9" stroke="#1D813A" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M15 12H17" stroke="#1D813A" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M8.46484 15.535L9.87984 14.12" stroke="#1D813A" stroke-linecap="round" stroke-linejoin="round"/>
+                                                <path d="M14.1201 9.87997L15.5351 8.46497" stroke="#1D813A" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </g>
+                                                <defs>
+                                                <clipPath id="clip0_13545_3770">
+                                                <rect width="12" height="12" fill="white" transform="translate(6 6)"/>
+                                                </clipPath>
+                                                </defs>
                                             </svg>
-                                            <span class="text-result">Inquiry received</span>
+                                            <b class="text-result">Inquiry received</b>
                                         </div>
-                                        <div class="al-date">
-                                            <small class="date">{{ date('d/m/Y', strtotime($quotation->created_at)) }}</small> - <small class="time">{{ date('H:i:s', strtotime($quotation->created_at)) }}</small>
-                                            {{-- <span class="badge rounded-pill badge-light-info">5 days since received</span> --}}
+
+                                        <div class="log__tab">
+                                            <div class="d-flex align-items-center gap-1 mb-1">
+                                                <b>Type:</b> {{ $quotation->type_inquiry->category() }} - {{ $quotation->type_inquiry->label() }}
+                                            </div>
+                                            <div class="al-date d-flex align-items-center gap-1">
+                                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                    <path d="M13.3332 14V12.6667C13.3332 11.9594 13.0522 11.2811 12.5521 10.781C12.052 10.281 11.3737 10 10.6665 10H5.33317C4.62593 10 3.94765 10.281 3.44755 10.781C2.94746 11.2811 2.6665 11.9594 2.6665 12.6667V14" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                                    <path d="M8.00016 7.33333C9.47292 7.33333 10.6668 6.13943 10.6668 4.66667C10.6668 3.19391 9.47292 2 8.00016 2C6.5274 2 5.3335 3.19391 5.3335 4.66667C5.3335 6.13943 6.5274 7.33333 8.00016 7.33333Z" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                                </svg>
+                                                @if ($quotation->type_inquiry->category() == 'Internal')
+                                                    <small>{{ $quotation->member_name }} {{ $quotation->member_lastname }}</small>
+                                                @else
+                                                    <small>MYLAC System</small>
+                                                @endif
+                                                <small class="log__bullet">•</small>
+                                                <small class="date">{{ date('d/m/Y', strtotime($quotation->created_at)) }}</small> -
+                                                <small class="time">{{ date('H:i', strtotime($quotation->created_at)) }}</small>
+                                                {{-- <span class="badge rounded-pill badge-light-info">5 days since received</span> --}}
+                                            </div>
                                         </div>
                                     </div>
 

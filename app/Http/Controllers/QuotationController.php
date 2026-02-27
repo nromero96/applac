@@ -534,11 +534,14 @@ class QuotationController extends Controller
             'ds.name as destination_state',
             'U.name as processed_by_name',
             'U.lastname as processed_by_lastname',
+            'AU.name as member_name',
+            'AU.lastname as member_lastname',
             DB::raw('COALESCE(loc_users.name, loc_guest_users.name) as customer_country_name'),
             DB::raw('COALESCE(loc_users.id, loc_guest_users.id) as customer_country_id')
         )
 
         ->leftJoin('users', 'quotations.customer_user_id', '=', 'users.id')
+        ->leftJoin('users as AU', 'quotations.assigned_user_id', '=', 'AU.id')
         ->leftJoin('guest_users', 'quotations.guest_user_id', '=', 'guest_users.id')
         ->leftJoin('users as U', 'quotations.processed_by_user_id', '=', 'U.id')
         ->leftJoin('countries as oc', 'quotations.origin_country_id', '=', 'oc.id')
@@ -673,7 +676,7 @@ class QuotationController extends Controller
         $quotation_notes = QuotationNote::where('quotation_id', $id)
             ->join('users', 'quotation_notes.user_id', '=', 'users.id')
             ->leftJoin('users as U', 'quotation_notes.processed_by_user_id', '=', 'U.id')
-            ->select('quotation_notes.*', 'users.name as user_name', 'U.name as processed_user_name', 'U.lastname as processed_user_lastname')
+            ->select('quotation_notes.*', 'users.name as user_name', 'users.lastname as user_lastname', 'U.name as processed_user_name', 'U.lastname as processed_user_lastname')
             ->get();
 
         // Depurar las notas obtenidas
