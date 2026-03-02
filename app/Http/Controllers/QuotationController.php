@@ -1549,13 +1549,30 @@ class QuotationController extends Controller
                 return response()->json(['error' => 'Cotización no encontrada'], 404);
             }
 
+            // current owner
+            $old_owner = User::where('id', $quotation->assigned_user_id)->first();
+
             $quotation->assigned_user_id = $request->input('user_id');
             $quotation->save();
+
+            // new owner
+            $new_owner = User::where('id', $request->input('user_id'))->first();
 
             // set quoation as unread
             UnreadQuotation::create([
                 'user_id'       => $quotation->assigned_user_id,
                 'quotation_id'  => $quotation->id,
+            ]);
+
+            // log
+            QuotationNote::create([
+                'quotation_id' => $quotation->id,
+                'type' => 'reassigned',
+                'user_id' => auth()->id(),
+                'action' => 'Reassigned to ' . $new_owner->name . ' ' . $new_owner->lastname,
+                'note' => json_encode([
+                    'old_owner' => $old_owner->name . ' ' . $old_owner->lastname,
+                ]),
             ]);
 
             return response()->json(['success' => 'Usuario asignado con éxito']);

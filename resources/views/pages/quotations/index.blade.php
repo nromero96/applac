@@ -488,9 +488,11 @@
                                                             $quotation->type_inquiry->value === TypeInquiry::INTERNAL_OTHER_AGT->value ||
                                                             $quotation->type_inquiry->value === TypeInquiry::EXTERNAL_SEO_RFQ->value
                                                         )
-                                                            <span class="badge __tier" style="{{ $quotation->priority->meta('style') }}">
-                                                                {{ $quotation->priority->meta('label') }}
-                                                            </span>
+                                                            @if ($quotation->priority)
+                                                                <span class="badge __tier" style="{{ $quotation->priority?->meta('style') }}">
+                                                                    {{ $quotation->priority?->meta('label') }}
+                                                                </span>
+                                                            @endif
                                                         @else
                                                             <div class="qtrating">
                                                                 @php

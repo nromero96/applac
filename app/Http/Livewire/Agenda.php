@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\FeaturedQuotation;
+use App\Models\QuotationNote;
 use App\Models\ScheduledQuotation;
 use App\Models\TaggedQuotation;
 use Carbon\Carbon;
@@ -113,31 +114,62 @@ class Agenda extends Component
     }
 
     public function mark_done($type, $quotationId) {
+        $log_type = '';
+        $followup_note = '';
         switch ($type) {
             case 'flag':
-                FeaturedQuotation::where([
+                $log_type = 'Pin';
+                $followup_item = FeaturedQuotation::where([
                     ['user_id', auth()->id()],
                     ['quotation_id', $quotationId],
-                ])->delete();
+                ])->first();
+                if ($followup_item) {
+                    $followup_note = $followup_item->notes;
+                    $followup_item->delete();
+                }
                 break;
 
             case 'schedule':
-                ScheduledQuotation::where([
+                $log_type = 'Reminder';
+                $followup_item = ScheduledQuotation::where([
                     ['user_id', auth()->id()],
                     ['quotation_id', $quotationId],
-                ])->delete();
+                ])->first();
+                if ($followup_item) {
+                    $followup_note = $followup_item->notes;
+                    $followup_item->delete();
+                }
                 break;
 
             case 'tag':
-                TaggedQuotation::where([
+                $log_type = 'Tag';
+                $followup_item = TaggedQuotation::where([
                     ['user_id', auth()->id()],
                     ['quotation_id', $quotationId],
-                ])->delete();
+                ])->first();
+                if ($followup_item) {
+                    $followup_note = $followup_item->notes;
+                    $followup_item->delete();
+                }
                 break;
 
             default:
                 break;
         }
+
+        QuotationNote::create([
+            'quotation_id' => $quotationId,
+            'type' => 'followup',
+            'action' => $log_type. ' ' . 'marked as done ✓',
+            'user_id' => auth()->id(),
+            'update_type' => 'done',
+            'note' => json_encode([
+                'date_done' => now()->toDateString(),
+                'note' => $followup_note,
+            ]),
+        ]);
+
+        $this->dispatchBrowserEvent('update-activity-log');
 
         $this->emit('agenda_button_update');
         $this->emit('agenda_update');

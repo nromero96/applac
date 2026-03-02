@@ -212,11 +212,57 @@ function listQuotationNotes(quotationId) {
                     `;
                 }
 
+                if(note.type == 'followup') {
+                    noteElement.innerHTML = `
+                        <div class="al-action d-flex align-items-center gap-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12Z" fill="#FAE6E6"/>
+                                <path d="M15.5 16.5L12 14L8.5 16.5V8.5C8.5 8.23478 8.60536 7.98043 8.79289 7.79289C8.98043 7.60536 9.23478 7.5 9.5 7.5H14.5C14.7652 7.5 15.0196 7.60536 15.2071 7.79289C15.3946 7.98043 15.5 8.23478 15.5 8.5V16.5Z" stroke="#B80000" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <b class="text-result">${ note.action }</b>
+                        </div>
+                        <div class="log__tab mt-2">
+                            ${ (() => {
+                                if (!note.note) return '';
+                                let data;
+                                try {
+                                    data = JSON.parse(note.note);
+                                } catch (e) {
+                                    return '';
+                                }
+                                if (note.update_type != 'done') {
+                                    const formattedDate = data.date ? data.date.split('-').reverse().join('/') : '';
+                                    return `
+                                        ${ formattedDate ? `<b>Reminder date:</b> ${ formattedDate } <br>` : '' }
+                                        ${ data.notes ? `<b>Note:</b> ${ data.notes } <br>` : '' }
+                                        ${ data.priority ? `<b>Priority:</b> ${ data.priority } <br>` : '' }
+                                    `;
+                                } else {
+                                    const formattedDate = data.date_done ? data.date_done.split('-').reverse().join('/') : '';
+                                    return `
+                                        ${ formattedDate ? `<b>Completed date:</b> ${ formattedDate } <br>` : '' }
+                                        ${ data.note ? `<b>Note:</b> ${ data.note } <br>` : '' }
+                                    `;
+                                }
+                            })() }
+                            <div class="al-date d-flex align-items-center gap-1 mt-2">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13.3332 14V12.6667C13.3332 11.9594 13.0522 11.2811 12.5521 10.781C12.052 10.281 11.3737 10 10.6665 10H5.33317C4.62593 10 3.94765 10.281 3.44755 10.781C2.94746 11.2811 2.6665 11.9594 2.6665 12.6667V14" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8.00016 7.33333C9.47292 7.33333 10.6668 6.13943 10.6668 4.66667C10.6668 3.19391 9.47292 2 8.00016 2C6.5274 2 5.3335 3.19391 5.3335 4.66667C5.3335 6.13943 6.5274 7.33333 8.00016 7.33333Z" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <small>${note.user_name}</small>
+                                <small class="log__bullet">•</small>
+                                <small class="date">${formattedDate}</small> -
+                                <small class="time">${formattedTime}</small>
+                                <span class="badge rounded-pill badge-light-time">${note.time_diff}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
                 if(note.type == 'result_status'){
 
-                    // ${badge_last_status}
                     noteElement.innerHTML = `
-
                         ${
                             note.update_type == 'changed'
                             ? `
@@ -270,39 +316,117 @@ function listQuotationNotes(quotationId) {
 
                 if(note.type == 'rating'){
 
+                    noteElement.innerHTML = `
+                        <div class="al-action d-flex align-items-center gap-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12Z" fill="#FFF2E8"/>
+                                <g clip-path="url(#clip0_13624_3750)">
+                                    <path d="M14.5 7.50015C14.6313 7.36883 14.7872 7.26466 14.9588 7.19359C15.1304 7.12252 15.3143 7.08594 15.5 7.08594C15.6857 7.08594 15.8696 7.12252 16.0412 7.19359C16.2128 7.26466 16.3687 7.36883 16.5 7.50015C16.6313 7.63147 16.7355 7.78737 16.8066 7.95895C16.8776 8.13054 16.9142 8.31443 16.9142 8.50015C16.9142 8.68587 16.8776 8.86977 16.8066 9.04135C16.7355 9.21293 16.6313 9.36883 16.5 9.50015L9.75 16.2502L7 17.0002L7.75 14.2502L14.5 7.50015Z" stroke="#EB6200" stroke-linecap="round" stroke-linejoin="round"/>
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_13624_3750">
+                                    <rect width="12" height="12" fill="white" transform="translate(6 6)"/>
+                                </clipPath>
+                                </defs>
+                            </svg>
+                            <b class="text-result">Rating updated</b>
+                        </div>
+                        <div class="log__tab mt-2">
 
-                    let last_stars = '';
-                    for (let i = 1; i <= last_status; i++) {
-                        last_stars += '★';
-                    }
+                            <b>From: </b> ${ last_status }★ → ${ new_status }★ <br>
+                            ${ note.note ? `<b>Comment:</b> ${ note.note }` : ``}
 
-                    let new_stars = '';
-                    for (let i = 1; i <= new_status; i++) {
-                        new_stars += '★';
-                    }
+                            <div class="al-date d-flex align-items-center gap-1 mt-2">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13.3332 14V12.6667C13.3332 11.9594 13.0522 11.2811 12.5521 10.781C12.052 10.281 11.3737 10 10.6665 10H5.33317C4.62593 10 3.94765 10.281 3.44755 10.781C2.94746 11.2811 2.6665 11.9594 2.6665 12.6667V14" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8.00016 7.33333C9.47292 7.33333 10.6668 6.13943 10.6668 4.66667C10.6668 3.19391 9.47292 2 8.00016 2C6.5274 2 5.3335 3.19391 5.3335 4.66667C5.3335 6.13943 6.5274 7.33333 8.00016 7.33333Z" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <small>${note.user_name}</small>
+                                <small class="log__bullet">•</small>
+                                <small class="date">${formattedDate}</small> -
+                                <small class="time">${formattedTime}</small>
+                                <span class="badge rounded-pill badge-light-time">${note.time_diff}</span>
+                            </div>
+                        </div>
+                    `;
+                }
 
-
+                if(note.type == 'docs'){
 
                     noteElement.innerHTML = `
-                                    <div class="al-action">
-                                        <span class="text-result">Rating changed</span>
-                                        <span class="badge badge-light-warning">${last_stars}</span>
-                                        <svg width="15" height="15" fill="none" stroke="#595959" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="m9 18 6-6-6-6"></path>
-                                          </svg>
-                                        <span class="badge badge-light-info">${new_stars}</span>
-                                    </div>
-                                    <div class="al-date">
-                                        <small class="date">${formattedDate}</small> - <small class="time">${formattedTime}</small>
-                                    </div>
-                                    <div class="al-info">
-                                        <span class="name">${note.user_name}</span>
-                                        <svg width="13" height="13" fill="none" stroke="#0a6ab7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                                          </svg>
-                                        <span class="comment">${note.note}</span>
-                                    </div>
+                        <div class="al-action d-flex align-items-center gap-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12Z" fill="#EEF8FF"/>
+                                <g clip-path="url(#clip0_13625_3884)">
+                                <path d="M16.7201 11.525L12.1251 16.12C11.5622 16.6829 10.7987 16.9991 10.0026 16.9991C9.20655 16.9991 8.44307 16.6829 7.88014 16.12C7.31722 15.557 7.00098 14.7936 7.00098 13.9975C7.00098 13.2014 7.31722 12.4379 7.88014 11.875L12.4751 7.27996C12.8504 6.90468 13.3594 6.69385 13.8901 6.69385C14.4209 6.69385 14.9299 6.90468 15.3051 7.27996C15.6804 7.65524 15.8913 8.16423 15.8913 8.69496C15.8913 9.22569 15.6804 9.73468 15.3051 10.11L10.7051 14.705C10.5175 14.8926 10.263 14.998 9.99764 14.998C9.73228 14.998 9.47779 14.8926 9.29014 14.705C9.1025 14.5173 8.99709 14.2628 8.99709 13.9975C8.99709 13.7321 9.1025 13.4776 9.29014 13.29L13.5351 9.04996" stroke="#68C0FF" stroke-linecap="round" stroke-linejoin="round"/>
+                                </g>
+                                <defs>
+                                <clipPath id="clip0_13625_3884">
+                                <rect width="12" height="12" fill="white" transform="translate(6 6)"/>
+                                </clipPath>
+                                </defs>
+                            </svg>
+                            <b class="text-result">${ note.action }</b>
+                        </div>
+                        <div class="log__tab mt-2">
+                            ${ (() => {
+                                if (!note.note) return '';
+                                let data;
+                                try {
+                                    data = JSON.parse(note.note);
+                                } catch (e) {
+                                    return '';
+                                }
+                                if (note.update_type == 'added') {
+                                    return `
+                                        ${ data.files && data.files.length > 0 ? '<b>Files:</b> <br>' + data.files.join('<br>') + '<br>' : ''}
+                                        ${ data.priority ? `<b>Priority:</b> Marked as important <br>` : '' }
+                                    `;
+                                }
+                            })() }
 
+                            <div class="al-date d-flex align-items-center gap-1 mt-2">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13.3332 14V12.6667C13.3332 11.9594 13.0522 11.2811 12.5521 10.781C12.052 10.281 11.3737 10 10.6665 10H5.33317C4.62593 10 3.94765 10.281 3.44755 10.781C2.94746 11.2811 2.6665 11.9594 2.6665 12.6667V14" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8.00016 7.33333C9.47292 7.33333 10.6668 6.13943 10.6668 4.66667C10.6668 3.19391 9.47292 2 8.00016 2C6.5274 2 5.3335 3.19391 5.3335 4.66667C5.3335 6.13943 6.5274 7.33333 8.00016 7.33333Z" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <small>${note.user_name}</small>
+                                <small class="log__bullet">•</small>
+                                <small class="date">${formattedDate}</small> -
+                                <small class="time">${formattedTime}</small>
+                                <span class="badge rounded-pill badge-light-time">${note.time_diff}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
+                if(note.type == 'reassigned'){
+
+                    noteElement.innerHTML = `
+                        <div class="al-action d-flex align-items-center gap-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12Z" fill="#FCF4D6"/>
+                                <path d="M14.5 16.5V15.5C14.5 14.9696 14.2893 14.4609 13.9142 14.0858C13.5391 13.7107 13.0304 13.5 12.5 13.5H8.5C7.96957 13.5 7.46086 13.7107 7.08579 14.0858C6.71071 14.4609 6.5 14.9696 6.5 15.5V16.5" stroke="#B28600" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10.5 11.5C11.6046 11.5 12.5 10.6046 12.5 9.5C12.5 8.39543 11.6046 7.5 10.5 7.5C9.39543 7.5 8.5 8.39543 8.5 9.5C8.5 10.6046 9.39543 11.5 10.5 11.5Z" stroke="#B28600" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M17.5 16.4999V15.4999C17.4997 15.0568 17.3522 14.6263 17.0807 14.2761C16.8092 13.9259 16.4291 13.6757 16 13.5649" stroke="#B28600" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14 7.56494C14.4302 7.67509 14.8115 7.92529 15.0838 8.2761C15.3561 8.6269 15.5039 9.05836 15.5039 9.50244C15.5039 9.94653 15.3561 10.378 15.0838 10.7288C14.8115 11.0796 14.4302 11.3298 14 11.4399" stroke="#B28600" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <b class="text-result">${ note.action }</b>
+                        </div>
+                        <div class="log__tab mt-2">
+                            <b>Previous owner: </b> ${ JSON.parse(note.note).old_owner } <br>
+                            <div class="al-date d-flex align-items-center gap-1 mt-2">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13.3332 14V12.6667C13.3332 11.9594 13.0522 11.2811 12.5521 10.781C12.052 10.281 11.3737 10 10.6665 10H5.33317C4.62593 10 3.94765 10.281 3.44755 10.781C2.94746 11.2811 2.6665 11.9594 2.6665 12.6667V14" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8.00016 7.33333C9.47292 7.33333 10.6668 6.13943 10.6668 4.66667C10.6668 3.19391 9.47292 2 8.00016 2C6.5274 2 5.3335 3.19391 5.3335 4.66667C5.3335 6.13943 6.5274 7.33333 8.00016 7.33333Z" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <small>${note.user_name}</small>
+                                <small class="log__bullet">•</small>
+                                <small class="date">${formattedDate}</small> -
+                                <small class="time">${formattedTime}</small>
+                                <span class="badge rounded-pill badge-light-time">${note.time_diff}</span>
+                            </div>
+                        </div>
                     `;
                 }
 
@@ -388,7 +512,9 @@ document.addEventListener('change', function(event) {
             Toast.fire({
                 icon: 'success',
                 title: 'Assigned successfully'
-            })
+            });
+
+            listQuotationNotes(document.getElementById('quotation_id').value);
 
         })
         .catch(error => {

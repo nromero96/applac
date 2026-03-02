@@ -4,8 +4,10 @@ namespace App\Http\Livewire;
 
 use App\Models\Quotation;
 use App\Models\QuotationAttachment;
+use App\Models\QuotationNote;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -66,17 +68,42 @@ class InquiryNote extends Component
         if ($this->attachment_form['description'] != '' || count($this->attachments) > 0) {
             $this->attachment_form['user_id'] = auth()->user()->id;
 
+            $action = 'Note and file(s) added'; // agrega nota y archivos
+            if ($this->attachment_form['description'] != '' && count($this->attachments) == 0) { // solo agrega nota
+                $action = 'Note added';
+            } elseif ($this->attachment_form['description'] == '' && count($this->attachments) > 0) { // solo agrega archivos
+                $action = 'File(s) added';
+            }
+
             $files_array = [];
+            $files_array_show = [];
             foreach ($this->attachments ?? [] as $attach) {
                 $filename = uniqid() . '_' . $attach->getClientOriginalName();
-                $attach->storeAs('public/uploads/inquiry_notes', $filename);
+                // $attach->storeAs('public/uploads/inquiry_notes', $filename);
                 $files_array[] = $filename;
+                $files_array_show[] = Str::after($filename, '_');
             }
 
             $this->attachment_form['file_paths'] = $files_array;
             $this->quotation->attachments()->create($this->attachment_form);
+
+            // log
+            QuotationNote::create([
+                'quotation_id' => $this->quotation->id,
+                'type' => 'docs',
+                'note' => json_encode([
+                    'files' => $files_array_show,
+                    'priority' => $this->attachment_form['is_important'],
+                ]),
+                'user_id' => auth()->id(),
+                'action' => $action,
+                'update_type' => 'added',
+            ]);
+
             $this->reset('show_modal_add', 'attachment_form', 'attachments', 'attachments_added');
             $this->quotation->refresh();
+
+            $this->dispatchBrowserEvent('update-activity-log');
 
         } else {
             $this->reset('show_modal_add', 'attachment_form', 'attachments', 'attachments_added');
@@ -94,6 +121,14 @@ class InquiryNote extends Component
 
     public function delete_note() {
         if ($this->note_to_delete) {
+            // get action
+            $action = 'Note and file(s) deleted'; // quita nota y archivos
+            if ($this->note_to_delete->description != '' && count($this->note_to_delete->file_paths) == 0) { // quita nota
+                $action = 'Note deleted';
+            } elseif ($this->note_to_delete->description == '' && count($this->note_to_delete->file_paths) > 0) { // quita files
+                $action = 'File(s) deleted';
+            }
+
             // delete files
             foreach ($this->note_to_delete->file_paths ?? [] as $file) {
                 $filePath = 'public/uploads/inquiry_notes/' . $file;
@@ -103,8 +138,19 @@ class InquiryNote extends Component
             }
 
             $this->note_to_delete->delete();
+
+            // log
+            QuotationNote::create([
+                'quotation_id' => $this->quotation->id,
+                'type' => 'docs',
+                'user_id' => auth()->id(),
+                'action' => $action,
+                'update_type' => 'deleted',
+            ]);
+
             $this->reset('note_to_delete', 'show_modal_delete');
             $this->quotation->refresh();
+            $this->dispatchBrowserEvent('update-activity-log');
         }
     }
 

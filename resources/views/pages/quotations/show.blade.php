@@ -910,8 +910,9 @@
                                         </div>
 
                                         <div class="log__tab">
-                                            <div class="d-flex align-items-center gap-1 mb-1">
-                                                <b>Type:</b> {{ $quotation->type_inquiry->category() }} - {{ $quotation->type_inquiry->label() }}
+                                            <div class="mb-1">
+                                                <b>Type:</b> {{ $quotation->type_inquiry->category() }} - {{ $quotation->type_inquiry->label() }} <br>
+                                                <b>Assigned to:</b> {{ $quotation->member_name }} {{ $quotation->member_lastname }}
                                             </div>
                                             <div class="al-date d-flex align-items-center gap-1">
                                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -991,5 +992,13 @@
     </div>
 </div>
 <!-- Confirm Delete Inquiry -->
+
+
+<script>
+    window.addEventListener('update-activity-log', () => {
+        listQuotationNotes(document.getElementById('quotation_id').value);
+    });
+</script>
+
 
 @endsection

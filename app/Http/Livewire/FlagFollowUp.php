@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\FeaturedQuotation;
+use App\Models\QuotationNote;
 use App\Models\ScheduledQuotation;
 use App\Models\TaggedQuotation;
 use Carbon\Carbon;
@@ -149,6 +150,8 @@ class FlagFollowUp extends Component
             'flag.priority' => 'priority',
             'flag.notes'    => 'notes',
         ]);
+
+        $log_type = 'created';
         if (!$this->editingMode) {
             FeaturedQuotation::create([
                 'user_id'       => auth()->id(),
@@ -157,6 +160,7 @@ class FlagFollowUp extends Component
                 'priority'      => $this->flag['priority'],
             ]);
         } else {
+            $log_type = 'updated';
             FeaturedQuotation::where([
                 ['user_id', auth()->id()],
                 ['quotation_id', $this->quotationId],
@@ -165,6 +169,18 @@ class FlagFollowUp extends Component
                 'priority' => $this->flag['priority'],
             ]);
         }
+
+        // log
+        QuotationNote::create([
+            'quotation_id' => $this->quotationId,
+            'type' => 'followup',
+            'note' => json_encode($this->flag),
+            'user_id' => auth()->id(),
+            'action' => 'Pin' . ' ' . $log_type,
+            'update_type' => $log_type,
+        ]);
+
+        $this->dispatchBrowserEvent('update-activity-log');
         $this->ui_show_modal_flag = false;
         $this->reset('flag', 'editingMode');
     }
@@ -226,6 +242,8 @@ class FlagFollowUp extends Component
             'schedule.priority' => 'priority',
             'schedule.notes'    => 'notes',
         ]);
+
+        $log_type = 'created';
         if (!$this->editingMode) {
             ScheduledQuotation::create([
                 'user_id'       => auth()->id(),
@@ -235,6 +253,7 @@ class FlagFollowUp extends Component
                 'priority'      => $this->schedule['priority'],
             ]);
         } else {
+            $log_type = 'updated';
             ScheduledQuotation::where([
                 ['user_id', auth()->id()],
                 ['quotation_id', $this->quotationId],
@@ -245,6 +264,17 @@ class FlagFollowUp extends Component
             ]);
         }
 
+        // log
+        QuotationNote::create([
+            'quotation_id' => $this->quotationId,
+            'type' => 'followup',
+            'note' => json_encode($this->schedule),
+            'user_id' => auth()->id(),
+            'action' => 'Reminder' . ' ' . $log_type,
+            'update_type' => $log_type,
+        ]);
+
+        $this->dispatchBrowserEvent('update-activity-log');
         $this->ui_show_modal_schedule = false;
         $this->reset('schedule', 'editingMode');
     }
@@ -295,6 +325,8 @@ class FlagFollowUp extends Component
             'tag.priority' => 'priority',
             'tag.notes'    => 'notes',
         ]);
+
+        $log_type = 'created';
         if (!$this->editingMode) {
             TaggedQuotation::create([
                 'user_id'       => auth()->id(),
@@ -303,6 +335,7 @@ class FlagFollowUp extends Component
                 'priority'      => $this->tag['priority'],
             ]);
         } else {
+            $log_type = 'updated';
             TaggedQuotation::where([
                 ['user_id', auth()->id()],
                 ['quotation_id', $this->quotationId],
@@ -311,14 +344,28 @@ class FlagFollowUp extends Component
                 'priority' => $this->tag['priority'],
             ]);
         }
+
+        // log
+        QuotationNote::create([
+            'quotation_id' => $this->quotationId,
+            'type' => 'followup',
+            'note' => json_encode($this->tag),
+            'user_id' => auth()->id(),
+            'action' => 'Tag' . ' ' . $log_type,
+            'update_type' => $log_type,
+        ]);
+
+        $this->dispatchBrowserEvent('update-activity-log');
         $this->ui_show_modal_tag = false;
         $this->reset('tag', 'editingMode');
     }
 
     //
     public function remove_chin($mode) {
+        $action_log_name = '';
         switch ($mode) {
             case 'flag':
+                $action_log_name = 'Pin';
                 FeaturedQuotation::where([
                     ['user_id', auth()->id()],
                     ['quotation_id', $this->quotationId],
@@ -326,6 +373,7 @@ class FlagFollowUp extends Component
                 break;
 
             case 'schedule':
+                $action_log_name = 'Reminder';
                 ScheduledQuotation::where([
                     ['user_id', auth()->id()],
                     ['quotation_id', $this->quotationId],
@@ -333,6 +381,7 @@ class FlagFollowUp extends Component
                 break;
 
             case 'tag':
+                $action_log_name = 'Tag';
                 TaggedQuotation::where([
                     ['user_id', auth()->id()],
                     ['quotation_id', $this->quotationId],
@@ -342,6 +391,17 @@ class FlagFollowUp extends Component
             default:
                 break;
         }
-        $this->reset('flag', 'editingMode', 'editingMode');
+        $this->reset('flag', 'schedule', 'tag', 'editingMode', 'editingMode');
+
+        // nota para eliminar reminder: no tiene "note"
+        QuotationNote::create([
+            'quotation_id' => $this->quotationId,
+            'type' => 'followup',
+            'action' => $action_log_name . ' deleted',
+            'user_id' => auth()->id(),
+            'update_type' => 'deleted',
+        ]);
+
+        $this->dispatchBrowserEvent('update-activity-log');
     }
 }
