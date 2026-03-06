@@ -71,6 +71,7 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping, WithChunk
             'quotations.id as quotation_id',
             'quotations.type_inquiry',
             'quotations.created_at as quotation_created_at',
+            'quotations.date_requested as quotation_date_requested',
             'quotations.status as quotation_status',
             'quotations.result',
             'quotations.rating as quotation_rating',
@@ -169,7 +170,7 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping, WithChunk
         return [
             'ID',
             'Inquiry Type',
-            'Request Date',
+            'date_created',
             'Status',
             'Outcome',
             'Rating',
@@ -196,6 +197,7 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping, WithChunk
             'Date Processing',
             'Date Quote Sent',
             'Options Sent',
+            'date_requested',
         ];
     }
 
@@ -237,6 +239,7 @@ class InquiriesExport implements FromQuery, WithHeadings, WithMapping, WithChunk
             $q->date_qualified ?? '-',
             $q->date_quote_sent ?? '-',
             $q->options_sent ?? '-',
+            $q->quotation_date_requested ?? '-',
         ];
     }
 }

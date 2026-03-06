@@ -317,6 +317,16 @@
                             <span class="__sep"></span>
                         </div>
 
+                        <div class="row mb-2">
+                            <div class="col">
+                                <label for="date_requested" class="form-label d-flex align-items-center justify-content-between">
+                                    Date/Time Requested
+                                </label>
+                                <input id="date_requested" type="text" class="form-control" autocomplete="off" wire:model="date_requested" placeholder="Select Date">
+                                @error('date_requested') <span class='text-danger'>{{ $message }}</span> @enderror
+                            </div>
+                        </div>
+
                         @if ($type_inquiry == TypeInquiry::INTERNAL_OTHER->value)
                             <div class="row mb-3">
                                 <div class="col">
@@ -506,6 +516,7 @@
 
             $(() => $('[data-toggle="tooltip"]').tooltip())
 
+            // shipping date
             $('#shipping_date').daterangepicker({
                 singleDatePicker: true,
                 autoApply: true,
@@ -517,6 +528,23 @@
             });
             $('#shipping_date').on('apply.daterangepicker', function(ev, picker) {
                 @this.set('shipping_date', picker.startDate.format('DD-MM-YYYY'));
+            });
+
+            // date requested
+            $('#date_requested').daterangepicker({
+                singleDatePicker: true,
+                autoApply: true,
+                autoUpdateInput: false,
+                timePicker: true,
+                timePicker24Hour: true,
+                timePickerSeconds: false,
+                locale: {
+                    format: 'DD-MM-YYYY HH:mm',
+                    firstDay: 1
+                }
+            });
+            $('#date_requested').on('apply.daterangepicker', function(ev, picker) {
+                @this.set('date_requested', picker.startDate.format('DD-MM-YYYY HH:mm'));
             });
 
             Livewire.on('send-network-tom-select', (data) => {

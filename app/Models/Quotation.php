@@ -65,7 +65,8 @@ class Quotation extends Model
         'process_for',
         'processed_by_type',
         'processed_by_user_id',
-        'processing_by_completed'
+        'processing_by_completed',
+        'date_requested',
     ];
 
     protected $casts = [
@@ -75,6 +76,7 @@ class Quotation extends Model
         // 'additional_info'   => TypeAdditionalInfo::class,
         'additional_info'   => 'array',
         'processing_by_completed' => 'boolean',
+        // 'date_requested' => 'datetime',
     ];
 
     public function modeOfTransportLabel(): string {

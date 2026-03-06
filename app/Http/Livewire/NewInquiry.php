@@ -36,6 +36,7 @@ class NewInquiry extends Component
     public $source;
     public $rating;
     public $shipping_date;
+    public $date_requested;
     public $recovered_account = false;
     public $cargo_description;
     public $attachments = [];
@@ -94,6 +95,7 @@ class NewInquiry extends Component
             'score' => 'nullable|numeric|between:0,500',
             'rating' => 'nullable',
             'shipping_date' => 'nullable',
+            'date_requested' => 'nullable',
             'contact.name' => 'required|max:255',
             'contact.job_title' => 'nullable|max:255',
             'contact.email' => 'nullable|max:255|email',
@@ -261,13 +263,13 @@ class NewInquiry extends Component
 
     public function reset_data(){
         // // $this->reset('org_selected', 'org_id', 'org_name', 'org_code', 'contact', 'contacts', 'new_contact', 'update_contact');
-        $this->reset('org_id', 'org_name', 'org_code', 'contact', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label', 'attachments', 'attachments_added', 'shipping_date', 'tier', 'score', 'location', 'network', 'referred_by', 'mode_of_transport');
+        $this->reset('org_id', 'org_name', 'org_code', 'contact', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label', 'attachments', 'attachments_added', 'shipping_date', 'tier', 'score', 'location', 'network', 'referred_by', 'mode_of_transport', 'date_requested');
         $this->resetErrorBag();
         $this->emit('send-network-tom-select', $this->network);
     }
 
     public function clean_data_after_close(){
-        $this->reset('org_id', 'org_name', 'org_code', 'contact', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label', 'attachments', 'attachments_added', 'shipping_date', 'tier', 'score', 'location', 'network', 'referred_by', 'mode_of_transport');
+        $this->reset('org_id', 'org_name', 'org_code', 'contact', 'source', 'rating', 'recovered_account', 'cargo_description', 'org_selected', 'contacts', 'organizations', 'new_contact', 'rating_label', 'source_label', 'attachments', 'attachments_added', 'shipping_date', 'tier', 'score', 'location', 'network', 'referred_by', 'mode_of_transport', 'date_requested');
         $this->resetErrorBag();
         $this->emit('send-network-tom-select', $this->network);
     }

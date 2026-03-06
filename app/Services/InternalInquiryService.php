@@ -15,6 +15,7 @@ use App\Models\Quotation;
 use App\Models\QuotationDocument;
 use App\Models\Setting;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -230,6 +231,9 @@ class InternalInquiryService {
     // ----------------------------------------------
 
     private function createInquiry($component, int $guestUserId) {
+        if ($component->date_requested) {
+            $component->date_requested = Carbon::createFromFormat('d-m-Y H:i', $component->date_requested)->format('Y-m-d H:i:s');
+        }
         $data = [
             'guest_user_id' => $guestUserId,
             'mode_of_transport' => $component->mode_of_transport,
@@ -242,6 +246,7 @@ class InternalInquiryService {
             'currency' => 'USD - US Dollar',
             'rating' => $component->rating,
             'shipping_date' => $component->shipping_date,
+            'date_requested' => $component->date_requested,
             'rating_modified' => 0,
             'status' => 'Pending',
             'assigned_user_id' => $component->member,
