@@ -95,7 +95,7 @@ class NewInquiry extends Component
             'score' => 'nullable|numeric|between:0,500',
             'rating' => 'nullable',
             'shipping_date' => 'nullable',
-            'date_requested' => 'nullable',
+            'date_requested' => 'required',
             'contact.name' => 'required|max:255',
             'contact.job_title' => 'nullable|max:255',
             'contact.email' => 'nullable|max:255|email',

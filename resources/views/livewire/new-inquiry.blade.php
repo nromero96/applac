@@ -319,8 +319,8 @@
 
                         <div class="row mb-2">
                             <div class="col">
-                                <label for="date_requested" class="form-label d-flex align-items-center justify-content-between">
-                                    Date/Time Requested
+                                <label for="date_requested" class="form-label d-flex align-items-center gap-1">
+                                    Date/Time Requested <span class="text-danger">*</span>
                                 </label>
                                 <input id="date_requested" type="text" class="form-control" autocomplete="off" wire:model="date_requested" placeholder="Select Date">
                                 @error('date_requested') <span class='text-danger'>{{ $message }}</span> @enderror

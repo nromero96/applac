@@ -421,6 +421,11 @@
                                         <h6 class="text-primary mb-2">{{ __('Shipment Info') }}</h6>
                                     @endif
 
+                                    <p class="mb-2">
+                                        <label class="fw-bold mb-0">{{__("Request Date")}}:</label>
+                                        {{ $quotation->date_requested ? date('Y-m-d H:i', strtotime($quotation->date_requested)) : '-' }}
+                                    </p>
+
                                     @if (
                                         $quotation->type_inquiry->value === TypeInquiry::SEO_CONTACT_BUSI->value
                                         || $quotation->type_inquiry->value === TypeInquiry::SEO_CONTACT_AGT->value
