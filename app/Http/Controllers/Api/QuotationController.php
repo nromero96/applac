@@ -462,6 +462,14 @@ class QuotationController extends Controller
                     'department_id' => 2,
                     'type_inquiry' => TypeInquiry::SEO_CONTACT_AGT->value,
                 ],
+                'I’m an Individual / Private Person' => [
+                    'department_id' => 1,
+                    'type_inquiry' => TypeInquiry::SEO_CONTACT_BUSI->value,
+                ],
+                'Other' => [
+                    'department_id' => 1,
+                    'type_inquiry' => TypeInquiry::SEO_CONTACT_BUSI->value,
+                ],
             ];
             $customer_type = $request->input('customer_type');
             $subject = $request->input('subject', '');
@@ -503,7 +511,12 @@ class QuotationController extends Controller
             $selectedUserId = $userIds[$currentIndex];
             $currentIndex++;
             Storage::put($indexFile, $currentIndex);
-            $inquiry_data['assigned_user_id'] = $selectedUserId;
+
+            if ($customer_type == 'I’m an Individual / Private Person') {
+                $inquiry_data['assigned_user_id'] = 2731; // asignar a felipe
+            } else {
+                $inquiry_data['assigned_user_id'] = $selectedUserId;
+            }
 
             $inquiry = Quotation::create($inquiry_data);
 
