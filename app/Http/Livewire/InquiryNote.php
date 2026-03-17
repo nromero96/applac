@@ -79,7 +79,7 @@ class InquiryNote extends Component
             $files_array_show = [];
             foreach ($this->attachments ?? [] as $attach) {
                 $filename = uniqid() . '_' . $attach->getClientOriginalName();
-                // $attach->storeAs('public/uploads/inquiry_notes', $filename);
+                $attach->storeAs('public/uploads/inquiry_notes', $filename);
                 $files_array[] = $filename;
                 $files_array_show[] = Str::after($filename, '_');
             }
