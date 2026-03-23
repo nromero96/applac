@@ -78,10 +78,22 @@ class InquiryNote extends Component
             $files_array = [];
             $files_array_show = [];
             foreach ($this->attachments ?? [] as $attach) {
-                $filename = uniqid() . '_' . $attach->getClientOriginalName();
+
+                $originalName = pathinfo($attach->getClientOriginalName(), PATHINFO_FILENAME);
+                $extension = $attach->getClientOriginalExtension();
+
+                // 🔥 limpiar nombre (clave)
+                $cleanName = str_replace('#', '', $originalName);
+
+                // fallback por si queda vacío
+                if (empty($cleanName)) {
+                    $cleanName = 'file';
+                }
+                $filename = uniqid() . '_' . $cleanName . '.' . $extension;
+
                 $attach->storeAs('public/uploads/inquiry_notes', $filename);
                 $files_array[] = $filename;
-                $files_array_show[] = Str::after($filename, '_');
+                $files_array_show[] = $originalName . '.' . $extension;
             }
 
             $this->attachment_form['file_paths'] = $files_array;

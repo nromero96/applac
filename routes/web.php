@@ -123,6 +123,11 @@ Route::group(['middleware' => ['auth', 'ensureStatusActive']], function () {
         return 'Cache todo.';
     });
 
+    Route::get('/quotes-fix-docs', function(){
+        Artisan::call('quotes:fix-docs');
+        return 'Inquiry Docs & Notes fixed.';
+    });
+
     // test route auto update outcomes
     Route::get('/auto-update-outcomes', function(AutoUpdateOutcomes $service){
         return $service->update_outcomes();
