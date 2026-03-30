@@ -34,24 +34,29 @@ class WebQuotationContactCreated extends Mailable
             'data' => $this->data
         ])->render();
 
+        $emails_to = [];
+        if (!config('app.debug')) {
+            $emails_to = [
+                // config('services.copymail.mail_1'),
+                config('services.copymail.mail_2'),
+                'nicholas.herrera@lacship.com',
+                'stephanie.buitrago@lacship.com',
+                'fredy.arias@lacship.com',
+                'brian.carrillo@lacship.com',
+                'cris.valencia@lacship.com',
+                'juan.carlos@lacship.com',
+                'felipe.munoz@lacship.com',
+            ];
+        }
+
         sendMailApiLac(
             $this->data['response']['email'],
-            'Quote ID: #'. $this->data['inquiry']['id'] .' - Your Request with Latin American Cargo',
+            'Request ID: #'. $this->data['inquiry']['id'] .' - Your Request with Latin American Cargo',
             $content,
             null,
             [],
             [], //copias
-            // [config('services.copymail.mail_1'), config('services.copymail.mail_2')] //copia oculta
-            [
-                // config('services.copymail.mail_1'),
-                // config('services.copymail.mail_2'),
-                // 'nicholas.herrera@lacship.com',
-                // 'stephanie.buitrago@lacship.com',
-                // 'fredy.arias@lacship.com',
-                // 'brian.carrillo@lacship.com',
-                // 'cris.valencia@lacship.com',
-                // 'juan.carlos@lacship.com',
-            ] //copia oculta
+            $emails_to //copia oculta
         );
 
         return $this->html($content);

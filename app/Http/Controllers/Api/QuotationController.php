@@ -537,18 +537,17 @@ class QuotationController extends Controller
             }
 
             // consultar a luis los datos
-            /*
+            /**/
             try {
                 Mail::send(new WebQuotationContactCreated([
                     'response' => $request->all(),
                     'inquiry' => $inquiry,
                 ]));
-                Log::info('Correo electrónico enviado correctamente de la cotización: ' . $inquiry->id);
+                Log::info('Correo electrónico enviado correctamente de la cotización (Contacto): ' . $inquiry->id);
             } catch (\Exception $e) {
                 // Captura cualquier excepción que pueda ocurrir durante el envío del correo
-                Log::error('Error al enviar el correo electrónico de la cotización: ' . $inquiry->id . ' - ' . $e);
+                Log::error('Error al enviar el correo electrónico de la cotización: (Contacto)' . $inquiry->id . ' - ' . $e);
             }
-            */
 
             return response()->json([
                 'request' => $request->all(),
