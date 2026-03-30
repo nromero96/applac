@@ -8,6 +8,7 @@ use App\Enums\TypeNetwork;
 use App\Enums\TypeStatus;
 use App\Http\Controllers\Controller;
 use App\Mail\QuotationCreated;
+use App\Mail\WebQuotationContactCreated;
 use Illuminate\Http\Request;
 use App\Models\Quotation;
 use App\Models\User;
@@ -494,7 +495,7 @@ class QuotationController extends Controller
                 $stephanieId = 2733; // Stephanie, temporal
                 $users_auto_assigned_quotes = Setting::where('key', 'users_auto_assigned_quotes')->first()->value;
                 $userIds = array_map('intval', json_decode($users_auto_assigned_quotes));
-                $userIds[] = $stephanieId;
+                // $userIds[] = $stephanieId; // // temp stephanie vacas
             } elseif ($department_id == 2) { // AGT DEPT
                 $users = User::select('id')
                     ->where('department_id', $department_id)
@@ -534,6 +535,20 @@ class QuotationController extends Controller
                     ]);
                 }
             }
+
+            // consultar a luis los datos
+            /*
+            try {
+                Mail::send(new WebQuotationContactCreated([
+                    'response' => $request->all(),
+                    'inquiry' => $inquiry,
+                ]));
+                Log::info('Correo electrónico enviado correctamente de la cotización: ' . $inquiry->id);
+            } catch (\Exception $e) {
+                // Captura cualquier excepción que pueda ocurrir durante el envío del correo
+                Log::error('Error al enviar el correo electrónico de la cotización: ' . $inquiry->id . ' - ' . $e);
+            }
+            */
 
             return response()->json([
                 'request' => $request->all(),
