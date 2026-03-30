@@ -93,6 +93,7 @@ class WebQuotationCreated extends Mailable
                 'brian.carrillo@lacship.com',
                 'cris.valencia@lacship.com',
                 'juan.carlos@lacship.com',
+                'felipe.munoz@lacship.com',
             ] //copia oculta
         );
 
