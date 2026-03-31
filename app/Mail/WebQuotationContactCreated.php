@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\QuotationDocument;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -30,8 +31,10 @@ class WebQuotationContactCreated extends Mailable
      */
     public function build()
     {
+        $quotation_documents = QuotationDocument::where('quotation_id', $this->data['inquiry']['id'])->get();
         $content = view('emails.web.quotation_contact_created', [
-            'data' => $this->data
+            'data' => $this->data,
+            'quotation_documents' => $quotation_documents,
         ])->render();
 
         $emails_to = [];
