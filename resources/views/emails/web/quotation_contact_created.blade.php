@@ -49,8 +49,10 @@
                 <td style="padding: 7px 0px;">{{$data['response']['referring']}}</td>
             </tr>
             <tr>
-                <td style="padding: 7px 0px;"><b>Message</b></td>
-                <td style="padding: 7px 0px;">{{$data['response']['message']}}</td>
+                <td style="padding: 7px 0px;">
+                    <b>Message</b> <br>
+                    {!! nl2br($data['response']['message']) !!}
+                </td>
             </tr>
         </table>
     </div>
