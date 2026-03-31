@@ -128,13 +128,18 @@ class WebQuotationCreated extends Mailable
                     'assigned_user_full_name' => $this->assigned_user_full_name,
                 ])->render();
 
+                // config('services.copymail.mail_marketing');
                 sendMailApiLac(
-                    config('services.copymail.mail_marketing'),
+                    $this->assigned_user_mail,
                     'Quote ID: #'. $this->quotation->id .' - Priority Lead - ['. $origin_country_name .' - '. $destination_country_name .'].',
                     $content_admin,
                     ['email' => config('services.sendgrid.sender_email_priority'), 'name' => config('services.sendgrid.sender_name_priority')],
                     [],
-                    [$this->assigned_user_mail]
+                    [],
+                    [
+                        'nicholas.herrera@lacship.com',
+                        'luis.arias@lacship.com',
+                    ]
                 );
             }
         }
