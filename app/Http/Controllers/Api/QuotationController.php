@@ -495,7 +495,7 @@ class QuotationController extends Controller
                 $stephanieId = 2733; // Stephanie, temporal
                 $users_auto_assigned_quotes = Setting::where('key', 'users_auto_assigned_quotes')->first()->value;
                 $userIds = array_map('intval', json_decode($users_auto_assigned_quotes));
-                // $userIds[] = $stephanieId; // // temp stephanie vacas
+                $userIds[] = $stephanieId;
             } elseif ($department_id == 2) { // AGT DEPT
                 $users = User::select('id')
                     ->where('department_id', $department_id)

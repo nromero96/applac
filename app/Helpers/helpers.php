@@ -1146,7 +1146,7 @@ if (!function_exists('rateQuotationWeb')) {
             }
 
             //ver si la cotización cumple con 4 y 5 rating
-            if($rating >= 4 && false) { // temp stephanie vacas
+            if($rating >= 4) {
                 // usuarios temporalmente
                 $stephanieId = 2733;
                 // $nicholasId  = 3;
