@@ -18,7 +18,7 @@ use App\Models\QuotePendingEmail;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-function sendMailApiLac($toEmail, $subject, $content, $from = null, $attachments, $ccEmails = [], $bccEmails = [])
+function sendMailApiLac($toEmail, $subject, $content, $from = null, $attachments = [], $ccEmails = [], $bccEmails = [])
 {
     $client = new Client();
 
@@ -1146,7 +1146,7 @@ if (!function_exists('rateQuotationWeb')) {
             }
 
             //ver si la cotización cumple con 4 y 5 rating
-            if($rating >= 4) {
+            if($rating >= 4 && $quotation->shipment_ready_date == 'Ready to ship now') {
                 // usuarios temporalmente
                 $stephanieId = 2733;
                 // $nicholasId  = 3;
