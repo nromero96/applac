@@ -1146,7 +1146,7 @@ if (!function_exists('rateQuotationWeb')) {
             }
 
             //ver si la cotización cumple con 4 y 5 rating
-            Log::info('shipment_ready_date: ' . $quotation->shipment_ready_date);
+            Log::info('shipment_ready_date #' . $quotation->id . ': '. $quotation->shipment_ready_date . ', rating: ' . $rating);
             if($rating >= 4 && $quotation->shipment_ready_date == 'Ready to ship now') {
                 // usuarios temporalmente
                 $stephanieId = 2733;
