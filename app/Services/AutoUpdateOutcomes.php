@@ -71,7 +71,7 @@ class AutoUpdateOutcomes {
                 });
                 $q->orWhere(function ($q2){
                     $q2->whereNotNull('Q.shipping_date')
-                        ->whereRaw("STR_TO_DATE(TRIM(SUBSTRING_INDEX(Q.shipping_date, 'to', -1)), '%Y-%m-%d') <= NOW() - INTERVAL 14 DAY");
+                        ->whereRaw("STR_TO_DATE(TRIM(SUBSTRING_INDEX(Q.shipping_date, 'to', -1)), '%d-%m-%Y') <= NOW() - INTERVAL 14 DAY");
                 });
             })
             ->orderBy('Q.created_at', 'desc')
