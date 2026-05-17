@@ -121,10 +121,15 @@ class QuotationController extends Controller
         })
 
         // obtener created_at de la última nota de cotización
-        ->leftJoin('quotation_notes', function($join) {
-            $join->on('quotations.id', '=', 'quotation_notes.quotation_id')
-                ->where('quotation_notes.id', '=', DB::raw("(select max(id) from quotation_notes WHERE quotation_id = quotations.id)"));
-        });
+        // ->leftJoin('quotation_notes', function($join) {
+        //     $join->on('quotations.id', '=', 'quotation_notes.quotation_id')
+        //         ->where('quotation_notes.id', '=', DB::raw("(select max(id) from quotation_notes WHERE quotation_id = quotations.id)"));
+        // });
+        ->leftJoin(
+            DB::raw(
+                '(SELECT quotation_id, MAX(created_at) as created_at FROM quotation_notes GROUP BY quotation_id) as quotation_notes'),
+                'quotations.id', '=', 'quotation_notes.quotation_id'
+            );
 
         if(auth()->user()->hasRole('Customer')) {
             $quotations->where('quotations.customer_user_id', auth()->id());
@@ -249,6 +254,7 @@ class QuotationController extends Controller
         if ($export) {
             // $quotations = $quotations->get(); // Obtener todos los registros sin paginación
         } else {
+            // dd($quotations->toSql());
             $quotations = $quotations->paginate($listforpage);
         }
 
