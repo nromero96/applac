@@ -229,6 +229,7 @@ class QuotationController extends Controller
         //Guarda a la tabla quotations
         $quotation = Quotation::create([
             'type_inquiry' => TypeInquiry::EXTERNAL_SEO_RFQ->value,
+            'department_id' => 2, // Agents Dept.
             'guest_user_id' => $guest_user->id,
             'origin_country_id' => $validatedData['origin_country_id'],
             'destination_country_id' => $validatedData['destination_country_id'],

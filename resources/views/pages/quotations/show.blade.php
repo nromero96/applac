@@ -214,6 +214,7 @@
                                                                             @if (
                                                                                 $quotation->type_inquiry->value === TypeInquiry::SEO_CONTACT_BUSI->value
                                                                                 || $quotation->type_inquiry->value === TypeInquiry::SEO_CONTACT_AGT->value
+                                                                                || $quotation->type_inquiry->value === TypeInquiry::EXTERNAL_2->value
                                                                             )
                                                                                 {{ $quotation->rating ? : 'TBD' }}
                                                                             @else
@@ -283,9 +284,13 @@
                                             @else
                                                 <div class="d-flex align-items-center gap-2">
                                                     <b>Priority</b>
-                                                    <span class="badge" style="{{ $quotation->priority->meta('style') }}">
-                                                        {{ $quotation->priority->meta('label') }}
-                                                    </span>
+                                                    @if (isset($quotation->priority))
+                                                        <span class="badge" style="{{ $quotation->priority->meta('style') }}">
+                                                            {{ $quotation->priority->meta('label') }}
+                                                        </span>
+                                                    @else
+                                                        <span>N/A</span>
+                                                    @endif
                                                 </div>
                                             @endif
                                         @endif
@@ -327,6 +332,20 @@
                                                     <span>{{ __('Edit') }}</span>
                                                     <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                                                 </a> --}}
+                                                @if (
+                                                    $quotation->type_inquiry->value == TypeInquiry::EXTERNAL_SEO_RFQ->value || 
+                                                    $quotation->type_inquiry->value == TypeInquiry::EXTERNAL_2->value)
+                                                        <a 
+                                                            x-data
+                                                            class="dropdown-item" 
+                                                            id="transfer_dept" 
+                                                            href="javascript:void(0);"
+                                                            @click="$dispatch('open-transfer-modal')"
+                                                        >
+                                                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.3333 0.666992L14 3.33366L11.3333 6.00033" stroke="#1877F2" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 7.33301V5.99967C2 5.29243 2.28095 4.61415 2.78105 4.11406C3.28115 3.61396 3.95942 3.33301 4.66667 3.33301H14" stroke="#1877F2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4.66667 15.3333L2 12.6667L4.66667 10" stroke="#1877F2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 8.66699V10.0003C14 10.7076 13.719 11.3858 13.219 11.8859C12.7189 12.386 12.0406 12.667 11.3333 12.667H2" stroke="#1877F2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                                            <span>{{ __('Transfer Dept.') }}</span>
+                                                        </a>
+                                                @endif
                                                 <a class="dropdown-item" id="print_inquiry" href="javascript:void(0);">
                                                     <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
                                                     <span>{{ __('Print') }}</span>
@@ -1006,6 +1025,9 @@
     </div>
 </div>
 <!-- Confirm Delete Inquiry -->
+
+{{-- transfer dept --}}
+<livewire:transfer-dept :quotationData="$quotation->toArray()" />
 
 
 <script>

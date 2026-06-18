@@ -193,7 +193,7 @@ class DealsBoard extends Component
                     if (isset($user['department']['name'])) {
                         $user_sales_dpto_arr[$user['department']['name']][] = $user_data;
                     } else {
-                        $user_sales_dpto_arr['Other'][] = $user_data;
+                        // $user_sales_dpto_arr['Other'][] = $user_data;
                     }
                 }
             }

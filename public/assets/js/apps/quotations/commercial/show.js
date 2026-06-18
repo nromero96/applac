@@ -430,6 +430,38 @@ function listQuotationNotes(quotationId) {
                     `;
                 }
 
+                if(note.type == 'transfer'){
+
+                    noteElement.innerHTML = `
+                        <div class="al-action d-flex align-items-center gap-2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M0 12C0 5.37258 5.37258 0 12 0C18.6274 0 24 5.37258 24 12C24 18.6274 18.6274 24 12 24C5.37258 24 0 18.6274 0 12Z" fill="#FCF4D6"/>
+                                <path d="M14.5 16.5V15.5C14.5 14.9696 14.2893 14.4609 13.9142 14.0858C13.5391 13.7107 13.0304 13.5 12.5 13.5H8.5C7.96957 13.5 7.46086 13.7107 7.08579 14.0858C6.71071 14.4609 6.5 14.9696 6.5 15.5V16.5" stroke="#B28600" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M10.5 11.5C11.6046 11.5 12.5 10.6046 12.5 9.5C12.5 8.39543 11.6046 7.5 10.5 7.5C9.39543 7.5 8.5 8.39543 8.5 9.5C8.5 10.6046 9.39543 11.5 10.5 11.5Z" stroke="#B28600" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M17.5 16.4999V15.4999C17.4997 15.0568 17.3522 14.6263 17.0807 14.2761C16.8092 13.9259 16.4291 13.6757 16 13.5649" stroke="#B28600" stroke-linecap="round" stroke-linejoin="round"/>
+                                <path d="M14 7.56494C14.4302 7.67509 14.8115 7.92529 15.0838 8.2761C15.3561 8.6269 15.5039 9.05836 15.5039 9.50244C15.5039 9.94653 15.3561 10.378 15.0838 10.7288C14.8115 11.0796 14.4302 11.3298 14 11.4399" stroke="#B28600" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            <b class="text-result">${ note.action }</b>
+                        </div>
+                        <div class="log__tab mt-2">
+                            <b>Notes: </b> ${ note.note ? note.note : '-' } <br>
+                            <b>New owner: </b> ${ JSON.parse(note.reason).new_owner } <br>
+                            <b>Previous owner: </b> ${ JSON.parse(note.reason).prev_owner } <br>
+                            <div class="al-date d-flex align-items-center gap-1 mt-2">
+                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M13.3332 14V12.6667C13.3332 11.9594 13.0522 11.2811 12.5521 10.781C12.052 10.281 11.3737 10 10.6665 10H5.33317C4.62593 10 3.94765 10.281 3.44755 10.781C2.94746 11.2811 2.6665 11.9594 2.6665 12.6667V14" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M8.00016 7.33333C9.47292 7.33333 10.6668 6.13943 10.6668 4.66667C10.6668 3.19391 9.47292 2 8.00016 2C6.5274 2 5.3335 3.19391 5.3335 4.66667C5.3335 6.13943 6.5274 7.33333 8.00016 7.33333Z" stroke="#0A6AB7" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <small>${note.user_name}</small>
+                                <small class="log__bullet">•</small>
+                                <small class="date">${formattedDate}</small> -
+                                <small class="time">${formattedTime}</small>
+                                <span class="badge rounded-pill badge-light-time">${note.time_diff}</span>
+                            </div>
+                        </div>
+                    `;
+                }
+
                 // Añadir la nota al contenedor
                 notesContainer.appendChild(noteElement);
 

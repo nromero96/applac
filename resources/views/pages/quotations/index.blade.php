@@ -492,6 +492,8 @@
                                                                 <span class="badge __tier" style="{{ $quotation->priority?->meta('style') }}">
                                                                     {{ $quotation->priority?->meta('label') }}
                                                                 </span>
+                                                            @else
+                                                                <span>N/A</span>
                                                             @endif
                                                         @else
                                                             <div class="qtrating">
@@ -503,6 +505,7 @@
                                                                         @if (
                                                                             $quotation->type_inquiry->value === TypeInquiry::SEO_CONTACT_BUSI->value
                                                                             || $quotation->type_inquiry->value === TypeInquiry::SEO_CONTACT_AGT->value
+                                                                            || $quotation->type_inquiry->value === TypeInquiry::EXTERNAL_2->value
                                                                         )
                                                                             {{ $quotation->quotation_rating ? : 'TBD' }}
                                                                         @else
