@@ -169,7 +169,9 @@ class TransferDept extends Component
         QuotationNote::create($log_data);
         // dd($log_data);
 
-        return redirect(request()->header('Referer'));
+        return redirect(request()->header('Referer'))
+                ->with('success', 'Quotation #'.$this->quotationData['id'] . ' has been successfully transferred.');
+        // return redirect(request()->header('Referer'));
     }
 
     public function close_modal() {
