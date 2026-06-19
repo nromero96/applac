@@ -376,14 +376,18 @@
                                     @endif
                                     @php $networks_labels = type_network_labels($quotation->customer_network); @endphp
                                     @if ($networks_labels)
-                                        <p class="mb-2"><label class="fw-bold mb-0">{{__("Network")}}:</label> {{ $networks_labels ? : '-' }}</p>
+                                        @if ($quotation->type_inquiry->value ==  TypeInquiry::EXTERNAL_SEO_RFQ->value)
+                                            <p class="mb-2"><label class="fw-bold mb-0">{{__("Network")}}:</label> {{ $networks_labels ? : '-' }}</p>
+                                        @endif
                                     @endif
                                     @if ($quotation->customer_ea_shipments)
                                         @if ($quotation->type_inquiry->value !==  TypeInquiry::EXTERNAL_2->value)
                                             @if ($quotation->type_inquiry->value !==  TypeInquiry::EXTERNAL_SEO_RFQ->value)
                                                 <p class="mb-2"><label class="fw-bold mb-0">{{__("Annual Shipments")}}:</label> {{ $quotation->customer_ea_shipments }} {!! $ea_shipments_label !!}</p>
                                             @else
-                                                <p class="mb-2"><label class="fw-bold mb-0">{{__("Annual Shipments USA/CA")}}:</label> {{ $quotation->customer_ea_shipments }}</p>
+                                                @if (!$quotation->transferred)
+                                                    <p class="mb-2"><label class="fw-bold mb-0">{{__("Annual Shipments USA/CA")}}:</label> {{ $quotation->customer_ea_shipments }}</p>
+                                                @endif
                                             @endif
                                         @endif
                                     @endif
@@ -396,7 +400,10 @@
                                     @if ($quotation->customer_source)
                                         <p class="mb-2"><label class="fw-bold mb-0">{{__("Source")}}:</label> {{ $quotation->customer_source }}</p>
                                     @endif
-                                    @if ($quotation->type_inquiry->value !==  TypeInquiry::EXTERNAL_SEO_RFQ->value)
+                                    @if (
+                                        $quotation->type_inquiry->value !==  TypeInquiry::EXTERNAL_SEO_RFQ->value
+                                        || ($quotation->type_inquiry->value !==  TypeInquiry::EXTERNAL_SEO_RFQ->value && $quotation->transferred)
+                                    )
                                         @if ($quotation->customer_business_role)
                                             <p class="mb-2"><label class="fw-bold mb-0">{{__("Business type")}}:</label> {{ $quotation->customer_business_role }}</p>
                                         @endif
@@ -485,7 +492,7 @@
                                                 @endif
                                             </p>
                                         @endif
-                                        @if ($quotation->type_inquiry->value ===  TypeInquiry::EXTERNAL_2->value)
+                                        @if ($quotation->type_inquiry->value ===  TypeInquiry::EXTERNAL_2->value || $quotation->prev_dept == 2)
                                             <p class="mb-2"><label class="fw-bold mb-0">{{__("Annual shipments")}}:</label> {{ $quotation->customer_ea_shipments }}</p>
                                         @endif
                                         @if ($quotation->is_internal_inquiry)

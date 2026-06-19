@@ -129,14 +129,19 @@ class TransferDept extends Component
         }
 
         // define type inquiry
+        $prev_dept = null;
         if ($this->new_dept == 2) {
             $new_type_inquiry = TypeInquiry::EXTERNAL_SEO_RFQ->value;
+            $prev_dept = 1;
         } else {
             $new_type_inquiry = TypeInquiry::EXTERNAL_2->value;
+            $prev_dept = 2;
         }
 
         $quotation = Quotation::find($this->quotationData['id']);
         $save_data = [
+            'transferred' => true,
+            'prev_dept' => $prev_dept,
             // cambia dpto
             'department_id' => $this->new_dept,
             // cambia type inquiry

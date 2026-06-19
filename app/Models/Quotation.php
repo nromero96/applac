@@ -67,6 +67,8 @@ class Quotation extends Model
         'processed_by_user_id',
         'processing_by_completed',
         'date_requested',
+        'prev_dept',
+        'transferred',
     ];
 
     protected $casts = [
@@ -76,6 +78,7 @@ class Quotation extends Model
         // 'additional_info'   => TypeAdditionalInfo::class,
         'additional_info'   => 'array',
         'processing_by_completed' => 'boolean',
+        'transferred' => 'boolean',
         // 'date_requested' => 'datetime',
     ];
 
