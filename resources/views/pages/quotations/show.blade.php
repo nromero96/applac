@@ -303,19 +303,21 @@
                                             </span>
                                         </div>
 
-                                        @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Leader'))
-                                            <div>
-                                                <b class="me-1">Assigned</b>
-                                                <select style="width: 130px" class="form-select rounded-pill px-2 py-1 assto_select d-inline-block user-select-assigned @if($quotation->assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->id }}">
-                                                    <option value="">{{ __('Unassigned') }}</option>
-                                                    @foreach ($users as $user)
-                                                        <option value="{{ $user->id }}" @if($user->id == $quotation->assigned_user_id) selected @endif>{{ $user->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        @else
-                                            <span class="badge bg-primary user-select-assigned d-none">Assigned to...</span>
-                                        @endif
+                                        <div>
+                                            <b class="me-1">Assigned</b>
+                                            <select style="width: 130px" class="form-select rounded-pill px-2 py-1 assto_select d-inline-block user-select-assigned @if($quotation->assigned_user_id == null) bg-primary text-white @endif" data-quotation-id="{{ $quotation->id }}">
+                                                <option value="">{{ __('Unassigned') }}</option>
+                                                @foreach ($users as $user)
+                                                    <option value="{{ $user->id }}" @if($user->id == $quotation->assigned_user_id) selected @endif>{{ $user->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        {{-- 
+                                            @if(Auth::user()->hasRole('Administrator') || Auth::user()->hasRole('Leader'))
+                                            @else
+                                                <span class="badge bg-primary user-select-assigned d-none">Assigned to...</span>
+                                            @endif 
+                                        --}}
                                     </div>
 
                                     <div class="flex-grow-1 text-end d-flex justify-content-end align-items-center gap-2">
