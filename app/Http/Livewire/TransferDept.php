@@ -130,11 +130,34 @@ class TransferDept extends Component
 
         // define type inquiry
         $prev_dept = null;
-        if ($this->new_dept == 2) {
-            $new_type_inquiry = TypeInquiry::EXTERNAL_SEO_RFQ->value;
+        $new_type_inquiry = $this->quotationData['type_inquiry'];
+        
+        if ($this->new_dept == 2) { // de SEO a Agent
+            switch ($this->quotationData['type_inquiry']) {
+                case TypeInquiry::EXTERNAL_2->value:
+                    $new_type_inquiry = TypeInquiry::EXTERNAL_SEO_RFQ->value;
+                    break;
+
+                case TypeInquiry::SEO_CONTACT_BUSI->value:
+                    $new_type_inquiry = TypeInquiry::SEO_CONTACT_AGT->value;
+                    break;
+                
+                default: break;
+            }
             $prev_dept = 1;
-        } else {
-            $new_type_inquiry = TypeInquiry::EXTERNAL_2->value;
+
+        } else { // de Agent a SEO
+            switch ($this->quotationData['type_inquiry']) {
+                case TypeInquiry::EXTERNAL_SEO_RFQ->value:
+                    $new_type_inquiry = TypeInquiry::EXTERNAL_2->value;
+                    break;
+
+                case TypeInquiry::SEO_CONTACT_AGT->value:
+                    $new_type_inquiry = TypeInquiry::SEO_CONTACT_BUSI->value;
+                    break;
+                
+                default: break;
+            }
             $prev_dept = 2;
         }
 

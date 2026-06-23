@@ -336,7 +336,10 @@
                                                 </a> --}}
                                                 @if (
                                                     $quotation->type_inquiry->value == TypeInquiry::EXTERNAL_SEO_RFQ->value || 
-                                                    $quotation->type_inquiry->value == TypeInquiry::EXTERNAL_2->value)
+                                                    $quotation->type_inquiry->value == TypeInquiry::EXTERNAL_2->value ||
+                                                    $quotation->type_inquiry->value == TypeInquiry::SEO_CONTACT_BUSI->value ||
+                                                    $quotation->type_inquiry->value == TypeInquiry::SEO_CONTACT_AGT->value
+                                                )
                                                         <a 
                                                             x-data
                                                             class="dropdown-item" 
