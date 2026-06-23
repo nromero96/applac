@@ -304,9 +304,10 @@ class InternalInquiryService {
         }
 
         // agent network
-        if (in_array(TypeNetwork::WCA->value, $_this->network) || in_array(TypeNetwork::TWIG->value, $_this->network)) {
+        $network = $_this->network ?? [];
+        if (in_array(TypeNetwork::WCA->value, $network) || in_array(TypeNetwork::TWIG->value, $network)) {
             $points = $points + 2;
-        } else if (!in_array(TypeNetwork::NONE->value, $_this->network)) {
+        } else if (!in_array(TypeNetwork::NONE->value, $network)) {
             $points = $points + 1;
         }
 
