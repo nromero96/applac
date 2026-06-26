@@ -617,26 +617,34 @@
                                                         $statusRow = TypeStatus::from($quotation->quotation_status);
                                                     @endphp
 
-                                                    <span class="cret-bge ms-0 w-100 align-middle badge {{ $statusRow->meta('badge_class') }} inv-status">
-                                                            @if ($adminorsales || in_array($statusRow->value, [
-                                                                    Typestatus::PENDING->value,
-                                                                    TypeStatus::QUALIFIED->value,
-                                                                    TypeStatus::ATTENDED->value,
-                                                                    TypeStatus::QUOTE_SENT->value,
-                                                                ])
-                                                            )
-                                                                {{ $statusRow->meta('label') }}
-                                                            @elseif ($statusRow->value == TypeStatus::CONTACTED->value)
-                                                                Attending
-                                                            @elseif ($statusRow->value == TypeStatus::UNQUALIFIED->value)
-                                                                Unable to fulfill
-                                                            @endif
-                                                    </span>
+                                                    @if (!$quotation->auto_quoted)
+                                                        {{-- class: cret-bge  --}}
+                                                        <span class="ms-0 w-100 align-middle badge {{ $statusRow->meta('badge_class') }} inv-status">
+                                                                @if ($adminorsales || in_array($statusRow->value, [
+                                                                        Typestatus::PENDING->value,
+                                                                        TypeStatus::QUALIFIED->value,
+                                                                        TypeStatus::ATTENDED->value,
+                                                                        TypeStatus::QUOTE_SENT->value,
+                                                                    ])
+                                                                )
+                                                                    {{ $statusRow->meta('label') }}
+                                                                @elseif ($statusRow->value == TypeStatus::CONTACTED->value)
+                                                                    Attending
+                                                                @elseif ($statusRow->value == TypeStatus::UNQUALIFIED->value)
+                                                                    Unable to fulfill
+                                                                @endif
+                                                        </span>
+                                                    @else
+                                                        <span class="badge {{ TypeStatus::AUTO_QUOTED->meta('badge_class') }}">
+                                                            {{ TypeStatus::AUTO_QUOTED->meta('label') }}
+                                                        </span>
+                                                    @endif
                                                 </td>
 
                                                 @if($adminorsales)
                                                     <td class="px-1">
-                                                        <span class="cret-bge ms-0 w-100 align-middle badge @if ($quotation->quotation_result == 'Won')
+                                                        {{-- class: cret-bge --}}
+                                                        <span class="ms-0 w-100 align-middle badge @if ($quotation->quotation_result == 'Won')
                                                                 badge-light-won @elseif ($quotation->quotation_result == 'Lost')
                                                                 badge-light-danger @elseif ($quotation->quotation_result == 'Under Review')
                                                                 badge-light-warning @endif">
