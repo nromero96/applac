@@ -66,6 +66,9 @@
             border-radius: 0 0 6px 6px;
             font-size: 12px;
         }
+        .text-result {
+            font-size: 14px !important;
+        }
     </style>
 
     @if(app()->environment('production'))

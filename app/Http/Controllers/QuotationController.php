@@ -747,7 +747,7 @@ class QuotationController extends Controller
         // Ordenar por id después de agregar las columnas desendientes
         $quotation_notes = $quotation_notes->sortByDesc('id');
 
-        $quotation_notes = $quotation_notes->map(function ($note) {
+        $quotation_notes = $quotation_notes->map(function ($note) use ($quotation) {
             if (isset($note->action)) {
                 $note->action_base = $note->action;
                 $note->action = str_replace(TypeStatus::QUALIFIED->value, TypeStatus::QUALIFIED->meta('label'), $note->action);
@@ -757,6 +757,8 @@ class QuotationController extends Controller
                 $note->action = str_replace(TypeStatus::CONTACTED->value, TypeStatus::CONTACTED->meta('label'), $note->action);
                 $note->action = str_replace(TypeStatus::PENDING->value, TypeStatus::PENDING->meta('label'), $note->action);
             }
+            $note->url_pdf_sent = $quotation->url_pdf_sent;
+            $note->ports = $quotation->origin_airportorport . ' - ' . $quotation->destination_airportorport;
             return $note;
         });
 

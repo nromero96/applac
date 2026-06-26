@@ -69,16 +69,21 @@ class Quotation extends Model
         'date_requested',
         'prev_dept',
         'transferred',
+        'auto_quoted',
+        'url_pdf_sent',
+        'auto_unqualified',
     ];
 
     protected $casts = [
-        'type_inquiry'      => TypeInquiry::class,
-        'priority'          => TypePriorityInq::class,
-        'cargo_details'     => 'array',
+        'type_inquiry'              => TypeInquiry::class,
+        'priority'                  => TypePriorityInq::class,
+        'cargo_details'             => 'array',
         // 'additional_info'   => TypeAdditionalInfo::class,
-        'additional_info'   => 'array',
-        'processing_by_completed' => 'boolean',
-        'transferred' => 'boolean',
+        'additional_info'           => 'array',
+        'processing_by_completed'   => 'boolean',
+        'transferred'               => 'boolean',
+        'auto_quoted'               => 'boolean',
+        'auto_unqualified'          => 'boolean',
         // 'date_requested' => 'datetime',
     ];
 

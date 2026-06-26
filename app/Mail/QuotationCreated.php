@@ -113,6 +113,8 @@ class QuotationCreated extends Mailable{
             // Actualizar el status de la cotización
             $this->quotation->update([
                 'status' => 'Quote Sent',
+                'auto_quoted' => true,
+                'url_pdf_sent' => $pdf['url'] ?? null,
                 'updated_at' => now(),
             ]);
 

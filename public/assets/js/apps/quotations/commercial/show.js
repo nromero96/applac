@@ -169,6 +169,14 @@ function listQuotationNotes(quotationId) {
 
                             ${ note.reason ? `<b>Reason:</b> ${ note.reason } <br>` : '' }
                             ${ note.note ? `<b>Comment:</b> ${ note.note } <br>` : '' }
+                            ${ note.note && /auto-quoted/i.test(note.note) && note.url_pdf_sent
+                                ? `
+                                    <b>Quote PDF:</b> 
+                                    <a href="${ note.url_pdf_sent }" style="text-decoration: underline" target="_blank">${ note.ports }</a> 
+                                    <br>
+                                ` 
+                                : ''
+                            }
 
                             <div class="al-date d-flex align-items-center gap-1 mt-2">
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

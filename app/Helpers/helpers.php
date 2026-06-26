@@ -428,13 +428,14 @@ if (!function_exists('rateQuotation')) {
                 'type' => 'inquiry_status',
                 'action' => "'{$quotation->status}' to 'Unqualified'",
                 'reason' => 'Low Rating Auto-Decline',
-                'note' => 'Low Rating Request - Auto-Decline Email Sent',
+                'note' => 'Low Rating Request - Auto-Decline Email Sent',
                 'user_id' => 1,
             ]);
 
             //Actualizar status de la cotización a 'Unqualified'
             $quotation->update([
                 'status' => 'Unqualified',
+                'auto_unqualified' => true,
                 'updated_at' => Carbon::now(),
             ]);
 
@@ -1028,13 +1029,14 @@ if (!function_exists('rateQuotationWeb')) {
                 'type' => 'inquiry_status',
                 'action' => "'{$quotation->status}' to 'Unqualified'",
                 'reason' => 'Low Rating Auto-Decline',
-                'note' => 'Low Rating Request - Auto-Decline Email Sent',
+                'note' => 'Low Rating Request - Auto-Decline Email Sent',
                 'user_id' => 1,
             ]);
 
             //Actualizar status de la cotización a 'Unqualified'
             $quotation->update([
                 'status' => 'Unqualified',
+                'auto_unqualified' => true,
                 'updated_at' => Carbon::now(),
             ]);
 
@@ -1425,6 +1427,40 @@ if (!function_exists('rateQuotationAgentWeb')) {
         $quotation->priority = $priority;
         $quotation->points = $rating;
         $quotation->save();
+
+        if (!$isBusinessEmailAndNotEdu) { // nueva regla basada en el dominio de los emails
+            //Registrar QuotationNote
+            QuotationNote::create([
+                'quotation_id' => $quotation->id,
+                'type' => 'inquiry_status',
+                'action' => "'{$quotation->status}' to 'Unqualified'",
+                'reason' => 'Low Rating Auto-Decline',
+                'note' => 'Low Rating Request - Auto-Decline Email Sent',
+                'user_id' => 1,
+            ]);
+
+            //Actualizar status de la cotización a 'Unqualified'
+            $quotation->update([
+                'status' => 'Unqualified',
+                'auto_unqualified' => true,
+                'updated_at' => Carbon::now(),
+            ]);
+
+            $customer_qt = $quotation->customer_user_id
+                        ? User::find($quotation->customer_user_id)
+                        : GuestUser::find($quotation->guest_user_id);
+
+            $customer_name = trim(($customer_qt->name ?? '') . ' ' . ($customer_qt->lastname ?? ''));
+
+            // Registrar en QuotePendingEmail para enviar email
+            QuotePendingEmail::create([
+                'quotation_id'  => $quotation->id,
+                'type'          => 'Unqualified',
+                'customer_name' => $customer_name,
+                'email'         => $email,
+                'status'        => 'pending',
+            ]);
+        }
 
 
         // Asignar usuario basado en location

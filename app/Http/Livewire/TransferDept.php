@@ -24,7 +24,12 @@ class TransferDept extends Component
     public function mount(array $quotationData) {
         $this->quotationData = $quotationData;
         $current_assigned_user = User::find($this->quotationData['assigned_user_id']);
-        $this->new_dept = $current_assigned_user->department_id === 1 ? 2 : 1;
+
+        if ($current_assigned_user) {
+            $this->new_dept = $current_assigned_user->department_id === 1 ? 2 : 1;
+        } else {
+            $this->new_dept = $this->quotationData['department_id'] === 1 ? 2 : 1;
+        }
 
         // listar miembros
         $user_sales_dpto = User::whereHas('roles', function($query) {
