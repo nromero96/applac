@@ -414,8 +414,10 @@
                                         @endif
                                     @endif
                                     @if ($quotation->customer_job_title)
-                                        <p class="mb-2"><label class="fw-bold mb-0">{{__("Job Title")}}:</label> {{$quotation->customer_job_title}}</p>
                                     @endif
+                                    <p class="mb-2"><label class="fw-bold mb-0">
+                                        {{__("Job Title")}}:</label> {{ $quotation->customer_job_title ? : 'Not specified by user' }}
+                                    </p>
                                     @if ($quotation->customer_tier)
                                         <p class="mb-2"><label class="fw-bold mb-0">{{__("Tier")}}:</label> {{ $quotation->customer_tier }}</p>
                                     @endif
@@ -463,7 +465,11 @@
 
                                     <p class="mb-2">
                                         <label class="fw-bold mb-0">{{__("Request Date")}}:</label>
-                                        {{ $quotation->date_requested ? date('Y-m-d H:i', strtotime($quotation->date_requested)) : '-' }}
+                                        {{ 
+                                            $quotation->date_requested 
+                                                ? date('Y-m-d H:i', strtotime($quotation->date_requested)) 
+                                                : date('Y-m-d H:i', strtotime($quotation->created_at))
+                                        }}
                                     </p>
 
                                     @if (
@@ -528,7 +534,10 @@
                                         @else
                                             <p class="mb-2">
                                                 <label class="fw-bold mb-0">{{__("Shipment readiness")}}:</label>
-                                                {{ $quotation->shipment_ready_date ? : '-' }} {!! $shipment_ready_date_label !!}
+                                                {{ $quotation->shipment_ready_date ? : '-' }} 
+                                                @if (false)
+                                                    {!! $shipment_ready_date_label !!}
+                                                @endif
                                             </p>
                                         @endif
                                         <p class="mb-2"><label class="fw-bold mb-0">{{__("Shipment description")}}:</label><br> {!! nl2br($quotation->cargo_description) ? : '-' !!}</p>
