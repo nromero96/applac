@@ -484,11 +484,11 @@
                                         @if (!$quotation->is_internal_inquiry)
                                             <p class="mb-2" style="border-left:4px solid #D3EAFD; padding-left: 8px">
                                                 <span class="d-block"><label class="fw-bold mb-0">{{__("Origin Country")}}:</label> {{ $quotation->origin_country }}</span>
-                                                <span class="d-block"><label class="fw-bold mb-0">{{__("Origin Address")}}:</label> {{ $quotation->origin_label }}</span>
+                                                <span class="d-block"><label class="fw-bold mb-0">{{__("Origin Address")}}:</label> {{ $quotation->origin_label ?? '-' }}</span>
                                             </p>
                                             <p class="mb-2" style="border-left:4px solid #0A6AB7; padding-left: 8px">
                                                 <span class="d-block"><label class="fw-bold mb-0">{{__("Destination Country")}}:</label> {{ $quotation->destination_country }}</span>
-                                                <span class="d-block"><label class="fw-bold mb-0">{{__("Destination Address")}}:</label> {{ $quotation->destination_label }}</span>
+                                                <span class="d-block"><label class="fw-bold mb-0">{{__("Destination Address")}}:</label> {{ $quotation->destination_label ?? '-' }}</span>
                                             </p>
                                         @endif
                                         <p class="mb-2"><label class="fw-bold mb-0">{{__("Mode of transport")}}:</label> {{ $quotation->modeOfTransportLabel() }}</p>
