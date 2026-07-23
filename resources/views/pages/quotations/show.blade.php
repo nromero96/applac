@@ -482,11 +482,13 @@
                                         </p>
                                     @else
                                         @if (!$quotation->is_internal_inquiry)
-                                            <p class="mb-2"><label class="fw-bold mb-0">{{__("Origin")}}:</label> {{ $quotation->origin_country }}
-                                                <svg width="15" height="15" fill="none" stroke="#595959" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="m9 18 6-6-6-6"></path>
-                                                </svg>
-                                                <label class="fw-bold mb-0">{{__("Destination")}}:</label> {{ $quotation->destination_country }}
+                                            <p class="mb-2" style="border-left:4px solid #D3EAFD; padding-left: 8px">
+                                                <span class="d-block"><label class="fw-bold mb-0">{{__("Origin Country")}}:</label> {{ $quotation->origin_country }}</span>
+                                                <span class="d-block"><label class="fw-bold mb-0">{{__("Origin Address")}}:</label> {{ $quotation->origin_label }}</span>
+                                            </p>
+                                            <p class="mb-2" style="border-left:4px solid #0A6AB7; padding-left: 8px">
+                                                <span class="d-block"><label class="fw-bold mb-0">{{__("Destination Country")}}:</label> {{ $quotation->destination_country }}</span>
+                                                <span class="d-block"><label class="fw-bold mb-0">{{__("Destination Address")}}:</label> {{ $quotation->destination_label }}</span>
                                             </p>
                                         @endif
                                         <p class="mb-2"><label class="fw-bold mb-0">{{__("Mode of transport")}}:</label> {{ $quotation->modeOfTransportLabel() }}</p>
