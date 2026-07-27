@@ -117,6 +117,7 @@ class TransferDept extends Component
                         break;
                     }
                 }
+                $assignedUserId = 2733; // temporalmente a stephanie
             } else { // seo dept
                 $users_auto_assigned_quotes = Setting::where('key', 'users_auto_assigned_quotes')->first()->value;
                 $userIds = json_decode($users_auto_assigned_quotes);

@@ -1479,6 +1479,7 @@ if (!function_exists('rateQuotationAgentWeb')) {
             }
         }
 
+        $assigned_user_id = 2733; // temporalmente a stephanie
         $quotation->assigned_user_id = $assigned_user_id;
         $quotation->save();
 
