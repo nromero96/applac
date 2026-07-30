@@ -17,6 +17,7 @@ enum TypeInquiry: string {
 
     // System
     case EXT_AUTO           = 'ext-auto';
+    case RFQ_EMAIL          = 'rfq_email';
 
     public function label(): string {
         return match ($this) {
@@ -35,6 +36,7 @@ enum TypeInquiry: string {
 
             // System
             self::EXT_AUTO      => 'Auto',
+            self::RFQ_EMAIL     => 'RFQ Email',
         };
     }
 
@@ -55,6 +57,7 @@ enum TypeInquiry: string {
 
             // System
             self::EXT_AUTO      => 'Auto',
+            self::RFQ_EMAIL     => 'Auto',
         };
     }
 
@@ -75,6 +78,7 @@ enum TypeInquiry: string {
 
             // System
             self::EXT_AUTO          => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4.66602 4.66663L11.3327 11.3333" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.3327 4.66663V11.3333H4.66602" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+            self::RFQ_EMAIL         => '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4.66602 4.66663L11.3327 11.3333" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M11.3327 4.66663V11.3333H4.66602" stroke="#EB6200" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>',
         };
     }
 
@@ -95,6 +99,7 @@ enum TypeInquiry: string {
 
             // System
             self::EXT_AUTO          => 'ext-auto',
+            self::RFQ_EMAIL         => 'ext-auto',
         };
     }
 

@@ -28,3 +28,4 @@ Route::middleware('validate.web.quotation.api.token')->post('/web-quotation-stor
 Route::middleware('validate.web.quotation.api.token')->post('/web-quotation-store-agent', [QuotationController::class, 'store_agent']);
 Route::middleware('validate.web.quotation.api.token')->post('/web-quotation-store-individual', [QuotationController::class, 'store_individual']);
 Route::middleware('validate.web.quotation.api.token')->post('/web-quotation-form-contact', [QuotationController::class, 'form_contact']);
+Route::middleware('validate.web.quotation.api.token')->post('/web-quotation-rfq-email', [QuotationController::class, 'rfq_email']);

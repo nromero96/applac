@@ -475,6 +475,7 @@
                                     @if (
                                         $quotation->type_inquiry->value === TypeInquiry::SEO_CONTACT_BUSI->value
                                         || $quotation->type_inquiry->value === TypeInquiry::SEO_CONTACT_AGT->value
+                                        || $quotation->type_inquiry->value === TypeInquiry::RFQ_EMAIL->value
                                     )
                                         <p class="mb-2"><label class="fw-bold mb-0">Subject:</label> {{ $quotation->subject }}</p>
                                         <p>

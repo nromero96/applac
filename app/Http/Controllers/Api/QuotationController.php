@@ -564,6 +564,68 @@ class QuotationController extends Controller
         }
     }
 
+    public function rfq_email(Request $request) {
+        $data = $request->validate([
+            'name' => ['required'],
+            'email' => ['required'],
+            'message' => ['required'],
+            'assigned_user_email' => ['required'],
+            'subject' => ['required'],
+        ]);
+
+        // creando el user
+        $user_data = [
+            'name' => $data['name'],
+            'email' => strtolower($data['email']),
+            'source' => 'Other',
+        ];
+        $user = GuestUser::create($user_data);
+
+        // creando el inquiry
+        $inquiry_data = [
+            'status'                => TypeStatus::PENDING->value,
+            'type_inquiry'          => TypeInquiry::RFQ_EMAIL->value,
+            'guest_user_id'         => $user->id,
+            'subject'               => $data['subject'],
+            'cargo_description'     => $data['message'],
+            'created_at'            => $request->input('created_at'),
+        ];
+        // buscando user asignado en base al email
+        $user_searched = User::where('email', $data['assigned_user_email'])->first();
+        if ($user_searched) {
+            $inquiry_data['assigned_user_id'] = $user_searched->id;
+        }
+
+        $copies = $request->input('copies');
+        $inquiries_created = [];
+        for ($i=0; $i < $copies; $i++) { 
+            $inquiry = Quotation::create($inquiry_data);
+            $inquiries_created[] = $inquiry;
+        }
+
+        // save files
+        if ($request->hasFile('files_inquiry')) {
+            foreach ($request->file('files_inquiry') as $file) {
+                // Nombre único para el archivo
+                $file_name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                // Mueve el archivo a la carpeta public/uploads/quotation_documents
+                $file->storeAs('public/uploads/quotation_documents', $file_name);
+                // Registrar en la base de datos
+                QuotationDocument::create([
+                    'quotation_id' => $inquiry->id,
+                    'document_path' => $file_name,
+                ]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'RFQ Email saved',
+            'request' => $request->all(),
+            'user' => $user,
+            'inquiries' => $inquiries_created,
+        ]);
+    }
+
     /**
      * Display the specified resource.
      *
