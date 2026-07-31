@@ -305,7 +305,28 @@
                                             </div>
                                         @endif
 
-                                        @if(request('assignedto') != '' || request('result')!= '' || request('status')!= '' || request('source') != '' || request('rating') != '')
+                                        <!-- Dropdown para el tags con checkboxes -->
+                                        <div class="dropdown">
+                                            <button class="rounded-pill dropdown-toggle select-dropdown me-2" type="button" id="tagDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                                                {{ request('tag') ? implode(', ', request('tag')) : 'Tag' }}
+                                            </button>
+                                            <ul class="dropdown-menu mt-3 pt-2 ps-3 pb-0" aria-labelledby="tagDropdown">
+                                                @foreach ($tags as $tag)
+                                                    <li>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="checkbox" name="tag[]" value="{{$tag}}" id="tag{{ $loop->index }}" {{ in_array($tag, request('tag', [])) ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="tag{{ $loop->index }}">
+                                                                {{ $tag }}
+                                                                {{-- Mostrar total de cotizaciones --}}
+                                                                {{-- <small class="ms-1 fw-light">({{ $rating->total >= 1000 ? number_format($rating->total / 1000, 1) . 'K' : $rating->total }})</small> --}}
+                                                            </label>
+                                                        </div>
+                                                    </li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+
+                                        @if(request('assignedto') != '' || request('result')!= '' || request('status')!= '' || request('source') != '' || request('rating') != '' || request('tag') != '')
                                             <a href="{{ route('quotations.index') }}" class="ms-0 text-primary btn-clearfilter">
                                                 <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M18 6 6 18"></path>

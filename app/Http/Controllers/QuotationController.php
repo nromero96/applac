@@ -33,6 +33,8 @@ use App\Models\QuotePendingEmail;
 use Carbon\Carbon;
 
 use App\Models\FeaturedQuotation;
+use App\Models\ScheduledQuotation;
+use App\Models\TaggedQuotation;
 use App\Models\UnreadQuotation;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,6 +62,7 @@ class QuotationController extends Controller
         $source = request()->query('source');
         $assignedto = request()->query('assignedto');
         $rating = request()->query('rating');
+        $tag = request()->query('tag');
         $daterequest = request()->query('daterequest');
         $search = request()->query('search');
 
@@ -67,6 +70,14 @@ class QuotationController extends Controller
         $order_status = request()->query('order-status');
 
         $export = request()->query('export');
+
+        $tags = [
+            'High Priority',
+            'Medium Priority',
+            'Low Priority',
+            'Hot Deal',
+            'Potential Lead',
+        ];
 
         // lista de cotizaciones para el usuario logueado si es Customer
         $quotations = Quotation::select(
@@ -137,7 +148,7 @@ class QuotationController extends Controller
         }
 
         // Aplicar filtros de búsqueda y fecha si hay términos de búsqueda y/o fecha solicitada
-        $quotations->where(function($query) use ($search, $type_inquiry, $result, $status, $source, $rating, $assignedto, $daterequest) {
+        $quotations->where(function($query) use ($search, $type_inquiry, $result, $status, $source, $rating, $tag, $assignedto, $daterequest) {
 
             // Aplicar type_inquiry si está presente
             if (!empty($type_inquiry)) {
@@ -184,6 +195,37 @@ class QuotationController extends Controller
                 } else {
                     $query->where('quotations.rating', $rating);
                 }
+            }
+
+            // tags
+            if (!empty($tag)) {
+                $items_result = [];
+
+                if (is_array($tag)) {
+
+                } else {
+
+                }
+                $featured = FeaturedQuotation::select('id', 'quotation_id', 'priority')
+                    ->where('user_id', auth()->id())
+                    ->whereIn('priority', $tag);
+
+                $tagged = TaggedQuotation::select('id', 'quotation_id', 'priority')
+                    ->where('user_id', auth()->id())
+                    ->whereIn('priority', $tag);
+
+                $scheduled = ScheduledQuotation::select('id', 'quotation_id', 'priority')
+                    ->where('user_id', auth()->id())
+                    ->whereIn('priority', $tag)
+                    ->unionAll($featured)
+                    ->unionAll($tagged);
+
+                $result = $scheduled->get();
+
+                $items_result = $result->pluck('quotation_id');
+
+                $query->whereIn('quotations.id', $items_result);
+                
             }
 
             // Aplicar assigned-to si está presente
@@ -448,7 +490,17 @@ class QuotationController extends Controller
 
 
         $data['listforpage'] = $listforpage;
-        return view('pages.quotations.index')->with($data)->with('quotations', $quotations)->with('users', $users)->with('listsources', $listsources)->with('listratings', $listratings)->with('totalQuotation', $totalQuotation)->with('liststatus', $liststatus)->with('listresults', $listresults)->with('listtypeinquiries', $listtypeinquiries);
+        return view('pages.quotations.index')
+            ->with($data)
+            ->with('quotations', $quotations)
+            ->with('users', $users)
+            ->with('listsources', $listsources)
+            ->with('listratings', $listratings)
+            ->with('totalQuotation', $totalQuotation)
+            ->with('liststatus', $liststatus)
+            ->with('listresults', $listresults)
+            ->with('listtypeinquiries', $listtypeinquiries)
+            ->with('tags', $tags);
     }
 
     public function onlineregister(Request $request){

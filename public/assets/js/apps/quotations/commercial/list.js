@@ -254,6 +254,7 @@ function submitSearch() {
 
     // Limpiar los checkboxes anteriores
     formData.delete('rating[]');
+    formData.delete('tag[]');
 
     // Obtener los valores de los inputs dentro del formulario y añadirlos a formData
     const inputs = document.getElementById('form-search').querySelectorAll('input');
