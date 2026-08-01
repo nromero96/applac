@@ -124,6 +124,16 @@
                                                         </a>
                                                     </li>
                                                 @endforeach
+                                                <li>
+                                                    <a class="dropdown-item" href="#" onclick="selectStatus('Auto-quoted')">
+                                                        <span class="cret-bge ms-0 align-middle badge badge-light-autoquoted" title="Auto-Quoted">
+                                                            Auto-Quoted
+                                                        </span>
+                                                        <small class="float-end fw-light">
+                                                            ({{ $qty_auto_quoted >= 1000 ? number_format($qty_auto_quoted / 1000, 1) . 'K' : $qty_auto_quoted }})
+                                                        </small>
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </div>
 

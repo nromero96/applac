@@ -167,7 +167,11 @@ class QuotationController extends Controller
 
             // Aplicar status si está presente
             if (!empty($status)) {
-                $query->where('quotations.status', $status);
+                if ($status !== 'Auto-quoted') {
+                    $query->where('quotations.status', $status);
+                } else {
+                    $query->where('quotations.auto_quoted', true);
+                }
             } else {
                 // Si no se ha especificado un estado, excluir las cotizaciones con estado 'Deleted'
                 $query->where('quotations.status', '!=', 'Deleted');
@@ -487,7 +491,8 @@ class QuotationController extends Controller
 
         }
 
-
+        // qty auto-quoted
+        $qty_auto_quoted = Quotation::where('quotations.auto_quoted', true)->count();
 
         $data['listforpage'] = $listforpage;
         return view('pages.quotations.index')
@@ -500,7 +505,8 @@ class QuotationController extends Controller
             ->with('liststatus', $liststatus)
             ->with('listresults', $listresults)
             ->with('listtypeinquiries', $listtypeinquiries)
-            ->with('tags', $tags);
+            ->with('tags', $tags)
+            ->with('qty_auto_quoted', $qty_auto_quoted);
     }
 
     public function onlineregister(Request $request){
