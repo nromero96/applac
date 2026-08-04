@@ -503,8 +503,8 @@ class QuotationController extends Controller
                     ->where('status', 'active')
                     ->get()
                 ;
-                // $userIds = $users->pluck('id');
-                $userIds[] = 2733; // temporalmente a stephanie
+                $userIds = $users->pluck('id');
+                // $userIds[] = 2733; // temporalmente a stephanie
             }
             $indexFile = 'current_index_contact_dpto_' . $department_id . '.txt';
             $currentIndex = (int)Storage::get($indexFile);
