@@ -20,6 +20,7 @@ use App\Models\Country;
 use App\Models\Setting;
 use App\Models\UnreadQuotation;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -624,6 +625,24 @@ class QuotationController extends Controller
             'user' => $user,
             'inquiries' => $inquiries_created,
         ]);
+    }
+
+    public function assigned_users() {
+        // users
+        $users = User::select('id', 'department_id', 'name', 'lastname', 'email')
+            ->where('status', 'active')
+            ->where('department_id', '!=', null)
+            ->with('department:id,name')
+            ->orderBy('name')
+            ->get();
+
+        // agrupando en dptos
+        $user_dept = [];
+        foreach ($users as $user) {
+            $user_dept[$user['department']['name']][] = $user;
+        }
+
+        return response()->json($user_dept);
     }
 
     /**

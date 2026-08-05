@@ -23,6 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //Ruta listar paises
 Route::get('/countries', [CountryController::class, 'index']);
 
+// ruta para listar asesores
+Route::get('/list-assigned-users', [QuotationController::class, 'assigned_users']);
+
 //Ruta para manejar solicitudes Quotations
 Route::middleware('validate.web.quotation.api.token')->post('/web-quotation-store', [QuotationController::class, 'store']);
 Route::middleware('validate.web.quotation.api.token')->post('/web-quotation-store-agent', [QuotationController::class, 'store_agent']);
