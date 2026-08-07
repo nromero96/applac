@@ -589,7 +589,8 @@ class QuotationController extends Controller
             'guest_user_id'         => $user->id,
             'subject'               => $data['subject'],
             'cargo_description'     => $data['message'],
-            'created_at'            => $request->input('created_at'),
+            'date_requested'        => $request->input('date_requested'),
+            'created_at'            => Carbon::now(),
         ];
         // buscando user asignado en base al email
         $user_searched = User::where('email', $data['assigned_user_email'])->first();
@@ -602,6 +603,12 @@ class QuotationController extends Controller
         for ($i=0; $i < $copies; $i++) { 
             $inquiry = Quotation::create($inquiry_data);
             $inquiries_created[] = $inquiry;
+
+            // set quoation as unread
+            UnreadQuotation::create([
+                'user_id'       => $user_searched->id,
+                'quotation_id'  => $inquiry->id,
+            ]);
         }
 
         // save files
