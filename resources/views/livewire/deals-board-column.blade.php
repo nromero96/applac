@@ -196,7 +196,10 @@
                                 {{ isset($quotation->customer_lastname) ? $quotation->customer_lastname : '' }}
                             </h3>
                         @endif
-                        @if ($quotation->type_inquiry->value === TypeInquiry::INTERNAL_OTHER->value)
+                        @if (
+                            $quotation->type_inquiry->value === TypeInquiry::INTERNAL_OTHER->value
+                            || $quotation->type_inquiry->value == TypeInquiry::RFQ_EMAIL->value
+                        )
                             @if (isset($quotation->customer_email) && $quotation->customer_email != '')
                                 <p>{{ $quotation->customer_email }}</p>
                             @else
@@ -232,9 +235,6 @@
                                         <p class="__value">{{ $quotation->currency }}{{ number_format($quotation->declared_value) }}</p>
                                     @endif
                                 @endif
-                            @endif
-                            @if ($quotation->type_inquiry->value == TypeInquiry::RFQ_EMAIL->value)
-                                <p class="__value">{{ $quotation->customer_email }}</p>
                             @endif
                         </div>
                         <p class="__ago">{{ date('d/m/Y', strtotime($quotation->created_at)) }}</p>
