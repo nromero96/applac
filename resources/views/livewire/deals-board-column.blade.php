@@ -155,7 +155,9 @@
                                 </div>
                                 {{-- <x-stars :stars="$quotation->rating" /> --}}
                             @else
-                                @if ($quotation->type_inquiry->value == TypeInquiry::INTERNAL->value)
+                                @if ($quotation->type_inquiry->value == TypeInquiry::RFQ_EMAIL->value)
+                                    <span>TBD</span>
+                                @elseif ($quotation->type_inquiry->value == TypeInquiry::INTERNAL->value)
                                     <span class="__badge __tier">
                                         {{ $quotation->customer_tier }}
                                     </span>
@@ -194,7 +196,10 @@
                                 {{ isset($quotation->customer_lastname) ? $quotation->customer_lastname : '' }}
                             </h3>
                         @endif
-                        @if ($quotation->type_inquiry->value === TypeInquiry::INTERNAL_OTHER->value)
+                        @if (
+                            $quotation->type_inquiry->value === TypeInquiry::INTERNAL_OTHER->value
+                            || $quotation->type_inquiry->value == TypeInquiry::RFQ_EMAIL->value
+                        )
                             @if (isset($quotation->customer_email) && $quotation->customer_email != '')
                                 <p>{{ $quotation->customer_email }}</p>
                             @else
@@ -206,7 +211,9 @@
                     </div>
                     <div class="__foot">
                         <div class="__value_readiness">
-                            <p class="mb-0" style="font-size: 12px; color: #999999">{{ $quotation->modeOfTransportLabel() }}</p>
+                            @if ($quotation->type_inquiry->value != TypeInquiry::RFQ_EMAIL->value)
+                                <p class="mb-0" style="font-size: 12px; color: #999999">{{ $quotation->modeOfTransportLabel() }}</p>
+                            @endif
                             @if (isset($this->readinessMap[$quotation->shipment_ready_date]))
                                 <p class="__readinesss {{ $this->readinessMap[$quotation->shipment_ready_date]['class'] }}">
                                     {{ $this->readinessMap[$quotation->shipment_ready_date]['label'] }}
@@ -220,9 +227,12 @@
                                 {!! type_network_pill_first($quotation->customer_network) !!}
                             @endif
                             @if (!$quotation->is_internal_inquiry)
-                                @if ($quotation->type_inquiry->value != TypeInquiry::EXTERNAL_SEO_RFQ->value)
+                                @if (
+                                    $quotation->type_inquiry->value != TypeInquiry::EXTERNAL_SEO_RFQ->value
+                                    && $quotation->type_inquiry->value != TypeInquiry::RFQ_EMAIL->value
+                                )
                                     @if (isset($quotation->declared_value))
-                                        <p class="__value">{{ $quotation->currency  }}{{ number_format($quotation->declared_value) }}</p>
+                                        <p class="__value">{{ $quotation->currency }}{{ number_format($quotation->declared_value) }}</p>
                                     @endif
                                 @endif
                             @endif

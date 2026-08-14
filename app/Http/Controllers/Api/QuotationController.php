@@ -20,6 +20,7 @@ use App\Models\Country;
 use App\Models\Setting;
 use App\Models\UnreadQuotation;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -562,6 +563,93 @@ class QuotationController extends Controller
             Log::error($e);
             return response()->json(['error' => $e->getMessage()], 500);
         }
+    }
+
+    public function rfq_email(Request $request) {
+        $data = $request->validate([
+            'name' => ['required'],
+            'email' => ['required'],
+            'message' => ['required'],
+            'assigned_user_email' => ['required'],
+            'subject' => ['required'],
+        ]);
+
+        // creando el user
+        $user_data = [
+            'name' => $data['name'],
+            'email' => strtolower($data['email']),
+            'source' => 'Other',
+        ];
+        $user = GuestUser::create($user_data);
+
+        // creando el inquiry
+        $inquiry_data = [
+            'status'                => TypeStatus::PENDING->value,
+            'type_inquiry'          => TypeInquiry::RFQ_EMAIL->value,
+            'guest_user_id'         => $user->id,
+            'subject'               => $data['subject'],
+            'cargo_description'     => $data['message'],
+            'date_requested'        => $request->input('date_requested'),
+            'created_at'            => Carbon::now(),
+        ];
+        // buscando user asignado en base al email
+        $user_searched = User::where('email', $data['assigned_user_email'])->first();
+        if ($user_searched) {
+            $inquiry_data['assigned_user_id'] = $user_searched->id;
+        }
+
+        $copies = $request->input('copies');
+        $inquiries_created = [];
+        for ($i=0; $i < $copies; $i++) { 
+            $inquiry = Quotation::create($inquiry_data);
+            $inquiries_created[] = $inquiry;
+
+            // set quoation as unread
+            UnreadQuotation::create([
+                'user_id'       => $user_searched->id,
+                'quotation_id'  => $inquiry->id,
+            ]);
+        }
+
+        // save files
+        if ($request->hasFile('files_inquiry')) {
+            foreach ($request->file('files_inquiry') as $file) {
+                // Nombre único para el archivo
+                $file_name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME) . '_' . time() . '.' . $file->getClientOriginalExtension();
+                // Mueve el archivo a la carpeta public/uploads/quotation_documents
+                $file->storeAs('public/uploads/quotation_documents', $file_name);
+                // Registrar en la base de datos
+                QuotationDocument::create([
+                    'quotation_id' => $inquiry->id,
+                    'document_path' => $file_name,
+                ]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'RFQ Email saved',
+            'request' => $request->all(),
+            'user' => $user,
+            'inquiries' => $inquiries_created,
+        ]);
+    }
+
+    public function assigned_users() {
+        // users
+        $users = User::select('id', 'department_id', 'name', 'lastname', 'email')
+            ->where('status', 'active')
+            ->where('department_id', '!=', null)
+            ->with('department:id,name')
+            ->orderBy('name')
+            ->get();
+
+        // agrupando en dptos
+        $user_dept = [];
+        foreach ($users as $user) {
+            $user_dept[$user['department']['name']][] = $user;
+        }
+
+        return response()->json($user_dept);
     }
 
     /**
