@@ -109,6 +109,9 @@ class InternalInquiryService {
             // 🧾 Crear cotización
             $quotation = $this->createInquiry($component, $guestUser->id);
 
+            // create init inquiry note
+            init_inquiry_note($quotation);
+
             // 📎 Guardar adjuntos
             $this->handleAttachments($component, $quotation->id);
 

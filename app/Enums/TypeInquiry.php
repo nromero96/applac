@@ -57,7 +57,7 @@ enum TypeInquiry: string {
 
             // System
             self::EXT_AUTO      => 'Auto',
-            self::RFQ_EMAIL     => 'Auto',
+            self::RFQ_EMAIL     => 'Internal',
         };
     }
 

@@ -115,6 +115,9 @@ class QuotationController extends Controller
 
         $quotation_id = $quotation->id;
 
+        // create init inquiry note
+        init_inquiry_note($quotation);
+
 
         //Guarda los archivos en la tabla quotation_documents
         if ($request->hasFile('files')) {
@@ -248,6 +251,9 @@ class QuotationController extends Controller
 
         $quotation_id = $quotation->id;
 
+        // create init inquiry note
+        init_inquiry_note($quotation);
+
 
         //Guarda los archivos en la tabla quotation_documents
         if ($request->hasFile('files')) {
@@ -373,6 +379,9 @@ class QuotationController extends Controller
                 ];
 
                 $inquiry = Quotation::create($inquiry_data);
+
+                // create init inquiry note
+                init_inquiry_note($inquiry);
 
                 // Cargo Details
                 $icargo = $request->input('icargo_items');
@@ -524,6 +533,9 @@ class QuotationController extends Controller
 
             $inquiry = Quotation::create($inquiry_data);
 
+            // create init inquiry note
+            init_inquiry_note($inquiry);
+
             // save files
             if ($request->hasFile('files_inquiry')) {
                 foreach ($request->file('files_inquiry') as $file) {
@@ -598,11 +610,15 @@ class QuotationController extends Controller
             $inquiry_data['assigned_user_id'] = $user_searched->id;
         }
 
+        // init log
+
         $copies = $request->input('copies');
         $inquiries_created = [];
         for ($i=0; $i < $copies; $i++) { 
             $inquiry = Quotation::create($inquiry_data);
             $inquiries_created[] = $inquiry;
+
+            init_inquiry_note($inquiry);
 
             // set quoation as unread
             UnreadQuotation::create([

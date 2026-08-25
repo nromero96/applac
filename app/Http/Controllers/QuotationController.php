@@ -671,6 +671,12 @@ class QuotationController extends Controller
 
         $members = $members->get();
 
+        // init note
+        $log_init = QuotationNote::where([
+            ['quotation_id', $quotation->id],
+            ['type', 'init'],
+        ])->first();
+
         //verificate if quotation is assigned to user logged or is Administator
         return view('pages.quotations.show')
                     ->with($data)
@@ -680,7 +686,8 @@ class QuotationController extends Controller
                     ->with('quotation_documents', $quotation_documents)
                     ->with('users', $users)
                     ->with('reason_unqualified', $reason_unqualified)
-                    ->with('members', $members);
+                    ->with('members', $members)
+                    ->with('log_init', $log_init);
         /*
         if (
             $quotation->processed_by_user_id == auth()->id() ||
@@ -741,6 +748,7 @@ class QuotationController extends Controller
 
         // Obtener las notas de cotización
         $quotation_notes = QuotationNote::where('quotation_id', $id)
+            ->where('type', '!=', 'init')
             ->join('users', 'quotation_notes.user_id', '=', 'users.id')
             ->leftJoin('users as U', 'quotation_notes.processed_by_user_id', '=', 'U.id')
             ->select('quotation_notes.*', 'users.name as user_name', 'users.lastname as user_lastname', 'U.name as processed_user_name', 'U.lastname as processed_user_lastname')

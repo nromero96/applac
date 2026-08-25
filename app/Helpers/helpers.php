@@ -1582,3 +1582,17 @@ if (!function_exists('auto_assign_processing')) {
         return $result->user_id;
     }
 }
+
+function init_inquiry_note(Quotation $inquiry) {
+    $user = User::select('id', 'name', 'lastname')->where('id', $inquiry->assigned_user_id)->first();
+    QuotationNote::create([
+        'quotation_id' => $inquiry->id, 
+        'type' => 'init',
+        'note' => json_encode([
+            'type' => $inquiry->type_inquiry,
+            'user_id' => $inquiry->assigned_user_id,
+            'user_name' => $user->name . ' ' . $user->lastname,
+        ]),
+        'user_id' => 1,
+    ]);
+}
