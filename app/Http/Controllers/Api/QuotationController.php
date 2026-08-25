@@ -115,9 +115,6 @@ class QuotationController extends Controller
 
         $quotation_id = $quotation->id;
 
-        // create init inquiry note
-        init_inquiry_note($quotation);
-
 
         //Guarda los archivos en la tabla quotation_documents
         if ($request->hasFile('files')) {
@@ -148,6 +145,9 @@ class QuotationController extends Controller
             $assigned_user = optional(User::find($quotation->assigned_user_id))->only('name', 'lastname');
             $assigned_user_full_name = $assigned_user ? $assigned_user['name'] . ' ' . $assigned_user['lastname'] : 'Not assigned';
             $assigned_user_mail = optional(User::find($quotation->assigned_user_id))->email;
+
+            // create init inquiry note
+            init_inquiry_note($quotation);
 
             // set quoation as unread
             if ($assigned_user) {
@@ -251,9 +251,6 @@ class QuotationController extends Controller
 
         $quotation_id = $quotation->id;
 
-        // create init inquiry note
-        init_inquiry_note($quotation);
-
 
         //Guarda los archivos en la tabla quotation_documents
         if ($request->hasFile('files')) {
@@ -284,6 +281,9 @@ class QuotationController extends Controller
             $assigned_user = optional(User::find($quotation->assigned_user_id))->only('name', 'lastname');
             $assigned_user_full_name = $assigned_user ? $assigned_user['name'] . ' ' . $assigned_user['lastname'] : 'Not assigned';
             $assigned_user_mail = optional(User::find($quotation->assigned_user_id))->email;
+
+            // create init inquiry note
+            init_inquiry_note($quotation);
 
             // set quoation as unread
             if ($assigned_user) {
@@ -380,9 +380,6 @@ class QuotationController extends Controller
 
                 $inquiry = Quotation::create($inquiry_data);
 
-                // create init inquiry note
-                init_inquiry_note($inquiry);
-
                 // Cargo Details
                 $icargo = $request->input('icargo_items');
                 $cargo_details_data = [];
@@ -410,6 +407,9 @@ class QuotationController extends Controller
 
                 // auto assigned user / send auto email
                 rateQuotation($inquiry->id);
+                // create init inquiry note
+                init_inquiry_note($inquiry);
+                
                 try {
                     //si hay archivos adjuntos obtenemos los links
                     $quotation_documents = QuotationDocument::where('quotation_id', $inquiry->id)->get();
