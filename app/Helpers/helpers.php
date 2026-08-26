@@ -1584,15 +1584,19 @@ if (!function_exists('auto_assign_processing')) {
 }
 
 function init_inquiry_note(Quotation $inquiry) {
+    Log::info('ID inquiry init note: ' . $inquiry->id);
     $user = User::select('id', 'name', 'lastname')->where('id', $inquiry->assigned_user_id)->first();
-    QuotationNote::create([
-        'quotation_id' => $inquiry->id, 
-        'type' => 'init',
-        'note' => json_encode([
-            'type' => $inquiry->type_inquiry,
-            'user_id' => $inquiry->assigned_user_id,
-            'user_name' => $user->name . ' ' . $user->lastname,
-        ]),
-        'user_id' => 1,
-    ]);
+    $userName = $user ? "{$user->name} {$user->lastname}" : null;
+    if ($userName) {
+        QuotationNote::create([
+            'quotation_id' => $inquiry->id, 
+            'type' => 'init',
+            'note' => json_encode([
+                'type' => $inquiry->type_inquiry,
+                'user_id' => $inquiry->assigned_user_id,
+                'user_name' => $userName,
+            ]),
+            'user_id' => 1,
+        ]);
+    }
 }
