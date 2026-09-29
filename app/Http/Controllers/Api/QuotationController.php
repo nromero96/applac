@@ -525,11 +525,15 @@ class QuotationController extends Controller
             $currentIndex++;
             Storage::put($indexFile, $currentIndex);
 
+            /* se comentó estp porque no se recuerda porque se hizo
             if ($customer_type == 'I’m an Individual / Private Person') {
                 $inquiry_data['assigned_user_id'] = 2731; // asignar a felipe
             } else {
                 $inquiry_data['assigned_user_id'] = $selectedUserId;
             }
+            */
+
+            $inquiry_data['assigned_user_id'] = $selectedUserId;
 
             $inquiry = Quotation::create($inquiry_data);
 
